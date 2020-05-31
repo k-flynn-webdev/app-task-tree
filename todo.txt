@@ -1,0 +1,45 @@
+Mini task history website
+
+MVP fast as possible
+
+its all about making tracks, celebrating long running tracks.
+
+index page should have anon tracks made today, this week, to date etc all about encouragement...
+
+Add week totals as default in a header somehow?
+
+have a popular suggestion for tags, easy to click and open add?
+
+add peek to day/week/month/year streaks, start this:
+	1st attempt add just count of each type per time selected.
+	2nd add a simple graph
+	3rd add wax graph
+	4th add polished glitz!
+
+add remove/edit eventually to past entries.
+
+have a business or personel panel choice.
+
+
+
+
+
+Full accounts & email from day one
+sql setup properly eg admin user and master
+
+
+
+Use:
+scss/sass
+sql database
+node
+vue + vuex
+pm2 
+webtokens
+??
+go for full unit testing
+
+future, make a pwa/app. For now just api and barebones website
+
+
+
