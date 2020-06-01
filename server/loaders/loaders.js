@@ -26,7 +26,7 @@ function LoaderInit(app) {
     }
 
     return Promise.all(allPromises)
-    .then(() => resolve())
+    .then(() => resolve(true))
     .catch((err) => reject(err))
   })
 }

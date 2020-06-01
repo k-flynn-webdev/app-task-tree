@@ -1,7 +1,7 @@
 {
-  "name": "app-base-nodejs-server",
-  "version": "1.0.0",
-  "description": "A simple nodejs base app",
+  "name": "app-task-tree-server",
+  "version": "0.1.0",
+  "description": "A simple nodejs task base app",
   "main": "index.js",
   "scripts": {
     "production": "pm2 start ./config/pm2.config.js",

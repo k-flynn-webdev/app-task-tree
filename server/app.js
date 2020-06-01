@@ -27,7 +27,7 @@ function StartServer() {
     ################################################
       Server listening: ${config.ip}:${config.port}
       - mode: ${config.node_env}
-    ################################ ver: ${config.version} ####\n`)
+    ################################ ver: ${config.version} ####\n\n`)
   })
 }
 
@@ -36,16 +36,17 @@ function Start() {
   console.time('LoadAllModules')
 
   return LoadAllModules(app)
-  .then(() => StartServer)
+  .then(() => {
+    console.log('')
+    console.timeEnd('LoadAllModules')
+  })
   .catch((err) => {
     logger.Log(err)
     process.exit(1)
     return
   })
   .finally(() => {
-    console.log('')
-    console.timeEnd('LoadAllModules')
-    console.log('')
+    StartServer()
   })
 
 }
