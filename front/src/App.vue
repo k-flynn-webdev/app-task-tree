@@ -1,36 +1,21 @@
 <template>
   <div id="app">
+
+    <div class="title">
+      <p>title here</p>
+    </div>
+
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/about">About</router-link> |
+      <router-link to="/task">Task</router-link>
     </div>
+
     <router-view/>
+
+    <div class="footer">
+      <p>footer here</p>
+    </div>
+
   </div>
 </template>
-
-<!--<script>-->
-<!--  import 'main.scss'-->
-<!--</script>-->
-
-<style>
-/*#app {*/
-/*  font-family: Avenir, Helvetica, Arial, sans-serif;*/
-/*  -webkit-font-smoothing: antialiased;*/
-/*  -moz-osx-font-smoothing: grayscale;*/
-/*  text-align: center;*/
-/*  color: #2c3e50;*/
-/*}*/
-
-/*#nav {*/
-/*  padding: 30px;*/
-/*}*/
-
-/*#nav a {*/
-/*  font-weight: bold;*/
-/*  color: #2c3e50;*/
-/*}*/
-
-/*#nav a.router-link-exact-active {*/
-/*  color: #42b983;*/
-/*}*/
-</style>
