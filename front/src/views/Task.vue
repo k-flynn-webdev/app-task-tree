@@ -13,14 +13,7 @@
       </div>
     </div>
 
-    <form>
-      <div class="task__form">
-        <textarea class="task__form__input" />
-        <div class="task__form__send">
-          <button>send</button>
-        </div>
-      </div>
-    </form>
+    <TaskInput />
 
     <div class="task__timer"></div>
 
@@ -37,3 +30,35 @@
 
   </div>
 </template>
+
+<script>
+import TaskInput from '../components/TaskInput.vue'
+
+export default {
+  name: 'Home',
+  data () {
+    return {
+      userTest: 'token here'
+    }
+  },
+  components: {
+    TaskInput
+  },
+  methods: {
+    postTest: function () {
+      // return axios.get('/api/user/test',
+      //   {
+      //     headers:
+      //       { Authorization: `Bearer ${this.userToken}` }
+      //   })
+    },
+    postLogout: function () {
+      // return axios.get('/api/user/logout',
+      //   {
+      //     headers:
+      //       { Authorization: `Bearer ${this.userToken}` }
+      //   })
+    }
+  }
+}
+</script>

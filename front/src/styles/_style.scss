@@ -1,6 +1,9 @@
-//body {
-//  background-color: $main-bg-color;
-//}
+.text,
+button {
+  font-size: $unit-default;
+  margin: $margin-default;
+  padding: $margin-default * 0.5 $margin-default;
+}
 
 .task {
   margin: $margin-default;
@@ -18,21 +21,21 @@
     }
   }
 
-  &__form {
+  &__input__form {
     margin: $margin-default;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 
-    &__input {
+    input {
       flex: auto;
       display: inline-block;
-      min-height: $default-unit * 2;
+      min-height: $unit-default * 2;
+      padding: 0 $unit-default * 0.66;
     }
 
     &__send {
-      width: $default-unit;
       margin: 0 $margin-default;
 
       button {

@@ -45,7 +45,7 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
-import axios from 'axios'
+// import axios from 'axios'
 
 export default {
   name: 'Home',
@@ -60,18 +60,18 @@ export default {
   },
   methods: {
     postTest: function () {
-      return axios.get('/api/user/test',
-        {
-          headers:
-            { Authorization: `Bearer ${this.userToken}` }
-        })
+      // return axios.get('/api/user/test',
+      //   {
+      //     headers:
+      //       { Authorization: `Bearer ${this.userToken}` }
+      //   })
     },
     postLogout: function () {
-      return axios.get('/api/user/logout',
-        {
-          headers:
-            { Authorization: `Bearer ${this.userToken}` }
-        })
+      // return axios.get('/api/user/logout',
+      //   {
+      //     headers:
+      //       { Authorization: `Bearer ${this.userToken}` }
+      //   })
     }
   }
 }
