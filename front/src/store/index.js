@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import user from './user.js'
+import toasts from './toasts.js'
 import tasks from './tasks.js'
 import projects from './projects.js'
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
+    toasts,
     user,
     tasks,
     projects

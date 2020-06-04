@@ -1,6 +1,8 @@
 <template>
   <div id="app">
 
+    <ToastHolder />
+
     <div class="title">
       <p>title here</p>
     </div>
@@ -19,3 +21,14 @@
 
   </div>
 </template>
+
+<script>
+import ToastHolder from './components/ToastHolder'
+
+export default {
+  name: 'App',
+  components: {
+    ToastHolder
+  }
+}
+</script>

@@ -77,6 +77,7 @@ export default {
         })
         .catch(err => {
           this.$emit(ERROR, err)
+          this.$store.commit('toasts/toastAdd', err)
           this.status = ERROR
           this.resetStatus()
         })
