@@ -1,13 +1,14 @@
 <template>
-  <div class="task__input">
+  <div class="task__input"
+       :class="status"
+  >
     <form @submit.prevent="createTask">
       <div class="task__input__form">
         <input
           type="text"
           required
           class="task__input__form text"
-          v-model="input"
-          :class="status"
+          v-model="task.value"
           @submit.prevent="createTask"
         />
         <div class="task__input__form__send">
@@ -23,48 +24,60 @@
 </template>
 
 <script>
-const TASK_ERROR = 'TASK-ERROR'
-const TASK_SUCCESS = 'TASK-SUCCESS'
+const ERROR = 'ERROR'
+const SUCCESS = 'SUCCESS'
+const WAITING = 'WAITING'
+const CLEAR = ''
 
 export default {
   name: 'TaskInput',
   data () {
     return {
-      status: '',
-      input: '',
-      project: {
-        id: -1
-      },
-      user: {
-        id: -1
+      status: CLEAR,
+      statusTimer: null,
+      task: {
+        value: '',
+        project: -1,
+        user: -1
       }
     }
   },
   computed: {
     isValid: function () {
-      return this.input.length > 5
+      return this.task.value.length > 5
     }
   },
   methods: {
     resetStatus: function () {
+      clearTimeout(this.statusTimer)
+
       const self = this
-      setTimeout(function () {
-        self.status = ''
-      }, 2 * 1000)
+      this.statusTimer =
+        setTimeout(function () {
+          self.status = CLEAR
+        }, 2 * 1000)
     },
     createTask: function () {
       if (!this.isValid) return
+      if (this.status === WAITING) return
 
-      const newTask = { user: -1, project: -1, value: this.input }
+      this.status = WAITING
+
+      const newTask = {
+        user: this.task.user,
+        project: this.task.project,
+        value: this.task.value
+      }
+
       return this.$store.dispatch('tasks/create', newTask)
         .then(task => {
-          this.$emit(TASK_SUCCESS, task)
-          this.status = TASK_SUCCESS
+          this.$emit(SUCCESS, task)
+          this.status = SUCCESS
           this.resetStatus()
         })
         .catch(err => {
-          this.$emit(TASK_ERROR, err)
-          this.status = TASK_ERROR
+          this.$emit(ERROR, err)
+          this.status = ERROR
           this.resetStatus()
         })
     }
