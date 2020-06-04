@@ -4,18 +4,24 @@ import TaskService from '../services/TaskService.js'
 export default {
   namespaced: true,
   state: {
-    tasks: Array
+    tasks: Array,
+    current: Object
   },
   getters: {
+    /**
+     * Returns current task
+     *
+     * @param state
+     * @returns {object}
+     */
+    current: (state) => state.current,
     /**
      * Returns all tasks
      *
      * @param state
-     * @returns {ArrayConstructor}
+     * @returns {Array}
      */
-    tasks: function (state) {
-      return state.tasks
-    },
+    tasks: (state) => state.tasks,
     /**
      * Returns a function to get a task by ID
      *
@@ -23,13 +29,21 @@ export default {
      * @param {string}      id
      * @returns {function}
      */
-    task: function (state) {
-      return function (id) {
-        return state.tasks.filter(item => item.id === id)
-      }
+    task: (state) => (id) => {
+      return state.tasks.find(item => item.id === id)
     }
   },
   mutations: {
+    /**
+     * Sets current task selected
+     *
+     * @param           state
+     * @param {object}  input   task object
+     * @returns {object}
+     */
+    taskCurrent: (state, input) => {
+      Vue.set(state, 'current', input)
+    },
     /**
      * Add a new task to the store
      *
@@ -83,6 +97,7 @@ export default {
     create: function (context, input) {
       return TaskService.create(input)
         .then((res) => {
+          context.commit('taskCurrent', res.data.task)
           return context.commit('taskAdd', res.data.task)
         })
     },

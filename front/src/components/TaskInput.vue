@@ -36,15 +36,23 @@ export default {
       status: CLEAR,
       statusTimer: null,
       task: {
-        value: '',
-        project: -1,
-        user: -1
+        value: ''
       }
     }
   },
   computed: {
     isValid: function () {
       return this.task.value.length > 5
+    },
+    project: function () {
+      const projectTmp = this.$store.getters['projects/current']
+      if (projectTmp && projectTmp.id) return projectTmp.id
+      return -1
+    },
+    user: function () {
+      const userTmp = this.$store.getters['user/current']
+      if (userTmp && userTmp.id) return userTmp.id
+      return -1
     }
   },
   methods: {
@@ -59,13 +67,13 @@ export default {
     },
     createTask: function () {
       if (!this.isValid) return
-      if (this.status === WAITING) return
+      if (this.status !== CLEAR) return
 
       this.status = WAITING
 
       const newTask = {
-        user: this.task.user,
-        project: this.task.project,
+        user: this.user,
+        project: this.project,
         value: this.task.value
       }
 

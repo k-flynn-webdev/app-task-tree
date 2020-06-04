@@ -4,18 +4,24 @@ import ProjectService from '../services/ProjectService.js'
 export default {
   namespaced: true,
   state: {
-    projects: Array
+    projects: Array,
+    current: Object
   },
   getters: {
+    /**
+     * Returns current project
+     *
+     * @param state
+     * @returns {object}
+     */
+    current: (state) => state.current,
     /**
      * Returns all projects
      *
      * @param state
-     * @returns {ArrayConstructor}
+     * @returns {Array}
      */
-    projects: function (state) {
-      return state.projects
-    },
+    projects: (state) => state.projects,
     /**
      * Returns a function to get a project by ID
      *
@@ -23,13 +29,21 @@ export default {
      * @param {string}      id
      * @returns {function}
      */
-    project: function (state) {
-      return function (id) {
-        return state.projects.filter(item => item.id === id)
-      }
+    project: (state) => (id) => {
+      return state.projects.find(item => item.id === id)
     }
   },
   mutations: {
+    /**
+     * Sets current project selected
+     *
+     * @param           state
+     * @param {object}  input   project object
+     * @returns {object}
+     */
+    projectCurrent: (state, input) => {
+      Vue.set(state, 'current', input)
+    },
     /**
      * Add a new project to the store
      *
@@ -83,6 +97,7 @@ export default {
     create: function (context, input) {
       return ProjectService.create(input)
         .then((res) => {
+          context.commit('projectCurrent', res.data.project)
           return context.commit('projectAdd', res.data.project)
         })
     },
