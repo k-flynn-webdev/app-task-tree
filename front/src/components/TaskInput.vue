@@ -1,13 +1,14 @@
 <template>
   <div class="task__input">
-    <form>
+    <form @submit.prevent="createTask">
       <div class="task__input__form">
         <input
           type="text"
           required
           class="task__input__form text"
-          v-model="taskInput"
-          v-on:submit.prevent="onSubmit"
+          v-model="input"
+          :class="status"
+          @submit.prevent="createTask"
         />
         <div class="task__input__form__send">
           <button
@@ -22,22 +23,50 @@
 </template>
 
 <script>
-import TaskService from '../services/TaskService.js'
+const TASK_ERROR = 'TASK-ERROR'
+const TASK_SUCCESS = 'TASK-SUCCESS'
 
 export default {
   name: 'TaskInput',
   data () {
     return {
-      taskInput: ''
+      status: '',
+      input: '',
+      project: {
+        id: -1
+      },
+      user: {
+        id: -1
+      }
+    }
+  },
+  computed: {
+    isValid: function () {
+      return this.input.length > 5
     }
   },
   methods: {
-    createTask: function () {
-      const newTask = { user: 'anon', project: 'anon', value: this.taskInput }
-      return TaskService.create(newTask)
+    resetStatus: function () {
+      const self = this
+      setTimeout(function () {
+        self.status = ''
+      }, 2 * 1000)
     },
-    onSubmit: function () {
+    createTask: function () {
+      if (!this.isValid) return
 
+      const newTask = { user: -1, project: -1, value: this.input }
+      return this.$store.dispatch('tasks/create', newTask)
+        .then(task => {
+          this.$emit(TASK_SUCCESS, task)
+          this.status = TASK_SUCCESS
+          this.resetStatus()
+        })
+        .catch(err => {
+          this.$emit(TASK_ERROR, err)
+          this.status = TASK_ERROR
+          this.resetStatus()
+        })
     }
   }
 }
