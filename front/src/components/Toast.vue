@@ -1,6 +1,13 @@
 <template>
-  <div class="toast">
-    {{ data }}
+  <div class="toast" :class="{ 'ERROR': data.isError }">
+    <div class="toast__content">
+      {{ data }}
+    </div>
+    <button
+      class="toast__close"
+      @click="closeToast">
+      X
+    </button>
   </div>
 </template>
 
@@ -11,7 +18,10 @@ function DefaultObj () {
     id: -1,
     title: '',
     message: '',
-    status: ''
+    status: '',
+    isError: false,
+    isTimed: false,
+    time: -1
   }
 }
 
@@ -21,8 +31,8 @@ export default {
     data: DefaultObj()
   },
   methods: {
-    clearToast: function (toast) {
-      this.$store.commit('toasts/toastRemove', toast)
+    closeToast: function () {
+      this.$store.commit('toasts/toastRemove', this.data)
     }
   }
 }

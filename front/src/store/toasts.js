@@ -2,6 +2,7 @@ import Vue from 'vue'
 
 let msgId = -1
 let timerObj = null
+const defaultToastTime = 10
 const timerDelay = 1000
 
 function createToast (input) {
@@ -9,14 +10,22 @@ function createToast (input) {
   const title = input.title ? input.title : ''
   const message = input.message ? input.message : ''
   const isError = input.isError ? input.isError : true
-  const isTimed = input.isTimed ? input.isTimed : 10
+  const isTimed = input.isTimed ? input.isTimed : false
+  const time = () => {
+    if (input.isTimed) {
+      return defaultToastTime
+    } else {
+      return -1
+    }
+  }
 
   return {
     id: msgId,
     title: title,
     message: message,
     isError: isError,
-    isTimed: isTimed
+    isTimed: isTimed,
+    time: time()
   }
 }
 
@@ -36,10 +45,12 @@ function updateTimerCheck (state) {
   let allDone = true
 
   for (let i = state.toasts.length - 1; i >= 0; i--) {
-    if (state.toasts[i].isTimed >= 0) {
-      state.toasts[i].isTimed -= 1
+    if (state.toasts[i].isTimed &&
+      state.toasts[i].time >= 0) {
+      state.toasts[i].time -= 1
 
-      if (state.toasts[i].isTimed < 0) {
+      if (state.toasts[i].isTimed &&
+        state.toasts[i].time < 0) {
         Vue.delete(state.toasts, i)
       }
 
