@@ -3,9 +3,7 @@
 
     <div class="task__header">
       <Project />
-      <div class="task__header__user">
-        <p>user</p>
-      </div>
+      <User />
       <div class="task__header__option">
         <p>option</p>
       </div>
@@ -30,12 +28,14 @@
 </template>
 
 <script>
+import User from '../components/User.vue'
 import Project from '../components/Project.vue'
 import TaskInput from '../components/TaskInput.vue'
 
 export default {
   name: 'Home',
   components: {
+    User,
     Project,
     TaskInput
   },
