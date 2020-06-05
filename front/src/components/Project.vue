@@ -14,7 +14,6 @@
 <script>
 import ProjectInput from './ProjectInput'
 import ProjectSelect from './ProjectSelect'
-import status from '../constants/status.js'
 
 export default {
   name: 'Project',
@@ -24,7 +23,6 @@ export default {
   },
   data () {
     return {
-      status: status.CLEAR,
       displayProjects: false
     }
   },
