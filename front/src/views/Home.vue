@@ -49,14 +49,14 @@ import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
   name: 'Home',
+  components: {
+    HelloWorld
+  },
   data () {
     return {
       userTest: 'token here',
       userToken: 'token here'
     }
-  },
-  components: {
-    HelloWorld
   },
   methods: {
     postTest: function () {

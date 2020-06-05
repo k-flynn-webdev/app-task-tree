@@ -1,39 +1,36 @@
 <template>
   <div class="project">
-    <p> {{ currentProject.name }} </p>
 
-    <button @click="toggleDisplayCreate">/</button>
+    <div @click="displayProjects = !displayProjects">
+      <p> {{ currentProject.name }} </p>
+    </div>
 
-    <ProjectInput v-if="displayCreate" />
+    <ProjectInput v-if="displayProjects" />
+    <ProjectSelect v-if="displayProjects" />
 
   </div>
 </template>
 
 <script>
 import ProjectInput from './ProjectInput'
+import ProjectSelect from './ProjectSelect'
 import status from '../constants/status.js'
 
 export default {
   name: 'Project',
+  components: {
+    ProjectInput,
+    ProjectSelect
+  },
   data () {
     return {
       status: status.CLEAR,
-      displayCreate: false
+      displayProjects: false
     }
   },
   computed: {
     currentProject: function () {
-      const projectTmp = this.$store.getters['projects/current']
-      if (projectTmp && projectTmp.id) return projectTmp
-      return { name: 'Project', id: -1 }
-    }
-  },
-  components: {
-    ProjectInput
-  },
-  methods: {
-    toggleDisplayCreate: function () {
-      this.displayCreate = !this.displayCreate
+      return this.$store.getters['projects/current']
     }
   }
 }

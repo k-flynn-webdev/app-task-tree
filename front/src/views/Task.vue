@@ -35,14 +35,14 @@ import TaskInput from '../components/TaskInput.vue'
 
 export default {
   name: 'Home',
+  components: {
+    Project,
+    TaskInput
+  },
   data () {
     return {
       userTest: 'token here'
     }
-  },
-  components: {
-    Project,
-    TaskInput
   },
   methods: {
   }

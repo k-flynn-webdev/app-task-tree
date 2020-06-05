@@ -1,7 +1,14 @@
 <template>
   <div class="project__input"
        :class="status">
-    <form @submit.prevent="createProject">
+
+    <button @click="display = !display">
+      {{ buttonText }}
+    </button>
+
+    <form
+      v-if="display"
+      @submit.prevent="createProject">
       <div class="project__input__form">
         <input
           type="text"
@@ -14,7 +21,7 @@
           <button
             type="button"
             @click="createProject">
-            send
+            CREATE
           </button>
         </div>
       </div>
@@ -29,6 +36,7 @@ export default {
   name: 'ProjectInput',
   data () {
     return {
+      display: false,
       status: status.CLEAR,
       project: {
         value: ''
@@ -36,6 +44,10 @@ export default {
     }
   },
   computed: {
+    buttonText: function () {
+      if (this.display) return 'CLOSE'
+      return 'NEW'
+    },
     isValid: function () {
       return this.project.value.length > 5
     },

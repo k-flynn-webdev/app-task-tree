@@ -1,11 +1,17 @@
 import Vue from 'vue'
 import ProjectService from '../services/ProjectService.js'
 
+function defaultProject () {
+  return { id: -1, name: 'Project' }
+}
+
 export default {
   namespaced: true,
   state: {
-    projects: Array,
-    current: Object
+    projects: [
+      defaultProject(),
+      { id: 3, name: 'testProject' }],
+    current: defaultProject()
   },
   getters: {
     /**
