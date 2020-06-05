@@ -2,9 +2,7 @@
   <div class="task">
 
     <div class="task__header">
-      <div class="task__header__project">
-        <p>project</p>
-      </div>
+      <Project />
       <div class="task__header__user">
         <p>user</p>
       </div>
@@ -32,6 +30,7 @@
 </template>
 
 <script>
+import Project from '../components/Project.vue'
 import TaskInput from '../components/TaskInput.vue'
 
 export default {
@@ -42,23 +41,10 @@ export default {
     }
   },
   components: {
+    Project,
     TaskInput
   },
   methods: {
-    postTest: function () {
-      // return axios.get('/api/user/test',
-      //   {
-      //     headers:
-      //       { Authorization: `Bearer ${this.userToken}` }
-      //   })
-    },
-    postLogout: function () {
-      // return axios.get('/api/user/logout',
-      //   {
-      //     headers:
-      //       { Authorization: `Bearer ${this.userToken}` }
-      //   })
-    }
   }
 }
 </script>

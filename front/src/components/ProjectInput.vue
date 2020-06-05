@@ -1,19 +1,19 @@
 <template>
-  <div class="task__input"
+  <div class="project__input"
        :class="status">
-    <form @submit.prevent="createTask">
-      <div class="task__input__form">
+    <form @submit.prevent="createProject">
+      <div class="project__input__form">
         <input
           type="text"
           required
-          class="task__input__form text"
-          v-model="task.value"
-          @submit.prevent="createTask"
+          class="project__input__form text"
+          v-model="project.value"
+          @submit.prevent="createProject"
         />
-        <div class="task__input__form__send">
+        <div class="project__input__form__send">
           <button
             type="button"
-            @click="createTask">
+            @click="createProject">
             send
           </button>
         </div>
@@ -26,24 +26,18 @@
 import status from '../constants/status.js'
 
 export default {
-  name: 'TaskInput',
+  name: 'ProjectInput',
   data () {
     return {
       status: status.CLEAR,
-      statusTimer: null,
-      task: {
+      project: {
         value: ''
       }
     }
   },
   computed: {
     isValid: function () {
-      return this.task.value.length > 5
-    },
-    project: function () {
-      const projectTmp = this.$store.getters['projects/current']
-      if (projectTmp && projectTmp.id) return projectTmp.id
-      return -1
+      return this.project.value.length > 5
     },
     user: function () {
       const userTmp = this.$store.getters['user/current']
@@ -57,25 +51,24 @@ export default {
 
       const self = this
       this.statusTimer =
-        setTimeout(function () {
-          self.status = status.CLEAR
-        }, 2 * 1000)
+          setTimeout(function () {
+            self.status = status.CLEAR
+          }, 2 * 1000)
     },
-    createTask: function () {
+    createProject: function () {
       if (!this.isValid) return
       if (this.status !== status.CLEAR) return
 
       this.status = status.WAITING
 
-      const newTask = {
+      const newProject = {
         user: this.user,
-        project: this.project,
-        value: this.task.value
+        value: this.project.value
       }
 
-      return this.$store.dispatch('tasks/create', newTask)
-        .then(task => {
-          this.$emit(status.SUCCESS, task)
+      return this.$store.dispatch('projects/create', newProject)
+        .then(project => {
+          this.$emit(status.SUCCESS, project)
           this.status = status.SUCCESS
           this.resetStatus()
         })
