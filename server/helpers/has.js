@@ -30,6 +30,18 @@ function Number(input) {
 exports.Number = Number
 
 /**
+ * Returns if is numeric
+ *
+ * @param 	{number} 	input
+ * @returns {boolean}
+ */
+function isNumber(input) {
+  return typeof input === 'number'
+}
+
+exports.isNumber = isNumber
+
+/**
  * Check if an Item exists
  *
  * @param 	{Property} 	input

@@ -4,7 +4,7 @@ const logger = require('../../services/logger.js')
 const userMiddle = require('../middlewares/user.js')
 const user = require('../../services/user.service.js')
 const token = require('../../services/token.service.js')
-const MysqlVal = require('../../helpers/MYSQL_value.js')
+const mysqlVal = require('../../helpers/MYSQL_value.js')
 
 module.exports = function (app) {
 
@@ -38,7 +38,7 @@ module.exports = function (app) {
     })
     .then(({ insertId }) => user.GetUserByID(insertId))
     .then((userObj) => {
-      userObjTmp = MysqlVal(userObj)
+      userObjTmp = mysqlVal(userObj)
       userObjTmp.verify = token.Magic(userObj)
 
       return user.Update({ id: userObjTmp.id, verify: userObjTmp.verify })
@@ -71,7 +71,7 @@ module.exports = function (app) {
         throw new Error('Account does not exist, please contact support.')
       }
 
-      userObjTmp = MysqlVal(userObj)
+      userObjTmp = mysqlVal(userObj)
       return user.ComparePassword(req.body.password, userObjTmp.password)
     })
     .then((dbData) => {
@@ -122,7 +122,7 @@ module.exports = function (app) {
         throw new Error('Account does not exist, please contact support.')
       }
 
-      userObjTmp = MysqlVal(userObj)
+      userObjTmp = mysqlVal(userObj)
 
       if (has.Item(userObjTmp.verify)){
         throw new Error('Account not verified, please verify first')
@@ -148,7 +148,7 @@ module.exports = function (app) {
       return user.GetUserByID(req.body.token.id)
     })
     .then((userObj) => {
-      userObjTmp = MysqlVal(userObj)
+      userObjTmp = mysqlVal(userObj)
       app.emit('ACCOUNT_UPDATED', userObjTmp)
 
       exit(res, 200, 'Success your account is updated',
@@ -176,7 +176,7 @@ module.exports = function (app) {
         throw new Error('No account found with that ID')
       }
 
-      userObjTmp = MysqlVal(userObj)
+      userObjTmp = mysqlVal(userObj)
 
       if (has.Item(userObjTmp.verify)){
         throw new Error('Account not verified, please verify first')
@@ -219,7 +219,7 @@ module.exports = function (app) {
         throw new Error('Verify link does not exist, please contact support.')
       }
 
-      userObjTmp = MysqlVal(userObj)
+      userObjTmp = mysqlVal(userObj)
 
       return user.Update({ id: userObjTmp.id, verify: ' ' })
     })
@@ -253,7 +253,7 @@ module.exports = function (app) {
         throw new Error('Account does not exist, please contact support.')
       }
 
-      userObjTmp = MysqlVal(userObj)
+      userObjTmp = mysqlVal(userObj)
 
       if (has.Item(userObjTmp.verify)){
         throw new Error('Account not verified, please verify first')
@@ -297,7 +297,7 @@ module.exports = function (app) {
             'Recovery link does not exist, please contact support.')
         }
 
-        userObjTmp = MysqlVal(userObj)
+        userObjTmp = mysqlVal(userObj)
 
         app.emit('ACCOUNT_VERIFIED', userObjTmp)
         return user.Update({

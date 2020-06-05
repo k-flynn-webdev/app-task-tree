@@ -4,8 +4,8 @@ import TaskService from '../services/TaskService.js'
 export default {
   namespaced: true,
   state: {
-    tasks: Array,
-    current: Object
+    tasks: [],
+    current: {}
   },
   getters: {
     /**

@@ -64,6 +64,7 @@ export default {
     createTask: function () {
       if (!this.isValid) return
       if (this.status !== status.CLEAR) return
+      if (this.status === status.WAITING) return
 
       this.status = status.WAITING
 
