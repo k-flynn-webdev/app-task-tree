@@ -4,6 +4,11 @@ function defaultUser () {
   const userLocal = UserService.getUser()
   if (userLocal !== undefined) return userLocal
 
+  // todo
+  //  we need the Anom user id to be specific to
+  //  THIS users PC so when they
+  //  upgrade it's a seamless transfer of
+  //  projects/tasks to the new user id..
   return {
     id: -1,
     name: '',
