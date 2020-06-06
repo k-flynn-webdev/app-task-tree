@@ -209,12 +209,12 @@ module.exports = function (app) {
   /**
    * Verify a users account, one time process to validate email
    */
-  app.get('/api/user/verify/:verify', userMiddle.Verify, prepareMiddle,
+  app.get('/api/user/verify', userMiddle.Verify, prepareMiddle,
     function (req, res) {
 
     let userObjTmp
 
-    user.GetUserByVerify(req.params.verify)
+    user.GetUserByVerify(req.query.verify)
     .then((userObj) => {
       if (userObj.length < 1) {
         throw new Error('Verify link does not exist, please contact support.')
@@ -243,7 +243,7 @@ module.exports = function (app) {
    * Triggers reset user password process via email,
    * will invalidate a account until the next stage is complete..
    */
-  app.post('/api/user/reset/', userMiddle.Email, prepareMiddle,
+  app.post('/api/user/reset', userMiddle.Email, prepareMiddle,
     function (req, res) {
 
     let userObjTmp
@@ -285,13 +285,13 @@ module.exports = function (app) {
   /**
    * User reset password with the above token
    */
-  app.patch('/api/user/reset/:recover',
+  app.patch('/api/user/reset',
     userMiddle.Recover, userMiddle.Email, prepareMiddle,
     function (req, res) {
 
       let userObjTmp
 
-      user.GetUserByRecover(req.params.recover)
+      user.GetUserByRecover(req.query.recover)
       .then((userObj) => {
         if (userObj.length < 1) {
           throw new Error(

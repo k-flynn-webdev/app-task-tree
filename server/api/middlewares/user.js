@@ -28,18 +28,18 @@ function Create(req, res, next) {
 exports.Create = Create
 
 /**
- * Ensure the incoming request has a verify parameter
+ * Ensure the incoming request has a verify query
  *
  * @param req   incoming request obj
  * @param res   outgoing response obj
  * @param next  the cb
  */
 function Verify(req, res, next) {
-  if (!has.hasAnItem(req.params)) return exit(res, 422,
+  if (!has.hasAnItem(req.query)) return exit(res, 422,
     'Missing verify link.')
-  if (!has.hasAnItem(req.params.verify)) return exit(res, 422,
+  if (!has.hasAnItem(req.query.verify)) return exit(res, 422,
     'Missing verify link.')
-  if (req.params.verify.length < VERIFY_LENGTH) return exit(res, 422,
+  if (req.query.verify.length < VERIFY_LENGTH) return exit(res, 422,
     'Invalid verify link.')
 
   next()
@@ -48,18 +48,18 @@ function Verify(req, res, next) {
 exports.Verify = Verify
 
 /**
- * Ensure the incoming request has a recovery parameter
+ * Ensure the incoming request has a recovery query
  *
  * @param req   incoming request obj
  * @param res   outgoing response obj
  * @param next  the cb
  */
 function Recover(req, res, next) {
-  if (!has.hasAnItem(req.params)) return exit(res, 422,
+  if (!has.hasAnItem(req.query)) return exit(res, 422,
     'Missing recover link.')
-  if (!has.hasAnItem(req.params.recover)) return exit(res, 422,
+  if (!has.hasAnItem(req.query.recover)) return exit(res, 422,
     'Missing recover link.')
-  if (req.params.recover.length < RECOVER_LENGTH) return exit(res, 422,
+  if (req.query.recover.length < RECOVER_LENGTH) return exit(res, 422,
     'Invalid recover link.')
 
   next()

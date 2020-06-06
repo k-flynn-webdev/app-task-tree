@@ -68,19 +68,20 @@ function Update(req, res, next) {
 exports.Update = Update
 
 /**
- * Ensure the incoming request has a id property for deleting
+ * Ensure the incoming request has a id property
  *
  * @param req   incoming request obj
  * @param res   outgoing response obj
  * @param next  the cb
  */
-function Delete(req, res, next) {
+function HasId(req, res, next) {
   if (!checkId.required(req, res)) return
 
   next()
 }
 
-exports.Delete = Delete
+exports.HasId = HasId
+exports.Delete = HasId
 
 /**
  * Ensure the incoming request has a User or Project id property

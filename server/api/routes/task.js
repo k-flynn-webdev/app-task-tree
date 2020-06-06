@@ -96,12 +96,32 @@ module.exports = function (app) {
     })
 
   /**
+   * Get task by id
+   */
+  app.get('/api/task', taskMiddle.HasId, prepareMiddle,
+    function (req, res) {
+
+      task.GetTaskByID
+      .then(taskObj => {
+
+        exit(res, 200,
+          'Success task found.',
+          { task: task.SafeExport(mysqlVal(taskObj)) })
+      })
+      .catch((err) => {
+        logger.Log(err.message || err)
+        exit(res, 401, 'error', err.message || err)
+      })
+    })
+
+  /**
    * Get all tasks by user/project id
    */
   app.get('/api/tasks', taskMiddle.HasUserOrProject, prepareMiddle,
     function (req, res) {
 
       // todo check for user token and integrate
+      // todo implement pagination or search by date ..
 
       let promiseValue = -1
       let promiseTask = null
