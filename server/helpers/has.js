@@ -1,10 +1,10 @@
 /**
- * Check if an Item has a uppercase letter present
+ * Check if an hasAnItem has a uppercase letter present
  *
  * @param 	{String}		input
  * @returns {boolean}
  */
-function UpperCase(input) {
+function HasUpperCase(input) {
   let tmpNoNumber = input.replace(/[^A-Za-z]/g, '')
   let upperTmp = tmpNoNumber.toLocaleUpperCase()
   for (let i = 0; i < tmpNoNumber.length; i++) {
@@ -14,7 +14,7 @@ function UpperCase(input) {
   return false
 }
 
-exports.UpperCase = UpperCase
+exports.HasUpperCase = HasUpperCase
 
 /**
  * Returns all numeric from a string
@@ -22,12 +22,12 @@ exports.UpperCase = UpperCase
  * @param 	{String} 	input
  * @returns {boolean}
  */
-function Number(input) {
+function HasNumbers(input) {
   let strip = input.replace(/\D/g, '')
   return (strip.length > 0)
 }
 
-exports.Number = Number
+exports.HasNumbers = HasNumbers
 
 /**
  * Returns if is numeric
@@ -35,34 +35,34 @@ exports.Number = Number
  * @param 	{number} 	input
  * @returns {boolean}
  */
-function isNumber(input) {
-  return typeof input === 'number'
+function isANumber(input) {
+  return typeof Number(input) === 'number'
 }
 
-exports.isNumber = isNumber
+exports.isANumber = isANumber
 
 /**
- * Check if an Item exists
+ * Check if a item exists
  *
  * @param 	{Property} 	input
  * @returns {boolean}
  */
-function Item(input) {
+function hasAnItem(input) {
   if (input === null || input === undefined) return false
   return input.toString().trim().length >= 1
 }
 
-exports.Item = Item
+exports.hasAnItem = hasAnItem
 
 /**
- * Check if an Item Contains 'thing'
+ * Check if an string Contains 'search'
  *
- * @param 	{String} 	item			Item to inspect
+ * @param 	{String} 	text			hasAnItem to inspect
  * @param 	{String} 	search		string to search for
  * @returns {boolean}
  */
-function Contains(item, search) {
-  return (item.indexOf(search) >= 0)
+function StringContains(text, search) {
+  return (text.indexOf(search) >= 0)
 }
 
-exports.Contains = Contains
+exports.StringContains = StringContains

@@ -258,19 +258,19 @@ function SafeExport(userData, meta = false) {
 
   let freshUser = {}
 
-  if (has.Item(userData.id)) {
+  if (has.hasAnItem(userData.id)) {
     freshUser.id = userData.id
   }
 
-  if (has.Item(userData.name)) {
+  if (has.hasAnItem(userData.name)) {
     freshUser.name = userData.name
   }
 
-  if (has.Item(userData.email)) {
+  if (has.hasAnItem(userData.email)) {
     freshUser.email = userData.email
   }
 
-  if (has.Item(userData.role)) {
+  if (has.hasAnItem(userData.role)) {
     freshUser.role = userData.role
   }
 

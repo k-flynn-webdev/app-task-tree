@@ -1,5 +1,5 @@
 const checkId = require('./checkId.js')
-const checkText = require('./checkText.js')
+const checkName = require('./checkName.js')
 const checkUser = require('./checkUser.js')
 const checkProject = require('./checkProject.js')
 const missing = require('./missing.js')
@@ -7,7 +7,7 @@ const has = require('../../helpers/has.js')
 const exit = require('../../services/exit.js')
 
 /**
- * Ensure the incoming request has a text, project id and user id property
+ * Ensure the incoming request has a name and user id property
  *
  * @param req   incoming request obj
  * @param res   outgoing response obj
@@ -15,9 +15,8 @@ const exit = require('../../services/exit.js')
  */
 function Create(req, res, next) {
 
-  if (!checkText.required(req, res)) return
+  if (!checkName.required(req, res)) return
   if (!checkUser.required(req, res)) return
-  if (!checkProject.required(req, res)) return
 
   next()
 }
@@ -41,17 +40,13 @@ function Update(req, res, next) {
   if (!checkId.required(req, res)) return
   newBody.id = req.body.id
 
-  if (!checkText.valid(req, res)) return
+  if (!checkName.valid(req, res)) return
   if (!checkUser.valid(req, res)) return
   if (!checkProject.valid(req, res)) return
 
 
-  if (has.hasAnItem(req.body.text)) {
-    newBody.text = req.body.text
-  }
-
-  if (has.hasAnItem(req.body.project)) {
-    newBody.project = req.body.project
+  if (has.hasAnItem(req.body.name)) {
+    newBody.name = req.body.name
   }
 
   if (has.hasAnItem(req.body.user)) {
@@ -81,35 +76,3 @@ function Delete(req, res, next) {
 }
 
 exports.Delete = Delete
-
-/**
- * Ensure the incoming request has a User or Project id property
- *
- * @param req   incoming request obj
- * @param res   outgoing response obj
- * @param next  the cb
- */
-function HasUserOrProject(req, res, next) {
-  let hasEither = (has.hasAnItem(req.query.user) || has.hasAnItem(req.query.project))
-  if (!hasEither) return exit(res, 422, missing('user or project'))
-
-
-  if (has.hasAnItem(req.query.user)) {
-    if (!has.isANumber(req.query.user)) {
-      return exit(res, 422, 'The user must be valid.')
-    }
-  }
-
-  if (has.hasAnItem(req.query.project)) {
-    if (!has.isANumber(req.query.project)) {
-      return exit(res, 422, 'The project must be valid.')
-    }
-  }
-
-  next()
-}
-
-exports.HasUserOrProject = HasUserOrProject
-
-
-

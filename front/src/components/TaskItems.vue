@@ -7,7 +7,7 @@
       :key="task.id"
       class="task__items-text"
     >
-      {{ task.value }}
+      {{ task.text }}
     </p>
 
   </div>

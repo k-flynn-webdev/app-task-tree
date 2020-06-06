@@ -75,7 +75,7 @@ function validEmail (input) {
  */
 function validPassword (input) {
 	let temp = input.toLowerCase()
-	return (temp.length >= 8 && has.Number(input) && has.UpperCase(input))
+	return (temp.length >= 8 && has.HasNumbers(input) && has.HasUpperCase(input))
 }
 
 /**
@@ -137,13 +137,13 @@ function safeExport (meta = false) {
 
   let freshUser = {}
 
-  if (has.Item(this.name)) {
+  if (has.hasAnItem(this.name)) {
 		freshUser.name = this.name
   }
-	if (has.Item(this.email)) {
+	if (has.hasAnItem(this.email)) {
 		freshUser.email = this.email
 	}
-	if (has.Item(this.role)) {
+	if (has.hasAnItem(this.role)) {
 		freshUser.role = this.role
 	}
 	if (meta) {
@@ -154,7 +154,7 @@ function safeExport (meta = false) {
 			verified: this.meta.link_verify.length < 1
 		}
 	}
-	if (has.Item(this._id)) {
+	if (has.hasAnItem(this._id)) {
 		freshUser.id = this._id
 	}
 

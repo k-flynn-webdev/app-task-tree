@@ -7,7 +7,7 @@
           type="text"
           required
           class="task__input__form text"
-          v-model="task.value"
+          v-model="task.text"
           @submit.prevent="createTask"
         />
         <div class="task__input__form__send">
@@ -32,13 +32,13 @@ export default {
       status: status.CLEAR,
       statusTimer: null,
       task: {
-        value: ''
+        text: ''
       }
     }
   },
   computed: {
     isValid: function () {
-      return this.task.value.length > 5
+      return this.task.text.length > 4
     },
     project: function () {
       const projectTmp = this.$store.getters['projects/current']
@@ -71,7 +71,7 @@ export default {
       const newTask = {
         user: this.user,
         project: this.project,
-        value: this.task.value
+        text: this.task.text
       }
 
       return this.$store.dispatch('tasks/create', newTask)

@@ -93,7 +93,6 @@ export default {
      * @returns {array}  tasks added
      */
     taskSet: function (state, input) {
-      console.log(input)
       Vue.set(state, 'tasks', input)
     }
   },

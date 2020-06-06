@@ -5,14 +5,19 @@ const taskMiddle = require('../middlewares/task.js')
 const task = require('../../services/task.service.js')
 const token = require('../../services/token.service.js')
 const mysqlVal = require('../../helpers/MYSQL_value.js')
+const prepareMiddle = require('../middlewares/prepare.js')
+
+// todo
+//    add passive token check, & if theres a user
+//    id on a task double check they match
 
 module.exports = function (app) {
 
   /**
    * Create a task & return
    */
-
-  app.post('/api/task/create', taskMiddle.Create, taskMiddle.Prepare, function (req, res) {
+  app.post('/api/task/create', taskMiddle.Create, prepareMiddle,
+    function (req, res) {
     // todo check for user token and integrate
 
     task.Create(req.body)
@@ -41,7 +46,7 @@ module.exports = function (app) {
   /**
    * Update a task by id
    */
-  app.patch('/api/task', taskMiddle.Update, taskMiddle.Prepare,
+  app.patch('/api/task', taskMiddle.Update, prepareMiddle,
     function (req, res) {
 
     // todo check for user token and integrate
@@ -67,7 +72,7 @@ module.exports = function (app) {
   /**
    * Delete a task by id
    */
-  app.delete('/api/task', taskMiddle.Delete, taskMiddle.Prepare,
+  app.delete('/api/task', taskMiddle.Delete, prepareMiddle,
     function (req, res) {
 
       // todo check for user token and integrate
@@ -93,7 +98,7 @@ module.exports = function (app) {
   /**
    * Get all tasks by user/project id
    */
-  app.get('/api/tasks', taskMiddle.HasUserOrProject, taskMiddle.Prepare,
+  app.get('/api/tasks', taskMiddle.HasUserOrProject, prepareMiddle,
     function (req, res) {
 
       // todo check for user token and integrate
@@ -101,11 +106,11 @@ module.exports = function (app) {
       let promiseValue = -1
       let promiseTask = null
 
-      if (has.Item(req.query.user)){
+      if (has.hasAnItem(req.query.user)){
         promiseTask = task.GetTasksByUser
         promiseValue = req.query.user
       }
-      if (has.Item(req.query.project)){
+      if (has.hasAnItem(req.query.project)){
         promiseTask = task.GetTasksByProject
         promiseValue = req.query.project
       }

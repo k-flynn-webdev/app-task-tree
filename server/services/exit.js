@@ -19,7 +19,7 @@ function Exit(res, status, message, data= {}, notify) {
     notify: notify
   })
 
-  res.status(status).json({
+  return res.status(status).json({
     status: status,
     message: message,
     data: data,

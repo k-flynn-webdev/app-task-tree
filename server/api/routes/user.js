@@ -5,6 +5,7 @@ const userMiddle = require('../middlewares/user.js')
 const user = require('../../services/user.service.js')
 const token = require('../../services/token.service.js')
 const mysqlVal = require('../../helpers/MYSQL_value.js')
+const prepareMiddle = require('../middlewares/prepare.js')
 
 module.exports = function (app) {
 
@@ -24,7 +25,7 @@ module.exports = function (app) {
   /**
    * Create a user account & return a token key
    */
-  app.post('/api/user', userMiddle.Create, userMiddle.Prepare, function (req, res) {
+  app.post('/api/user', userMiddle.Create, prepareMiddle, function (req, res) {
 
     let userObjTmp
 
@@ -61,7 +62,7 @@ module.exports = function (app) {
   /**
    * Login a user account & return a token key
    */
-  app.post('/api/user/login', userMiddle.Login, userMiddle.Prepare, function (req, res) {
+  app.post('/api/user/login', userMiddle.Login, prepareMiddle, function (req, res) {
 
     let userObjTmp = null
 
@@ -111,7 +112,7 @@ module.exports = function (app) {
   /**
    * Update a user account
    */
-  app.patch('/api/user', userMiddle.Update, token.Required, userMiddle.Prepare,
+  app.patch('/api/user', userMiddle.Update, token.Required, prepareMiddle,
     function (req, res) {
 
     let userObjTmp = null
@@ -124,11 +125,11 @@ module.exports = function (app) {
 
       userObjTmp = mysqlVal(userObj)
 
-      if (has.Item(userObjTmp.verify)){
+      if (has.hasAnItem(userObjTmp.verify)){
         throw new Error('Account not verified, please verify first')
       }
 
-      if (has.Item(userObjTmp.recover)){
+      if (has.hasAnItem(userObjTmp.recover)){
         throw new Error('Account was recently put in recovery mode, ' +
           'please contact support')
       }
@@ -137,7 +138,7 @@ module.exports = function (app) {
       return user.Update(req.body)
     })
     .then((dbUpdate) => {
-        if (has.Item(req.body.email)) {
+        if (has.hasAnItem(req.body.email)) {
           let verifyString = token.Magic(userObjTmp)
           app.emit('ACCOUNT_VERIFY', userObjTmp)
 
@@ -178,11 +179,11 @@ module.exports = function (app) {
 
       userObjTmp = mysqlVal(userObj)
 
-      if (has.Item(userObjTmp.verify)){
+      if (has.hasAnItem(userObjTmp.verify)){
         throw new Error('Account not verified, please verify first')
       }
 
-      if (has.Item(userObjTmp.recover)){
+      if (has.hasAnItem(userObjTmp.recover)){
         throw new Error('Account was recently put in recovery mode, ' +
           'please contact support')
       }
@@ -208,7 +209,7 @@ module.exports = function (app) {
   /**
    * Verify a users account, one time process to validate email
    */
-  app.get('/api/user/verify/:verify', userMiddle.Verify, userMiddle.Prepare,
+  app.get('/api/user/verify/:verify', userMiddle.Verify, prepareMiddle,
     function (req, res) {
 
     let userObjTmp
@@ -242,7 +243,7 @@ module.exports = function (app) {
    * Triggers reset user password process via email,
    * will invalidate a account until the next stage is complete..
    */
-  app.post('/api/user/reset/', userMiddle.HasEmail, userMiddle.Prepare,
+  app.post('/api/user/reset/', userMiddle.Email, prepareMiddle,
     function (req, res) {
 
     let userObjTmp
@@ -255,11 +256,11 @@ module.exports = function (app) {
 
       userObjTmp = mysqlVal(userObj)
 
-      if (has.Item(userObjTmp.verify)){
+      if (has.hasAnItem(userObjTmp.verify)){
         throw new Error('Account not verified, please verify first')
       }
 
-      if (has.Item(userObjTmp.recover)){
+      if (has.hasAnItem(userObjTmp.recover)){
         throw new Error('Account was recently put in recovery mode, ' +
           'please contact support')
       }
@@ -285,7 +286,7 @@ module.exports = function (app) {
    * User reset password with the above token
    */
   app.patch('/api/user/reset/:recover',
-    userMiddle.Recover, userMiddle.HasPassword, userMiddle.Prepare,
+    userMiddle.Recover, userMiddle.Email, prepareMiddle,
     function (req, res) {
 
       let userObjTmp

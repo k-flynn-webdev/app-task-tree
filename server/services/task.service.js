@@ -19,7 +19,7 @@ const DB_GET_TASK_BY_IS_DONE_DATE = 'SELECT * FROM tasks WHERE doneDate = ?'
 
 const DB_SET = ' SET'
 const DB_SET_USER = ' user = ?'
-const DB_SET_VALUE = ' value = ?'
+const DB_SET_TEXT = ' text = ?'
 const DB_SET_PROJECT = ' project = ?'
 const DB_SET_IS_DONE = ' isDone = ?'
 const DB_SET_DONE_DATE = ' doneDate = ?'
@@ -31,7 +31,7 @@ const DB_CREATE_TASKS_TABLE = 'CREATE TABLE tasks ' +
   '(id int auto_increment primary key, ' +
   'project int default "-1" not null, ' +
   'user int default "-1" not null, ' +
-  'value VARCHAR(150) not null, ' +
+  'text VARCHAR(150) not null, ' +
   'created DATETIME default now() not null, ' +
   'updated DATETIME default now() not null, ' +
   'isDone bool default FALSE, ' +
@@ -61,8 +61,8 @@ exports.Init = Init
  * @param   {object}  task data
  * @return  {object}  task object
  */
-function Create({ value, project, user }) {
-  return db.Query(DB_CREATE_TASK, { value, project, user })
+function Create({ text, project, user }) {
+  return db.Query(DB_CREATE_TASK, { text, project, user })
 }
 
 exports.Create = Create
@@ -73,7 +73,7 @@ exports.Create = Create
  * @param   {object}  task data
  * @return  {object}  task object
  */
-function Update({ id, value, project, user, isDone }) {
+function Update({ id, text, project, user, isDone }) {
   const JOIN_CHAR = ','
   let tmpSQLVars = []
   let tmpSQLStart = 'UPDATE ' + DB_TASKS + DB_SET
@@ -83,9 +83,9 @@ function Update({ id, value, project, user, isDone }) {
     return tmpSQLStart + tmpSQLCommand.join(JOIN_CHAR) + DB_WHERE
   }
 
-  if (value) {
-    tmpSQLCommand.push(DB_SET_VALUE)
-    tmpSQLVars.push(value.trim())
+  if (text) {
+    tmpSQLCommand.push(DB_SET_TEXT)
+    tmpSQLVars.push(text.trim())
   }
 
   if (project) {
@@ -208,32 +208,32 @@ function SafeExport(taskData) {
 
   let freshTask = {}
 
-  if (has.Item(taskData.id)) {
+  if (has.hasAnItem(taskData.id)) {
     freshTask.id = taskData.id
   }
 
-  if (has.Item(taskData.value)) {
-    freshTask.value = taskData.value
+  if (has.hasAnItem(taskData.text)) {
+    freshTask.text = taskData.text
   }
 
-  if (has.Item(taskData.project)) {
+  if (has.hasAnItem(taskData.project)) {
     freshTask.project = taskData.project
   }
 
-  if (has.Item(taskData.user)) {
+  if (has.hasAnItem(taskData.user)) {
     freshTask.user = taskData.user
   }
 
-  if (has.Item(taskData.isDone)) {
+  if (has.hasAnItem(taskData.isDone)) {
     freshTask.isDone = taskData.isDone
     freshTask.doneDate = taskData.doneDate
   }
 
-  if (has.Item(taskData.created)) {
+  if (has.hasAnItem(taskData.created)) {
     freshTask.created = taskData.created
   }
 
-  if (has.Item(taskData.updated)) {
+  if (has.hasAnItem(taskData.updated)) {
     freshTask.updated = taskData.updated
   }
 
