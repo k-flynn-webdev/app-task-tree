@@ -34,8 +34,8 @@
 
       <input type="text" name="token" placeholder="" v-model="userToken">
 
-      <button @click="postTest">test</button>
-      <button @click="postLogout">logout</button>
+<!--      <button @click="postTest">test</button>-->
+<!--      <button @click="postLogout">logout</button>-->
 
     </div>
 
@@ -44,13 +44,10 @@
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-// import axios from 'axios'
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
   },
   data () {
     return {
@@ -59,20 +56,6 @@ export default {
     }
   },
   methods: {
-    postTest: function () {
-      // return axios.get('/api/user/test',
-      //   {
-      //     headers:
-      //       { Authorization: `Bearer ${this.userToken}` }
-      //   })
-    },
-    postLogout: function () {
-      // return axios.get('/api/user/logout',
-      //   {
-      //     headers:
-      //       { Authorization: `Bearer ${this.userToken}` }
-      //   })
-    }
   }
 }
 </script>

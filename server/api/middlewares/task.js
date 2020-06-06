@@ -94,6 +94,54 @@ function Update(req, res, next) {
 exports.Update = Update
 
 /**
+ * Ensure the incoming request has a id property for deleting
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @param next  the cb
+ */
+function Delete(req, res, next) {
+  if (!has.Item(req.body.id)) return exit(res, 422, Missing('id'))
+  if (!has.isNumber(req.body.id)) {
+    return exit(res, 422, 'The id must be valid.')
+  }
+
+  next()
+}
+
+exports.Delete = Delete
+
+/**
+ * Ensure the incoming request has a User or Project id property
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @param next  the cb
+ */
+function HasUserOrProject(req, res, next) {
+  let hasEither = (has.Item(req.query.user) || has.Item(req.query.project))
+  if (!hasEither) return exit(res, 422, Missing('user or project'))
+
+
+  if (has.Item(req.query.user)) {
+    if (!has.isNumber(Number(req.query.user))) {
+      return exit(res, 422, 'The user must be valid.')
+    }
+  }
+
+  if (has.Item(req.query.project)) {
+    if (!has.isNumber(Number(req.query.project))) {
+      return exit(res, 422, 'The project must be valid.')
+    }
+  }
+
+  next()
+}
+
+exports.HasUserOrProject = HasUserOrProject
+
+
+/**
  * Prepare/sanitize incoming user data from a request
  *
  * @param req   incoming request obj

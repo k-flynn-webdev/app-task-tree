@@ -84,6 +84,17 @@ export default {
           return input
         }
       }
+    },
+    /**
+     * Sets all task items
+     *
+     * @param {object}    state
+     * @param {array}     input tasks
+     * @returns {array}  tasks added
+     */
+    taskSet: function (state, input) {
+      console.log(input)
+      Vue.set(state, 'tasks', input)
     }
   },
   actions: {
@@ -97,8 +108,8 @@ export default {
     create: function (context, input) {
       return TaskService.create(input)
         .then((res) => {
-          context.commit('taskCurrent', res.data.task)
-          return context.commit('taskAdd', res.data.task)
+          context.commit('taskCurrent', res.data.data.task)
+          return context.commit('taskAdd', res.data.data.task)
         })
     },
     /**
@@ -111,7 +122,7 @@ export default {
     update: function (context, input) {
       return TaskService.update(input)
         .then((res) => {
-          return context.commit('taskReplace', res.data.task)
+          return context.commit('taskReplace', res.data.data.task)
         })
     },
     /**
@@ -119,12 +130,25 @@ export default {
      *
      * @param {object}    context
      * @param {object}    input task obj
-     * @returns {promise} updated task
+     * @returns {promise} removed task
      */
     remove: function (context, input) {
       return TaskService.remove(input.id)
-        .then((res) => {
+        .then(() => {
           return context.commit('taskRemove', input)
+        })
+    },
+    /**
+     * Get all task items with of the user ID
+     *
+     * @param {object}    context
+     * @param {object}    input user/project id
+     * @returns {promise} all tasks
+     */
+    getTasksByUserOrProject: function (context, input) {
+      return TaskService.all(input)
+        .then(res => {
+          return context.commit('taskSet', res.data.data.tasks)
         })
     }
     // for delayed/time consuming actions

@@ -13,16 +13,7 @@
 
     <div class="task__timer"></div>
 
-    <div class="task__items">
-      <div class="task__items__item">
-        <p class="task__items__task-text">
-          task info here
-        </p>
-        <p class="task__items__task-isDone">
-          isDone?
-        </p>
-      </div>
-    </div>
+    <TaskItems />
 
   </div>
 </template>
@@ -31,20 +22,21 @@
 import User from '../components/User.vue'
 import Project from '../components/Project.vue'
 import TaskInput from '../components/TaskInput.vue'
+import TaskItems from '../components/TaskItems.vue'
 
 export default {
   name: 'Home',
   components: {
     User,
     Project,
-    TaskInput
+    TaskInput,
+    TaskItems
   },
+
   data () {
     return {
       userTest: 'token here'
     }
-  },
-  methods: {
   }
 }
 </script>

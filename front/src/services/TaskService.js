@@ -1,7 +1,7 @@
 import Http from './HttpService.js'
 
 function all (params) {
-  return Http.get('/api/task/all', params)
+  return Http.get('/api/tasks', { params })
 }
 
 function get (taskID) {
@@ -13,11 +13,11 @@ function create (task) {
 }
 
 function update (task) {
-  return Http.patch(`/api/task/${task.id}`, task)
+  return Http.patch('/api/task/', task)
 }
 
-function remove (taskID) {
-  return Http.remove(`/api/task/${taskID}`)
+function remove (task) {
+  return Http.remove('/api/task/', task)
 }
 
 const services = {
