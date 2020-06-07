@@ -310,7 +310,7 @@ module.exports = function (app) {
       }).then((dbUpdate) => {
         return exit(res,
           200,
-          'Success a new password has been set, please relogin.')
+          'Success a new password has been set, please re-login.')
       }).catch((err) => {
         logger.Log(err.message || err)
         exit(res, 401, 'error', err.message || err)

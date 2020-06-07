@@ -2,28 +2,16 @@ const missing = require('./missing.js')
 const has = require('../../helpers/has.js')
 const exit = require('../../services/exit.js')
 
-const TEXT_LENGTH = 4
-
 /**
- * Validates task text length
- *
- * @param     {string}    input   task text
- * @returns   {boolean}
- */
-function validTaskText(input) {
-  return (input.toString().length >= TEXT_LENGTH)
-}
-
-/**
- * Ensures text property to exist
+ * Ensures task property exists
  *
  * @param     {object}    req
  * @param     {object}    res
  * @returns   {boolean}
  */
 function required(req, res) {
-  if (!has.hasAnItem(req.body.text)) {
-    exit(res, 422, missing('text'))
+  if (!has.hasAnItem(req.body.task)) {
+    exit(res, 422, missing('task'))
     return false
   }
 
@@ -33,17 +21,16 @@ function required(req, res) {
 exports.required = required
 
 /**
- * Checks text is valid
+ * Checks task is valid
  *
  * @param     {object}    req
  * @param     {object}    res
  * @returns   {boolean}
  */
 function valid(req, res) {
-  if (has.hasAnItem(req.body.text)) {
-    if (!validTaskText(req.body.text.trim())) {
-      exit(res, 422,
-        `The task text must be at least ${TEXT_LENGTH} characters long.`)
+  if (has.hasAnItem(req.body.task)) {
+    if (!has.isANumber(req.body.task)) {
+      exit(res, 422, 'The task must be valid.')
       return false
     }
   }
@@ -54,35 +41,35 @@ function valid(req, res) {
 exports.valid = valid
 
 /**
- * Ensure the incoming request has a text param
+ * Ensure the incoming request has a task param
  *
  * @param req   incoming request obj
  * @param res   outgoing response obj
  * @returns {boolean}
  */
 function HasParam(req, res) {
-  if (!has.hasAnItem(req.params.text)) {
+  if (!has.hasAnItem(req.params.task)) {
     return false
   }
 
-  return validTaskText(req.params.text)
+  return has.isANumber(req.params.task)
 }
 
 exports.HasParam = HasParam
 
 /**
- * Ensure the incoming request has a text query
+ * Ensure the incoming request has a task query
  *
  * @param req   incoming request obj
  * @param res   outgoing response obj
  * @returns {boolean}
  */
 function HasQuery(req, res) {
-  if (!has.hasAnItem(req.query.text)) {
+  if (!has.hasAnItem(req.query.task)) {
     return false
   }
 
-  return validTaskText(req.query.text)
+  return has.isANumber(req.query.task)
 }
 
 exports.HasQuery = HasQuery

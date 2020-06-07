@@ -53,3 +53,37 @@ function valid(req, res) {
 }
 
 exports.valid = valid
+
+/**
+ * Ensure the incoming request has a email param
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @returns {boolean}
+ */
+function HasParam(req, res) {
+  if (!has.hasAnItem(req.params.email)) {
+    return false
+  }
+
+  return validEmail(req.params.email)
+}
+
+exports.HasParam = HasParam
+
+/**
+ * Ensure the incoming request has a email query
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @returns {boolean}
+ */
+function HasQuery(req, res) {
+  if (!has.hasAnItem(req.query.email)) {
+    return false
+  }
+
+  return validEmail(req.query.email)
+}
+
+exports.HasQuery = HasQuery

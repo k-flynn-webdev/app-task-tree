@@ -39,3 +39,37 @@ function valid(req, res) {
 }
 
 exports.valid = valid
+
+/**
+ * Ensure the incoming request has a project param
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @returns {boolean}
+ */
+function HasParam(req, res) {
+  if (!has.hasAnItem(req.params.project)) {
+    return false
+  }
+
+  return has.isANumber(req.params.project)
+}
+
+exports.HasParam = HasParam
+
+/**
+ * Ensure the incoming request has a project id query
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @returns {boolean}
+ */
+function HasQuery(req, res) {
+  if (!has.hasAnItem(req.query.project)) {
+    return false
+  }
+
+  return has.isANumber(req.query.project)
+}
+
+exports.HasQuery = HasQuery

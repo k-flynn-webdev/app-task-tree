@@ -52,3 +52,37 @@ function valid(req, res) {
 }
 
 exports.valid = valid
+
+/**
+ * Ensure the incoming request has a name param
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @returns {boolean}
+ */
+function HasParam(req, res) {
+  if (!has.hasAnItem(req.params.name)) {
+    return false
+  }
+
+  return validNameText(req.params.name.trim())
+}
+
+exports.HasParam = HasParam
+
+/**
+ * Ensure the incoming request has a name query
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @returns {boolean}
+ */
+function HasQuery(req, res) {
+  if (!has.hasAnItem(req.query.name)) {
+    return false
+  }
+
+  return validNameText(req.query.name.trim())
+}
+
+exports.HasQuery = HasQuery

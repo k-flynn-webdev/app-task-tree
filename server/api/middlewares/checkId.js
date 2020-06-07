@@ -39,3 +39,37 @@ function valid(req, res) {
 }
 
 exports.valid = valid
+
+/**
+ * Ensure the incoming request has a id param
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @returns {boolean}
+ */
+function HasParam(req, res) {
+  if (!has.hasAnItem(req.params.id)) {
+    return false
+  }
+
+  return has.isANumber(req.params.id)
+}
+
+exports.HasParam = HasParam
+
+/**
+ * Ensure the incoming request has a id query
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @returns {boolean}
+ */
+function HasQuery(req, res) {
+  if (!has.hasAnItem(req.query.id)) {
+    return false
+  }
+
+  return has.isANumber(req.query.id)
+}
+
+exports.HasQuery = HasQuery

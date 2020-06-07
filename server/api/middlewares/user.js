@@ -1,4 +1,5 @@
 const checkId = require('./checkId.js')
+const checkUser = require('./checkUser.js')
 const checkName = require('./checkName.js')
 const checkEmail = require('./checkEmail.js')
 const checkPassword = require('./checkPassword.js')
@@ -139,3 +140,51 @@ function Email(req, res, next) {
 }
 
 exports.Email = Email
+
+/**
+ * Ensure the incoming request has a user property
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @param next  the cb
+ */
+function HasUser(req, res, next) {
+
+  if (!checkUser.required(req, res)) return
+
+  next()
+}
+
+exports.HasUser = HasUser
+
+/**
+ * Ensure the incoming request has a user param
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @param next  the cb
+ */
+function HasParam(req, res, next) {
+
+  if (!checkUser.HasParam(req, res)) return
+
+  next()
+}
+
+exports.HasParam = HasParam
+
+/**
+ * Ensure the incoming request has a user query
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @param next  the cb
+ */
+function HasQuery(req, res, next) {
+
+  if (!checkUser.HasQuery(req, res)) return
+
+  next()
+}
+
+exports.HasQuery = HasQuery

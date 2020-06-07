@@ -1,6 +1,7 @@
 const checkId = require('./checkId.js')
 const checkText = require('./checkText.js')
 const checkUser = require('./checkUser.js')
+const checkTask = require('./checkTask.js')
 const checkProject = require('./checkProject.js')
 const missing = require('./missing.js')
 const has = require('../../helpers/has.js')
@@ -68,20 +69,19 @@ function Update(req, res, next) {
 exports.Update = Update
 
 /**
- * Ensure the incoming request has a id property
+ * Ensure the incoming request has an Id property
  *
  * @param req   incoming request obj
  * @param res   outgoing response obj
  * @param next  the cb
  */
-function HasId(req, res, next) {
+function Delete(req, res, next) {
   if (!checkId.required(req, res)) return
 
   next()
 }
 
-exports.HasId = HasId
-exports.Delete = HasId
+exports.Delete = Delete
 
 /**
  * Ensure the incoming request has a User or Project id property
@@ -112,5 +112,35 @@ function HasUserOrProject(req, res, next) {
 
 exports.HasUserOrProject = HasUserOrProject
 
+/**
+ * Ensure the incoming request has a task param
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @param next  the cb
+ */
+function HasParam(req, res, next) {
 
+  if (!checkTask.HasParam(req, res)) return
+
+  next()
+}
+
+exports.HasParam = HasParam
+
+/**
+ * Ensure the incoming request has a task query
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @param next  the cb
+ */
+function HasQuery(req, res, next) {
+
+  if (!checkTask.HasQuery(req, res)) return
+
+  next()
+}
+
+exports.HasQuery = HasQuery
 

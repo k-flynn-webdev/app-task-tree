@@ -21,19 +21,11 @@ module.exports = function (app) {
     // todo check for user token and integrate
 
     task.Create(req.body)
-    .then(({ insertId }) => {
-      return task.GetTaskByID(insertId)
-    })
-    .then(newTask => {
-
-      // todo update users
-      // todo update projects
-
-      return mysqlVal(newTask)
-    })
+    .then(({ insertId }) => task.GetTaskByID(insertId))
+    .then(newTask => mysqlVal(newTask))
     .then(taskObj => {
       logger.Log('Task created, id: ' + taskObj.id)
-        exit(res, 200,
+      exit(res, 200,
           'Success your task is created',
           { task: task.SafeExport(taskObj) })
     })
@@ -46,19 +38,16 @@ module.exports = function (app) {
   /**
    * Update a task by id
    */
-  app.patch('/api/task', taskMiddle.Update, prepareMiddle,
-    function (req, res) {
+  app.patch('/api/task/:task', taskMiddle.Update, taskMiddle.HasParam,
+    prepareMiddle, function (req, res) {
 
     // todo check for user token and integrate
 
-    task.Update(req.body.id)
-    .then(() => {
-      return task.GetTaskByID(req.body.id)
-    })
+    task.Update(req.params.task)
+    .then(() => task.GetTaskByID(req.body.id))
     .then(taskObj => {
       let taskObjTmp = mysqlVal(taskObj)
-      logger.Log('Task updated, id: ' + taskObj.id)
-
+      logger.Log('Task updated, id: ' + taskObjTmp.id)
       exit(res, 200,
         'Success your task is updated',
         { task: task.SafeExport(taskObjTmp) })
@@ -72,19 +61,15 @@ module.exports = function (app) {
   /**
    * Delete a task by id
    */
-  app.delete('/api/task', taskMiddle.Delete, prepareMiddle,
-    function (req, res) {
+  app.delete('/api/task/:task', taskMiddle.Delete, taskMiddle.HasParam,
+    prepareMiddle, function (req, res) {
 
       // todo check for user token and integrate
 
-      task.Delete(req.body.id)
+      task.Delete(req.params.task)
       .then(taskObj => {
         let taskObjTmp = mysqlVal(taskObj)
-        logger.Log('Task deleted, id: ' + taskObj.id)
-
-        // todo update users
-        // todo update projects
-
+        logger.Log('Task deleted, id: ' + taskObjTmp.id)
         exit(res, 200,
           'Success your task is deleted',
           { task: task.SafeExport(taskObjTmp) })
@@ -96,14 +81,13 @@ module.exports = function (app) {
     })
 
   /**
-   * Get task by id
+   * Get task by id query
    */
-  app.get('/api/task', taskMiddle.HasId, prepareMiddle,
+  app.get('/api/task/:task', taskMiddle.HasParam, prepareMiddle,
     function (req, res) {
 
-      task.GetTaskByID
+      task.GetTaskByID(req.params.task)
       .then(taskObj => {
-
         exit(res, 200,
           'Success task found.',
           { task: task.SafeExport(mysqlVal(taskObj)) })
@@ -115,7 +99,7 @@ module.exports = function (app) {
     })
 
   /**
-   * Get all tasks by user/project id
+   * Get all tasks by user/project id query
    */
   app.get('/api/tasks', taskMiddle.HasUserOrProject, prepareMiddle,
     function (req, res) {
