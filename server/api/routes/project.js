@@ -30,7 +30,7 @@ module.exports = function (app) {
           'Success your project is created',
           { project: project.SafeExport(projectObj) })
     })
-    .catch((err) => {
+    .catch(err => {
       logger.Log(err.message || err)
       exit(res, 401, 'error', err.message || err)
     })
@@ -53,7 +53,7 @@ module.exports = function (app) {
         'Success your project is updated',
         { project: project.SafeExport(projectObjTmp) })
     })
-    .catch((err) => {
+    .catch(err => {
       logger.Log(err.message || err)
       exit(res, 401, 'error', err.message || err)
     })
@@ -75,7 +75,7 @@ module.exports = function (app) {
           'Success your project is deleted',
           { project: project.SafeExport(projectObjTmp) })
       })
-      .catch((err) => {
+      .catch(err => {
         logger.Log(err.message || err)
         exit(res, 401, 'error', err.message || err)
       })
@@ -94,7 +94,7 @@ module.exports = function (app) {
           'Success project found.',
           { project: project.SafeExport(projectObjTmp) })
       })
-      .catch((err) => {
+      .catch(err => {
         logger.Log(err.message || err)
         exit(res, 401, 'error', err.message || err)
       })
@@ -117,7 +117,7 @@ module.exports = function (app) {
           'Success all projects found: ' + allProjects.length,
           { projects: allProjects })
       })
-      .catch((err) => {
+      .catch(err => {
         logger.Log(err.message || err)
         exit(res, 401, 'error', err.message || err)
       })

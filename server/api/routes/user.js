@@ -12,10 +12,10 @@ module.exports = function (app) {
   app.post('/api/user/byemail', function (req, res) {
 
     user.GetUserByEmail(req.body.email)
-    .then((found) => {
+    .then(found => {
       return exit(res, 201, 'success', { data: found })
     })
-    .catch((err) => {
+    .catch(err => {
       logger.Log(err.message || err)
       exit(res, 400, 'error', err.message || err)
     })
@@ -30,7 +30,7 @@ module.exports = function (app) {
     let userObjTmp
 
     user.GetUserByEmail(req.body.email)
-    .then((found) => {
+    .then(found => {
       if (found.length > 0) {
         throw new Error('Email already in use.')
       }
@@ -38,7 +38,7 @@ module.exports = function (app) {
       return user.Create(req.body)
     })
     .then(({ insertId }) => user.GetUserByID(insertId))
-    .then((userObj) => {
+    .then(userObj => {
       userObjTmp = mysqlVal(userObj)
       userObjTmp.verify = token.Magic(userObj)
 
@@ -53,7 +53,7 @@ module.exports = function (app) {
           token: token.Create(userObjTmp)
         })
     })
-    .catch((err) => {
+    .catch(err => {
       logger.Log(err.message || err)
       exit(res, 401, 'error', err.message || err)
     })
@@ -67,7 +67,7 @@ module.exports = function (app) {
     let userObjTmp = null
 
     user.GetUserByEmail(req.body.email)
-    .then((userObj) => {
+    .then(userObj => {
       if (!userObj || userObj.length < 1) {
         throw new Error('Account does not exist, please contact support.')
       }
@@ -75,17 +75,15 @@ module.exports = function (app) {
       userObjTmp = mysqlVal(userObj)
       return user.ComparePassword(req.body.password, userObjTmp.password)
     })
-    .then((dbData) => {
-      return user.Update({ id: userObjTmp.id, login: true })
-    })
-    .then((dbData) => {
+    .then(() => user.Update({ id: userObjTmp.id, login: true }))
+    .then(() => {
       app.emit('ACCOUNT_LOGIN', userObjTmp)
 
       exit(res, 200, 'Success Account login.', {
         account: user.SafeExport(userObjTmp),
         token: token.Create(userObjTmp) })
     })
-    .catch((err) => {
+    .catch(err => {
       logger.Log(err.message || err)
       exit(res, 422, 'error', err.message || err)
     })
@@ -97,13 +95,13 @@ module.exports = function (app) {
   app.get('/api/user/Logout', token.Logout, function (req, res) {
 
     token.AddTokenToBlackList(req)
-    .then((result) => {
+    .then(result => {
 
       app.emit('ACCOUNT_LOGOUT', result)
 
       return exit(res, 201, result, result)
     })
-    .catch((err) => {
+    .catch(err => {
       logger.Log(err.message || err)
       exit(res, 400, 'error', err.message || err)
     })
@@ -118,7 +116,7 @@ module.exports = function (app) {
     let userObjTmp = null
 
     user.GetUserByID(req.body.token.id)
-    .then((userObj) => {
+    .then(userObj => {
       if (!userObj || userObj.length < 1) {
         throw new Error('Account does not exist, please contact support.')
       }
@@ -137,7 +135,7 @@ module.exports = function (app) {
       req.body.id = userObjTmp.id
       return user.Update(req.body)
     })
-    .then((dbUpdate) => {
+    .then(() => {
         if (has.hasAnItem(req.body.email)) {
           let verifyString = token.Magic(userObjTmp)
           app.emit('ACCOUNT_VERIFY', userObjTmp)
@@ -145,10 +143,8 @@ module.exports = function (app) {
           return user.Update({ id: userObjTmp.id, verify: verifyString })
         }
     })
-    .then(() => {
-      return user.GetUserByID(req.body.token.id)
-    })
-    .then((userObj) => {
+    .then(() => user.GetUserByID(req.body.token.id))
+    .then(userObj => {
       userObjTmp = mysqlVal(userObj)
       app.emit('ACCOUNT_UPDATED', userObjTmp)
 
@@ -158,7 +154,7 @@ module.exports = function (app) {
           token: token.Create(userObjTmp)
         })
     })
-    .catch((err) => {
+    .catch(err => {
       logger.Log(err.message || err)
       exit(res, 401, 'error', err.message || err)
     })
@@ -172,7 +168,7 @@ module.exports = function (app) {
     let userObjTmp
 
     user.GetUserByID(req.body.token.id)
-    .then((userObj) => {
+    .then(userObj => {
       if (userObj.length < 1) {
         throw new Error('No account found with that ID')
       }
@@ -190,7 +186,7 @@ module.exports = function (app) {
 
       return user.Delete(userObjTmp.id)
     })
-    .then((dbUpdate) => {
+    .then(() => {
       token.AddTokenToBlackList(req)
       app.emit('ACCOUNT_DELETED', userObjTmp)
 
@@ -200,7 +196,7 @@ module.exports = function (app) {
           token: ''
         })
     })
-    .catch((err) => {
+    .catch(err => {
       logger.Log(err.message || err)
       exit(res, 401, 'error', err.message || err)
     })
@@ -215,7 +211,7 @@ module.exports = function (app) {
     let userObjTmp
 
     user.GetUserByVerify(req.query.verify)
-    .then((userObj) => {
+    .then(userObj => {
       if (userObj.length < 1) {
         throw new Error('Verify link does not exist, please contact support.')
       }
@@ -224,7 +220,7 @@ module.exports = function (app) {
 
       return user.Update({ id: userObjTmp.id, verify: ' ' })
     })
-    .then((dbUpdate) => {
+    .then(() => {
       app.emit('ACCOUNT_VERIFIED', userObjTmp) // todo
 
       exit(res, 200, 'Success Account verified',
@@ -233,7 +229,7 @@ module.exports = function (app) {
           token: token.Create(userObjTmp)
         })
     })
-    .catch((err) => {
+    .catch(err => {
       logger.Log(err.message || err)
       exit(res, 401, 'error', err.message || err)
     })
@@ -249,7 +245,7 @@ module.exports = function (app) {
     let userObjTmp
 
     user.GetUserByEmail(req.body.email)
-    .then((userObj) => {
+    .then(userObj => {
       if (userObj.length < 1) {
         throw new Error('Account does not exist, please contact support.')
       }
@@ -268,7 +264,7 @@ module.exports = function (app) {
       userObjTmp.recover = token.Magic(userObjTmp)
       return user.Update({ id: userObjTmp.id, recover: userObjTmp.recover })
     })
-   .then((dbUpdate) => {
+   .then(() => {
 
       app.emit('ACCOUNT_RESET', userObjTmp)
 
@@ -276,7 +272,7 @@ module.exports = function (app) {
        200,
        'Success a reset email has been sent.')
     })
-    .catch((err) => {
+    .catch(err => {
       logger.Log(err.message || err)
       exit(res, 401, 'error', err.message || err)
     })
@@ -292,7 +288,7 @@ module.exports = function (app) {
       let userObjTmp
 
       user.GetUserByRecover(req.query.recover)
-      .then((userObj) => {
+      .then(userObj => {
         if (userObj.length < 1) {
           throw new Error(
             'Recovery link does not exist, please contact support.')
@@ -307,11 +303,13 @@ module.exports = function (app) {
           recover: ' ',
           verify: ' '
         })
-      }).then((dbUpdate) => {
+      })
+      .then(() => {
         return exit(res,
           200,
           'Success a new password has been set, please re-login.')
-      }).catch((err) => {
+      })
+      .catch(err => {
         logger.Log(err.message || err)
         exit(res, 401, 'error', err.message || err)
       })

@@ -29,7 +29,7 @@ module.exports = function (app) {
           'Success your task is created',
           { task: task.SafeExport(taskObj) })
     })
-    .catch((err) => {
+    .catch(err => {
       logger.Log(err.message || err)
       exit(res, 401, 'error', err.message || err)
     })
@@ -52,7 +52,7 @@ module.exports = function (app) {
         'Success your task is updated',
         { task: task.SafeExport(taskObjTmp) })
     })
-    .catch((err) => {
+    .catch(err => {
       logger.Log(err.message || err)
       exit(res, 401, 'error', err.message || err)
     })
@@ -74,7 +74,7 @@ module.exports = function (app) {
           'Success your task is deleted',
           { task: task.SafeExport(taskObjTmp) })
       })
-      .catch((err) => {
+      .catch(err => {
         logger.Log(err.message || err)
         exit(res, 401, 'error', err.message || err)
       })
@@ -92,7 +92,7 @@ module.exports = function (app) {
           'Success task found.',
           { task: task.SafeExport(mysqlVal(taskObj)) })
       })
-      .catch((err) => {
+      .catch(err => {
         logger.Log(err.message || err)
         exit(res, 401, 'error', err.message || err)
       })
@@ -127,7 +127,7 @@ module.exports = function (app) {
           'Success all tasks found: ' + allTasks.length,
           { tasks: allTasks })
       })
-      .catch((err) => {
+      .catch(err => {
         logger.Log(err.message || err)
         exit(res, 401, 'error', err.message || err)
       })
