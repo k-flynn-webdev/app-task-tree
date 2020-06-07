@@ -32,15 +32,17 @@
 <script>
 import status from '../constants/status.js'
 
+const defaultInput = () => {
+  return { text: status.CLEAR }
+}
+
 export default {
   name: 'ProjectInput',
   data () {
     return {
       display: false,
       status: status.CLEAR,
-      project: {
-        value: ''
-      }
+      project: defaultInput()
     }
   },
   computed: {
@@ -82,6 +84,7 @@ export default {
         .then(project => {
           this.$emit(status.SUCCESS, project)
           this.status = status.SUCCESS
+          this.project.value = status.CLEAR
           this.resetStatus()
         })
         .catch(err => {

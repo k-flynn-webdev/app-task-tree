@@ -102,7 +102,7 @@ export default {
      */
     create: function (context, input) {
       return ProjectService.create(input)
-        .then((res) => {
+        .then(res => {
           context.commit('projectCurrent', res.data.project)
           return context.commit('projectAdd', res.data.project)
         })
@@ -116,7 +116,7 @@ export default {
      */
     update: function (context, input) {
       return ProjectService.update(input)
-        .then((res) => {
+        .then(res => {
           return context.commit('projectReplace', res.data.project)
         })
     },
@@ -129,7 +129,7 @@ export default {
      */
     remove: function (context, input) {
       return ProjectService.remove(input.id)
-        .then((res) => {
+        .then(() => {
           return context.commit('projectRemove', input)
         })
     }

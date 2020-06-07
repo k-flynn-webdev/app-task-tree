@@ -52,7 +52,7 @@ export default {
      * @returns {object}  new task
      */
     taskAdd: function (state, input) {
-      state.tasks.push(input)
+      state.tasks.unshift(input)
       return input
     },
     /**
@@ -106,7 +106,7 @@ export default {
      */
     create: function (context, input) {
       return TaskService.create(input)
-        .then((res) => {
+        .then(res => {
           context.commit('taskCurrent', res.data.data.task)
           return context.commit('taskAdd', res.data.data.task)
         })
@@ -120,7 +120,7 @@ export default {
      */
     update: function (context, input) {
       return TaskService.update(input)
-        .then((res) => {
+        .then(res => {
           return context.commit('taskReplace', res.data.data.task)
         })
     },
@@ -132,7 +132,7 @@ export default {
      * @returns {promise} removed task
      */
     remove: function (context, input) {
-      return TaskService.remove(input.id)
+      return TaskService.remove(input)
         .then(() => {
           return context.commit('taskRemove', input)
         })

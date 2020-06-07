@@ -2,22 +2,24 @@
   <div class="task__items"
        :class="status">
 
-    <p
-      v-for="task in tasks"
-      :key="task.id"
-      class="task__items-text"
-    >
-      {{ task.text }}
-    </p>
+      <task
+        v-for="task in tasks"
+        :key="task.id"
+        :task-data="task"
+      />
 
   </div>
 </template>
 
 <script>
 import status from '../constants/status.js'
+import task from '../components/Task'
 
 export default {
   name: 'TaskItems',
+  components: {
+    task
+  },
   data () {
     return {
       status: status.CLEAR
@@ -28,35 +30,36 @@ export default {
       return this.$store.getters['tasks/tasks']
     },
     project: function () {
-      const projectTmp = this.$store.getters['projects/current']
-      if (projectTmp && projectTmp.id) return projectTmp.id
-      return -1
+      return this.$store.getters['projects/current'].id
     },
     user: function () {
-      const userTmp = this.$store.getters['user/current']
-      if (userTmp && userTmp.id) return userTmp.id
-      return -1
+      return this.$store.getters['user/user'].id
     }
   },
   mounted () {
     this.status = status.WAITING
-
-    let toGet = null
-    if (this.project > -1) {
-      toGet = { project: this.project }
-    } else {
-      toGet = { user: this.user }
+    this.getTasks()
+  },
+  methods: {
+    getSearchType: function () {
+      if (this.project > -1) {
+        return { project: this.project }
+      }
+      return { user: this.user }
+    },
+    getTasks: function () {
+      const search = this.getSearchType()
+      return this.$store.dispatch('tasks/getTasksByUserOrProject', search)
+        .then(() => {
+          this.status = status.CLEAR
+        })
+        .catch(err => this.handleError(err))
+    },
+    handleError: function (err) {
+      this.status = status.ERROR
+      this.$emit(status.ERROR, err)
+      this.$store.commit('toasts/toastAdd', err)
     }
-
-    return this.$store.dispatch('tasks/getTasksByUserOrProject', toGet)
-      .then(() => {
-        this.status = status.CLEAR
-      })
-      .catch(err => {
-        this.status = status.ERROR
-        this.$emit(status.ERROR, err)
-        this.$store.commit('toasts/toastAdd', err)
-      })
   }
 }
 </script>

@@ -12,10 +12,10 @@ const DB_SHOW_TASKS = 'SELECT * FROM tasks'
 const DB_CREATE_TASK = 'INSERT INTO tasks SET ?'
 const DB_DELETE_TASK_BY_ID = 'DELETE FROM tasks WHERE id = ?'
 const DB_GET_TASK_BY_ID = 'SELECT * FROM tasks WHERE id = ?'
-const DB_GET_TASK_BY_USER = 'SELECT * FROM tasks WHERE user = ?'
-const DB_GET_TASK_BY_PROJECT = 'SELECT * FROM tasks WHERE project = ?'
-const DB_GET_TASK_BY_IS_DONE = 'SELECT * FROM tasks WHERE isDone = ?'
-const DB_GET_TASK_BY_IS_DONE_DATE = 'SELECT * FROM tasks WHERE doneDate = ?'
+const DB_GET_TASK_BY_USER = 'SELECT * FROM tasks WHERE user = ? ORDER BY updated DESC'
+const DB_GET_TASK_BY_PROJECT = 'SELECT * FROM tasks WHERE project = ? ORDER BY updated DESC'
+const DB_GET_TASK_BY_IS_DONE = 'SELECT * FROM tasks WHERE isDone = ? ORDER BY updated DESC'
+const DB_GET_TASK_BY_IS_DONE_DATE = 'SELECT * FROM tasks WHERE doneDate = ? ORDER BY updated DESC'
 
 const DB_SET = ' SET'
 const DB_SET_USER = ' user = ?'
@@ -118,7 +118,7 @@ exports.Update = Update
  * Deletes a task object and updates the db
  *
  * @param   {int}     id  task id
- * @return  {object}  task object
+ * @return  {object}  mysql packet
  */
 function Delete(id) {
   return db.Query(DB_DELETE_TASK_BY_ID, [id])

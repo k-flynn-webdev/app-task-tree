@@ -7,16 +7,15 @@
           type="text"
           required
           class="task__input__form text"
-          v-model="task.text"
+          v-model="text"
           @submit.prevent="createTask"
         />
-        <div class="task__input__form__send">
-          <button
-            type="button"
-            @click="createTask">
-            send
-          </button>
-        </div>
+        <button
+          class="task__input__form__send"
+          type="button"
+          @click="createTask">
+          send
+        </button>
       </div>
     </form>
   </div>
@@ -31,14 +30,12 @@ export default {
     return {
       status: status.CLEAR,
       statusTimer: null,
-      task: {
-        text: ''
-      }
+      text: status.CLEAR
     }
   },
   computed: {
     isValid: function () {
-      return this.task.text.length > 4
+      return this.text.length > 4
     },
     project: function () {
       const projectTmp = this.$store.getters['projects/current']
@@ -69,15 +66,16 @@ export default {
       this.status = status.WAITING
 
       const newTask = {
-        user: this.user,
+        text: this.text,
         project: this.project,
-        text: this.task.text
+        user: this.user
       }
 
       return this.$store.dispatch('tasks/create', newTask)
         .then(task => {
           this.$emit(status.SUCCESS, task)
           this.status = status.SUCCESS
+          this.text = status.CLEAR
           this.resetStatus()
         })
         .catch(err => {

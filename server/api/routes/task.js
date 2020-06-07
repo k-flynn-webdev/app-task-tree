@@ -41,9 +41,11 @@ module.exports = function (app) {
   app.patch('/api/task/:task', taskMiddle.Update, taskMiddle.HasParam,
     prepareMiddle, function (req, res) {
 
+    let updateData = Object.assign(
+      { id: req.params.task }, req.body)
     // todo check for user token and integrate
 
-    task.Update(req.params.task)
+    task.Update(updateData)
     .then(() => task.GetTaskByID(req.body.id))
     .then(taskObj => {
       let taskObjTmp = mysqlVal(taskObj)
@@ -61,18 +63,18 @@ module.exports = function (app) {
   /**
    * Delete a task by id
    */
-  app.delete('/api/task/:task', taskMiddle.Delete, taskMiddle.HasParam,
+  app.delete('/api/task/:task', taskMiddle.HasParam,
     prepareMiddle, function (req, res) {
 
-      // todo check for user token and integrate
+      // todo this will need securing so
+      //  random peeps can't delete other items
+      //  check for user token and integrate
 
       task.Delete(req.params.task)
       .then(taskObj => {
-        let taskObjTmp = mysqlVal(taskObj)
-        logger.Log('Task deleted, id: ' + taskObjTmp.id)
+        logger.Log('Task deleted, id: ' + req.params.task)
         exit(res, 200,
-          'Success your task is deleted',
-          { task: task.SafeExport(taskObjTmp) })
+          'Success your task is deleted')
       })
       .catch(err => {
         logger.Log(err.message || err)
