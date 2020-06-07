@@ -4,20 +4,20 @@ function all (params) {
   return Http.get('/api/tasks', { params })
 }
 
-function get (taskID) {
-  return Http.get(`/api/task/${taskID}`)
+function get (task) {
+  return Http.get(`/api/task/${task.id}`)
 }
 
 function create (task) {
-  return Http.post('/api/task/create/', task)
+  return Http.post('/api/task/create', task)
 }
 
 function update (task) {
-  return Http.patch('/api/task/', task)
+  return Http.patch(`/api/task/${task.id}`, task)
 }
 
 function remove (task) {
-  return Http.remove('/api/task/', task)
+  return Http.remove(`/api/task/${task.id}`, task)
 }
 
 const services = {

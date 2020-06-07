@@ -71,7 +71,7 @@ function get () {
 }
 
 function create (input) {
-  return Http.post('/api/user', input)
+  return Http.post('/api/user/create', input)
     .then(res => applyToken(res))
     .then(res => setUser(res))
 }

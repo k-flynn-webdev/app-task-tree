@@ -1,23 +1,23 @@
 import Http from './HttpService'
 
 function all (params) {
-  return Http.get('/api/project/all', params)
+  return Http.get('/api/projects', { params })
 }
 
-function get (projectID) {
-  return Http.get(`/api/project/${projectID}`)
+function get (project) {
+  return Http.get(`/api/project/${project.id}`)
 }
 
 function create (project) {
-  return Http.post('/api/project/create/', project)
+  return Http.post('/api/project/create', project)
 }
 
 function update (project) {
   return Http.patch(`/api/project/${project.id}`, project)
 }
 
-function remove (projectID) {
-  return Http.remove(`/api/project/${projectID}`)
+function remove (project) {
+  return Http.remove(`/api/project/${project.id}`)
 }
 
 const services = {
