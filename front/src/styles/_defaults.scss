@@ -3,9 +3,30 @@
     text-align: center;
   }
 
+  .min-half {
+    min-width: 50%;
+  }
+
+  .relative {
+    position: relative;
+  }
+
+  .absolute {
+    position: absolute;
+  }
+
+  .fixed {
+    position: fixed;
+  }
+
+  .no-overflow {
+    overflow: hidden;
+  }
+
   .flex-row,
   .flex-col {
     display: flex;
+    flex-wrap: wrap;
   }
 
   .flex-row {
@@ -14,6 +35,14 @@
 
   .flex-col {
     flex-direction: column;
+  }
+
+  .flex-between {
+    justify-content: space-between;
+  }
+
+  .flex-auto {
+    flex: auto;
   }
 
   .m-d {
@@ -35,11 +64,11 @@
   button {
     font-size: $unit-default;
     margin: $margin-default;
-    padding: $margin-default * 0.5 $margin-default;
+    padding: $padding-default;
   }
 
   button {
-    min-width: $unit-default * 4;
+    //min-width: $unit-default * 4;
   }
 
   button.DISABLED {
@@ -58,4 +87,33 @@
       border: 1px solid $color-success;
     }
   }
+}
+
+.slide-enter-active,
+.slide-leave-active,
+.drop-enter-active,
+.drop-leave-active {
+  transition: $transition-default;
+}
+
+.slide-leave-active {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.drop-enter,
+.drop-leave-to /* .drop-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(-150%);
+}
+
+.slide-enter {
+  opacity: 0;
+  transform: translateX(-200%);
+}
+
+.slide-leave-to /* .slide-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateX(200%);
 }

@@ -42,13 +42,15 @@ module.exports = function (app) {
   app.patch('/api/project/:project', projectMiddle.Update, projectMiddle.HasParam,
     prepareMiddle, function (req, res) {
 
-    // todo check for user token and integrate
+      let updateData = Object.assign(
+        { id: req.params.task }, req.body)
+      // todo check for user token and integrate
 
-    project.Update(req.params.project)
-    .then(() => project.GetProjectByID(req.body.id))
+    project.Update(updateData)
+    .then(() => project.GetProjectByID(req.params.project))
     .then(projectObj => {
       let projectObjTmp = mysqlVal(projectObj)
-      logger.Log('Project updated, id: ' + projectObjTmp.id)
+      logger.Log('Project updated, id: ' + req.params.project)
       exit(res, 200,
         'Success your project is updated',
         { project: project.SafeExport(projectObjTmp) })

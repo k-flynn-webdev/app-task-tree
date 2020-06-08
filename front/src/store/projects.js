@@ -94,10 +94,10 @@ export default {
      *
      * @param {object}    state
      * @param {array}     input projects
-     * @returns {array}   tasks added
      */
     projectSet: function (state, input) {
       Vue.set(state, 'projects', input)
+      if (input.length > 0) return
       state.projects.unshift(defaultProject())
     }
   },
@@ -126,7 +126,9 @@ export default {
     update: function (context, input) {
       return ProjectService.update(input)
         .then(res => {
-          return context.commit('projectReplace', res.data.data.project)
+          context.commit('projectReplace', res.data.data.project)
+          if (context.getters.current.id !== input.id) return
+          return context.commit('projectCurrent', res.data.data.project)
         })
     },
     /**
@@ -152,7 +154,8 @@ export default {
     getProjectsByUserId: function (context, input) {
       return ProjectService.all(input)
         .then(res => {
-          return context.commit('projectSet', res.data.data.projects)
+          context.commit('projectSet', res.data.data.projects)
+          context.commit('projectCurrent', context.getters.projects[0])
         })
     }
     // for delayed/time consuming actions

@@ -1,12 +1,8 @@
 <template>
-  <div class="project__input"
+  <div class=""
        :class="status">
 
-    <button @click="display = !display">
-      {{ displayButtonText }}
-    </button>
-
-    <form v-if="display"
+    <form
       @submit.prevent="createProject">
       <div class="task__input__form">
         <input
@@ -20,7 +16,7 @@
           class="task__input__form__send"
           type="button"
           @click="createProject">
-          send
+          CREATE
         </button>
       </div>
     </form>
@@ -32,19 +28,14 @@
 import status from '../constants/status.js'
 
 export default {
-  name: 'ProjectInput',
+  name: 'ProjectCreate',
   data () {
     return {
-      display: false,
       status: status.CLEAR,
       name: status.CLEAR
     }
   },
   computed: {
-    displayButtonText: function () {
-      if (this.display) return 'CLOSE'
-      return 'NEW'
-    },
     isValid: function () {
       return this.name.length > 4
     },
@@ -79,7 +70,6 @@ export default {
           this.$emit('close')
           this.status = status.SUCCESS
           this.name = status.CLEAR
-          this.display = false
           this.resetStatus()
         })
         .catch(err => {
