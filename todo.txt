@@ -46,3 +46,8 @@ future, make a pwa/app. For now just api and barebones website
 - use transactions and connection pooling for mysql
 - change user params to user query so its properly done!
 
+THIS >>>>
+like the idea of the projects being swipable horizontal across the header with new at the side ..
+and all tasks falling out from under, super fast project and task switching
+.. all controls in a floating header bar nice
+

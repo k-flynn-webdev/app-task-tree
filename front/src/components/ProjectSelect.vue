@@ -1,11 +1,11 @@
 <template>
   <div class="project__select">
 
-    <button @click="toggleDisplayProjects">
+    <button @click="toggleProjects">
       {{ buttonText }}
     </button>
 
-    <div v-if="display">
+    <div v-if="showList">
       <ul>
         <li
           v-for="project in projects"
@@ -25,29 +25,27 @@ export default {
   name: 'ProjectSelect',
   data: function () {
     return {
-      display: false
+      showList: false
     }
   },
   computed: {
     buttonText: function () {
-      if (this.display) return 'HIDE'
+      if (this.showList) return 'HIDE'
       return 'SELECT'
     },
     projects: function () {
       return this.$store.getters['projects/projects']
     },
     currentProject: function () {
-      const projectTmp = this.$store.getters['projects/current']
-      if (projectTmp && projectTmp.id) return projectTmp
-      return { name: 'Project', id: -1 }
+      return this.$store.getters['projects/current']
     }
   },
   methods: {
     selectProject: function (project) {
       this.$store.commit('projects/projectCurrent', project)
     },
-    toggleDisplayProjects: function () {
-      this.display = !this.display
+    toggleProjects: function () {
+      this.showList = !this.showList
     }
   }
 }

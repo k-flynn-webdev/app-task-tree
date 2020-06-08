@@ -1,12 +1,12 @@
 <template>
   <div class="project">
 
-    <div @click="displayProjects = !displayProjects">
-      <p> {{ currentProject.name }} </p>
+    <div @click="showOpt = !showOpt">
+      <p> {{ project.name }} </p>
     </div>
 
-    <ProjectInput v-if="displayProjects" />
-    <ProjectSelect v-if="displayProjects" />
+    <ProjectInput v-if="showOpt" @close="showOpt = false"/>
+    <ProjectSelect v-if="showOpt" />
 
   </div>
 </template>
@@ -23,12 +23,24 @@ export default {
   },
   data () {
     return {
-      displayProjects: false
+      showOpt: false
     }
   },
   computed: {
-    currentProject: function () {
+    project: function () {
       return this.$store.getters['projects/current']
+    },
+    user: function () {
+      return this.$store.getters['user/user']
+    }
+  },
+  mounted () {
+    return this.getProjects()
+  },
+  methods: {
+    getProjects: function () {
+      const userParam = { user: this.user.id }
+      return this.$store.dispatch('projects/getProjectsByUserId', userParam)
     }
   }
 }

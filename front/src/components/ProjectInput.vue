@@ -3,38 +3,33 @@
        :class="status">
 
     <button @click="display = !display">
-      {{ buttonText }}
+      {{ displayButtonText }}
     </button>
 
-    <form
-      v-if="display"
+    <form v-if="display"
       @submit.prevent="createProject">
-      <div class="project__input__form">
+      <div class="task__input__form">
         <input
           type="text"
           required
-          class="project__input__form text"
-          v-model="project.value"
+          class="task__input__form text"
+          v-model="name"
           @submit.prevent="createProject"
         />
-        <div class="project__input__form__send">
-          <button
-            type="button"
-            @click="createProject">
-            CREATE
-          </button>
-        </div>
+        <button
+          class="task__input__form__send"
+          type="button"
+          @click="createProject">
+          send
+        </button>
       </div>
     </form>
+
   </div>
 </template>
 
 <script>
 import status from '../constants/status.js'
-
-const defaultInput = () => {
-  return { text: status.CLEAR }
-}
 
 export default {
   name: 'ProjectInput',
@@ -42,21 +37,19 @@ export default {
     return {
       display: false,
       status: status.CLEAR,
-      project: defaultInput()
+      name: status.CLEAR
     }
   },
   computed: {
-    buttonText: function () {
+    displayButtonText: function () {
       if (this.display) return 'CLOSE'
       return 'NEW'
     },
     isValid: function () {
-      return this.project.value.length > 5
+      return this.name.length > 4
     },
     user: function () {
-      const userTmp = this.$store.getters['user/current']
-      if (userTmp && userTmp.id) return userTmp.id
-      return -1
+      return this.$store.getters['user/user']
     }
   },
   methods: {
@@ -76,15 +69,17 @@ export default {
       this.status = status.WAITING
 
       const newProject = {
-        user: this.user,
-        value: this.project.value
+        user: this.user.id,
+        name: this.name
       }
 
       return this.$store.dispatch('projects/create', newProject)
         .then(project => {
           this.$emit(status.SUCCESS, project)
+          this.$emit('close')
           this.status = status.SUCCESS
-          this.project.value = status.CLEAR
+          this.name = status.CLEAR
+          this.display = false
           this.resetStatus()
         })
         .catch(err => {

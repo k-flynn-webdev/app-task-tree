@@ -2,15 +2,13 @@ import Vue from 'vue'
 import ProjectService from '../services/ProjectService.js'
 
 function defaultProject () {
-  return { id: -1, name: 'Project' }
+  return { id: -1, name: 'Project', user: -1 }
 }
 
 export default {
   namespaced: true,
   state: {
-    projects: [
-      defaultProject(),
-      { id: 3, name: 'testProject' }],
+    projects: [defaultProject()],
     current: defaultProject()
   },
   getters: {
@@ -58,7 +56,7 @@ export default {
      * @returns {object}  new project
      */
     projectAdd: function (state, input) {
-      state.projects.push(input)
+      state.projects.unshift(input)
       return input
     },
     /**
@@ -90,6 +88,17 @@ export default {
           return input
         }
       }
+    },
+    /**
+     * Sets all project items
+     *
+     * @param {object}    state
+     * @param {array}     input projects
+     * @returns {array}   tasks added
+     */
+    projectSet: function (state, input) {
+      Vue.set(state, 'projects', input)
+      state.projects.unshift(defaultProject())
     }
   },
   actions: {
@@ -103,8 +112,8 @@ export default {
     create: function (context, input) {
       return ProjectService.create(input)
         .then(res => {
-          context.commit('projectCurrent', res.data.project)
-          return context.commit('projectAdd', res.data.project)
+          context.commit('projectCurrent', res.data.data.project)
+          return context.commit('projectAdd', res.data.data.project)
         })
     },
     /**
@@ -117,7 +126,7 @@ export default {
     update: function (context, input) {
       return ProjectService.update(input)
         .then(res => {
-          return context.commit('projectReplace', res.data.project)
+          return context.commit('projectReplace', res.data.data.project)
         })
     },
     /**
@@ -131,6 +140,19 @@ export default {
       return ProjectService.remove(input.id)
         .then(() => {
           return context.commit('projectRemove', input)
+        })
+    },
+    /**
+     * Get all projects created by the user ID
+     *
+     * @param {object}    context
+     * @param {object}    input params
+     * @returns {promise} all tasks
+     */
+    getProjectsByUserId: function (context, input) {
+      return ProjectService.all(input)
+        .then(res => {
+          return context.commit('projectSet', res.data.data.projects)
         })
     }
     // for delayed/time consuming actions
