@@ -10,16 +10,15 @@ const routes = [
     path: '/',
     name: Paths.HOME,
     component: Home
-  },
-  {
-    path: '/task',
-    name: Paths.TASK,
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "task" */ '../views/Task.vue')
   }
-
+  // {
+  //   path: '/',
+  //   name: Paths.HOME,
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () => import(/* webpackChunkName: "task" */ '../views/Task.vue')
+  // }
 ]
 
 const router = new VueRouter({

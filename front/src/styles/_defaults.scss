@@ -1,4 +1,33 @@
 .task {
+  .text-center {
+    text-align: center;
+  }
+
+  .flex-row,
+  .flex-col {
+    display: flex;
+  }
+
+  .flex-row {
+    flex-direction: row;
+  }
+
+  .flex-col {
+    flex-direction: column;
+  }
+
+  .m-d {
+    margin: $margin-default;
+  }
+
+  .m-1 {
+    margin: $unit-default;
+  }
+
+  .m-2 {
+    margin: $unit-default * 2;
+  }
+
   p,
   text,
   .text,

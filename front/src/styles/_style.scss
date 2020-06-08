@@ -1,17 +1,10 @@
 .task {
   margin: $margin-default;
 
-  &__header {
-    display: flex;
-    flex-direction: row;
-
-    &__user,
-    &__option,
-    &__project {
-      flex: auto;
-      text-align: center;
-      margin: $margin-default;
-    }
+  &__header,
+  &__footer {
+    text-align: center;
+    margin: $margin-default;
   }
 
   &__input {
