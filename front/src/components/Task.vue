@@ -11,7 +11,7 @@
         v-if="isEdit"
         type="text"
         required
-        class="task__input__form text"
+        class="task__items__item-input"
         v-model="text"
         @submit.prevent="updateTask"
       />
@@ -19,6 +19,7 @@
       <button
         v-if="isEdit"
         class="task__items__item-confirm"
+        :class="isDisabled"
         @click="updateTask">
         Update
       </button>
@@ -78,6 +79,10 @@ export default {
     optBtnText: function () {
       if (this.showOpt) return 'Cancel'
       return 'Show'
+    },
+    isDisabled: function () {
+      if (this.text === this.taskData.text) return status.DISABLED
+      return status.CLEAR
     }
   },
   methods: {

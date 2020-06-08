@@ -1,0 +1,32 @@
+.task {
+  p,
+  text,
+  .text,
+  input,
+  button {
+    font-size: $unit-default;
+    margin: $margin-default;
+    padding: $margin-default * 0.5 $margin-default;
+  }
+
+  button {
+    min-width: $unit-default * 4;
+  }
+
+  button.DISABLED {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .ERROR {
+    input {
+      border: 1px solid $color-error;
+    }
+  }
+
+  .SUCCESS {
+    input {
+      border: 1px solid $color-success;
+    }
+  }
+}
