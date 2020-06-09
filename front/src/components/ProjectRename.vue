@@ -15,6 +15,7 @@
         <button
           class="task__input__form__send"
           type="button"
+          :class="{ 'DISABLED': isDisabled }"
           @click="renameProject">
           Update
         </button>
@@ -40,6 +41,12 @@ export default {
   computed: {
     isValid: function () {
       return this.name.length > 4
+    },
+    isDifferent () {
+      return this.name !== this.project.name
+    },
+    isDisabled () {
+      return !(this.isValid && this.isDifferent)
     },
     user: function () {
       return this.$store.getters['user/user']

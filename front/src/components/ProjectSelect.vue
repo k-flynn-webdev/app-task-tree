@@ -1,30 +1,20 @@
 <template>
-  <div class="">
 
-  <div class="flex-row no-overflow">
+    <div class="flex-row no-wrap overflow-auto-x">
 
-    <button class="flex-start">
-      ᐊ
-    </button>
-
-    <div class="flex-auto">
       <div
         v-for="project in projects"
         :key="project.id"
         class="project-name"
         :class="{ 'SELECT' : project.id === currentProject.id }"
         @click="selectProject(project)">
+
         <p> {{ project.name }} </p>
+
       </div>
+
     </div>
 
-    <button class="flex-end">
-      ᐅ
-    </button>
-
-  </div>
-
-  </div>
 </template>
 
 <script>

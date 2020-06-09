@@ -23,10 +23,18 @@
     overflow: hidden;
   }
 
+  .overflow-auto-x {
+    overflow-x: auto;
+  }
+
   .flex-row,
   .flex-col {
     display: flex;
     flex-wrap: wrap;
+  }
+
+  .no-wrap {
+    flex-wrap: nowrap;
   }
 
   .flex-row {
