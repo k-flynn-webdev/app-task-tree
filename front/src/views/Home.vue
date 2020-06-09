@@ -7,6 +7,9 @@
 <!--    </div>-->
 
 <!--    <div class="flex-row">-->
+
+    <ProjectSelect />
+
     <Project />
 <!--    </div>-->
 
@@ -21,15 +24,17 @@
 
 <script>
 // import User from '../components/User.vue'
-import Project from '../components/Project.vue'
-import TaskInput from '../components/TaskInput.vue'
-import TaskItems from '../components/TaskItems.vue'
+import Project from '../components/Project'
+import ProjectSelect from '../components/ProjectSelect'
+import TaskInput from '../components/TaskInput'
+import TaskItems from '../components/TaskItems'
 
 export default {
   name: 'Home',
   components: {
     // User,
     Project,
+    ProjectSelect,
     TaskInput,
     TaskItems
   },

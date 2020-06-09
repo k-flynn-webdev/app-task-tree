@@ -37,12 +37,11 @@ export default {
     }
   },
   mounted () {
-    this.status = status.WAITING
-    this.getTasks()
+    this.$root.$on('PROJECT-CHANGE', this.getTasks)
   },
   methods: {
     getSearchType: function () {
-      if (this.project.id > -1) {
+      if (this.project.id !== -1) {
         return { project: this.project.id }
       }
       return { user: this.user.id }

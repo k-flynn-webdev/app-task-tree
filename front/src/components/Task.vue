@@ -28,6 +28,7 @@
         @submit.prevent="updateTaskText"
       />
 
+      <p class="">{{ taskData.project }}</p>
       <p class="date-time">{{ dateTime }}</p>
 
       <button

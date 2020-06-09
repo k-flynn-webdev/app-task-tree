@@ -24,7 +24,7 @@
 
           <ProjectDelete slot="3" class="test4" @close="closeRows"/>
 
-          <ProjectSelect slot="4" class="test1" @close="closeRows"/>
+<!--          <ProjectSelect slot="4" class="test1" @close="closeRows"/>-->
 
         </MenuRowOptSlide>
       </div>
@@ -34,10 +34,13 @@
 </template>
 
 <script>
+import helpers from '../services/Helpers'
+import general from '../constants/general'
+
 import ProjectCreate from './ProjectCreate'
 import ProjectRename from './ProjectRename'
 import ProjectDelete from './ProjectDelete'
-import ProjectSelect from './ProjectSelect'
+// import ProjectSelect from './ProjectSelect'
 import MenuRowOptSlide from './MenuRowOptSlide'
 
 const defaultRows = () => [false, false, false, false, false]
@@ -48,7 +51,7 @@ export default {
     ProjectCreate,
     ProjectRename,
     ProjectDelete,
-    ProjectSelect,
+    // ProjectSelect,
     MenuRowOptSlide
   },
   data () {
@@ -66,7 +69,10 @@ export default {
     }
   },
   mounted () {
-    return this.getProjects()
+    this.getProjects()
+    helpers.timeDelay(() => {
+      this.$root.$emit('PROJECT-CHANGE')
+    }, general.DELAY_SHORT)
   },
   methods: {
     toggleOpt: function () {
@@ -113,7 +119,8 @@ export default {
     },
     getProjects: function () {
       const userParam = { user: this.user.id }
-      return this.$store.dispatch('projects/getProjectsByUserId', userParam)
+      this.$store.dispatch('projects/getProjectsByUserId', userParam)
+      // todo if no projects, create one via server!!
     }
   }
 }

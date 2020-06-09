@@ -34,6 +34,7 @@ export default {
   methods: {
     selectProject: function (project) {
       this.$store.commit('projects/projectCurrent', project)
+      this.$root.$emit('PROJECT-CHANGE')
       helpers.timeDelay(() => {
         this.$emit('close')
       }, general.DELAY_SHORT)
