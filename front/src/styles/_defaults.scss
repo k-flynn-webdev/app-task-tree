@@ -31,10 +31,12 @@
 
   .flex-row {
     flex-direction: row;
+    align-items: center;
   }
 
   .flex-col {
     flex-direction: column;
+    justify-items: center;
   }
 
   .flex-between {
@@ -43,6 +45,22 @@
 
   .flex-auto {
     flex: auto;
+  }
+
+  .flex-start {
+    justify-self: flex-start;
+  }
+
+  .flex-end {
+    justify-self: flex-end;
+  }
+
+  .display-inline {
+    display: inline;
+  }
+
+  .display-inline-b {
+    display: inline-block;
   }
 
   .m-d {

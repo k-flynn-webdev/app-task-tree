@@ -133,15 +133,18 @@ export default {
     },
     /**
      * Remove a project and remove from store
+     *  and reset the current project ..
      *
      * @param {object}    context
      * @param {object}    input project obj
      * @returns {promise} updated project
      */
     remove: function (context, input) {
-      return ProjectService.remove(input.id)
+      return ProjectService.remove(input)
         .then(() => {
-          return context.commit('projectRemove', input)
+          context.commit('projectRemove', input)
+          if (context.getters.current.id !== input.id) return
+          return context.commit('projectCurrent', context.getters.projects[0])
         })
     },
     /**

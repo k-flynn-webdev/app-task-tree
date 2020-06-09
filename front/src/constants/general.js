@@ -1,0 +1,11 @@
+const DELAY = 500
+const DELAY_SHORT = 200
+const DELAY_SUCCESS = 700
+const DELAY_ERROR = 1200
+
+export default {
+  DELAY,
+  DELAY_SHORT,
+  DELAY_SUCCESS,
+  DELAY_ERROR
+}

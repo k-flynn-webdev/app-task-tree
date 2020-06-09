@@ -13,6 +13,14 @@
 .task {
   margin: $margin-default;
 
+  .project-name {
+    display: inline-block;
+
+    &.SELECT {
+      background-color: $color-select;
+    }
+  }
+
   &__header,
   &__footer {
     text-align: center;

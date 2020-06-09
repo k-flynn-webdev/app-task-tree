@@ -26,6 +26,8 @@
 
 <script>
 import status from '../constants/status.js'
+import general from '../constants/general'
+import helpers from '../services/Helpers'
 
 export default {
   name: 'ProjectRename',
@@ -50,17 +52,9 @@ export default {
     this.name = this.project.name
   },
   methods: {
-    resetStatus: function () {
-      clearTimeout(this.statusTimer)
-
-      const self = this
-      this.statusTimer =
-          setTimeout(function () {
-            self.status = status.CLEAR
-          }, 2 * 1000)
-    },
     renameProject: function () {
       if (!this.isValid) return
+      if (this.name === this.project.name) return
       if (this.status !== status.CLEAR) return
 
       this.status = status.WAITING
@@ -73,16 +67,22 @@ export default {
       return this.$store.dispatch('projects/update', newProject)
         .then(project => {
           this.$emit(status.SUCCESS, project)
-          this.$emit('close')
           this.status = status.SUCCESS
-          this.name = status.CLEAR
-          this.resetStatus()
+
+          helpers.timeDelay(() => {
+            this.name = status.CLEAR
+            this.$emit('close')
+            this.status = status.CLEAR
+          }, general.DELAY_SUCCESS)
         })
         .catch(err => {
-          this.$emit(status.ERROR, err)
           this.$store.commit('toasts/toastAdd', err)
+          this.$emit(status.ERROR, err)
           this.status = status.ERROR
-          this.resetStatus()
+
+          helpers.timeDelay(() => {
+            this.status = status.CLEAR
+          }, general.DELAY_ERROR)
         })
     }
   }

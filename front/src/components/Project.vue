@@ -22,20 +22,13 @@
 
           <ProjectRename slot="2" class="test3" @close="closeRows"/>
 
+          <ProjectDelete slot="3" class="test4" @close="closeRows"/>
+
+          <ProjectSelect slot="4" class="test1" @close="closeRows"/>
+
         </MenuRowOptSlide>
       </div>
     </transition>
-
-<!--    <div class="flex-row">-->
-
-<!--    </div>-->
-
-<!--    <div @click="showOpt = !showOpt">-->
-<!--      <p> {{ project.name }} </p>-->
-<!--    </div>-->
-
-<!--    <ProjectInput v-if="showOpt" @close="showOpt = false"/>-->
-<!--    <ProjectSelect v-if="showOpt" />-->
 
   </div>
 </template>
@@ -43,23 +36,25 @@
 <script>
 import ProjectCreate from './ProjectCreate'
 import ProjectRename from './ProjectRename'
-// import ProjectSelect from './ProjectSelect'
+import ProjectDelete from './ProjectDelete'
+import ProjectSelect from './ProjectSelect'
 import MenuRowOptSlide from './MenuRowOptSlide'
 
-const DELAY = 400
+const defaultRows = () => [false, false, false, false, false]
 
 export default {
   name: 'Project',
   components: {
     ProjectCreate,
     ProjectRename,
-    // ProjectSelect
+    ProjectDelete,
+    ProjectSelect,
     MenuRowOptSlide
   },
   data () {
     return {
       showOpt: false,
-      showRow: [false, false, false, false]
+      showRow: defaultRows()
     }
   },
   computed: {
@@ -87,17 +82,10 @@ export default {
       this.showRow.forEach((item, idx) => {
         this.closeRow(idx)
       })
+      if (this.showOpt) {
+        this.showOpt = false
+      }
     },
-    // toggleOpt: function () {
-    //   for (let i = 0; i < this.showRow.length; i++) {
-    //     if (this.showRow[i]) {
-    //       this.closeRows()
-    //       return
-    //     }
-    //   }
-    //
-    //   this.toggleRow(0)
-    // },
     showNew: function () {
       this.closeRow(0)
       this.openRow(1)
@@ -106,25 +94,19 @@ export default {
       this.closeRow(0)
       this.openRow(2)
     },
-    showSelect: function () {
-      this.closeRows()
-      this.openRowDelayed(3)
-    },
     showDelete: function () {
-      this.closeRows()
-      this.openRowDelayed(4)
+      this.closeRow(0)
+      this.openRow(3)
+    },
+    showSelect: function () {
+      this.closeRow(0)
+      this.openRow(4)
     },
     toggleRow: function (row) {
       this.showRow.splice(row, 1, !this.showRow[row])
     },
     openRow: function (row) {
       this.showRow.splice(row, 1, true)
-    },
-    openRowDelayed: function (row) {
-      const self = this
-      setTimeout(function () {
-        self.openRow(row)
-      }, DELAY)
     },
     closeRow: function (row) {
       this.showRow.splice(row, 1, false)

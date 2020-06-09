@@ -4,6 +4,7 @@ const SUCCESS = 'SUCCESS'
 const DISABLED = 'DISABLED'
 const ERROR = 'ERROR'
 const CLOSE = 'CLOSE'
+const SELECT = 'SELECT'
 
 export default {
   CLEAR,
@@ -11,5 +12,6 @@ export default {
   SUCCESS,
   DISABLED,
   ERROR,
-  CLOSE
+  CLOSE,
+  SELECT
 }

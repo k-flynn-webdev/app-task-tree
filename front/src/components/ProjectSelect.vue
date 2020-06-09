@@ -1,38 +1,39 @@
 <template>
-  <div class="project__select">
+  <div class="">
 
-    <button @click="toggleProjects">
-      {{ buttonText }}
+  <div class="flex-row no-overflow">
+
+    <button class="flex-start">
+      ᐊ
     </button>
 
-    <div v-if="showList">
-      <ul>
-        <li
-          v-for="project in projects"
-          :key="project.id"
-          @click="selectProject(project)">
-          {{ project.name }}
-        </li>
-      </ul>
+    <div class="flex-auto">
+      <div
+        v-for="project in projects"
+        :key="project.id"
+        class="project-name"
+        :class="{ 'SELECT' : project.id === currentProject.id }"
+        @click="selectProject(project)">
+        <p> {{ project.name }} </p>
+      </div>
     </div>
+
+    <button class="flex-end">
+      ᐅ
+    </button>
+
+  </div>
 
   </div>
 </template>
 
 <script>
+import helpers from '../services/Helpers.js'
+import general from '../constants/general.js'
 
 export default {
   name: 'ProjectSelect',
-  data: function () {
-    return {
-      showList: false
-    }
-  },
   computed: {
-    buttonText: function () {
-      if (this.showList) return 'HIDE'
-      return 'SELECT'
-    },
     projects: function () {
       return this.$store.getters['projects/projects']
     },
@@ -43,9 +44,9 @@ export default {
   methods: {
     selectProject: function (project) {
       this.$store.commit('projects/projectCurrent', project)
-    },
-    toggleProjects: function () {
-      this.showList = !this.showList
+      helpers.timeDelay(() => {
+        this.$emit('close')
+      }, general.DELAY_SHORT)
     }
   }
 }

@@ -3,22 +3,36 @@
        :class="status">
 
     <form
-      @submit.prevent="createProject">
-      <div class="task__input__form">
-        <input
-          type="text"
-          required
-          class="task__input__form text"
-          v-model="name"
-          @submit.prevent="createProject"
-        />
-        <button
-          class="task__input__form__send"
-          type="button"
-          @click="createProject">
-          CREATE
-        </button>
+      class="flex-row test2"
+      @submit.prevent="deleteProject">
+
+      <div class="flex-auto">
+
+        <div v-if="status === ''">
+          <span>Are you sure you want to delete </span>
+          <strong>{{ project.name }}</strong>
+          <span> ? </span>
+        </div>
+
+        <div v-if="status === 'SUCCESS'">
+          <span>Project now deleted</span>
+        </div>
+
       </div>
+
+      <button
+        class="task__input__form__send"
+        type="button"
+        @click="deleteProject">
+        Delete
+      </button>
+      <button
+        class="task__input__form__send"
+        type="button"
+        @click="$emit('close')">
+        Cancel
+      </button>
+
     </form>
 
   </div>
@@ -30,34 +44,28 @@ import general from '../constants/general'
 import helpers from '../services/Helpers'
 
 export default {
-  name: 'ProjectCreate',
+  name: 'ProjectDelete',
   data () {
     return {
-      status: status.CLEAR,
-      name: status.CLEAR
+      status: status.CLEAR
     }
   },
   computed: {
-    isValid: function () {
-      return this.name.length > 4
-    },
-    user: function () {
-      return this.$store.getters['user/user']
+    project: function () {
+      return this.$store.getters['projects/current']
     }
   },
   methods: {
-    createProject: function () {
-      if (!this.isValid) return
+    deleteProject: function () {
       if (this.status !== status.CLEAR) return
 
       this.status = status.WAITING
 
       const newProject = {
-        user: this.user.id,
-        name: this.name
+        id: this.project.id
       }
 
-      return this.$store.dispatch('projects/create', newProject)
+      return this.$store.dispatch('projects/remove', newProject)
         .then(project => {
           this.$emit(status.SUCCESS, project)
           this.status = status.SUCCESS

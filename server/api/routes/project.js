@@ -71,11 +71,10 @@ module.exports = function (app) {
 
       project.Delete(req.params.project)
       .then(projectObj => {
-        let projectObjTmp = mysqlVal(projectObj)
-        logger.Log('Project deleted, id: ' + projectObjTmp.id)
+        logger.Log('Project deleted, id: ' + req.params.project)
         exit(res, 200,
           'Success your project is deleted',
-          { project: project.SafeExport(projectObjTmp) })
+          { project: null })
       })
       .catch(err => {
         logger.Log(err.message || err)

@@ -17,6 +17,14 @@
       <slot name="3" v-if="showRow(3)" />
     </transition>
 
+    <transition name="slide">
+      <slot name="4" v-if="showRow(4)" />
+    </transition>
+
+    <transition name="slide">
+      <slot name="5" v-if="showRow(5)" />
+    </transition>
+
   </div>
 </template>
 
