@@ -1,4 +1,17 @@
 .task {
+  .icon {
+    width: $unit-icon;
+    height: $unit-icon;
+    max-width: $unit-icon;
+    max-height: $unit-icon;
+    transition: $transition-default;
+
+    &:hover {
+      transform: scale(1.2);
+      background-color: lightgray;
+    }
+  }
+
   .text-center {
     text-align: center;
   }
@@ -61,6 +74,10 @@
 
   .flex-end {
     justify-self: flex-end;
+  }
+
+  .align-center {
+    align-items: center;
   }
 
   .display-inline {

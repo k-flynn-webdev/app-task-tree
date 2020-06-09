@@ -41,7 +41,7 @@ module.exports = function (app) {
   app.patch('/api/task/:task', taskMiddle.Update, taskMiddle.HasParam,
     prepareMiddle, function (req, res) {
 
-    let updateData = Object.assign(
+      let updateData = Object.assign(
       { id: req.params.task }, req.body)
     // todo check for user token and integrate
 

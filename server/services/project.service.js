@@ -81,21 +81,27 @@ function Update({ id, name, user, isDone }) {
     return tmpSQLStart + tmpSQLCommand.join(JOIN_CHAR) + DB_WHERE
   }
 
-  if (name) {
+  if (has.hasAnItem(name)) {
     tmpSQLCommand.push(DB_SET_NAME)
     tmpSQLVars.push(name.trim())
   }
 
-  if (user) {
+  if (has.hasAnItem(user)) {
     tmpSQLCommand.push(DB_SET_USER)
     tmpSQLVars.push(user)
   }
 
-  if (isDone) {
+  if (has.hasAnItem(isDone)) {
+    let value = isDone ? 1 : 0
     tmpSQLCommand.push(DB_SET_IS_DONE)
-    tmpSQLVars.push(isDone)
-    tmpSQLCommand.push(DB_SET_DONE_DATE)
-    tmpSQLVars.push(new Date())
+    tmpSQLVars.push(value)
+    if (isDone) {
+      tmpSQLCommand.push(DB_SET_DONE_DATE)
+      tmpSQLVars.push(new Date())
+    } else {
+      tmpSQLCommand.push(DB_SET_DONE_DATE)
+      tmpSQLVars.push(undefined)
+    }
   }
 
   tmpSQLCommand.push(DB_SET_UPDATED)

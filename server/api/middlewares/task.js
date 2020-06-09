@@ -59,6 +59,10 @@ function Update(req, res, next) {
     newBody.user = req.body.user
   }
 
+  if (has.hasAnItem(req.body.isDone)) {
+    newBody.isDone = req.body.isDone
+  }
+
   // ensure only the above items are allowed for an account update
   delete req.body
   req.body = newBody

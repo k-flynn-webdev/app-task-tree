@@ -1,6 +1,18 @@
 <template>
-    <div class="task__items__item"
+    <div class="task__items__item align-center"
          :class="status">
+
+      <img
+        v-if="taskData.isDone"
+        class="icon"
+        src="@/assets/icons/ic_tick.svg"
+        @click="updateTaskIsDone" />
+      <img
+        v-else
+        class="icon"
+        src="@/assets/icons/ic_none.svg"
+        @click="updateTaskIsDone" />
+
       <p
         v-if="!isEdit"
         class="task__items__item-text">
@@ -13,14 +25,16 @@
         required
         class="task__items__item-input"
         v-model="text"
-        @submit.prevent="updateTask"
+        @submit.prevent="updateTaskText"
       />
+
+      <p class="date-time">{{ dateTime }}</p>
 
       <button
         v-if="isEdit"
         class="task__items__item-confirm"
         :class="isDisabled"
-        @click="updateTask">
+        @click="updateTaskText">
         Update
       </button>
 
@@ -83,6 +97,14 @@ export default {
     isDisabled: function () {
       if (this.text === this.taskData.text) return status.DISABLED
       return status.CLEAR
+    },
+    dateTime: function () {
+      const dateObj = new Date(this.taskData.updated)
+      const dateString = dateObj.toLocaleDateString()
+      const isPM = (dateObj.getHours() > 12)
+      const hours = isPM ? dateObj.getHours() - 12 : dateObj.getHours()
+      const amPm = isPM ? ' pm' : ' am'
+      return dateString + ' ' + hours + ':' + dateObj.getMinutes() + amPm
     }
   },
   methods: {
@@ -91,15 +113,20 @@ export default {
       this.showOpt = !this.showOpt
       this.text = this.taskData.text
     },
-    updateTask: function () {
+    updateTaskText: function () {
       if (this.status !== status.CLEAR) return
       if (this.text === this.taskData.text) return
-
-      this.status = status.WAITING
-
       const newTask = { id: this.taskData.id, text: this.text }
-
-      return this.$store.dispatch('tasks/update', newTask)
+      this.updateTask(newTask)
+    },
+    updateTaskIsDone: function () {
+      if (this.status !== status.CLEAR) return
+      const newTask = { id: this.taskData.id, isDone: !this.taskData.isDone }
+      this.updateTask(newTask)
+    },
+    updateTask: function (updatedTask) {
+      this.status = status.WAITING
+      return this.$store.dispatch('tasks/update', updatedTask)
         .then(() => {
           this.isEdit = false
           this.showOpt = false

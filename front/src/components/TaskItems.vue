@@ -30,10 +30,10 @@ export default {
       return this.$store.getters['tasks/tasks']
     },
     project: function () {
-      return this.$store.getters['projects/current'].id
+      return this.$store.getters['projects/current']
     },
     user: function () {
-      return this.$store.getters['user/user'].id
+      return this.$store.getters['user/user']
     }
   },
   mounted () {
@@ -42,10 +42,10 @@ export default {
   },
   methods: {
     getSearchType: function () {
-      if (this.project > -1) {
-        return { project: this.project }
+      if (this.project.id > -1) {
+        return { project: this.project.id }
       }
-      return { user: this.user }
+      return { user: this.user.id }
     },
     getTasks: function () {
       const search = this.getSearchType()

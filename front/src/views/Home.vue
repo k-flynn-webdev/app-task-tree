@@ -7,7 +7,7 @@
 <!--    </div>-->
 
 <!--    <div class="flex-row">-->
-      <Project />
+    <Project />
 <!--    </div>-->
 
     <TaskInput />

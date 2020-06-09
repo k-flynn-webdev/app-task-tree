@@ -74,6 +74,7 @@ exports.Create = Create
  * @return  {object}  task object
  */
 function Update({ id, text, project, user, isDone }) {
+
   const JOIN_CHAR = ','
   let tmpSQLVars = []
   let tmpSQLStart = 'UPDATE ' + DB_TASKS + DB_SET
@@ -83,26 +84,32 @@ function Update({ id, text, project, user, isDone }) {
     return tmpSQLStart + tmpSQLCommand.join(JOIN_CHAR) + DB_WHERE
   }
 
-  if (text) {
+  if (has.hasAnItem(text)) {
     tmpSQLCommand.push(DB_SET_TEXT)
     tmpSQLVars.push(text.trim())
   }
 
-  if (project) {
+  if (has.hasAnItem(project)) {
     tmpSQLCommand.push(DB_SET_PROJECT)
     tmpSQLVars.push(project)
   }
 
-  if (user) {
+  if (has.hasAnItem(user)) {
     tmpSQLCommand.push(DB_SET_USER)
     tmpSQLVars.push(user)
   }
 
-  if (isDone) {
+  if (has.hasAnItem(isDone)) {
+    let value = isDone ? 1 : 0
     tmpSQLCommand.push(DB_SET_IS_DONE)
-    tmpSQLVars.push(isDone)
-    tmpSQLCommand.push(DB_SET_DONE_DATE)
-    tmpSQLVars.push(new Date())
+    tmpSQLVars.push(value)
+    if (isDone) {
+      tmpSQLCommand.push(DB_SET_DONE_DATE)
+      tmpSQLVars.push(new Date())
+    } else {
+      tmpSQLCommand.push(DB_SET_DONE_DATE)
+      tmpSQLVars.push(undefined)
+    }
   }
 
   tmpSQLCommand.push(DB_SET_UPDATED)
