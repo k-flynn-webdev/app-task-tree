@@ -1,11 +1,14 @@
 <template>
   <div class="user">
 
-<!--    <div @click="display = !display">-->
-<!--      <p> User: {{ currentUserName }} </p>-->
-<!--    </div>-->
+    <img
+      class="icon big display-inline-b"
+      src="@/assets/icons/ic_user.svg" />
 
-<!--    <UserDetails v-if="display" />-->
+    <div class="display-inline-b">
+      <p> User: {{ user.name }} </p>
+      <p> ID: {{ user.id }} </p>
+    </div>
 
   </div>
 
@@ -25,8 +28,8 @@ export default {
   },
   data () {
     return {
-      display: false,
-      showUser: false
+      // display: false,
+      // showUser: false
     }
   },
   computed: {

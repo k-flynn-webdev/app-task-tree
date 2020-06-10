@@ -6,6 +6,13 @@
     max-height: $unit-icon;
     transition: $transition-default;
 
+    &.big {
+      width: $unit-icon * 2;
+      height: $unit-icon * 2;
+      max-width: $unit-icon * 2;
+      max-height: $unit-icon * 2;
+    }
+
     &:hover {
       transform: scale(1.2);
       background-color: lightgray;

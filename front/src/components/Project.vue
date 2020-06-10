@@ -3,7 +3,11 @@
 
     <div class="flex-row flex-between">
       <p class="flex-auto"> {{ project.name }} </p>
-      <button @click="toggleOpt">:</button>
+      <button @click="toggleOpt">
+        <img
+          class="icon"
+          src="@/assets/icons/ic_option.svg" />
+      </button>
     </div>
 
 <!--    <transition name="drop">-->
