@@ -17,10 +17,14 @@ let hasInit = false
 function Init(app) {
   if (!hasInit) {
     appTemp = app
-    app.on(ACCOUNT_CREATE, AccountCreate)
-    app.on(ACCOUNT_VERIFY, AccountVerify)
-    app.on(ACCOUNT_RESET, AccountReset)
-    app.on(ACCOUNT_UPDATE, AccountUpdate)
+
+    if (mailConfig.active){
+      app.on(ACCOUNT_CREATE, AccountCreate)
+      app.on(ACCOUNT_VERIFY, AccountVerify)
+      app.on(ACCOUNT_RESET, AccountReset)
+      app.on(ACCOUNT_UPDATE, AccountUpdate)
+    }
+
     hasInit = true
   }
 }

@@ -38,6 +38,7 @@ module.exports = {
     database: envs.parsed.DATABASE_NAME
   },
   mail: {
+    active: envs.parsed.MAIL_ACTIVE,
     api: envs.parsed.MAIL_API,
     host: envs.parsed.MAIL_HOST,
     domain: envs.parsed.MAIL_DOMAIN,
