@@ -21,7 +21,6 @@ module.exports = function (app) {
     })
   })
 
-
   /**
    * Create a user account & return a token key
    */

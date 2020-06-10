@@ -35,6 +35,19 @@ export default {
     }
   },
   actions: {
+    // todo user create / update / delete / login / logout etc
+    /**
+     * Creates anon user
+     *
+     * @param {object}    context
+     * @returns {promise} anon user
+     */
+    createAnon: function (context) {
+      return UserService.createAnon()
+        .then(res => {
+          return context.commit('user', res.data.data.account)
+        })
+    }
     // for delayed/time consuming actions
   }
 }

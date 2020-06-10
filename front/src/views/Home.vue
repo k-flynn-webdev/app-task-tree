@@ -2,41 +2,41 @@
   <div class="">
 
 <!--    <div class="flex-row">-->
-<!--      <User />-->
+      <User />
 <!--      <p>option</p>-->
 <!--    </div>-->
 
 <!--    <div class="flex-row">-->
 
-    <ProjectSelect />
+<!--    <ProjectSelect />-->
 
     <Project />
 <!--    </div>-->
 
-    <TaskInput />
+<!--    <TaskInput />-->
 
 <!--    <div class="task__timer"></div>-->
 
-    <TaskItems />
+<!--    <TaskItems />-->
 
   </div>
 </template>
 
 <script>
-// import User from '../components/User.vue'
+import User from '../components/User.vue'
 import Project from '../components/Project'
-import ProjectSelect from '../components/ProjectSelect'
-import TaskInput from '../components/TaskInput'
-import TaskItems from '../components/TaskItems'
+// import ProjectSelect from '../components/ProjectSelect'
+// import TaskInput from '../components/TaskInput'
+// import TaskItems from '../components/TaskItems'
 
 export default {
   name: 'Home',
   components: {
-    // User,
-    Project,
-    ProjectSelect,
-    TaskInput,
-    TaskItems
+    User,
+    Project
+    // ProjectSelect,
+    // TaskInput,
+    // TaskItems
   },
   data () {
     return {

@@ -1,15 +1,13 @@
 import Vue from 'vue'
 import ProjectService from '../services/ProjectService.js'
 
-function defaultProject () {
-  return { id: -1, name: 'Project', user: -1 }
-}
+import general from '../constants/general'
 
 export default {
   namespaced: true,
   state: {
-    projects: [defaultProject()],
-    current: defaultProject()
+    projects: [general.DEFAULT_PROJECT()],
+    current: general.DEFAULT_PROJECT()
   },
   getters: {
     /**
@@ -97,8 +95,6 @@ export default {
      */
     projectSet: function (state, input) {
       Vue.set(state, 'projects', input)
-      if (input.length > 0) return
-      state.projects.unshift(defaultProject())
     }
   },
   actions: {
@@ -149,6 +145,8 @@ export default {
     },
     /**
      * Get all projects created by the user ID
+     *      if no projects, will create a basic
+     *      anon project via api and return
      *
      * @param {object}    context
      * @param {object}    input params
@@ -157,8 +155,13 @@ export default {
     getProjectsByUserId: function (context, input) {
       return ProjectService.all(input)
         .then(res => {
+          if (res.data.data.projects.length < 1) {
+            const temp = general.DEFAULT_PROJECT(input.user)
+            return context.dispatch('create', temp)
+          }
+
           context.commit('projectSet', res.data.data.projects)
-          context.commit('projectCurrent', context.getters.projects[0])
+          return context.commit('projectCurrent', context.getters.projects[0])
         })
     }
     // for delayed/time consuming actions

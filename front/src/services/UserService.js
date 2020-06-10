@@ -71,8 +71,13 @@ function get () {
 }
 
 function create (input) {
-  return Http.post('/api/user/create', input)
+  return Http.post('/api/user', input)
     .then(res => applyToken(res))
+    .then(res => setUser(res))
+}
+
+function createAnon (input) {
+  return Http.post('/api/user/anon', input)
     .then(res => setUser(res))
 }
 
@@ -114,6 +119,7 @@ function verify (input) {
 
 const services = {
   create: create,
+  createAnon: createAnon,
   login: login,
   logout: logout,
   update: update,
