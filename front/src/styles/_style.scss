@@ -11,14 +11,74 @@
 }
 
 .task {
-  margin: $margin-default;
+  .context {
+    button {
+      text-align: center;
+      padding: $padding-default;
+      min-width: $unit-default * 5;
+    }
+
+    &__tgl-l {
+      margin-right: 0;
+      transform-origin: right;
+    }
+
+    &__tgl-r {
+      margin-left: 0;
+      transform-origin: left;
+    }
+
+    &__tgl-l,
+    &__tgl-r {
+      transition: $transition-default;
+      background-color: slategray;
+      color: #d0c7c6;
+      -webkit-text-fill-color: #d0c7c6;
+      border: none;
+      outline: none;
+
+      &:hover {
+        transform: unset;
+      }
+
+      &.active {
+        font-size: larger;
+        transform: scale(1.25);
+        color: #57514f;
+        -webkit-text-fill-color: #57514f;
+        background-color: #d2dae0;
+      }
+    }
+  }
+
+  .offscreen-page {
+    margin: $margin-default;
+    background-color: darkgoldenrod;
+    position: absolute;
+    left: -100%;
+    top: 0;
+    z-index: 10;
+    width: 66vw;
+    transition: $transition-default;
+    -webkit-transform: translate3d(0, 0, 0);
+
+    &.show {
+      left: 0;
+    }
+  }
+
+  //.column-content {
+  //  overflow: hidden;
+  //  flex: 0.5;
+  //  transition: $transition-default * 10;
+  //
+  //  &.hide-column {
+  //    flex: 0;
+  //  }
+  //}
 
   .project-name {
     display: inline-block;
-
-    &.SELECT {
-      background-color: $color-select;
-    }
   }
 
   &__header,

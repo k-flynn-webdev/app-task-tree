@@ -1,16 +1,64 @@
 <template>
-  <div class="">
+  <div class="relative">
+
+    <Context />
 
 <!--    <div class="flex-row">-->
-      <User />
+<!--    <User />-->
 <!--      <p>option</p>-->
 <!--    </div>-->
 
 <!--    <div class="flex-row">-->
 
 <!--    <ProjectSelect />-->
+<!--    <div class="">-->
 
-    <Project />
+<!--      <div class="absolute offscreen-page"-->
+<!--           :class="{ 'show' : showAllProjects }">-->
+
+<!--        <div class="text-right">-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--          <p>All projects here</p>-->
+<!--        </div>-->
+
+<!--      </div>-->
+
+<!--      <Project @showAll="updateShowAllProjects" />-->
+
+<!--    </div>-->
+
 <!--    </div>-->
 
 <!--    <TaskInput />-->
@@ -23,8 +71,9 @@
 </template>
 
 <script>
-import User from '../components/User.vue'
-import Project from '../components/Project'
+import Context from '../components/Context'
+// import User from '../components/User.vue'
+// import Project from '../components/Project'
 // import ProjectSelect from '../components/ProjectSelect'
 // import TaskInput from '../components/TaskInput'
 // import TaskItems from '../components/TaskItems'
@@ -32,17 +81,22 @@ import Project from '../components/Project'
 export default {
   name: 'Home',
   components: {
-    User,
-    Project
+    Context
+    // User,
+    // Project
     // ProjectSelect,
     // TaskInput,
     // TaskItems
   },
   data () {
     return {
+      showAllProjects: false
     }
   },
   methods: {
+    updateShowAllProjects: function (value) {
+      this.showAllProjects = value
+    }
   }
 }
 </script>

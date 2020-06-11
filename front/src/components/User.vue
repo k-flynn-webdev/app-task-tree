@@ -1,13 +1,12 @@
 <template>
   <div class="user">
 
-    <img
-      class="icon big display-inline-b"
-      src="@/assets/icons/ic_user.svg" />
-
-    <div class="display-inline-b">
-      <p> User: {{ user.name }} </p>
-      <p> ID: {{ user.id }} </p>
+    <div class="flex-row">
+      <div class="flex-auto"></div>
+      <span> User: {{ user.name }} ID: {{ user.id }} </span>
+      <img
+        class="icon big display-inline-b"
+        src="@/assets/icons/ic_user.svg" />
     </div>
 
   </div>

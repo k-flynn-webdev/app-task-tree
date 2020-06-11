@@ -1,141 +1,169 @@
-.task {
-  .icon {
-    width: $unit-icon;
-    height: $unit-icon;
-    max-width: $unit-icon;
-    max-height: $unit-icon;
-    transition: $transition-default;
+body {
+  margin: $margin-default;
+}
 
-    &.big {
-      width: $unit-icon * 2;
-      height: $unit-icon * 2;
-      max-width: $unit-icon * 2;
-      max-height: $unit-icon * 2;
-    }
+.icon {
+  width: $unit-icon;
+  height: $unit-icon;
+  max-width: $unit-icon;
+  max-height: $unit-icon;
 
-    &:hover {
-      transform: scale(1.2);
-      background-color: lightgray;
-    }
+  &.big {
+    width: $unit-icon-big;
+    height: $unit-icon-big;
+    max-width: $unit-icon-big;
+    max-height: $unit-icon-big;
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.min-half {
+  min-width: 50%;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.no-overflow {
+  overflow: hidden;
+}
+
+.no-margin-l {
+  margin-left: 0;
+}
+
+.no-margin-r {
+  margin-right: 0;
+}
+
+.overflow-auto-x {
+  overflow-x: auto;
+}
+
+.flex-row,
+.flex-col {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.no-wrap {
+  flex-wrap: nowrap;
+}
+
+.flex-row {
+  flex-direction: row;
+  align-items: center;
+}
+
+.flex-col {
+  flex-direction: column;
+  justify-items: center;
+}
+
+.flex-between {
+  justify-content: space-between;
+}
+
+.flex-auto {
+  flex: auto;
+}
+
+.flex-start {
+  justify-self: flex-start;
+}
+
+.flex-end {
+  justify-self: flex-end;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.display-inline {
+  display: inline;
+}
+
+.display-inline-b {
+  display: inline-block;
+}
+
+.m-d {
+  margin: $margin-default;
+}
+
+.m-1 {
+  margin: $unit-default;
+}
+
+.m-2 {
+  margin: $unit-default * 2;
+}
+
+p,
+h1,
+text,
+.text,
+input,
+button {
+  font-size: $unit-default;
+  margin: $margin-default;
+  padding: $padding-default;
+}
+
+button {
+  //min-width: $unit-default * 4;
+  border: 1px solid grey;
+  transition: $transition-default;
+
+  &:hover {
+    transform: scale(1.1);
+    background-color: lightgray;
   }
 
-  .text-center {
-    text-align: center;
+  &.big {
+    font-size: larger;
   }
+}
 
-  .min-half {
-    min-width: 50%;
+.DISABLED {
+  opacity: 0.4;
+  pointer-events: none;
+
+  input {
+    border: 1px solid grey;
   }
+}
 
-  .relative {
-    position: relative;
+.SELECT {
+  background-color: $color-select;
+}
+
+.ERROR {
+  input {
+    border: 1px solid $color-error;
   }
+}
 
-  .absolute {
-    position: absolute;
-  }
-
-  .fixed {
-    position: fixed;
-  }
-
-  .no-overflow {
-    overflow: hidden;
-  }
-
-  .overflow-auto-x {
-    overflow-x: auto;
-  }
-
-  .flex-row,
-  .flex-col {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .no-wrap {
-    flex-wrap: nowrap;
-  }
-
-  .flex-row {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .flex-col {
-    flex-direction: column;
-    justify-items: center;
-  }
-
-  .flex-between {
-    justify-content: space-between;
-  }
-
-  .flex-auto {
-    flex: auto;
-  }
-
-  .flex-start {
-    justify-self: flex-start;
-  }
-
-  .flex-end {
-    justify-self: flex-end;
-  }
-
-  .align-center {
-    align-items: center;
-  }
-
-  .display-inline {
-    display: inline;
-  }
-
-  .display-inline-b {
-    display: inline-block;
-  }
-
-  .m-d {
-    margin: $margin-default;
-  }
-
-  .m-1 {
-    margin: $unit-default;
-  }
-
-  .m-2 {
-    margin: $unit-default * 2;
-  }
-
-  p,
-  text,
-  .text,
-  input,
-  button {
-    font-size: $unit-default;
-    margin: $margin-default;
-    padding: $padding-default;
-  }
-
-  button {
-    //min-width: $unit-default * 4;
-  }
-
-  button.DISABLED {
-    opacity: 0.4;
-    pointer-events: none;
-  }
-
-  .ERROR {
-    input {
-      border: 1px solid $color-error;
-    }
-  }
-
-  .SUCCESS {
-    input {
-      border: 1px solid $color-success;
-    }
+.SUCCESS {
+  input {
+    border: 1px solid $color-success;
   }
 }
 
@@ -144,12 +172,6 @@
 .drop-enter-active,
 .drop-leave-active {
   transition: $transition-default;
-}
-
-.slide-leave-active {
-  position: absolute;
-  top: 0;
-  width: 100%;
 }
 
 .drop-enter,

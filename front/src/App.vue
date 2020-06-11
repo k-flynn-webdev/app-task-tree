@@ -4,7 +4,7 @@
     <ToastHolder />
 
     <div class="task__header">
-      <h1>Task Tree</h1>
+      <h1>Mini-task</h1>
     </div>
 
 <!--    <div id="nav">-->
@@ -13,7 +13,7 @@
 <!--      <router-link to="/task">Task</router-link>-->
 <!--    </div>-->
 
-    <router-view/>
+    <router-view />
 
     <div class="task__footer">
       <p>footer</p>

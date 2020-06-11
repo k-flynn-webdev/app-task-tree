@@ -19,7 +19,7 @@ function Init(app) {
 
   let morganType = null
 
-  // Create a write stream (in append mode)
+  // Create a write stream (in append modes)
   if (!testing) {
     accessLogStream = fs.createWriteStream(path.join(tempDir, 'log'), { flags: 'a' })
     morganType = ':date[iso] :remote-addr :remote-user :method ' +

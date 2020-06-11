@@ -127,7 +127,7 @@ module.exports = function (app) {
       }
 
       if (has.hasAnItem(userObjTmp.recover)){
-        throw new Error('Account was recently put in recovery mode, ' +
+        throw new Error('Account was recently put in recovery modes, ' +
           'please contact support')
       }
 
@@ -179,7 +179,7 @@ module.exports = function (app) {
       }
 
       if (has.hasAnItem(userObjTmp.recover)){
-        throw new Error('Account was recently put in recovery mode, ' +
+        throw new Error('Account was recently put in recovery modes, ' +
           'please contact support')
       }
 
@@ -256,7 +256,7 @@ module.exports = function (app) {
       }
 
       if (has.hasAnItem(userObjTmp.recover)){
-        throw new Error('Account was recently put in recovery mode, ' +
+        throw new Error('Account was recently put in recovery modes, ' +
           'please contact support')
       }
 

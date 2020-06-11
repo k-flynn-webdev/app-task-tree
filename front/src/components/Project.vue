@@ -1,14 +1,37 @@
 <template>
   <div class="project">
 
-    <div class="flex-row flex-between">
-      <p class="flex-auto"> {{ project.name }} </p>
-      <button @click="toggleOpt">
+    <div class="flex-row relative">
+
+      <button
+        class="all-projects-btn"
+        @click="toggleShowAll">
+        <p>ALL</p>
+      </button>
+
+      <div class="flex-auto">
+        <h1>
+          Project: {{ project.name }}
+        </h1>
+        <p>Id: {{ project.id }}</p>
+      </div>
+
+      <button class="flex-end" @click="toggleShowOpt">
         <img
           class="icon"
           src="@/assets/icons/ic_option.svg" />
       </button>
+
     </div>
+
+<!--    <div class="flex-row flex-between">-->
+<!--      <p class="flex-auto"> {{ project.name }} </p>-->
+<!--      <button @click="toggleShowOpt">-->
+<!--        <img-->
+<!--          class="icon"-->
+<!--          src="@/assets/icons/ic_option.svg" />-->
+<!--      </button>-->
+<!--    </div>-->
 
 <!--    <transition name="drop">-->
 <!--      <div v-if="showOpt">-->
@@ -48,7 +71,7 @@ import status from '../constants/status'
 // import ProjectSelect from './ProjectSelect'
 // import MenuRowOptSlide from './MenuRowOptSlide'
 
-const defaultRows = () => [false, false, false, false, false]
+// const defaultRows = () => [false, false, false, false, false]
 
 export default {
   name: 'Project',
@@ -61,9 +84,10 @@ export default {
   },
   data () {
     return {
-      status: status.CLEAR,
-      showOpt: false,
-      showRow: defaultRows()
+      showAll: false,
+      // status: status.CLEAR,
+      showOpt: false
+      // showRow: defaultRows()
     }
   },
   computed: {
@@ -80,48 +104,52 @@ export default {
     }, general.DELAY)
   },
   methods: {
-    toggleOpt: function () {
+    toggleShowAll: function () {
+      this.showAll = !this.showAll
+      this.$emit('showAll', this.showAll)
+    },
+    toggleShowOpt: function () {
       this.showOpt = !this.showOpt
-      if (this.showOpt) {
-        this.openRow(0)
-        return
-      }
-
-      this.closeRows()
+      // if (this.showOpt) {
+      //   this.openRow(0)
+      //   return
+      // }
+      //
+      // this.closeRows()
     },
-    closeRows: function () {
-      this.showRow.forEach((item, idx) => {
-        this.closeRow(idx)
-      })
-      if (this.showOpt) {
-        this.showOpt = false
-      }
-    },
-    showNew: function () {
-      this.closeRow(0)
-      this.openRow(1)
-    },
-    showEdit: function () {
-      this.closeRow(0)
-      this.openRow(2)
-    },
-    showDelete: function () {
-      this.closeRow(0)
-      this.openRow(3)
-    },
-    showSelect: function () {
-      this.closeRow(0)
-      this.openRow(4)
-    },
-    toggleRow: function (row) {
-      this.showRow.splice(row, 1, !this.showRow[row])
-    },
-    openRow: function (row) {
-      this.showRow.splice(row, 1, true)
-    },
-    closeRow: function (row) {
-      this.showRow.splice(row, 1, false)
-    },
+    // closeRows: function () {
+    //   this.showRow.forEach((item, idx) => {
+    //     this.closeRow(idx)
+    //   })
+    //   if (this.showOpt) {
+    //     this.showOpt = false
+    //   }
+    // },
+    // showNew: function () {
+    //   this.closeRow(0)
+    //   this.openRow(1)
+    // },
+    // showEdit: function () {
+    //   this.closeRow(0)
+    //   this.openRow(2)
+    // },
+    // showDelete: function () {
+    //   this.closeRow(0)
+    //   this.openRow(3)
+    // },
+    // showSelect: function () {
+    //   this.closeRow(0)
+    //   this.openRow(4)
+    // },
+    // toggleRow: function (row) {
+    //   this.showRow.splice(row, 1, !this.showRow[row])
+    // },
+    // openRow: function (row) {
+    //   this.showRow.splice(row, 1, true)
+    // },
+    // closeRow: function (row) {
+    //   this.showRow.splice(row, 1, false)
+    // },
     getProjects: function () {
       return this.$store.dispatch('projects/getProjectsByUserId',
         { user: this.user.id })
