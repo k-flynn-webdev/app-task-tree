@@ -21,6 +21,8 @@ const DB_SET = ' SET'
 const DB_SET_USER = ' user = ?'
 const DB_SET_NAME= ' name = ?'
 const DB_SET_IS_DONE = ' isDone = ?'
+const DB_SET_TASKS_TOTAL = ' tasksTotal = ?'
+const DB_SET_TASKS_DONE = ' tasksDone = ?'
 const DB_SET_DONE_DATE = ' doneDate = ?'
 const DB_SET_CREATED = ' created = ?'
 const DB_SET_UPDATED = ' updated = ?'
@@ -32,6 +34,8 @@ const DB_CREATE_PROJECTS_TABLE = 'CREATE TABLE projects ' +
   'name VARCHAR(50) not null, ' +
   'created DATETIME default now() not null, ' +
   'updated DATETIME default now() not null, ' +
+  'tasksTotal int default "0" not null, ' +
+  'tasksDone int default "0" not null, ' +
   'isDone bool default FALSE, ' +
   'doneDate DATETIME )'
 
@@ -71,7 +75,7 @@ exports.Create = Create
  * @param   {object}  project data
  * @return  {object}  project object
  */
-function Update({ id, name, user, isDone }) {
+function Update({ id, name, user, total: tasksTotal, completed: tasksDone, isDone }) {
   const JOIN_CHAR = ','
   let tmpSQLVars = []
   let tmpSQLStart = 'UPDATE ' + DB_PROJECTS + DB_SET
@@ -89,6 +93,16 @@ function Update({ id, name, user, isDone }) {
   if (has.hasAnItem(user)) {
     tmpSQLCommand.push(DB_SET_USER)
     tmpSQLVars.push(user)
+  }
+
+  if (has.hasAnItem(tasksTotal)) {
+    tmpSQLCommand.push(DB_SET_TASKS_TOTAL)
+    tmpSQLVars.push(tasksTotal)
+  }
+
+  if (has.hasAnItem(tasksDone)) {
+    tmpSQLCommand.push(DB_SET_TASKS_DONE)
+    tmpSQLVars.push(tasksDone)
   }
 
   if (has.hasAnItem(isDone)) {
@@ -217,6 +231,14 @@ function SafeExport(projectData) {
 
   if (has.hasAnItem(projectData.user)) {
     freshProject.user = projectData.user
+  }
+
+  if (has.hasAnItem(projectData.tasksTotal)) {
+    freshProject.tasksTotal = projectData.tasksTotal
+  }
+
+  if (has.hasAnItem(projectData.tasksDone)) {
+    freshProject.tasksDone = projectData.tasksDone
   }
 
   if (has.hasAnItem(projectData.isDone)) {

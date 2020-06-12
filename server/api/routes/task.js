@@ -23,7 +23,8 @@ module.exports = function (app) {
     task.Create(req.body)
     .then(({ insertId }) => task.GetTaskByID(insertId))
     .then(newTask => mysqlVal(newTask))
-    .then(taskObj => {
+      // todo we need to update project count!!
+      .then(taskObj => {
       logger.Log('Task created, id: ' + taskObj.id)
       exit(res, 200,
           'Success your task is created',
@@ -47,6 +48,7 @@ module.exports = function (app) {
 
     task.Update(updateData)
     .then(() => task.GetTaskByID(req.body.id))
+      // todo if setting isDone (true|false) we need to update project isDone progress count!!
     .then(taskObj => {
       let taskObjTmp = mysqlVal(taskObj)
       logger.Log('Task updated, id: ' + taskObjTmp.id)

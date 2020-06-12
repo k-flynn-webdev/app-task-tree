@@ -2,11 +2,30 @@ body {
   margin: $margin-default;
 }
 
+@each $color, $value in $all-colours {
+  .stroke-#{$color} {
+    stroke: $value;
+  }
+
+  .fill-#{$color} {
+    fill: $value;
+  }
+
+  .color-#{$color} {
+    color: $value;
+  }
+
+  .bg-#{$color} {
+    background-color: $value;
+  }
+}
+
 .icon {
   width: $unit-icon;
   height: $unit-icon;
   max-width: $unit-icon;
   max-height: $unit-icon;
+  vertical-align: middle;
 
   &.big {
     width: $unit-icon-big;
@@ -22,6 +41,10 @@ body {
 
 .text-right {
   text-align: right;
+}
+
+.title {
+  text-transform: capitalize;
 }
 
 .min-half {
@@ -42,6 +65,10 @@ body {
 
 .no-overflow {
   overflow: hidden;
+}
+
+.no-margin {
+  margin: 0;
 }
 
 .no-margin-l {
@@ -116,30 +143,81 @@ body {
   margin: $unit-default * 2;
 }
 
+small,
 p,
 h1,
+h2,
+h3,
+h4,
+h5,
+h6,
 text,
+span,
+div,
 .text,
 input,
-button {
+button,
+.icon {
+  color: $color-fore;
+  -webkit-text-fill-color: $color-fore;
   font-size: $unit-default;
-  margin: $margin-default;
-  padding: $padding-default;
+  //margin: $margin-default;
+  //padding: $padding-default;
+}
+
+input {
+  margin: $margin-default * 0.5 $margin-default;
 }
 
 button {
-  //min-width: $unit-default * 4;
-  border: 1px solid grey;
+  color: $color-fore;
+  -webkit-text-fill-color: $color-fore;
+  font-size: $font-size-lg;
+  margin: 0 $margin-default;
+  padding: $padding-default;
   transition: $transition-default;
 
   &:hover {
-    transform: scale(1.1);
-    background-color: lightgray;
+    transform: scale(1.066);
   }
 
   &.big {
-    font-size: larger;
+    font-size: $font-size-xl;
   }
+}
+
+// TEXT SIZES
+small {
+  font-size: $font-size-sm;
+  font-weight: lighter;
+}
+
+p,
+span {
+  font-size: $font-size-md;
+  font-weight: normal;
+}
+
+h4,
+h5,
+h6 {
+  font-size: $font-size-lg;
+  font-weight: bolder;
+}
+
+h3 {
+  font-size: $font-size-xl;
+  font-weight: bolder;
+}
+
+h2 {
+  font-size: $font-size-xl * 1.05;
+  font-weight: bolder;
+}
+
+h1 {
+  font-size: $font-size-xl * 1.15;
+  font-weight: bolder;
 }
 
 .DISABLED {
@@ -147,7 +225,7 @@ button {
   pointer-events: none;
 
   input {
-    border: 1px solid grey;
+    border: $border-size solid rgba($color-fore, 0.5);
   }
 }
 
@@ -157,13 +235,13 @@ button {
 
 .ERROR {
   input {
-    border: 1px solid $color-error;
+    border: $border-size solid $color-warning;
   }
 }
 
 .SUCCESS {
   input {
-    border: 1px solid $color-success;
+    border: $border-size solid $color-success;
   }
 }
 

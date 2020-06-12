@@ -109,7 +109,8 @@ export default {
       return ProjectService.create(input)
         .then(res => {
           context.commit('projectCurrent', res.data.data.project)
-          return context.commit('projectAdd', res.data.data.project)
+          context.commit('projectAdd', res.data.data.project)
+          return res.data.data.project
         })
     },
     /**
@@ -124,7 +125,8 @@ export default {
         .then(res => {
           context.commit('projectReplace', res.data.data.project)
           if (context.getters.current.id !== input.id) return
-          return context.commit('projectCurrent', res.data.data.project)
+          context.commit('projectCurrent', res.data.data.project)
+          return res.data.data.project
         })
     },
     /**

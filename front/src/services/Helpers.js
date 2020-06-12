@@ -1,5 +1,5 @@
 const timeDelay = (action, delay) => {
-  setTimeout(function () {
+  return setTimeout(function () {
     action()
   }, delay)
 }

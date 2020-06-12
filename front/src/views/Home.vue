@@ -1,7 +1,25 @@
 <template>
-  <div class="relative">
+  <div class="">
 
-    <Context />
+    <div class="flex-row">
+
+      <ProjectInfoMini />
+
+      <div class="flex-auto" />
+
+      <UserInfoMini />
+
+    </div>
+
+    <div class="flex-row">
+
+      <ProjectTaskSwitch v-model="mode" />
+
+      <InputBar class="flex-auto" :mode="mode" />
+
+    </div>
+
+<!--    <Context />-->
 
 <!--    <div class="flex-row">-->
 <!--    <User />-->
@@ -71,7 +89,13 @@
 </template>
 
 <script>
-import Context from '../components/Context'
+import modes from '../constants/modes'
+import ProjectInfoMini from '../components/ProjectInfoMini'
+import UserInfoMini from '../components/UserInfoMini'
+import ProjectTaskSwitch from '../components/ProjectTaskSwitch'
+import InputBar from '../components/InputBar'
+// import icAdd from '../assets/icons/ic_add'
+// import Context from '../components/Context'
 // import User from '../components/User.vue'
 // import Project from '../components/Project'
 // import ProjectSelect from '../components/ProjectSelect'
@@ -81,7 +105,12 @@ import Context from '../components/Context'
 export default {
   name: 'Home',
   components: {
-    Context
+    ProjectInfoMini,
+    UserInfoMini,
+    ProjectTaskSwitch,
+    InputBar
+    // Context
+    // icAdd
     // User,
     // Project
     // ProjectSelect,
@@ -90,12 +119,12 @@ export default {
   },
   data () {
     return {
-      showAllProjects: false
+      mode: modes.PROJECTS
     }
   },
   methods: {
-    updateShowAllProjects: function (value) {
-      this.showAllProjects = value
+    updateMode: function (input) {
+      this.mode = modes.filter(item => item === input)[0]
     }
   }
 }

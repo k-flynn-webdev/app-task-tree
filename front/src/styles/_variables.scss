@@ -1,18 +1,45 @@
-$color-bg: rgb(88, 82, 82);
-$color-button: rgb(88, 82, 82);
-$color-input: white;
-$color-none: #e7e1dd;
-$color-success: #589c58;
-$color-error: #9c5858;
-$color-select: darkgrey;
+//$color-bg: rgb(88, 82, 82);
+//$color-button: rgb(88, 82, 82);
 
 $unit-default: 1em;
+
+$font-size-sm: $unit-default * 0.5;
+$font-size-md: $unit-default;
+$font-size-lg: $unit-default * 1.25;
+$font-size-xl: $unit-default * 1.66;
+
 $unit-icon: 1.5em;
 $unit-icon-big: 3em;
+
+$border-size: $unit-default * 0.1;
+$border-radius: $unit-default * 0.1;
 
 $form-corner: 0.4em;
 $button-corner: 0.4em;
 $margin-default: 0.5em;
 $padding-default: 0.25em;
-
 $transition-default: 0.3s;
+
+$color-bg: rgb(40, 75, 83);
+$color-bg-alt: rgb(38, 64, 59);
+$color-shadow: rgb(54, 56, 46);
+$color-mid: rgb(113, 117, 96);
+$color-success: rgb(154, 212, 125);
+$color-warning: rgb(212, 151, 125);
+$color-fore: rgb(230, 230, 230);
+$color-select: darkgrey;
+$color-input: white;
+$color-none: #e7e1dd;
+
+$all-colours: (
+  dark: $color-bg,
+  dark-alt: $color-bg-alt,
+  shadow: $color-shadow,
+  mid: $color-mid,
+  success: $color-success,
+  warning: $color-warning,
+  fore: $color-fore,
+  select: $color-select,
+  input: $color-input,
+  none: $color-none
+);

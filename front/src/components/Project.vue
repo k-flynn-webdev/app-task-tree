@@ -29,7 +29,7 @@
 <!--      <button @click="toggleShowOpt">-->
 <!--        <img-->
 <!--          class="icon"-->
-<!--          src="@/assets/icons/ic_option.svg" />-->
+<!--          src="@/assets/icons/ic_option.vue" />-->
 <!--      </button>-->
 <!--    </div>-->
 
