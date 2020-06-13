@@ -9,5 +9,10 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  created () {
+    const user = this.$store.getters['user/user'].id
+    return this.$store.dispatch('projects/getProjectsByUserId',
+      { user })
+  }
 }).$mount('#app')

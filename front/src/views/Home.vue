@@ -19,6 +19,8 @@
 
     </div>
 
+    <ProjectsList v-if="isProjects" />
+
 <!--    <Context />-->
 
 <!--    <div class="flex-row">-->
@@ -90,10 +92,11 @@
 
 <script>
 import modes from '../constants/modes'
-import ProjectInfoMini from '../components/ProjectInfoMini'
-import UserInfoMini from '../components/UserInfoMini'
-import ProjectTaskSwitch from '../components/ProjectTaskSwitch'
 import InputBar from '../components/InputBar'
+import UserInfoMini from '../components/UserInfoMini'
+import ProjectsList from '../components/ProjectsList'
+import ProjectInfoMini from '../components/ProjectInfoMini'
+import ProjectTaskSwitch from '../components/ProjectTaskSwitch'
 // import icAdd from '../assets/icons/ic_add'
 // import Context from '../components/Context'
 // import User from '../components/User.vue'
@@ -105,10 +108,11 @@ import InputBar from '../components/InputBar'
 export default {
   name: 'Home',
   components: {
-    ProjectInfoMini,
+    InputBar,
     UserInfoMini,
-    ProjectTaskSwitch,
-    InputBar
+    ProjectsList,
+    ProjectInfoMini,
+    ProjectTaskSwitch
     // Context
     // icAdd
     // User,
@@ -120,6 +124,14 @@ export default {
   data () {
     return {
       mode: modes.PROJECTS
+    }
+  },
+  computed: {
+    isProjects: function () {
+      return this.mode === modes.PROJECTS
+    },
+    isTasks: function () {
+      return this.mode === modes.TASKS
     }
   },
   methods: {

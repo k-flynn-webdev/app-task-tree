@@ -27,6 +27,13 @@ body {
   max-height: $unit-icon;
   vertical-align: middle;
 
+  &.med {
+    width: $unit-icon-med;
+    height: $unit-icon-med;
+    max-width: $unit-icon-med;
+    max-height: $unit-icon-med;
+  }
+
   &.big {
     width: $unit-icon-big;
     height: $unit-icon-big;
@@ -107,6 +114,10 @@ body {
   justify-content: space-between;
 }
 
+.flex-around {
+  justify-content: space-around;
+}
+
 .flex-auto {
   flex: auto;
 }
@@ -160,9 +171,8 @@ button,
 .icon {
   color: $color-fore;
   -webkit-text-fill-color: $color-fore;
+  fill: $color-fore;
   font-size: $unit-default;
-  //margin: $margin-default;
-  //padding: $padding-default;
 }
 
 input {
@@ -179,6 +189,10 @@ button {
 
   &:hover {
     transform: scale(1.066);
+  }
+
+  &.med {
+    font-size: $font-size-lg;
   }
 
   &.big {

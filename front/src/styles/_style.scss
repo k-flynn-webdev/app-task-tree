@@ -53,6 +53,32 @@
         transform-origin: left;
       }
     }
+
+    &__projects-list {
+      margin: $margin-default;
+
+      &__item {
+        margin: $margin-default 0;
+
+        &-status,
+        &-progress,
+        &-updated,
+        &-options,
+        &-content {
+          min-width: $unit-default * 2;
+          min-height: $unit-default * 1.5;
+        }
+
+        &-content {
+          flex: auto;
+          background-color: $color-mid;
+        }
+
+        &-options {
+          //margin-left: $unit-default;
+        }
+      }
+    }
   }
 
   //.context {

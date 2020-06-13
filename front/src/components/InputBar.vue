@@ -70,10 +70,17 @@ export default {
       this.status = status.WAITING
 
       let dispatchType = 'projects/create'
-      let dispatchValue = { user: this.user.id, name: this.input }
+      let dispatchValue = {
+        user: this.user.id,
+        name: this.input
+      }
       if (this.mode === modes.TASKS) {
         dispatchType = 'tasks/create'
-        dispatchValue = { user: this.user.id, text: this.input }
+        dispatchValue = {
+          user: this.user.id,
+          project: this.project.id,
+          text: this.input
+        }
       }
 
       return this.$store.dispatch(dispatchType, dispatchValue)
