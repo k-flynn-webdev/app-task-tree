@@ -8,24 +8,24 @@
         <icNone v-else />
       </div>
 
-      <div class="task__project__projects-list__item-content">
+      <div class="task__project__projects-list__item-content flex-row">
 
-          <span class="task__project__projects-list__item-progress">
-            {{ renderProgress }}
-          </span>
+        <p class="task__project__projects-list__item-progress">
+          {{ renderProgress }}
+        </p>
 
-          <span class="task__project__projects-list__item-name">
-            {{ data.name }}
-          </span>
+        <p class="task__project__projects-list__item-name flex-auto">
+          {{ data.name }}
+        </p>
 
-          <span class="task__project__projects-list__item-updated">
-            {{ renderDate }}
-          </span>
+        <p class="task__project__projects-list__item-updated">
+          {{ renderDate }}
+        </p>
 
       </div>
 
       <div class="task__project__projects-list__item-options">
-        <button>
+        <button class="no-pad margin">
           <icOptions class="med" />
         </button>
       </div>

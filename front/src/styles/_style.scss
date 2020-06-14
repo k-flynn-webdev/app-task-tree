@@ -58,20 +58,27 @@
       margin: $margin-default;
 
       &__item {
-        margin: $margin-default 0;
+        margin: 0;
 
         &-status,
         &-progress,
+        &-name,
         &-updated,
         &-options,
         &-content {
           min-width: $unit-default * 2;
-          min-height: $unit-default * 1.5;
+        }
+
+        &-progress,
+        &-name,
+        &-updated {
+          margin: 0 $margin-default;
         }
 
         &-content {
           flex: auto;
           background-color: $color-mid;
+          min-height: $unit-default * 1.5;
         }
 
         &-options {
