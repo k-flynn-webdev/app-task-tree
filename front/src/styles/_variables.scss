@@ -1,16 +1,53 @@
 //$color-bg: rgb(88, 82, 82);
 //$color-button: rgb(88, 82, 82);
 
-$unit-default: 1em;
+$unit-default: 1.05em;
+$unit-xs: 0.6;
+$unit-sm: 0.75;
+$unit-md: 1.33;
+$unit-lg: 2;
+$unit-xl: 3;
 
-$font-size-sm: $unit-default * 0.5;
-$font-size-md: $unit-default;
-$font-size-lg: $unit-default * 1.25;
-$font-size-xl: $unit-default * 1.66;
+$all-unit-sizes: (
+  unit: $unit-default,
+  xs: $unit-xs,
+  sm: $unit-sm,
+  md: $unit-md,
+  lg: $unit-lg,
+  xl: $unit-xl
+);
 
-$unit-icon: 1.5em;
-$unit-icon-med: 1.75em;
-$unit-icon-big: 3em;
+$font-size: $unit-default;
+$font-size-xs: $unit-default * $unit-xs;
+$font-size-sm: $unit-default * $unit-sm;
+$font-size-md: $unit-default * $unit-md;
+$font-size-lg: $unit-default * $unit-lg;
+$font-size-xl: $unit-default * $unit-xl;
+
+$all-font-sizes: (
+  de: $font-size,
+  xs: $font-size-xs,
+  sm: $font-size-sm,
+  md: $font-size-md,
+  lg: $font-size-lg,
+  xl: $font-size-xl
+);
+
+$icon-size: 1.5em;
+$icon-size-xs: $icon-size * $unit-xs;
+$icon-size-sm: $icon-size * $unit-sm;
+$icon-size-md: $icon-size * $unit-md;
+$icon-size-lg: $icon-size * $unit-lg;
+$icon-size-xl: $icon-size * $unit-xl;
+
+$all-icon-sizes: (
+  de: $icon-size,
+  xs: $icon-size-xs,
+  sm: $icon-size-sm,
+  md: $icon-size-md,
+  lg: $icon-size-lg,
+  xl: $icon-size-xl
+);
 
 $border-size: $unit-default * 0.1;
 $border-radius: $unit-default * 0.1;
@@ -33,8 +70,8 @@ $color-input: white;
 $color-none: #e7e1dd;
 
 $all-colours: (
-  dark: $color-bg,
-  dark-alt: $color-bg-alt,
+  bg: $color-bg,
+  bg-alt: $color-bg-alt,
   shadow: $color-shadow,
   mid: $color-mid,
   success: $color-success,
@@ -43,4 +80,16 @@ $all-colours: (
   select: $color-select,
   input: $color-input,
   none: $color-none
+);
+
+$all-icon-nums: (
+  icon-10: 10%,
+  icon-20: 20%,
+  icon-30: 30%,
+  icon-40: 40%,
+  icon-50: 50%,
+  icon-60: 60%,
+  icon-70: 70%,
+  icon-80: 80%,
+  icon-90: 90%
 );

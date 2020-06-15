@@ -3,9 +3,9 @@
 
     <ProjectItem
       v-for="item in projects"
-      :class="{ 'SELECTED': project.id === item.id }"
       :key="item.id"
       :data="item"
+      :selected="project.id === item.id"
     />
 
   </div>

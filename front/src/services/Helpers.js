@@ -13,9 +13,21 @@ const renderTime = (input) => {
   return dateString + ' ' + hours + ':' + dateObj.getMinutes() + amPm
 }
 
+const renderProgressNum = (done, total) => {
+  return `(${done}/${total})`
+}
+
+const renderProgressPercent = (done, total) => {
+  if (!total || total === 0) return '0%'
+  if (!done || done === 0) return '0%'
+  return Math.floor((done / total) * 100).toString() + '%'
+}
+
 const helpers = {
   timeDelay,
-  renderTime
+  renderTime,
+  renderProgressNum,
+  renderProgressPercent
 }
 
 export default helpers

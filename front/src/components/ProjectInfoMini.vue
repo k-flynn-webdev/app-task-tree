@@ -1,11 +1,11 @@
 <template>
   <div class="project__info__mini">
-    <h3 class="project__info__mini-name">
+    <p class="project__info__mini-name name lg text-bold">
       {{ project.name }}
-    </h3>
-    <h3 class="project__info__mini-count">
+    </p>
+    <p class="project__info__mini-count lg text-bold">
       ({{ project.tasksTotal }}/{{ project.tasksDone }})
-    </h3>
+    </p>
   </div>
 </template>
 

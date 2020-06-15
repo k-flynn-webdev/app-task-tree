@@ -6,9 +6,10 @@
       <input type="text" v-model="input" @input="resetStatus">
 
       <button aria-label="submit"
+              class="no-margin-r text-right"
               :class="{ 'DISABLED': !isValid }"
               @click="submitInput">
-        <icTick alt="submit" />
+        <icTick alt="submit" class="md" />
       </button>
 
     </div>
@@ -52,7 +53,7 @@ export default {
   },
   watch: {
     mode: function (val, pre) {
-      this.reset()
+      // this.reset()
     }
   },
   methods: {

@@ -1,5 +1,6 @@
 body {
-  margin: $margin-default;
+  padding: $padding-default;
+  background-color: $color-bg;
 }
 
 @each $color, $value in $all-colours {
@@ -21,24 +22,24 @@ body {
 }
 
 .icon {
-  width: $unit-icon;
-  height: $unit-icon;
-  max-width: $unit-icon;
-  max-height: $unit-icon;
+  width: 80%;
+  height: 80%;
+  max-width: $icon-size;
+  max-height: $icon-size;
   vertical-align: middle;
 
-  &.med {
-    width: $unit-icon-med;
-    height: $unit-icon-med;
-    max-width: $unit-icon-med;
-    max-height: $unit-icon-med;
+  @each $size, $value in $all-icon-sizes {
+    &.#{$size} {
+      max-width: $value;
+      max-height: $value;
+    }
   }
+}
 
-  &.big {
-    width: $unit-icon-big;
-    height: $unit-icon-big;
-    max-width: $unit-icon-big;
-    max-height: $unit-icon-big;
+@each $num, $value in $all-icon-nums {
+  .#{$num} {
+    @extend .icon;
+    width: $value;
   }
 }
 
@@ -46,12 +47,28 @@ body {
   text-align: center;
 }
 
+.text-left {
+  text-align: left;
+}
+
 .text-right {
   text-align: right;
 }
 
-.title {
+.text-bold {
+  font-weight: bolder;
+}
+
+.name {
   text-transform: capitalize;
+}
+
+.upper {
+  text-transform: uppercase;
+}
+
+.lower {
+  text-transform: lowercase;
 }
 
 .min-half {
@@ -70,10 +87,6 @@ body {
   position: fixed;
 }
 
-.no-overflow {
-  overflow: hidden;
-}
-
 .no-pad {
   padding: 0;
 }
@@ -88,6 +101,20 @@ body {
 
 .no-margin-r {
   margin-right: 0;
+}
+
+.no-margin-x {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.no-margin-y {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.no-overflow {
+  overflow: hidden;
 }
 
 .overflow-auto-x {
@@ -176,7 +203,7 @@ button,
   color: $color-fore;
   -webkit-text-fill-color: $color-fore;
   fill: $color-fore;
-  font-size: $unit-default;
+  font-size: $font-size;
 }
 
 input {
@@ -186,21 +213,21 @@ input {
 button {
   color: $color-fore;
   -webkit-text-fill-color: $color-fore;
-  font-size: $font-size-lg;
-  margin: 0 $margin-default;
-  padding: $padding-default;
+  font-size: $font-size;
+  margin: $margin-default * 0.25 $margin-default;
+  padding: $padding-default * 0.1;
   transition: $transition-default;
+  text-align: center;
+  vertical-align: middle;
 
   &:hover {
     transform: scale(1.066);
   }
 
-  &.med {
-    font-size: $font-size-lg;
-  }
-
-  &.big {
-    font-size: $font-size-xl;
+  @each $size, $value in $all-font-sizes {
+    &.#{$size} {
+      font-size: $value;
+    }
   }
 }
 
@@ -212,34 +239,40 @@ small {
 
 p,
 span {
-  font-size: $font-size-md;
+  font-size: $font-size;
   font-weight: normal;
 }
 
-h4,
 h5,
 h6 {
-  font-size: $font-size-lg;
+  font-size: $font-size-md;
   font-weight: bolder;
 }
 
-h3 {
+h3,
+h4 {
   font-size: $font-size-xl;
   font-weight: bolder;
 }
 
+h1,
 h2 {
-  font-size: $font-size-xl * 1.05;
+  font-size: $font-size-xl * 1.1;
   font-weight: bolder;
 }
 
-h1 {
-  font-size: $font-size-xl * 1.15;
-  font-weight: bolder;
+p,
+div,
+.text {
+  @each $size, $value in $all-font-sizes {
+    &.#{$size} {
+      font-size: $value;
+    }
+  }
 }
 
 .DISABLED {
-  opacity: 0.4;
+  opacity: 0.3;
   pointer-events: none;
 
   input {

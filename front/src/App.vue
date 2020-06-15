@@ -1,11 +1,11 @@
 <template>
-  <div id="app" class="task bg-dark">
+  <div id="app" class="task">
 
     <ToastHolder />
 
-    <h1 class="task__header">
-      Mini-task
-    </h1>
+<!--    <h1 class="task__header">-->
+<!--      Mini-task-->
+<!--    </h1>-->
 
 <!--    <div id="nav">-->
 <!--      <router-link to="/">Home</router-link> |-->

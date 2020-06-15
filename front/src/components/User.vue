@@ -5,7 +5,7 @@
       <div class="flex-auto"></div>
       <span> User: {{ user.name }} ID: {{ user.id }} </span>
       <img
-        class="icon big display-inline-b"
+        class="icon lg display-inline-b"
         src="@/assets/icons/ic_user.svg" />
     </div>
 

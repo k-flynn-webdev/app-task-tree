@@ -1,35 +1,34 @@
 <template>
-  <div class="task__project__projects-list__item">
+  <div class="task__project__projects-list__item"
+       :class="status">
 
-    <div class="flex-row">
+    <div class="task__project__projects-list__item-status text-left">
+      <icTick v-if="data.isDone" class="xs"
+              :class="{ 'DISABLED': !selected }"/>
+      <icNone v-else class="xs"
+              :class="{ 'DISABLED': !selected }"/>
+    </div>
 
-      <div class="task__project__projects-list__item-status">
-        <icTick v-if="data.isDone" />
-        <icNone v-else />
-      </div>
+    <div class="task__project__projects-list__item-content flex-row">
 
-      <div class="task__project__projects-list__item-content flex-row">
+      <p class="task__project__projects-list__item-progress text-left">
+        {{ progress }}
+      </p>
 
-        <p class="task__project__projects-list__item-progress">
-          {{ renderProgress }}
-        </p>
+      <p class="task__project__projects-list__item-name flex-auto">
+        {{ data.name }}
+      </p>
 
-        <p class="task__project__projects-list__item-name flex-auto">
-          {{ data.name }}
-        </p>
+      <p class="task__project__projects-list__item-updated text-right">
+        {{ date }}
+      </p>
 
-        <p class="task__project__projects-list__item-updated">
-          {{ renderDate }}
-        </p>
+    </div>
 
-      </div>
-
-      <div class="task__project__projects-list__item-options">
-        <button class="no-pad margin">
-          <icOptions class="med" />
-        </button>
-      </div>
-
+    <div class="task__project__projects-list__item-options text-right">
+      <button class="no-margin">
+        <icOptions class="sm" />
+      </button>
     </div>
 
   </div>
@@ -38,15 +37,15 @@
 <script>
 import helpers from '../services/Helpers'
 import general from '../constants/general'
-import icNone from '../assets/icons/ic_none'
+import icRound from '../assets/icons/ic_round'
 import icTick from '../assets/icons/ic_tick'
 import icOptions from '../assets/icons/ic_option'
-// import status from '../constants/status.js'
+import status from '../constants/status.js'
 
 export default {
   name: 'ProjectItem',
   components: {
-    icNone,
+    icNone: icRound,
     icTick,
     icOptions
   },
@@ -54,22 +53,26 @@ export default {
     data: {
       type: Object,
       default: general.DEFAULT_PROJECT()
+    },
+    selected: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data () {
+    return {
+      status: status.CLEAR
     }
   },
   computed: {
-    renderProgress: function () {
-      if (this.data.tasksDone < 1) return '0%'
-      if (this.data.tasksTotal < 1) return '0%'
-      return ((this.data.tasksDone / this.data.tasksTotal) * 100).toString() + '%'
+    progress: function () {
+      return helpers.renderProgressNum(this.data.tasksDone, this.data.tasksTotal)
     },
-    renderDate: function () {
+    date: function () {
       return helpers.renderTime(this.data.updated)
     }
   },
   methods: {
-    // renderProgress: function () {
-    //   return ((this.data.tasksDone / this.data.tasksTotal) * 100) + '%'
-    // }
   }
 }
 </script>

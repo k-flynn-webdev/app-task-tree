@@ -1,3 +1,7 @@
+#app {
+  margin: $margin-default;
+}
+
 .task {
   &__project {
     &__input-bar {
@@ -13,12 +17,11 @@
     }
 
     &__switch {
-      min-width: $unit-default * 13;
-      min-height: $unit-default * 3.5;
+      min-width: $unit-default * 10;
 
       &-tasks,
       &-projects {
-        margin: $margin-default;
+        margin: $margin-default 0;
         padding: $padding-default;
         text-transform: uppercase;
         background-color: $color-mid;
@@ -32,12 +35,9 @@
           color: rgba($color-shadow, 0.5);
           -webkit-text-fill-color: rgba($color-shadow, 1);
           background-color: $color-success;
-          border: 3px solid $color-success;
+          border: $border-size solid $color-success;
           outline: none;
-
-          &:hover {
-            transform: unset;
-          }
+          transform: scaleY(1.1);
         }
       }
 
@@ -55,17 +55,20 @@
     }
 
     &__projects-list {
-      margin: $margin-default;
+      margin: $margin-default 0;
 
       &__item {
-        margin: 0;
+        margin: $margin-default * 0.66;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
 
         &-status,
         &-progress,
         &-name,
+        &-content,
         &-updated,
-        &-options,
-        &-content {
+        &-options {
           min-width: $unit-default * 2;
         }
 
@@ -78,7 +81,7 @@
         &-content {
           flex: auto;
           background-color: $color-mid;
-          min-height: $unit-default * 1.5;
+          min-height: $unit-default * 1.33;
         }
 
         &-options {
@@ -203,7 +206,7 @@
   .project {
     &__info {
       &__mini {
-        margin: $margin-default;
+        margin: $margin-default 0;
         min-width: $unit-default * 5;
 
         &-name,
@@ -213,25 +216,7 @@
         }
 
         &-name {
-          text-transform: capitalize;
-        }
-
-        &-count {
-          margin-left: $unit-default;
-        }
-      }
-    }
-  }
-
-  .user {
-    &__info {
-      &__mini {
-        &-name {
-          text-transform: uppercase;
-        }
-
-        &-icon {
-          margin: 0;
+          margin-right: $margin-default;
         }
       }
     }
