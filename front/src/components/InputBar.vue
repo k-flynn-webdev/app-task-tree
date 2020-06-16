@@ -89,6 +89,7 @@ export default {
           helpers.timeDelay(() => {
             this.reset()
           }, general.DELAY_SUCCESS)
+          this.input = status.CLEAR
           this.status = status.SUCCESS
           this.$emit(status.SUCCESS, result)
         })

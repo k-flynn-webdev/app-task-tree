@@ -54,10 +54,20 @@
       }
     }
 
+    &__tasks-list,
     &__projects-list {
       margin: $margin-default 0;
 
-      &__item {
+      &__expanded {
+        justify-content: flex-end;
+
+        button {
+          margin-left: $margin-default * 3;
+        }
+      }
+
+      &__item,
+      &__expanded {
         margin: $margin-default * 0.66;
         display: flex;
         flex-direction: row;
@@ -82,10 +92,16 @@
           flex: auto;
           background-color: $color-mid;
           min-height: $unit-default * 1.33;
+          border-width: $border-size;
+          border-style: solid;
+          border-color: transparent;
+          transition: $transition-default;
         }
 
-        &-options {
-          //margin-left: $unit-default;
+        &:hover & {
+          &-content {
+            border-color: $color-fore;
+          }
         }
       }
     }

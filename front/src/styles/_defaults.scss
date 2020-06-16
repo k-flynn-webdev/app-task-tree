@@ -3,24 +3,6 @@ body {
   background-color: $color-bg;
 }
 
-@each $color, $value in $all-colours {
-  .stroke-#{$color} {
-    stroke: $value;
-  }
-
-  .fill-#{$color} {
-    fill: $value;
-  }
-
-  .color-#{$color} {
-    color: $value;
-  }
-
-  .bg-#{$color} {
-    background-color: $value;
-  }
-}
-
 .icon {
   width: 80%;
   height: 80%;
@@ -85,6 +67,18 @@ body {
 
 .fixed {
   position: fixed;
+}
+
+.transition {
+  transition: $transition-default;
+}
+
+.transition-fast {
+  transition: $transition-default * 0.5;
+}
+
+.transition-slow {
+  transition: $transition-default * 2;
 }
 
 .no-pad {
@@ -154,11 +148,11 @@ body {
 }
 
 .flex-start {
-  justify-self: flex-start;
+  justify-content: flex-start;
 }
 
 .flex-end {
-  justify-self: flex-end;
+  justify-content: flex-end;
 }
 
 .align-center {
@@ -173,7 +167,7 @@ body {
   display: inline-block;
 }
 
-.m-d {
+.m-de {
   margin: $margin-default;
 }
 
@@ -275,7 +269,11 @@ div,
   opacity: 0.3;
   pointer-events: none;
 
-  input {
+  &:focus {
+    outline: none;
+  }
+
+  & input {
     border: $border-size solid rgba($color-fore, 0.5);
   }
 }
@@ -293,6 +291,25 @@ div,
 .SUCCESS {
   input {
     border: $border-size solid $color-success;
+  }
+}
+
+@each $color, $value in $all-colours {
+  .stroke-#{$color} {
+    stroke: $value;
+  }
+
+  .fill-#{$color} {
+    fill: $value;
+  }
+
+  .color-#{$color} {
+    color: $value;
+    -webkit-text-fill-color: $value;
+  }
+
+  .bg-#{$color} {
+    background-color: $value;
   }
 }
 
