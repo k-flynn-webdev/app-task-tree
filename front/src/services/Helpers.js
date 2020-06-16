@@ -1,3 +1,10 @@
+/**
+ * Add a time delayed action
+ *
+ * @param {function}  action  function to fire after delay
+ * @param {int}       delay   time delay of function
+ * @returns {number}  returns setTimeout ID
+ */
 const timeDelay = (action, delay) => {
   return setTimeout(function () {
     action()

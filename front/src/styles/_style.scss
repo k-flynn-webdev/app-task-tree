@@ -60,6 +60,7 @@
 
       &__expanded {
         justify-content: flex-end;
+        min-height: $unit-default * 0.5;
 
         button {
           margin-left: $margin-default * 3;

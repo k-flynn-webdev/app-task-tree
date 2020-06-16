@@ -39,30 +39,36 @@
 
     </div>
 
-    <transition name="drop">
-      <div v-if="showOpts"
+    <div v-if="showOpts"
            class="task__project__projects-list__expanded">
 
-        <button aria-label="edit project name"
-                class="option"
-                @click="closeOptions">
-          <icEdit />
-        </button>
+        <transition-group name="drop">
+          <button v-if="showEdit"
+                  :key="0"
+                  aria-label="edit project name"
+                  class="option"
+                  @click="closeOptions">
+            <icEdit />
+          </button>
 
-        <button aria-label="delete project"
-                class="option"
-                @click="closeOptions">
-          <icDelete class="fill-warning" />
-        </button>
+          <button v-if="showDelete"
+                  :key="1"
+                  aria-label="delete project"
+                  class="option"
+                  @click="closeOptions">
+            <icDelete class="fill-warning" />
+          </button>
 
-        <button aria-label="close options"
-                class="no-margin-r"
-                @click="closeOptions">
-          <icRight />
-        </button>
+          <button v-if="showClose"
+                  :key="2"
+                  aria-label="close options"
+                  class="no-margin-r"
+                  @click="closeOptions">
+            <icRight />
+          </button>
+        </transition-group>
 
       </div>
-    </transition>
 
   </div>
 
@@ -102,7 +108,11 @@ export default {
   data () {
     return {
       status: status.CLEAR,
-      showOpts: false
+      showOpts: false,
+      showEdit: false,
+      showDelete: false,
+      showDone: false,
+      showClose: false
     }
   },
   computed: {
@@ -114,7 +124,10 @@ export default {
     }
   },
   mounted () {
-    this.$parent.$on('CLOSE-OPT', this.closeOptions)
+    this.$parent.$on('CLOSE-OPT', this.closeImmediate)
+  },
+  beforeDestroy () {
+    this.$parent.$off('CLOSE-OPT', this.closeImmediate)
   },
   methods: {
     onSelectProject: function () {
@@ -122,10 +135,22 @@ export default {
     },
     openOptions: function () {
       this.$parent.$emit('CLOSE-OPT')
-      this.showOpts = true
+      helpers.timeDelay(() => { this.showOpts = true }, general.DELAY_SHORT * 0.1)
+      helpers.timeDelay(() => { this.showEdit = true }, general.DELAY_SHORT * 1.5)
+      helpers.timeDelay(() => { this.showDelete = true }, general.DELAY_SHORT)
+      helpers.timeDelay(() => { this.showClose = true }, general.DELAY_SHORT * 0.5)
     },
     closeOptions: function () {
+      helpers.timeDelay(() => { this.showOpts = false }, general.DELAY_SHORT * 2)
+      helpers.timeDelay(() => { this.showEdit = false }, general.DELAY_SHORT * 0.5)
+      helpers.timeDelay(() => { this.showDelete = false }, general.DELAY_SHORT * 0.7)
+      helpers.timeDelay(() => { this.showClose = false }, general.DELAY_SHORT)
+    },
+    closeImmediate: function () {
       this.showOpts = false
+      this.showEdit = false
+      this.showDelete = false
+      this.showClose = false
     }
   }
 }
