@@ -3,40 +3,43 @@
   <li class="list-item">
 
     <div class="task__project__list__item"
-         :class="{ status, 'EDIT': isEdit }">
+         :class="{ 'SELECT': selected,
+         'EDIT': isEdit,
+         'DELETE': isDelete }">
 
       <div class="task__project__list__item-status text-left"
         @click="onSelectProject">
-        <icDone v-if="data.isDone" class="xs transition"
-                :class="{ 'DISABLED': !selected }"/>
-        <icRound v-else class="xs transition"
-                :class="{ 'DISABLED': !selected }"/>
+        <icDone v-if="data.isDone" class="xs transition" />
+        <icRound v-else class="xs transition" />
       </div>
 
-      <div class="task__project__list__item-content"
-        :class="{ 'SELECT': selected }"
-        @click="onSelectProject">
+      <div class="flex-auto no-overflow relative">
+        <StatusBar :status="options.status" />
 
-        <StatusBar :status="status" />
+        <div class="task__project__list__item-content"
+             @click="onSelectProject">
 
-        <p class="task__project__list__item-progress">
-          {{ progress }}
-        </p>
+          <p class="task__project__list__item-progress">
+            {{ progress }}
+          </p>
 
-        <p class="task__project__list__item-data">
-          {{ data.name }}
-        </p>
+          <p class="task__project__list__item-data">
+            {{ data.name }}
+          </p>
 
-        <p class="task__project__list__item-updated">
-          {{ date }}
-        </p>
+          <p class="task__project__list__item-updated">
+            {{ date }}
+          </p>
+
+        </div>
 
         <form class="task__project__list__item__edit"
               @submit.prevent="confirmEdit">
           <input class="task__project__list__item__edit-input"
-                 type="text"
-                 v-model="edit.data"
-                 @input="resetStatus">
+              type="text"
+              :class="options.status"
+              v-model="edit"
+              @input="checkEdit">
         </form>
 
       </div>
@@ -96,17 +99,16 @@ export default {
   },
   data () {
     return {
-      status: status.CLEAR,
       options: {
         mode: status.CLEAR,
+        status: status.CLEAR,
         show: false,
         showEdit: true,
         showDelete: true,
-        showClose: true
+        showClose: true,
+        isValidEdit: false
       },
-      edit: {
-        data: status.CLEAR
-      }
+      edit: status.CLEAR
     }
   },
   computed: {
@@ -134,7 +136,8 @@ export default {
       this.$store.commit('projects/projectCurrent', this.data)
     },
     onModeEdit: function () {
-      this.edit.data = this.data.name
+      this.edit = this.data.name
+      this.checkEdit(this.data.name)
       this.options.mode = modes.EDIT
       this.options.showDelete = false
       this.options.showEdit = false
@@ -143,6 +146,7 @@ export default {
       this.options.mode = modes.DELETE
       this.options.showDelete = false
       this.options.showEdit = false
+      this.options.isValidEdit = true
     },
     /**
      * Consume confirm event of row component
@@ -155,40 +159,55 @@ export default {
       if (mode === modes.DELETE) return this.confirmDelete()
     },
     confirmEdit: function () {
-      if (this.status !== status.CLEAR) return
-      if (this.edit.data === this.data.name) return
+      if (this.options.status !== status.CLEAR) return
+      if (this.edit === this.data.name) return
 
-      this.status = status.WAITING
-      const updatedName = { id: this.data.id, name: this.edit.data }
+      this.options.status = status.WAITING
+      const updatedName = { id: this.data.id, name: this.edit }
 
       return this.$store.dispatch('projects/update', updatedName)
         .then(() => {
-          this.status = status.SUCCESS
-          this.resetMode()
-          this.closeOptions()
+          this.options.status = status.SUCCESS
+
+          helpers.timeDelay(() => {
+            this.resetMode()
+            this.closeOptions()
+          }, general.DELAY_SUCCESS)
 
           helpers.timeDelay(() => {
             this.resetStatus()
-          }, general.DELAY_SUCCESS)
+          }, general.DELAY_SUCCESS + general.DELAY)
         })
         .catch(err => this.handleError(err))
     },
     confirmDelete: function () {
-      if (this.status !== status.CLEAR) return
+      if (this.options.status !== status.CLEAR) return
 
-      this.status = status.WAITING
+      this.options.status = status.WAITING
 
       return this.$store.dispatch('projects/remove', this.data)
         .then(() => {
-          this.resetMode()
-          this.closeOptions()
-          this.status = status.SUCCESS
+          this.options.status = status.SUCCESS
+
+          helpers.timeDelay(() => {
+            this.resetMode()
+            this.closeOptions()
+          }, general.DELAY_SUCCESS)
 
           helpers.timeDelay(() => {
             this.resetStatus()
-          }, general.DELAY_SUCCESS)
+          }, general.DELAY_SUCCESS + general.DELAY)
         })
         .catch(err => this.handleError(err))
+    },
+    checkEdit: function () {
+      this.resetStatus()
+      if (!this.edit || this.edit.length < 4) {
+        this.options.isValidEdit = false
+        return
+      }
+
+      this.options.isValidEdit = (this.edit !== this.data.name)
     },
     openOptions: function () {
       this.resetMode()
@@ -211,13 +230,13 @@ export default {
       this.options.showClose = false
     },
     resetStatus: function () {
-      this.status = status.CLEAR
+      this.options.status = status.CLEAR
     },
     resetMode: function () {
       this.options.mode = status.CLEAR
     },
     handleError: function (err) {
-      this.status = status.ERROR
+      this.options.status = status.ERROR
       this.$emit(status.ERROR, err)
       this.$store.commit('toasts/toastAdd', err)
 

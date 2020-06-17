@@ -32,21 +32,39 @@ export default {
      * @param pre
      */
     status: function (input, pre) {
-      if (input && input.length > 0) {
-        if (pre && pre.length > 0) {
-          if (pre !== input) {
-            // needs a short wait to force render change!
-            this.statusUpdate = status.CLEAR
+      const hadPre = (pre && pre.length > 0)
+      const hadInput = (input && input.length > 0)
+      const equalInput = input === pre
 
-            helpers.timeDelay(() => {
-              this.statusUpdate = input
-            }, general.DELAY_BLIP)
-            return
-          }
-        }
+      // changing to be clear??
+      if (hadPre && !hadInput) {
+        this.delayComplete()
+        return
+      }
+
+      // changing to another class, force a blip??
+      if (hadPre && hadInput && !equalInput) {
+        this.delayStatusUpdate(input)
+        return
       }
 
       this.statusUpdate = input
+    }
+  },
+  methods: {
+    delayComplete: function () {
+      this.statusUpdate = status.COMPLETE
+
+      helpers.timeDelay(() => {
+        this.statusUpdate = status.CLEAR
+      }, general.DELAY_SHORT)
+    },
+    delayStatusUpdate: function (input) {
+      this.statusUpdate = status.CLEAR
+
+      helpers.timeDelay(() => {
+        this.statusUpdate = input
+      }, general.DELAY_BLIP)
     }
   }
 }

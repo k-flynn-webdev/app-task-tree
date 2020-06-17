@@ -5,7 +5,7 @@ const DISABLED = 'DISABLED'
 const ERROR = 'ERROR'
 const OPEN = 'OPEN'
 const CLOSE = 'CLOSE'
-const DONE = 'DONE'
+const COMPLETE = 'COMPLETE'
 const SELECT = 'SELECT'
 
 export default {
@@ -17,5 +17,5 @@ export default {
   OPEN,
   CLOSE,
   SELECT,
-  DONE
+  COMPLETE
 }

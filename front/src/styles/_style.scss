@@ -7,12 +7,17 @@
     &__input-bar {
       display: flex;
       flex-direction: row;
+      align-items: center;
 
-      input {
-        flex: auto;
-        border: $border-size solid $color-fore;
-        background-color: transparent;
-        padding: $padding-default;
+      form {
+        height: 2rem;
+        display: flex;
+        overflow: hidden;
+
+        input {
+          margin: 0;
+          flex: auto;
+        }
       }
     }
 
@@ -74,6 +79,11 @@
           text-align: right;
         }
 
+        &-status {
+          opacity: $color-alpha;
+          transition: $transition-default;
+        }
+
         &-status,
         &-option-bar-btn {
           min-width: $unit-default * 2;
@@ -98,12 +108,21 @@
           display: flex;
           flex-direction: row;
           flex: auto;
-          position: relative;
           border-width: $border-size;
           border-style: solid;
           border-color: transparent;
           background-color: $color-mid;
           transition: $transition-default;
+        }
+
+        &.SELECT & {
+          &-status {
+            opacity: 1;
+          }
+
+          &-content {
+            background-color: $color-select;
+          }
         }
 
         &:hover & {
@@ -117,28 +136,18 @@
         }
 
         &.EDIT & {
-          &-progress,
-          &-data,
-          &-updated {
-            display: none;
-          }
-
           &-content {
-            padding: 0;
-            border-color: transparent;
-            background-color: transparent;
+            display: none;
           }
 
           &__edit {
             flex: auto;
-            display: inline-block;
+            display: block;
 
             &-input {
               width: 100%;
               margin: 0;
               padding: 0 $padding-default;
-              background-color: transparent;
-              border: $color-fore $border-size solid;
             }
           }
         }
@@ -153,12 +162,13 @@
 
           &-close {
             text-align: right;
-            margin-right: 0;
           }
 
           &-edit,
+          &-close,
           &-delete,
           &-confirm {
+            margin-right: 0;
             margin-left: $margin-default * 3;
           }
         }
@@ -171,19 +181,6 @@
     text-align: center;
     margin: $margin-default;
   }
-
-  //&__items {
-  //  &__item {
-  //    display: flex;
-  //    flex-direction: row;
-  //    justify-content: space-between;
-  //
-  //    &-text,
-  //    &-input {
-  //      flex-grow: 2;
-  //    }
-  //  }
-  //}
 
   .user,
   .project {

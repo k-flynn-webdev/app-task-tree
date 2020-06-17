@@ -1,7 +1,7 @@
 const DELAY = 500
 const DELAY_SHORT = 250
-const DELAY_BLIP = 20
-const DELAY_SUCCESS = 700
+const DELAY_BLIP = 33
+const DELAY_SUCCESS = 900
 const DELAY_ERROR = 6000
 
 const DEFAULT_PROJECT = (user = -1) => {

@@ -6,9 +6,13 @@ body {
 .icon {
   width: 80%;
   height: 80%;
+  font-size: $font-size;
   max-width: $icon-size;
   max-height: $icon-size;
   vertical-align: middle;
+  color: inherit;
+  -webkit-text-fill-color: inherit;
+  transition: inherit;
 
   @each $size, $value in $all-icon-sizes {
     &.#{$size} {
@@ -21,6 +25,7 @@ body {
 @each $num, $value in $all-icon-nums {
   .#{$num} {
     @extend .icon;
+
     width: $value;
   }
 }
@@ -192,36 +197,69 @@ span,
 div,
 .text,
 input,
-button,
-.icon {
-  color: $color-fore;
-  -webkit-text-fill-color: $color-fore;
-  fill: $color-fore;
+button {
   font-size: $font-size;
+  color: $color-fore;
+  fill: $color-fore;
+  -webkit-text-fill-color: $color-fore;
 }
 
+// INPUTS && CONTROLS TO BE SEPARATED //
+
 input {
-  padding: $padding-default * 0.5 $padding-default;
+  background-color: transparent;
+  border-style: solid;
+  border-spacing: $border-size;
+  border-color: $color-fore;
   margin: $margin-default * 0.5 $margin-default;
+  padding: $padding-default * 0.5 $padding-default;
+
+  @each $status, $value in $all-status-border-colours {
+    &.#{to-upper-case($status)} {
+      border-color: $value;
+    }
+  }
+
+  &.DISABLED {
+    pointer-events: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
 }
 
 button {
-  color: $color-fore;
-  -webkit-text-fill-color: $color-fore;
-  font-size: $font-size;
-  margin: $margin-default * 0.25 $margin-default;
-  padding: $padding-default * 0.1;
-  transition: $transition-default;
   text-align: center;
+  font-size: $font-size;
   vertical-align: middle;
+  transition: $transition-default;
+  padding: $padding-default * 0.1;
+  margin: $margin-default * 0.25 $margin-default;
 
   &:hover {
-    transform: scale(1.066);
+    transform: scale($hover-scale);
   }
 
   @each $size, $value in $all-font-sizes {
     &.#{$size} {
       font-size: $value;
+    }
+  }
+
+  @each $status, $value in $all-status-border-colours {
+    &.#{to-upper-case($status)} {
+      svg {
+        fill: $value;
+      }
+    }
+  }
+
+  &.DISABLED {
+    pointer-events: none;
+
+    &:focus {
+      outline: none;
     }
   }
 }
@@ -266,35 +304,6 @@ div,
   }
 }
 
-.DISABLED {
-  opacity: 0.3;
-  pointer-events: none;
-
-  &:focus {
-    outline: none;
-  }
-
-  & input {
-    border: $border-size solid rgba($color-fore, 0.5);
-  }
-}
-
-.SELECT {
-  background-color: $color-select;
-}
-
-.ERROR {
-  input {
-    border: $border-size solid $color-warning;
-  }
-}
-
-.SUCCESS {
-  input {
-    border: $border-size solid $color-success;
-  }
-}
-
 @each $color, $value in $all-colours {
   .stroke-#{$color} {
     stroke: $value;
@@ -314,39 +323,34 @@ div,
   }
 }
 
-
 .status.bar {
   position: absolute;
-  left: -1px;
-  right: 101%;
+  left: -3px;
+  right: 102%;
   height: 0;
-  bottom: -2px;
+  bottom: -3px;
   z-index: 0;
   background-color: transparent;
-  transition: background-color 1s, right 0.6s;
+  transition: background-color 0.6s, right 0.6s, height 1s;
+
+  @each $status, $value in $all-status-colours {
+    &.#{to-upper-case($status)} {
+      right: -3px;
+      background-color: $value;
+      height: $unit-default * 0.33;
+      transition: right 0.6s;
+    }
+  }
 
   &.WAITING {
-    height: $unit-default * 0.2;
-    background-color: $color-status-waiting;
-    transition: background-color 1s, right 6s;
+    transition: right 6s;
   }
 
-  &.SUCCESS {
-    height: $unit-default * 0.2;
-    background-color: $color-status-success;
-    transition: background-color 0.6s, right 0.6s;
-  }
-
-  &.ERROR {
-    height: $unit-default * 0.2;
-    background-color: $color-status-error;
-    transition: background-color 0.6s, right 0.6s;
-  }
-
-  &.WAITING,
-  &.SUCCESS,
-  &.ERROR {
-    right: 0;
+  &.COMPLETE {
+    left: -3px;
+    right: -3px;
+    height: 0;
+    bottom: -3px;
   }
 }
 

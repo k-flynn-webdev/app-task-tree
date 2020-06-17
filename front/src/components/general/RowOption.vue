@@ -1,16 +1,16 @@
 <template>
-  <div>
     <div v-if="options.show"
          class="task__project__list__item__option-bar">
 
       <span v-if="showConfirm"
             key="showConfirm"
             class="task__project__list__item__option-bar-confirm">
-        <span v-if="options.mode === 'DELETE'">Are you sure?</span>
+        <span v-if="options.mode === 'DELETE'"> Delete Item? </span>
 
         <button
             aria-label="confirm change"
             title="confirm change"
+            :class="[ options.status, options.isValidEdit ? '' : 'DISABLED' ]"
             @click="onConfirm">
           <icDone />
         </button>
@@ -44,7 +44,6 @@
       </button>
 
     </div>
-  </div>
 </template>
 
 <script>
@@ -60,10 +59,12 @@ import icDelete from '../../assets/icons/ic_cross'
 const optionDefault = () => {
   return {
     mode: status.CLEAR,
+    status: status.CLEAR,
     show: false,
     showEdit: true,
     showDelete: true,
-    showClose: true
+    showClose: true,
+    isValidEdit: true
   }
 }
 

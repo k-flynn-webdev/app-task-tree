@@ -56,22 +56,39 @@ $form-corner: 0.4em;
 $button-corner: 0.4em;
 $margin-default: 0.5em;
 $padding-default: 0.25em;
+$hover-scale: 1.066;
 $transition-default: 0.33s;
 
+
+$color-alpha: 0.3;
 $color-bg: rgb(40, 75, 83);
 $color-bg-alt: rgb(38, 64, 59);
 $color-shadow: rgb(54, 56, 46);
 $color-mid: rgb(113, 117, 96);
+$color-waiting: rgb(189, 173, 99);
 $color-success: rgb(154, 212, 125);
-$color-warning: rgb(212, 151, 125);
+$color-error: rgb(212, 151, 125);
 $color-fore: rgb(230, 230, 230);
-$color-select: darkgrey;
-$color-input: white;
-$color-none: #e7e1dd;
+$color-select: rgb(9, 161, 131);
 
+$color-status-disabled: rgba($color-fore, $color-alpha);
 $color-status-waiting: rgb(210, 184, 36);
 $color-status-success: rgb(122, 231, 66);
 $color-status-error: rgb(226, 73, 73);
+
+$all-status-border-colours: (
+  disabled: $color-status-disabled,
+  waiting: $color-waiting,
+  success: $color-success,
+  error: $color-error
+);
+
+$all-status-colours: (
+  disabled: $color-status-disabled,
+  waiting: $color-status-waiting,
+  success: $color-status-success,
+  error: $color-status-error
+);
 
 $all-colours: (
   bg: $color-bg,
@@ -79,11 +96,10 @@ $all-colours: (
   shadow: $color-shadow,
   mid: $color-mid,
   success: $color-success,
-  warning: $color-warning,
+  error: $color-error,
   fore: $color-fore,
   select: $color-select,
-  input: $color-input,
-  none: $color-none
+  disabled: $color-status-disabled
 );
 
 $all-icon-nums: (

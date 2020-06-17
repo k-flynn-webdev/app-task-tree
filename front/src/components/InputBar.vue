@@ -1,33 +1,41 @@
 <template>
-  <form :class="status"
-        @submit.prevent="submitInput">
     <div class="task__project__input-bar">
 
-      <input type="text" v-model="input" @input="resetStatus">
+      <form class="relative flex-auto"
+            @submit.prevent="submitInput">
+
+        <StatusBar :status="status" />
+        <input type="text"
+               v-model="input"
+               :class="status"
+               @input="resetStatus">
+
+      </form>
 
       <button aria-label="submit"
-              title="submite"
-              class="no-margin-r text-right"
-              :class="{ 'DISABLED': !isValid }"
+              title="submit"
+              class="no-margin-x text-right"
+              :class="[ status, !isValid? 'DISABLED' : '' ]"
               @click="submitInput">
         <icTick alt="submit" class="md" />
       </button>
 
     </div>
-  </form>
 </template>
 
 <script>
-import icTick from '../assets/icons/ic_tick'
-import status from '../constants/status.js'
 import modes from '../constants/modes.js'
-import general from '../constants/general'
 import helpers from '../services/Helpers'
+import general from '../constants/general'
+import status from '../constants/status.js'
+import StatusBar from './general/StatusBar'
+import icTick from '../assets/icons/ic_tick'
 
 export default {
   name: 'InputBar',
   components: {
-    icTick
+    icTick,
+    StatusBar
   },
   props: {
     mode: {
@@ -87,12 +95,13 @@ export default {
 
       return this.$store.dispatch(dispatchType, dispatchValue)
         .then(result => {
-          helpers.timeDelay(() => {
-            this.reset()
-          }, general.DELAY_SUCCESS)
           this.input = status.CLEAR
           this.status = status.SUCCESS
           this.$emit(status.SUCCESS, result)
+
+          helpers.timeDelay(() => {
+            this.reset()
+          }, general.DELAY_SUCCESS)
         })
         .catch(err => this.handleError(err))
     },
