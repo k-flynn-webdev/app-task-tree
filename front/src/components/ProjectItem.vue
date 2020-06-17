@@ -3,7 +3,7 @@
   <li class="list-item">
 
     <div class="task__project__list__item"
-         :class="{ status, 'EDIT': options.mode === 'EDIT' }">
+         :class="{ status, 'EDIT': isEdit }">
 
       <div class="task__project__list__item-status text-left"
         @click="onSelectProject">
@@ -23,22 +23,21 @@
           {{ progress }}
         </p>
 
-        <form v-if="options.mode === 'EDIT'"
-              class="task__project__list__item-data"
-              @submit.prevent="confirmEdit">
-          <input class="task__project__list__item-data edit"
-                 type="text"
-                 v-model="edit.data"
-                 @input="resetStatus">
-        </form>
-
-        <p v-else class="task__project__list__item-data">
+        <p class="task__project__list__item-data">
           {{ data.name }}
         </p>
 
         <p class="task__project__list__item-updated">
           {{ date }}
         </p>
+
+        <form class="task__project__list__item__edit"
+              @submit.prevent="confirmEdit">
+          <input class="task__project__list__item__edit-input"
+                 type="text"
+                 v-model="edit.data"
+                 @input="resetStatus">
+        </form>
 
       </div>
 
@@ -116,6 +115,12 @@ export default {
     },
     date: function () {
       return helpers.renderTime(this.data.updated)
+    },
+    isEdit: function () {
+      return this.options.mode === modes.EDIT
+    },
+    isDelete: function () {
+      return this.options.mode === modes.DELETE
     }
   },
   mounted () {
@@ -151,14 +156,12 @@ export default {
     },
     confirmEdit: function () {
       if (this.status !== status.CLEAR) return
+      if (this.edit.data === this.data.name) return
 
       this.status = status.WAITING
       const updatedName = { id: this.data.id, name: this.edit.data }
 
       return this.$store.dispatch('projects/update', updatedName)
-        .then(() => {
-          this.$nextTick(() => { this.status = status.CLEAR })
-        })
         .then(() => {
           this.status = status.SUCCESS
           this.resetMode()
@@ -176,9 +179,6 @@ export default {
       this.status = status.WAITING
 
       return this.$store.dispatch('projects/remove', this.data)
-        .then(() => {
-          this.$nextTick(() => { this.status = status.CLEAR })
-        })
         .then(() => {
           this.resetMode()
           this.closeOptions()
