@@ -3,7 +3,7 @@
   <li class="list-item">
 
     <div class="task__project__list__item"
-         :class="status">
+         :class="{ status, 'EDIT': options.mode === 'EDIT' }">
 
       <div class="task__project__list__item-status text-left"
         @click="onSelectProject">
@@ -23,7 +23,16 @@
           {{ progress }}
         </p>
 
-        <p class="task__project__list__item-data">
+        <form v-if="options.mode === 'EDIT'"
+              class="task__project__list__item-data"
+              @submit.prevent="confirmEdit">
+          <input class="task__project__list__item-data edit"
+                 type="text"
+                 v-model="edit.data"
+                 @input="resetStatus">
+        </form>
+
+        <p v-else class="task__project__list__item-data">
           {{ data.name }}
         </p>
 
@@ -95,6 +104,9 @@ export default {
         showEdit: true,
         showDelete: true,
         showClose: true
+      },
+      edit: {
+        data: status.CLEAR
       }
     }
   },
@@ -117,6 +129,7 @@ export default {
       this.$store.commit('projects/projectCurrent', this.data)
     },
     onModeEdit: function () {
+      this.edit.data = this.data.name
       this.options.mode = modes.EDIT
       this.options.showDelete = false
       this.options.showEdit = false
@@ -125,9 +138,6 @@ export default {
       this.options.mode = modes.DELETE
       this.options.showDelete = false
       this.options.showEdit = false
-    },
-    onModeClear: function () {
-      this.options.mode = modes.CLEAR
     },
     /**
      * Consume confirm event of row component
@@ -140,9 +150,29 @@ export default {
       if (mode === modes.DELETE) return this.confirmDelete()
     },
     confirmEdit: function () {
-      console.log('confirm edit')
+      if (this.status !== status.CLEAR) return
+
+      this.status = status.WAITING
+      const updatedName = { id: this.data.id, name: this.edit.data }
+
+      return this.$store.dispatch('projects/update', updatedName)
+        .then(() => {
+          this.$nextTick(() => { this.status = status.CLEAR })
+        })
+        .then(() => {
+          this.status = status.SUCCESS
+          this.resetMode()
+          this.closeOptions()
+
+          helpers.timeDelay(() => {
+            this.resetStatus()
+          }, general.DELAY_SUCCESS)
+        })
+        .catch(err => this.handleError(err))
     },
     confirmDelete: function () {
+      if (this.status !== status.CLEAR) return
+
       this.status = status.WAITING
 
       return this.$store.dispatch('projects/remove', this.data)
@@ -150,16 +180,19 @@ export default {
           this.$nextTick(() => { this.status = status.CLEAR })
         })
         .then(() => {
+          this.resetMode()
+          this.closeOptions()
           this.status = status.SUCCESS
 
           helpers.timeDelay(() => {
-            this.status = status.CLEAR
+            this.resetStatus()
           }, general.DELAY_SUCCESS)
         })
         .catch(err => this.handleError(err))
     },
     openOptions: function () {
-      this.onModeClear()
+      this.resetMode()
+      this.resetStatus()
       this.$parent.$emit('CLOSE-OPT')
       this.options.show = true
       this.options.showEdit = true
@@ -167,15 +200,21 @@ export default {
       this.options.showClose = true
     },
     closeOptions: function () {
-      this.onModeClear()
+      this.resetMode()
       this.options.show = false
     },
     closeImmediate: function () {
-      this.onModeClear()
+      this.resetMode()
       this.options.show = false
       this.options.showEdit = false
       this.options.showDelete = false
       this.options.showClose = false
+    },
+    resetStatus: function () {
+      this.status = status.CLEAR
+    },
+    resetMode: function () {
+      this.options.mode = status.CLEAR
     },
     handleError: function (err) {
       this.status = status.ERROR
@@ -183,7 +222,7 @@ export default {
       this.$store.commit('toasts/toastAdd', err)
 
       helpers.timeDelay(() => {
-        this.status = status.CLEAR
+        this.resetStatus()
       }, general.DELAY_ERROR)
     }
   }

@@ -31,7 +31,7 @@ const DB_WHERE = ' WHERE id = ?'
 const DB_CREATE_PROJECTS_TABLE = 'CREATE TABLE projects ' +
   '(id int auto_increment primary key, ' +
   'user int default "-1" not null, ' +
-  'name VARCHAR(50) not null, ' +
+  'name VARCHAR(150) not null, ' +
   'created DATETIME default now() not null, ' +
   'updated DATETIME default now() not null, ' +
   'tasksTotal int default "0" not null, ' +

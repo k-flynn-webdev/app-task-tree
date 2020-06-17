@@ -6,6 +6,7 @@
       <input type="text" v-model="input" @input="resetStatus">
 
       <button aria-label="submit"
+              title="submite"
               class="no-margin-r text-right"
               :class="{ 'DISABLED': !isValid }"
               @click="submitInput">

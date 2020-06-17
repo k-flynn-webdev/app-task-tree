@@ -6,7 +6,8 @@
       <span v-if="showConfirm"
             key="showConfirm"
             class="task__project__list__item__option-bar-confirm">
-        Are you sure?
+        <span v-if="options.mode === 'DELETE'">Are you sure?</span>
+
         <button
             aria-label="confirm change"
             title="confirm change"

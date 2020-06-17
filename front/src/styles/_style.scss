@@ -82,6 +82,11 @@
         &-data {
           flex: auto;
           text-align: left;
+
+          &.edit {
+            width: 100%;
+            background-color: $color-bg;
+          }
         }
 
         &-progress,
@@ -110,6 +115,14 @@
         &:hover & {
           &-content {
             border-color: $color-fore;
+          }
+        }
+
+        &.EDIT {
+          p,
+          button {
+            opacity: 0.3;
+            pointer-events: none;
           }
         }
 
