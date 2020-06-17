@@ -322,20 +322,20 @@ div,
   bottom: 0;
   z-index: 0;
   background-color: transparent;
-  transition: 1s;
+  transition: background-color 1s, right 0.6s;
 
   &.WAITING {
-    transition: 30s;
+    transition: background-color 1s, right 6s;
     background-color: $color-status-waiting;
   }
 
   &.SUCCESS {
-    transition: 1s;
+    transition: background-color 1s, right 0.6s;
     background-color: $color-status-success;
   }
 
   &.ERROR {
-    transition: 1s;
+    transition: background-color 1s, right 0.6s;
     background-color: $color-status-error;
   }
 

@@ -57,10 +57,10 @@
 </template>
 
 <script>
+import modes from '../constants/modes.js'
 import helpers from '../services/Helpers'
 import general from '../constants/general'
 import status from '../constants/status.js'
-import modes from '../constants/modes.js'
 import icDone from '../assets/icons/ic_tick'
 import icRound from '../assets/icons/ic_round'
 import icOptions from '../assets/icons/ic_option'
@@ -145,31 +145,18 @@ export default {
     confirmDelete: function () {
       this.status = status.WAITING
 
-      helpers.timeDelay(() => {
-        this.status = status.CLEAR
-      }, 5000)
-
-      helpers.timeDelay(() => {
-        this.status = status.SUCCESS
-      }, 5050)
-
-      helpers.timeDelay(() => {
-        this.status = status.SUCCESS + ' ' + status.DONE
-      }, 6500)
-
-      helpers.timeDelay(() => {
-        this.status = status.CLEAR
-      }, 10000)
-
       return this.$store.dispatch('projects/remove', this.data)
-      //   .then(() => {
-      //   //   this.status = status.SUCCESS + ' ' + status.DONE
-      //   //   helpers.timeDelay(() => {
-      //   //     this.status = status.CLEAR
-      //   //     console.log('done?')
-      //   //   }, general.DELAY_SUCCESS * 20)
-      //   })
-      //   .catch(err => this.handleError(err))
+        .then(() => {
+          this.$nextTick(() => { this.status = status.CLEAR })
+        })
+        .then(() => {
+          this.status = status.SUCCESS
+
+          helpers.timeDelay(() => {
+            this.status = status.CLEAR
+          }, general.DELAY_SUCCESS)
+        })
+        .catch(err => this.handleError(err))
     },
     openOptions: function () {
       this.onModeClear()
@@ -194,6 +181,10 @@ export default {
       this.status = status.ERROR
       this.$emit(status.ERROR, err)
       this.$store.commit('toasts/toastAdd', err)
+
+      helpers.timeDelay(() => {
+        this.status = status.CLEAR
+      }, general.DELAY_ERROR)
     }
   }
 }

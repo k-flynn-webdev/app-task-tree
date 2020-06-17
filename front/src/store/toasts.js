@@ -8,7 +8,9 @@ const timerDelay = 1000
 function createToast (input) {
   msgId += 1
   const title = input.title ? input.title : ''
-  const message = input.response.data.message ? input.response.data.message : ''
+  const message = input.response && input.response && input.response.data
+    ? input.response.data.message : input.message
+
   const isError = input.isError ? input.isError : true
   const isTimed = input.isTimed ? input.isTimed : false
   const time = () => {
