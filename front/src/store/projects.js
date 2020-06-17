@@ -67,7 +67,8 @@ export default {
     projectReplace: function (state, input) {
       for (let i = 0, max = state.projects.length; i < max; i++) {
         if (state.projects[i].id === input.id) {
-          Vue.set(state.projects, i, input)
+          // Vue.set(state.projects, i, input)
+          state.projects.splice(i, 1, input)
           return state.projects[i]
         }
       }
@@ -82,7 +83,8 @@ export default {
     projectRemove: function (state, input) {
       for (let i = 0, max = state.projects.length; i < max; i++) {
         if (state.projects[i].id === input.id) {
-          Vue.delete(state.projects, i)
+          // Vue.delete(state.projects, i)
+          state.projects.splice(i, 1)
           return input
         }
       }

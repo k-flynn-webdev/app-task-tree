@@ -54,49 +54,57 @@
       }
     }
 
-    &__tasks-list,
-    &__projects-list {
+    &__list {
       margin: $margin-default 0;
+      max-width: 98vw;
 
-      &__expanded {
-        justify-content: flex-end;
-        min-height: $unit-default * 0.5;
-
-        button {
-          margin-left: $margin-default * 3;
-        }
-      }
-
-      &__item,
-      &__expanded {
-        margin: $margin-default * 0.66;
+      &__item {
         display: flex;
         flex-direction: row;
         align-items: center;
+        margin: $margin-default * 0.25 0;
 
         &-status,
         &-progress,
-        &-name,
+        &-data,
         &-content,
         &-updated,
-        &-options {
+        &-option-bar-btn {
+          z-index: 1;
+          text-align: right;
           min-width: $unit-default * 2;
         }
 
+        &-progress {
+          text-align: left;
+        }
+
+        &-data {
+          flex: auto;
+          text-align: left;
+        }
+
         &-progress,
-        &-name,
+        &-data,
         &-updated {
           margin: 0 $margin-default;
         }
 
+        &-updated {
+          text-align: right;
+        }
+
         &-content {
+          display: flex;
+          flex-direction: row;
           flex: auto;
-          background-color: $color-mid;
-          min-height: $unit-default * 1.33;
+          position: relative;
           border-width: $border-size;
           border-style: solid;
           border-color: transparent;
+          background-color: $color-mid;
           transition: $transition-default;
+          min-height: $unit-default * 1.33;
         }
 
         &:hover & {
@@ -104,75 +112,29 @@
             border-color: $color-fore;
           }
         }
+
+        &__option-bar {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: flex-end;
+          min-height: $unit-default * 0.5;
+          margin: $margin-default * 0.25 0;
+
+          &-close {
+            text-align: right;
+            margin-right: 0;
+          }
+
+          &-edit,
+          &-delete,
+          &-confirm {
+            margin-left: $margin-default * 3;
+          }
+        }
       }
     }
   }
-
-  //.context {
-  //  button {
-  //    text-align: center;
-  //    padding: $padding-default;
-  //    min-width: $unit-default * 5;
-  //  }
-  //
-  //  &__tgl-l {
-  //    margin-right: 0;
-  //    transform-origin: right;
-  //  }
-  //
-  //  &__tgl-r {
-  //    margin-left: 0;
-  //    transform-origin: left;
-  //  }
-  //
-  //  &__tgl-l,
-  //  &__tgl-r {
-  //    transition: $transition-default;
-  //    background-color: slategray;
-  //    color: #d0c7c6;
-  //    -webkit-text-fill-color: #d0c7c6;
-  //    border: none;
-  //    outline: none;
-  //
-  //    &:hover {
-  //      transform: unset;
-  //    }
-  //
-  //    &.active {
-  //      font-size: larger;
-  //      transform: scale(1.25);
-  //      color: #57514f;
-  //      -webkit-text-fill-color: #57514f;
-  //      background-color: #d2dae0;
-  //    }
-  //  }
-  //}
-
-  //.offscreen-page {
-  //  margin: $margin-default;
-  //  background-color: darkgoldenrod;
-  //  position: absolute;
-  //  left: -100%;
-  //  top: 0;
-  //  z-index: 10;
-  //  width: 66vw;
-  //  transition: $transition-default;
-  //  -webkit-transform: translate3d(0, 0, 0);
-  //
-  //  &.show {
-  //    left: 0;
-  //  }
-  //}
-
-  //.column-content {
-  //  overflow: hidden;
-  //  flex: 0.5;
-  //  transition: $transition-default * 10;
-  //
-  //  &.hide-column {
-  //    flex: 0;
-  //  }
-  //}
 
   &__header,
   &__footer {
@@ -180,44 +142,18 @@
     margin: $margin-default;
   }
 
-  //&__input {
-  //  &__form {
-  //    margin: $margin-default;
+  //&__items {
+  //  &__item {
   //    display: flex;
   //    flex-direction: row;
-  //    align-items: center;
   //    justify-content: space-between;
   //
-  //    input {
-  //      flex: auto;
-  //      display: inline-block;
-  //      border: 1px solid grey;
-  //      min-height: $unit-default * 2;
-  //      padding: 0 $unit-default * 0.66;
-  //    }
-  //
-  //    &__send {
-  //      margin: 0 $margin-default;
-  //
-  //      button {
-  //        background-color: yellow;
-  //      }
+  //    &-text,
+  //    &-input {
+  //      flex-grow: 2;
   //    }
   //  }
   //}
-
-  &__items {
-    &__item {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-
-      &-text,
-      &-input {
-        flex-grow: 2;
-      }
-    }
-  }
 
   .user,
   .project {

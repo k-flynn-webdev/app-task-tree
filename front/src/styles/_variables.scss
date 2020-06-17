@@ -69,6 +69,10 @@ $color-select: darkgrey;
 $color-input: white;
 $color-none: #e7e1dd;
 
+$color-status-waiting: rgb(210, 184, 36);
+$color-status-success: rgb(122, 231, 66);
+$color-status-error: rgb(226, 73, 73);
+
 $all-colours: (
   bg: $color-bg,
   bg-alt: $color-bg-alt,

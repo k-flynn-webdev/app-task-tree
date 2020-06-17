@@ -313,25 +313,125 @@ div,
   }
 }
 
-.slide-enter-active,
-.slide-leave-active,
-.drop-enter-active,
-.drop-leave-active {
-  transition: $transition-default;
+
+.status.bar {
+  position: absolute;
+  left: -1px;
+  right: 101%;
+  top: -1px;
+  bottom: 0;
+  z-index: 0;
+  background-color: transparent;
+  transition: 1s;
+
+  &.WAITING {
+    transition: 30s;
+    background-color: $color-status-waiting;
+  }
+
+  &.SUCCESS {
+    transition: 1s;
+    background-color: $color-status-success;
+  }
+
+  &.ERROR {
+    transition: 1s;
+    background-color: $color-status-error;
+  }
+
+  &.WAITING,
+  &.SUCCESS,
+  &.ERROR {
+    right: 0;
+    //&.DONE {
+    //  line-height: unset;
+    //  transition: 0.1s;
+    //  //background-color: transparent;
+    //}
+  }
 }
 
-.drop-enter,
-.drop-leave-to /* .drop-leave-active below version 2.1.8 */ {
-  opacity: 0;
-  transform: translateY(-150%);
+
+//.fade-enter-active,
+//.fade-leave-active,
+//.move-enter-active,
+//.move-leave-active {
+//  transition: all $transition-default * 5;
+//}
+//
+//.fade-enter
+//  /* .fade-leave-active below version 2.1.8 */ {
+//  opacity: 0;
+//  transform: translateY($unit-default * -1);
+//}
+//
+//.fade-leave-to
+//  /* .fade-leave-active below version 2.1.8 */ {
+//  opacity: 0;
+//  transform: translateY($unit-default);
+//}
+//
+//.fade-leave-active {
+//  //position: absolute;
+//}
+//
+//.move-item {
+//  //transition: $transition-default * 2;
+//  display: inline-block;
+//  width: 100%;
+//}
+//
+//.move-enter,
+//.move-leave-to
+//  /* .move-leave-active below version 2.1.8 */ {
+//  opacity: 0;
+//  transform: translateY($unit-default * -1);
+//}
+//
+//
+//.move-move {
+//  position: absolute;
+//}
+
+
+.list-item {
+  width: 100%;
+  //transition: all $transition-default * 2 ease-out;
 }
 
-.slide-enter {
-  opacity: 0;
-  transform: translateX(-200%);
+/* base */
+.list-anim {
+  backface-visibility: hidden;
+  z-index: 1;
 }
 
-.slide-leave-to /* .slide-leave-active below version 2.1.8 */ {
+/* moving */
+.list-anim-move {
+  transition: all $transition-default ease-in-out 100ms;
+}
+
+/* appearing */
+.list-anim-enter-active {
+  transition: all $transition-default ease-out;
+}
+
+/* disappearing */
+.list-anim-leave-active {
+  transition: all $transition-default ease-in;
+  position: absolute;
+  z-index: 0;
+}
+
+/* appear at / disappear to */
+.list-anim-enter,
+.list-anim-leave-to {
   opacity: 0;
-  transform: translateX(200%);
+}
+
+.list-anim-enter {
+  transform: translateY($unit-default * -1);
+}
+
+.list-anim-leave-to {
+  transform: translateY($unit-default);
 }

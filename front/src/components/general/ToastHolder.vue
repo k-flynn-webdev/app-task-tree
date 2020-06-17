@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Toast from '../components/Toast'
+import Toast from './Toast'
 
 export default {
   name: 'ToastHolder',

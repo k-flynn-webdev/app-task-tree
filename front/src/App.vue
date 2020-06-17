@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import ToastHolder from './components/ToastHolder'
+import ToastHolder from './components/general/ToastHolder'
 
 export default {
   name: 'App',

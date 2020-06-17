@@ -1,12 +1,16 @@
 <template>
-  <div class="task__project__projects-list">
+  <div class="task__project__projects-list no-overflow">
 
-    <ProjectItem
-      v-for="item in projects"
-      :key="item.id"
-      :data="item"
-      :selected="project.id === item.id"
-    />
+     <transition-group name="list-anim" tag="ul">
+
+      <ProjectItem
+        v-for="item in projects"
+        :key="item.id"
+        :data="item"
+        :selected="project.id === item.id"
+      />
+
+    </transition-group>
 
   </div>
 </template>

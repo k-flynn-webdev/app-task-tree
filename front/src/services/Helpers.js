@@ -12,6 +12,7 @@ const timeDelay = (action, delay) => {
 }
 
 const renderTime = (input) => {
+  if (!input || input === undefined) return 'No date'
   const dateObj = new Date(input)
   const dateString = dateObj.toLocaleDateString()
   const isPM = (dateObj.getHours() > 12)

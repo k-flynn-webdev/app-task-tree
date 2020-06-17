@@ -3,7 +3,9 @@ const WAITING = 'WAITING'
 const SUCCESS = 'SUCCESS'
 const DISABLED = 'DISABLED'
 const ERROR = 'ERROR'
+const OPEN = 'OPEN'
 const CLOSE = 'CLOSE'
+const DONE = 'DONE'
 const SELECT = 'SELECT'
 
 export default {
@@ -12,6 +14,8 @@ export default {
   SUCCESS,
   DISABLED,
   ERROR,
+  OPEN,
   CLOSE,
-  SELECT
+  SELECT,
+  DONE
 }
