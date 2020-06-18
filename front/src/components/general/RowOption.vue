@@ -5,7 +5,9 @@
       <span v-if="showConfirm"
             key="showConfirm"
             class="task__project__list__item__option-bar-confirm">
-        <span v-if="options.mode === 'DELETE'"> Delete Item? </span>
+          <span v-if="options.mode === 'DELETE'"> Delete
+            <span class="hide-md-down"> Item</span> ?
+          </span>
 
         <button
             aria-label="confirm change"

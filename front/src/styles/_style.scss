@@ -1,5 +1,17 @@
 #app {
   margin: $margin-default;
+
+  @include screen-md {
+    margin: $margin-default * 0.5;
+  }
+
+  @include screen-sm {
+    margin: 0 $margin-default * 0.5;
+  }
+
+  @include screen-xs {
+    margin: 0 $margin-default * 0.5;
+  }
 }
 
 .task {
@@ -81,11 +93,33 @@
         &-status {
           opacity: $color-alpha;
           transition: $transition-default;
+
+          @include screen-xs {
+            display: none;
+          }
+          @include screen-sm {
+            display: none;
+          }
         }
 
         &-status,
         &-option-bar-btn {
           min-width: $unit-default * 2;
+
+          @include screen-xs {
+            width: $unit-default * 0.9;
+            min-width: $unit-default * 0.9;
+          }
+
+          @include screen-sm {
+            width: $unit-default;
+            min-width: $unit-default;
+          }
+
+          @include screen-md {
+            width: $unit-default * 1.5;
+            min-width: $unit-default * 1.5;
+          }
         }
 
         &-data {
@@ -98,7 +132,6 @@
         }
 
         &-updated {
-          //font-size: $font-size;
           text-align: right;
         }
 
@@ -110,8 +143,18 @@
           border-width: $border-size;
           border-style: solid;
           border-color: transparent;
-          background-color: $color-mid;
+          z-index: 1;
           transition: $transition-default;
+        }
+
+        &-bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          z-index: -5;
+          background-color: $color-mid;
         }
 
         &-option-bar-btn {
@@ -130,6 +173,10 @@
 
         &.EDIT & {
           &-content {
+            display: none;
+          }
+
+          &-bg {
             display: none;
           }
 
@@ -156,7 +203,7 @@
             opacity: 1;
           }
 
-          &-content {
+          &-bg {
             background-color: $color-select;
           }
         }

@@ -1,6 +1,18 @@
 body {
   padding: $padding-default;
   background-color: $color-bg;
+
+  @include screen-md {
+    padding: $padding-default * 0.5;
+  }
+
+  @include screen-sm {
+    padding: 0 $padding-default * 0.5;
+  }
+
+  @include screen-xs {
+    padding: 0 $padding-default * 0.5;
+  }
 }
 
 .icon {
@@ -336,7 +348,7 @@ button {
   right: 102%;
   height: 0;
   bottom: -3px;
-  z-index: 0;
+  z-index: -1;
   background-color: transparent;
   transition: background-color 0.6s, right 0.6s, height 1s;
 
@@ -344,8 +356,15 @@ button {
     &.#{to-upper-case($status)} {
       right: -3px;
       background-color: $value;
-      height: $unit-default * 0.33;
+      height: $unit-default * 0.5;
       transition: right 0.6s;
+
+      @include screen-xs {
+        height: $unit-default;
+      }
+      @include screen-sm {
+        height: $unit-default;
+      }
     }
   }
 

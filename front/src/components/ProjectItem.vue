@@ -14,7 +14,6 @@
       </div>
 
       <div class="flex-auto no-overflow relative">
-        <StatusBar :status="options.status" />
 
         <div class="task__project__list__item-content"
              @click="onSelectProject">
@@ -44,6 +43,10 @@
               v-model="edit"
               @input="checkEdit">
         </form>
+
+        <StatusBar :status="options.status" />
+
+        <div class="task__project__list__item-bg"></div>
 
       </div>
 
