@@ -36,7 +36,7 @@ module.exports = function (app) {
         })
     })
     .catch(err => {
-      logger.Log(err.message || err)
+      logger.Log(err.message || err, req)
       exit(res, 401, 'error', err.message || err)
     })
   })

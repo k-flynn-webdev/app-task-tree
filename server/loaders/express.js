@@ -1,4 +1,5 @@
 const cors = require('cors')
+const uniqid = require('uniqid')
 const filter = require('content-filter')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
@@ -9,6 +10,22 @@ const EventEmitter = require('events').EventEmitter
 const myEmitter = new EventEmitter
 
 const config = require('../config/config.js')
+
+/**
+ * Assign a unique ID via the middleware
+ *    to all incoming requests
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+function assignUniqueId (req, res, next) {
+  if (req.id) return next()
+  const newID = uniqid.time()
+  req.id = newID
+  res.id = newID
+  next()
+}
 
 module.exports = function (app) {
     // Useful if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
@@ -40,6 +57,8 @@ module.exports = function (app) {
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use(cookieParser())
+
+    app.use(assignUniqueId)
 
     // Set default json response header ..
     app.set('json spaces', 4)

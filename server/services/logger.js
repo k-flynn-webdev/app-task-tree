@@ -5,6 +5,15 @@ const morgan = require('morgan')
 let accessLogStream = null
 let testing = process.env.NODE_ENV === 'test'
 
+// morgan.token('id', function(req, res) {
+//   return req.id || '-'
+// })
+
+
+morgan.token('id', function getId (req) {
+  return req.id
+})
+
 function Init(app) {
 
   if (testing) {
@@ -22,8 +31,7 @@ function Init(app) {
   // Create a write stream (in append modes)
   if (!testing) {
     accessLogStream = fs.createWriteStream(path.join(tempDir, 'log'), { flags: 'a' })
-    morganType = ':date[iso] :remote-addr :remote-user :method ' +
-      ':url HTTP/:http-version :status :res[content-length] - :response-time ms'
+    morganType = ':date[iso] :id :method :url :status :res[content-length] :remote-addr :response-time ms'
   }
 
   app.use(morgan(morganType, { stream: accessLogStream }))
@@ -32,7 +40,8 @@ function Init(app) {
 
 exports.Init = Init
 
-function Log(line) {
+
+function Log(line, req = { id: '-' }) {
 
   if (testing) {
     return
@@ -47,8 +56,10 @@ function Log(line) {
     line = line + '\n'
   }
 
-  process.stdout.write(line)
-  accessLogStream.write(line)
+  const date = new Date().toISOString()
+
+  process.stdout.write(date + ' ' + req.id + ' ' + line)
+  accessLogStream.write(date + ' ' + req.id + ' ' + line)
 }
 
 exports.Log = Log

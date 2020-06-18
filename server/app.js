@@ -18,7 +18,7 @@ function StartServer() {
   app.listen(config.port, err => {
 
     if (err) {
-      logger.Log(err)
+      logger.Log(err, { id: 'start' })
       process.exit(1)
       return
     }
@@ -41,9 +41,8 @@ function Start() {
     console.timeEnd('LoadAllModules')
   })
   .catch((err) => {
-    logger.Log(err)
+    logger.Log(err, { id: 'start' })
     process.exit(1)
-    return
   })
   .finally(() => {
     StartServer()

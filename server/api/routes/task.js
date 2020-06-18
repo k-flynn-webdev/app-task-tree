@@ -25,13 +25,13 @@ module.exports = function (app) {
     .then(newTask => mysqlVal(newTask))
       // todo we need to update project count!!
       .then(taskObj => {
-      logger.Log('Task created, id: ' + taskObj.id)
+      logger.Log('Task created, id: ' + taskObj.id, req)
       exit(res, 200,
           'Success your task is created',
           { task: task.SafeExport(taskObj) })
     })
     .catch(err => {
-      logger.Log(err.message || err)
+      logger.Log(err.message || err, req)
       exit(res, 401, 'error', err.message || err)
     })
   })
@@ -51,13 +51,13 @@ module.exports = function (app) {
       // todo if setting isDone (true|false) we need to update project isDone progress count!!
     .then(taskObj => {
       let taskObjTmp = mysqlVal(taskObj)
-      logger.Log('Task updated, id: ' + taskObjTmp.id)
+      logger.Log('Task updated, id: ' + taskObjTmp.id, req)
       exit(res, 200,
         'Success your task is updated',
         { task: task.SafeExport(taskObjTmp) })
     })
     .catch(err => {
-      logger.Log(err.message || err)
+      logger.Log(err.message || err, req)
       exit(res, 401, 'error', err.message || err)
     })
   })
@@ -74,12 +74,12 @@ module.exports = function (app) {
 
       task.Delete(req.params.task)
       .then(taskObj => {
-        logger.Log('Task deleted, id: ' + req.params.task)
+        logger.Log('Task deleted, id: ' + req.params.task, req)
         exit(res, 200,
           'Success your task is deleted')
       })
       .catch(err => {
-        logger.Log(err.message || err)
+        logger.Log(err.message || err, req)
         exit(res, 401, 'error', err.message || err)
       })
     })
@@ -97,7 +97,7 @@ module.exports = function (app) {
           { task: task.SafeExport(mysqlVal(taskObj)) })
       })
       .catch(err => {
-        logger.Log(err.message || err)
+        logger.Log(err.message || err, req)
         exit(res, 401, 'error', err.message || err)
       })
     })
@@ -132,7 +132,7 @@ module.exports = function (app) {
           { tasks: allTasks })
       })
       .catch(err => {
-        logger.Log(err.message || err)
+        logger.Log(err.message || err, req)
         exit(res, 401, 'error', err.message || err)
       })
     })

@@ -26,13 +26,13 @@ module.exports = function (app) {
     .then(({ insertId }) => project.GetProjectByID(insertId))
     .then(newProject => mysqlVal(newProject))
     .then(projectObj => {
-      logger.Log('Project created, id: ' + projectObj.id)
+      logger.Log('Project created, id: ' + projectObj.id, req)
         exit(res, 200,
           'Success your project is created',
           { project: project.SafeExport(projectObj) })
     })
     .catch(err => {
-      logger.Log(err.message || err)
+      logger.Log(err.message || err, req)
       exit(res, 401, 'error', err.message || err)
     })
   })
@@ -51,13 +51,13 @@ module.exports = function (app) {
     .then(() => project.GetProjectByID(req.params.project))
     .then(projectObj => {
       let projectObjTmp = mysqlVal(projectObj)
-      logger.Log('Project updated, id: ' + req.params.project)
+      logger.Log('Project updated, id: ' + req.params.project, req)
       exit(res, 200,
         'Success your project is updated',
         { project: project.SafeExport(projectObjTmp) })
     })
     .catch(err => {
-      logger.Log(err.message || err)
+      logger.Log(err.message || err, req)
       exit(res, 401, 'error', err.message || err)
     })
   })
@@ -72,13 +72,13 @@ module.exports = function (app) {
 
       project.Delete(req.params.project)
       .then(projectObj => {
-        logger.Log('Project deleted, id: ' + req.params.project)
+        logger.Log('Project deleted, id: ' + req.params.project, req)
         exit(res, 200,
           'Success your project is deleted',
           { project: null })
       })
       .catch(err => {
-        logger.Log(err.message || err)
+        logger.Log(err.message || err, req)
         exit(res, 401, 'error', err.message || err)
       })
     })
@@ -97,7 +97,7 @@ module.exports = function (app) {
           { project: project.SafeExport(projectObjTmp) })
       })
       .catch(err => {
-        logger.Log(err.message || err)
+        logger.Log(err.message || err, req)
         exit(res, 401, 'error', err.message || err)
       })
     })
@@ -120,7 +120,7 @@ module.exports = function (app) {
           { projects: allProjects })
       })
       .catch(err => {
-        logger.Log(err.message || err)
+        logger.Log(err.message || err, req)
         exit(res, 401, 'error', err.message || err)
       })
     })

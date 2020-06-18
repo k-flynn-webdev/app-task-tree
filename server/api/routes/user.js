@@ -16,7 +16,7 @@ module.exports = function (app) {
       return exit(res, 201, 'success', { data: found })
     })
     .catch(err => {
-      logger.Log(err.message || err)
+      logger.Log(err.message || err, req)
       exit(res, 400, 'error', err.message || err)
     })
   })
@@ -53,7 +53,7 @@ module.exports = function (app) {
         })
     })
     .catch(err => {
-      logger.Log(err.message || err)
+      logger.Log(err.message || err, req, req)
       exit(res, 401, 'error', err.message || err)
     })
   })
@@ -83,7 +83,7 @@ module.exports = function (app) {
         token: token.Create(userObjTmp) })
     })
     .catch(err => {
-      logger.Log(err.message || err)
+      logger.Log(err.message || err, req)
       exit(res, 422, 'error', err.message || err)
     })
   })
@@ -101,7 +101,7 @@ module.exports = function (app) {
       return exit(res, 201, result, result)
     })
     .catch(err => {
-      logger.Log(err.message || err)
+      logger.Log(err.message || err, req)
       exit(res, 400, 'error', err.message || err)
     })
   })
@@ -154,7 +154,7 @@ module.exports = function (app) {
         })
     })
     .catch(err => {
-      logger.Log(err.message || err)
+      logger.Log(err.message || err, req)
       exit(res, 401, 'error', err.message || err)
     })
   })
@@ -196,7 +196,7 @@ module.exports = function (app) {
         })
     })
     .catch(err => {
-      logger.Log(err.message || err)
+      logger.Log(err.message || err, req)
       exit(res, 401, 'error', err.message || err)
     })
   })
@@ -229,7 +229,7 @@ module.exports = function (app) {
         })
     })
     .catch(err => {
-      logger.Log(err.message || err)
+      logger.Log(err.message || err, req)
       exit(res, 401, 'error', err.message || err)
     })
   })
@@ -272,7 +272,7 @@ module.exports = function (app) {
        'Success a reset email has been sent.')
     })
     .catch(err => {
-      logger.Log(err.message || err)
+      logger.Log(err.message || err, req)
       exit(res, 401, 'error', err.message || err)
     })
   })
@@ -309,7 +309,7 @@ module.exports = function (app) {
           'Success a new password has been set, please re-login.')
       })
       .catch(err => {
-        logger.Log(err.message || err)
+        logger.Log(err.message || err, req)
         exit(res, 401, 'error', err.message || err)
       })
     })
