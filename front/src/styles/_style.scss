@@ -90,10 +90,15 @@
 
         &-data {
           flex: auto;
-          margin: 0 $margin-default;
+        }
+
+        &-progress,
+        &-data {
+          margin-right: $margin-default;
         }
 
         &-updated {
+          //font-size: $font-size;
           text-align: right;
         }
 

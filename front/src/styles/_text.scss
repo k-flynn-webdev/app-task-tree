@@ -18,6 +18,10 @@
   text-align: right;
 }
 
+.text-light {
+  font-weight: lighter;
+}
+
 .text-bold {
   font-weight: bolder;
 }
@@ -94,6 +98,7 @@ h2 {
 
 p,
 div,
+span,
 .text {
   @each $size, $value in $all-font-sizes {
     &.#{$size} {

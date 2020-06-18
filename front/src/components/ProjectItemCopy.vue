@@ -158,7 +158,7 @@ export default {
       return helpers.renderProgressNum(this.data.tasksDone, this.data.tasksTotal)
     },
     date: function () {
-      return helpers.renderTime(this.data.updated)
+      return helpers.renderDateTime(this.data.updated)
     },
     showDeleteConfirm: function () {
       return this.mode === modes.DELETE

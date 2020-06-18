@@ -19,7 +19,7 @@
         <div class="task__project__list__item-content"
              @click="onSelectProject">
 
-          <p class="task__project__list__item-progress">
+          <p class="task__project__list__item-progress hide-md-down">
             {{ progress }}
           </p>
 
@@ -28,7 +28,9 @@
           </p>
 
           <p class="task__project__list__item-updated">
-            {{ date }}
+            <small class="hide-xs">{{ dayMonth }}</small>
+            <small class="hide-md-down">/{{year }}</small>
+            <small class="hide-lg-down"> {{ time }} </small>
           </p>
 
         </div>
@@ -116,6 +118,18 @@ export default {
       return helpers.renderProgressNum(this.data.tasksDone, this.data.tasksTotal)
     },
     date: function () {
+      return helpers.renderDate(this.data.updated)
+    },
+    dayMonth: function () {
+      const tmp = this.date.split('/')
+      tmp.splice(tmp.length - 1, 1)
+      return tmp.join('/')
+    },
+    year: function () {
+      const tmp = this.date.split('/')
+      return tmp[tmp.length - 1]
+    },
+    time: function () {
       return helpers.renderTime(this.data.updated)
     },
     isEdit: function () {

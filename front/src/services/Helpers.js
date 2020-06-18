@@ -11,14 +11,34 @@ const timeDelay = (action, delay) => {
   }, delay)
 }
 
-const renderTime = (input) => {
-  if (!input || input === undefined) return 'No date'
+const renderDate = (input) => {
+  if (!input) return 'No date'
   const dateObj = new Date(input)
-  const dateString = dateObj.toLocaleDateString()
-  const isPM = (dateObj.getHours() > 12)
-  const hours = isPM ? dateObj.getHours() - 12 : dateObj.getHours()
+  return dateObj.toLocaleDateString()
+}
+
+const renderTime = (input) => {
+  if (!input) return 'No date'
+  const dateObj = new Date(input)
+  let hours = dateObj.getHours()
+  const isPM = (hours > 12)
+  if (isPM) {
+    hours = hours - 12
+  }
+  if (hours < 10) {
+    hours = '0' + hours
+  }
   const amPm = isPM ? ' pm' : ' am'
-  return dateString + ' ' + hours + ':' + dateObj.getMinutes() + amPm
+  let mins = dateObj.getMinutes()
+  if (mins < 10) {
+    mins = '0' + mins
+  }
+
+  return hours + ':' + mins + amPm
+}
+
+const renderDateTime = (input) => {
+  return renderDate(input) + ' ' + renderTime(input)
 }
 
 const renderProgressNum = (done, total) => {
@@ -33,7 +53,9 @@ const renderProgressPercent = (done, total) => {
 
 const helpers = {
   timeDelay,
-  renderTime,
+  renderDate: renderDate,
+  renderTime: renderTime,
+  renderDateTime: renderDateTime,
   renderProgressNum,
   renderProgressPercent
 }
