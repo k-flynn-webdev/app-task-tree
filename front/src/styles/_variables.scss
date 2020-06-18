@@ -113,3 +113,43 @@ $all-icon-nums: (
   icon-80: 80%,
   icon-90: 90%
 );
+
+$screen-xs: 320px;
+$screen-sm: 375px;
+$screen-md: 425px;
+$screen-lg: 768px;
+$screen-xl: 1024px;
+//$screen-xxl: 1400px;
+
+$all-screen-sizes: (
+  xs: $screen-xs,
+  sm: $screen-sm,
+  md: $screen-md,
+  lg: $screen-lg,
+  xl: $screen-xl,
+  //xxl: $screen-xxl,
+);
+
+@mixin screen-xs {
+  @media (max-width: $screen-xs - 1) { @content }
+}
+
+@mixin screen-sm {
+  @media (min-width: $screen-xs) and (max-width: $screen-sm - 1) { @content }
+}
+
+@mixin screen-md {
+  @media (min-width: $screen-sm) and (max-width: $screen-md - 1) { @content }
+}
+
+@mixin screen-lg {
+  @media (min-width: $screen-md) and (max-width: $screen-lg - 1) { @content }
+}
+
+@mixin screen-xl {
+  @media (min-width: $screen-lg) and (max-width: $screen-xl - 1) { @content }
+}
+
+@mixin screen-xxl {
+  @media (min-width: $screen-xl) and (max-width: 3000px) { @content }
+}

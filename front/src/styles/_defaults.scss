@@ -30,6 +30,109 @@ body {
   }
 }
 
+th,
+td,
+div {
+  text-align: center;
+  min-width: 3rem;
+}
+
+div,
+tr {
+  vertical-align: middle;
+  min-height: 3rem;
+}
+
+// screen show / hide / props //
+
+.hide-xs {
+  @include screen-xs {
+    display: none;
+  }
+}
+
+.hide-sm {
+  @include screen-sm {
+    display: none;
+  }
+}
+
+.hide-md {
+  @include screen-md {
+    display: none;
+  }
+}
+
+.hide-lg {
+  @include screen-lg {
+    display: none;
+  }
+}
+
+.hide-xl {
+  @include screen-xl {
+    display: none;
+  }
+}
+
+.hide-xxl {
+  @include screen-xxl {
+    display: none;
+  }
+}
+
+.hide-sm-down {
+  @extend .hide-xs;
+  @extend .hide-sm;
+}
+
+.hide-md-down {
+  @extend .hide-xs;
+  @extend .hide-sm;
+  @extend .hide-md;
+}
+
+.hide-lg-down {
+  @extend .hide-xs;
+  @extend .hide-sm;
+  @extend .hide-md;
+  @extend .hide-lg;
+}
+
+.hide-xl-down {
+  @extend .hide-xs;
+  @extend .hide-sm;
+  @extend .hide-md;
+  @extend .hide-lg;
+  @extend .hide-xl;
+}
+
+.hide-sm-up {
+  @extend .hide-sm;
+  @extend .hide-md;
+  @extend .hide-lg;
+  @extend .hide-xl;
+  @extend .hide-xxl;
+}
+
+.hide-md-up {
+  @extend .hide-md;
+  @extend .hide-lg;
+  @extend .hide-xl;
+  @extend .hide-xxl;
+}
+
+.hide-lg-up {
+  @extend .hide-lg;
+  @extend .hide-xl;
+  @extend .hide-xxl;
+}
+
+.hide-xl-up {
+  @extend .hide-xl;
+  @extend .hide-xxl;
+}
+
 .min-half {
   min-width: 50%;
 }
@@ -233,6 +336,10 @@ button {
 
   .bg-#{$color} {
     background-color: $value;
+  }
+
+  .border-#{$color} {
+    border: $border-size solid $value;
   }
 }
 
