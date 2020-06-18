@@ -9,7 +9,7 @@ body {
   font-size: $font-size;
   max-width: $icon-size;
   max-height: $icon-size;
-  vertical-align: middle;
+  //vertical-align: middle; // weird seems to hang from middle wtf?!
   color: inherit;
   -webkit-text-fill-color: inherit;
   transition: inherit;
@@ -28,34 +28,6 @@ body {
 
     width: $value;
   }
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-left {
-  text-align: left;
-}
-
-.text-right {
-  text-align: right;
-}
-
-.text-bold {
-  font-weight: bolder;
-}
-
-.name {
-  text-transform: capitalize;
-}
-
-.upper {
-  text-transform: uppercase;
-}
-
-.lower {
-  text-transform: lowercase;
 }
 
 .min-half {
@@ -172,7 +144,7 @@ body {
   display: inline-block;
 }
 
-.m-de {
+.margin {
   margin: $margin-default;
 }
 
@@ -184,29 +156,10 @@ body {
   margin: $unit-default * 2;
 }
 
-small,
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-text,
-span,
-div,
-.text,
-input,
-button {
-  font-size: $font-size;
-  color: $color-fore;
-  fill: $color-fore;
-  -webkit-text-fill-color: $color-fore;
-}
-
 // INPUTS && CONTROLS TO BE SEPARATED //
 
 input {
+  height: $unit-default * 1.4;
   background-color: transparent;
   border-style: solid;
   border-spacing: $border-size;
@@ -260,46 +213,6 @@ button {
 
     &:focus {
       outline: none;
-    }
-  }
-}
-
-// TEXT SIZES
-small {
-  font-size: $font-size-sm;
-  font-weight: lighter;
-}
-
-p,
-span {
-  font-size: $font-size;
-  font-weight: normal;
-}
-
-h5,
-h6 {
-  font-size: $font-size-md;
-  font-weight: bolder;
-}
-
-h3,
-h4 {
-  font-size: $font-size-xl;
-  font-weight: bolder;
-}
-
-h1,
-h2 {
-  font-size: $font-size-xl * 1.1;
-  font-weight: bolder;
-}
-
-p,
-div,
-.text {
-  @each $size, $value in $all-font-sizes {
-    &.#{$size} {
-      font-size: $value;
     }
   }
 }

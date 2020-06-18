@@ -8,12 +8,11 @@ import general from '../../constants/general'
 import status from '../../constants/status.js'
 
 export default {
-  /**
-   * A visual status animated bar
-   */
+  /** A visual status animated bar **/
   name: 'StatusBar',
   data () {
     return {
+      /** Managed status, controlled by the status prop changes **/
       statusUpdate: status.CLEAR
     }
   },

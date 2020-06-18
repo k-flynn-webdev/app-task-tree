@@ -45,12 +45,11 @@
       </div>
 
       <div class="task__project__list__item-option-bar-btn">
-        <button class="no-margin"
-          aria-label="open options"
+        <button aria-label="open options"
           title="open options"
           :class="{ 'DISABLED': options.show }"
           @click="openOptions">
-          <icOptions class="sm" />
+          <icOptions class="icon-70" />
         </button>
       </div>
 

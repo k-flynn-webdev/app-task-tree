@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css?family=Bungee|Open+Sans:400,700|Rubik:900&display=swap');
+
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-bold {
+  font-weight: bolder;
+}
+
+.name {
+  text-transform: capitalize;
+}
+
+.upper {
+  text-transform: uppercase;
+}
+
+.lower {
+  text-transform: lowercase;
+}
+
+.underline {
+  text-decoration-line: underline;
+}
+
+small,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+text,
+span,
+div,
+.text,
+input,
+button {
+  font-size: $font-size;
+  color: $color-fore;
+  fill: $color-fore;
+  -webkit-text-fill-color: $color-fore;
+  font-family: 'Open Sans', sans-serif;
+  line-height: $unit-default;
+}
+
+// TEXT SIZES
+small {
+  font-size: $font-size-sm;
+  font-weight: lighter;
+}
+
+p,
+span {
+  font-size: $font-size;
+  font-weight: normal;
+  padding-top: 0;
+  padding-bottom: $unit-default * 0.125;
+}
+
+h5,
+h6 {
+  font-size: $font-size-md;
+  font-weight: bolder;
+}
+
+h3,
+h4 {
+  font-size: $font-size-xl;
+  font-weight: bolder;
+}
+
+h1,
+h2 {
+  font-size: $font-size-xl * 1.1;
+  font-weight: bolder;
+}
+
+p,
+div,
+.text {
+  @each $size, $value in $all-font-sizes {
+    &.#{$size} {
+      font-size: $value;
+    }
+  }
+}
+
+button {
+  letter-spacing: 0.05em;
+  font-weight: bolder;
+}
+
+input {
+  line-height: $unit-default * 1.5;
+  font-size: $font-size * 1.15;
+}
