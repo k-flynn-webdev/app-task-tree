@@ -35,7 +35,8 @@
 
         <form class="task__project__list__item__edit"
               @submit.prevent="confirmEdit">
-          <input class="task__project__list__item__edit-input"
+          <input ref="itemEdit"
+              class="task__project__list__item__edit-input"
               type="text"
               :class="options.status"
               v-model="edit"
@@ -140,6 +141,7 @@ export default {
       this.options.mode = modes.EDIT
       this.options.showDelete = false
       this.options.showEdit = false
+      this.$nextTick(() => this.$refs.itemEdit.focus())
     },
     onModeDelete: function () {
       this.options.mode = modes.DELETE
