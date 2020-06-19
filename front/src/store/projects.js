@@ -1,7 +1,6 @@
 import Vue from 'vue'
-import ProjectService from '../services/ProjectService.js'
-
 import general from '../constants/general'
+import ProjectService from '../services/ProjectService.js'
 
 export default {
   namespaced: true,
@@ -67,7 +66,6 @@ export default {
     projectReplace: function (state, input) {
       for (let i = 0, max = state.projects.length; i < max; i++) {
         if (state.projects[i].id === input.id) {
-          // Vue.set(state.projects, i, input)
           state.projects.splice(i, 1, input)
           return state.projects[i]
         }
@@ -83,7 +81,6 @@ export default {
     projectRemove: function (state, input) {
       for (let i = 0, max = state.projects.length; i < max; i++) {
         if (state.projects[i].id === input.id) {
-          // Vue.delete(state.projects, i)
           state.projects.splice(i, 1)
           return input
         }

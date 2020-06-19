@@ -16,70 +16,6 @@
 
 .task {
   &__project {
-    //&__header {
-      //display: flex;
-      //flex-wrap: wrap;
-      //flex-direction: row;
-      //justify-items: center;
-
-      //&-name {
-      //  order: 0;
-      //}
-      //
-      //&-count {
-      //  order: 1;
-      //}
-      //
-      //&-user {
-      //  order: 3;
-      //
-      //  @mixin small-user {
-      //    font-size: $font-size-sm;
-      //    max-width: $unit-default * 5;
-      //    overflow: hidden;
-      //    margin-left: auto;
-      //  }
-      //
-      //  @include screen-xs {
-      //    @include small-user;
-      //  }
-      //  @include screen-sm {
-      //    @include small-user;
-      //  }
-      //  @include screen-md {
-      //    @include small-user;
-      //  }
-      //}
-      //
-      //&-switch {
-      //  order: 4;
-      //}
-      //
-      //&-input {
-      //  order: 5;
-      //
-      //  @mixin small-input {
-      //    display: block;
-      //    width: 100%;
-      //  }
-      //
-      //  @include screen-xs {
-      //    @include small-input;
-      //  }
-      //  @include screen-sm {
-      //    @include small-input;
-      //  }
-      //  @include screen-md {
-      //    @include small-input;
-      //  }
-      //}
-    //}
-
-
-
-
-
-
     &__list {
       margin: $margin-default 0;
       max-width: 98vw;
@@ -109,6 +45,10 @@
           }
           @include screen-sm {
             display: none;
+          }
+
+          &.on {
+            opacity: 1;
           }
         }
 
@@ -270,81 +210,4 @@
     text-align: center;
     margin: $margin-default;
   }
-
-  //.user,
-  //.project {
-  //  &__info {
-  //    &__mini {
-  //      //max-width: 95vw;
-  //      display: inline-block;
-  //
-  //      &-title {
-  //        overflow: hidden;
-  //        white-space: nowrap;
-  //        word-break: keep-all;
-  //        text-overflow: ellipsis;
-  //        //width: 75vw;
-  //        margin-right: $margin-default * 0.5;
-  //      }
-  //
-  //      &-name,
-  //      &-title,
-  //      &-count,
-  //      &-icon {
-  //        display: inline-block;
-  //      }
-  //
-  //      &-count {
-  //        margin: 0;
-  //        word-break: keep-all;
-  //        font-size: $font-size-md;
-  //        width: $unit-default * 4;
-  //        max-width: $unit-default * 4;
-
-        //  @mixin small-count {
-        //    font-size: $font-size;
-        //  }
-        //
-        //  @include screen-xs {
-        //    @include small-count;
-        //  }
-        //  @include screen-sm {
-        //    @include small-count;
-        //  }
-        //  @include screen-md {
-        //    @include small-count;
-        //  }
-        //}
-  //
-  //      &-icon {
-  //        vertical-align: middle;
-  //        max-width: $unit-default * 1.75;
-  //      }
-  //
-  //      &-name {
-  //        max-width: $unit-default * 20;
-  //        margin-right: $margin-default;
-  //        overflow: hidden;
-  //        white-space: nowrap;
-  //        text-overflow: ellipsis;
-  //        word-break: keep-all;
-  //
-  //        @mixin small-user-name {
-  //          font-size: $font-size-sm;
-  //          max-width: $unit-default * 2;
-  //        }
-  //
-  //        @include screen-xs {
-  //          @include small-user-name;
-  //        }
-  //        @include screen-sm {
-  //          @include small-user-name;
-  //        }
-  //        @include screen-md {
-  //          @include small-user-name;
-  //        }
-  //      }
-  //    }
-  //  }
-  //}
 }

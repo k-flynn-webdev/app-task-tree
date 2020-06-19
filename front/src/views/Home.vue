@@ -21,6 +21,8 @@
 
     <ProjectsList v-if="isProjects" />
 
+    <TasksList v-if="isTasks" />
+
 <!--    <Context />-->
 
 <!--    <div class="flex-row">-->
@@ -97,6 +99,9 @@ import UserInfoMini from '../components/UserInfoMini'
 import ProjectsList from '../components/ProjectsList'
 import ProjectInfoName from '../components/ProjectInfoName'
 import ProjectTaskSwitch from '../components/ProjectTaskSwitch'
+
+import TasksList from '../components/TasksList'
+
 // import icAdd from '../assets/icons/ic_add'
 // import Context from '../components/Context'
 // import User from '../components/User.vue'
@@ -112,7 +117,8 @@ export default {
     UserInfoMini,
     ProjectsList,
     ProjectInfoName,
-    ProjectTaskSwitch
+    ProjectTaskSwitch,
+    TasksList
     // Context
     // icAdd
     // User,
@@ -135,9 +141,9 @@ export default {
     }
   },
   methods: {
-    updateMode: function (input) {
-      this.mode = modes.filter(item => item === input)[0]
-    }
+    // updateMode: function (input) {
+    //   this.mode = modes.filter(item => item === input)[0]
+    // }
   }
 }
 </script>

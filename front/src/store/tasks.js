@@ -65,7 +65,7 @@ export default {
     taskReplace: function (state, input) {
       for (let i = 0, max = state.tasks.length; i < max; i++) {
         if (state.tasks[i].id === input.id) {
-          Vue.set(state.tasks, i, input)
+          state.tasks.splice(i, 1, input)
           return state.tasks[i]
         }
       }
@@ -80,7 +80,7 @@ export default {
     taskRemove: function (state, input) {
       for (let i = 0, max = state.tasks.length; i < max; i++) {
         if (state.tasks[i].id === input.id) {
-          Vue.delete(state.tasks, i)
+          state.tasks.splice(i, 1)
           return input
         }
       }
@@ -138,16 +138,17 @@ export default {
         })
     },
     /**
-     * Get all task items with of the user ID
+     * Get all task items related to a project ID
      *
      * @param {object}    context
-     * @param {object}    input user/project id
+     * @param {object}    input project id
      * @returns {promise} all tasks
      */
     getTasksByUserOrProject: function (context, input) {
       return TaskService.all(input)
         .then(res => {
-          return context.commit('taskSet', res.data.data.tasks)
+          context.commit('taskSet', res.data.data.tasks)
+          return res.data.data.tasks
         })
     }
     // for delayed/time consuming actions

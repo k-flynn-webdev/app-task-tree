@@ -99,7 +99,11 @@ $all-colours: (
   error: $color-error,
   fore: $color-fore,
   select: $color-select,
-  disabled: $color-status-disabled
+  disabled: $color-status-disabled,
+  disabled-status: $color-status-disabled,
+  waiting-status: $color-status-waiting,
+  success-status: $color-status-success,
+  error-status: $color-status-error
 );
 
 $all-icon-nums: (

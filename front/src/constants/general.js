@@ -12,6 +12,10 @@ const DEFAULT_PROJECT_NO_ID = (user = -1) => {
   return { name: 'Project', user: user, tasksDone: 0, tasksTotal: 0 }
 }
 
+const DEFAULT_TASK = (user = -1) => {
+  return { id: -1, text: 'Task', project: -1, user: user, isDone: false }
+}
+
 export default {
   DELAY,
   DELAY_BLIP,
@@ -19,5 +23,6 @@ export default {
   DELAY_SUCCESS,
   DELAY_ERROR,
   DEFAULT_PROJECT,
-  DEFAULT_PROJECT_NO_ID
+  DEFAULT_PROJECT_NO_ID,
+  DEFAULT_TASK
 }
