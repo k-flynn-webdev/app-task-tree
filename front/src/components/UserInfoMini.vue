@@ -1,9 +1,9 @@
 <template>
-  <div class="user__info__mini flex-row">
-    <p class="user__info__mini-name upper md text-bold">
-      {{ user.name }}
-    </p>
-    <icUser class="user__info__mini-icon" />
+  <div class="task__project__header__user flex-row no-wrap">
+      <p class="task__project__header__user-name upper text-bold hide-sm-down">
+        {{ user.name }}
+      </p>
+      <icUser class="task__project__header__user-icon" />
   </div>
 </template>
 

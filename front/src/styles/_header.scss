@@ -1,0 +1,59 @@
+.task__project__header {
+  display: flex;
+  flex-wrap: wrap-reverse;
+
+  &__info {
+    flex-grow: 2;
+    max-width: 100%;
+
+    &-name {
+      font-size: $font-size-lg;
+      @include overflow-text-hide;
+
+      @mixin small-size {
+        font-size: $font-size-md * 1.15;
+      }
+
+      @include screen-xs {
+        @include small-size;
+      }
+      @include screen-sm {
+        @include small-size;
+      }
+    }
+
+    &-count {
+      min-width: 4rem;
+      word-break: keep-all;
+      text-align: right;
+      font-size: $font-size-md;
+      margin: $margin-default * 0.5 0;
+
+      @mixin small-size {
+        font-size: $font-size;
+      }
+
+      @include screen-xs {
+        @include small-size;
+      }
+      @include screen-sm {
+        @include small-size;
+      }
+    }
+  }
+
+  &__user {
+    margin-left: auto;
+
+    &-name {
+      @include overflow-text-hide;
+
+      max-width: $unit-default * 5;
+    }
+
+    &-icon {
+      margin: $margin-default;
+      width: $unit-default * 2;
+    }
+  }
+}

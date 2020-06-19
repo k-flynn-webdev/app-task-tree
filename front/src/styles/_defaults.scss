@@ -1,3 +1,16 @@
+// MIXINS //
+
+@mixin overflow-text-hide {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
+
+
+
+
 body {
   padding: $padding-default;
   background-color: $color-bg;
@@ -21,6 +34,8 @@ body {
   font-size: $font-size;
   max-width: $icon-size;
   max-height: $icon-size;
+  min-width: $icon-size * 0.5;
+  min-height: $icon-size * 0.5;
   //vertical-align: middle; // weird seems to hang from middle wtf?!
   color: inherit;
   -webkit-text-fill-color: inherit;
@@ -262,6 +277,7 @@ body {
 
 input {
   height: $unit-default * 1.4;
+  min-width: $unit-default * 2;
   background-color: transparent;
   border-style: solid;
   border-spacing: $border-size;
@@ -360,10 +376,10 @@ button {
       transition: right 0.6s;
 
       @include screen-xs {
-        height: $unit-default;
+        height: $unit-default * 0.75;
       }
       @include screen-sm {
-        height: $unit-default;
+        height: $unit-default * 0.75;
       }
     }
   }

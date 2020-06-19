@@ -16,10 +16,69 @@
 
 .task {
   &__project {
+    //&__header {
+      //display: flex;
+      //flex-wrap: wrap;
+      //flex-direction: row;
+      //justify-items: center;
+
+      //&-name {
+      //  order: 0;
+      //}
+      //
+      //&-count {
+      //  order: 1;
+      //}
+      //
+      //&-user {
+      //  order: 3;
+      //
+      //  @mixin small-user {
+      //    font-size: $font-size-sm;
+      //    max-width: $unit-default * 5;
+      //    overflow: hidden;
+      //    margin-left: auto;
+      //  }
+      //
+      //  @include screen-xs {
+      //    @include small-user;
+      //  }
+      //  @include screen-sm {
+      //    @include small-user;
+      //  }
+      //  @include screen-md {
+      //    @include small-user;
+      //  }
+      //}
+      //
+      //&-switch {
+      //  order: 4;
+      //}
+      //
+      //&-input {
+      //  order: 5;
+      //
+      //  @mixin small-input {
+      //    display: block;
+      //    width: 100%;
+      //  }
+      //
+      //  @include screen-xs {
+      //    @include small-input;
+      //  }
+      //  @include screen-sm {
+      //    @include small-input;
+      //  }
+      //  @include screen-md {
+      //    @include small-input;
+      //  }
+      //}
+    //}
+
+
     &__input-bar {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
+      display: none;
+      max-width: $unit-default * 20;
 
       form {
         display: flex;
@@ -41,14 +100,14 @@
         padding: $padding-default;
         text-transform: uppercase;
         background-color: $color-mid;
-        color: rgba($color-fore, 0.5);
-        -webkit-text-fill-color: rgba($color-fore, 0.5);
+        color: rgba($color-fore, $color-alpha);
+        -webkit-text-fill-color: rgba($color-fore, $color-alpha);
         border: $border-size solid $color-bg;
         border-radius: $border-radius;
         transition: $transition-default * 0.5;
 
         &.ACTIVE {
-          color: rgba($color-shadow, 0.5);
+          color: rgba($color-shadow, $color-alpha);
           -webkit-text-fill-color: rgba($color-shadow, 1);
           background-color: $color-success;
           border: $border-size solid $color-success;
@@ -106,19 +165,21 @@
         &-option-bar-btn {
           min-width: $unit-default * 2;
 
+          @mixin options-resize ($value) {
+            width: $unit-default * $value;
+            min-width: $unit-default * $value;
+          }
+
           @include screen-xs {
-            width: $unit-default * 0.9;
-            min-width: $unit-default * 0.9;
+            @include options-resize(0.9);
           }
 
           @include screen-sm {
-            width: $unit-default;
-            min-width: $unit-default;
+            @include options-resize(1);
           }
 
           @include screen-md {
-            width: $unit-default * 1.5;
-            min-width: $unit-default * 1.5;
+            @include options-resize(1.5);
           }
         }
 
@@ -131,20 +192,25 @@
           margin-right: $margin-default;
         }
 
+        &-progress {
+          min-width: max-content;
+        }
+
         &-updated {
           text-align: right;
+          min-width: max-content;
         }
 
         &-content {
-          padding: $padding-default * 0.33 $padding-default;
+          flex: auto;
+          z-index: 1;
           display: flex;
           flex-direction: row;
-          flex: auto;
-          border-width: $border-size;
           border-style: solid;
+          border-width: $border-size;
           border-color: transparent;
-          z-index: 1;
           transition: $transition-default;
+          padding: $padding-default * 0.33 $padding-default;
         }
 
         &-bg {
@@ -233,6 +299,16 @@
             margin-right: 0;
             margin-left: $margin-default * 3;
           }
+
+          &-confirm {
+            @include screen-xs {
+              margin-left: $margin-default;
+
+              button {
+                margin-right: 0;
+              }
+            }
+          }
         }
       }
     }
@@ -244,23 +320,80 @@
     margin: $margin-default;
   }
 
-  .user,
-  .project {
-    &__info {
-      &__mini {
-        margin: $margin-default 0;
-        min-width: $unit-default * 5;
+  //.user,
+  //.project {
+  //  &__info {
+  //    &__mini {
+  //      //max-width: 95vw;
+  //      display: inline-block;
+  //
+  //      &-title {
+  //        overflow: hidden;
+  //        white-space: nowrap;
+  //        word-break: keep-all;
+  //        text-overflow: ellipsis;
+  //        //width: 75vw;
+  //        margin-right: $margin-default * 0.5;
+  //      }
+  //
+  //      &-name,
+  //      &-title,
+  //      &-count,
+  //      &-icon {
+  //        display: inline-block;
+  //      }
+  //
+  //      &-count {
+  //        margin: 0;
+  //        word-break: keep-all;
+  //        font-size: $font-size-md;
+  //        width: $unit-default * 4;
+  //        max-width: $unit-default * 4;
 
-        &-name,
-        &-count,
-        &-icon {
-          display: inline-block;
-        }
-
-        &-name {
-          margin-right: $margin-default;
-        }
-      }
-    }
-  }
+        //  @mixin small-count {
+        //    font-size: $font-size;
+        //  }
+        //
+        //  @include screen-xs {
+        //    @include small-count;
+        //  }
+        //  @include screen-sm {
+        //    @include small-count;
+        //  }
+        //  @include screen-md {
+        //    @include small-count;
+        //  }
+        //}
+  //
+  //      &-icon {
+  //        vertical-align: middle;
+  //        max-width: $unit-default * 1.75;
+  //      }
+  //
+  //      &-name {
+  //        max-width: $unit-default * 20;
+  //        margin-right: $margin-default;
+  //        overflow: hidden;
+  //        white-space: nowrap;
+  //        text-overflow: ellipsis;
+  //        word-break: keep-all;
+  //
+  //        @mixin small-user-name {
+  //          font-size: $font-size-sm;
+  //          max-width: $unit-default * 2;
+  //        }
+  //
+  //        @include screen-xs {
+  //          @include small-user-name;
+  //        }
+  //        @include screen-sm {
+  //          @include small-user-name;
+  //        }
+  //        @include screen-md {
+  //          @include small-user-name;
+  //        }
+  //      }
+  //    }
+  //  }
+  //}
 }

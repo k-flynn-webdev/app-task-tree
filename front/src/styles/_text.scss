@@ -56,6 +56,7 @@ div,
 .text,
 input,
 button {
+  word-break: break-all;
   font-size: $font-size;
   color: $color-fore;
   fill: $color-fore;

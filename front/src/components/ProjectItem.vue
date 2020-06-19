@@ -18,7 +18,7 @@
         <div class="task__project__list__item-content"
              @click="onSelectProject">
 
-          <p class="task__project__list__item-progress hide-md-down">
+          <p class="task__project__list__item-progress hide-xs">
             {{ progress }}
           </p>
 
@@ -27,7 +27,7 @@
           </p>
 
           <p class="task__project__list__item-updated">
-            <small class="hide-xs">{{ dayMonth }}</small>
+            <small class="hide-sm-down">{{ dayMonth }}</small>
             <small class="hide-md-down">/{{year }}</small>
             <small class="hide-lg-down"> {{ time }} </small>
           </p>

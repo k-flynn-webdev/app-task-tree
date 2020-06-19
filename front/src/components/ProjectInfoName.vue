@@ -1,9 +1,9 @@
 <template>
-  <div class="project__info__mini">
-    <p class="project__info__mini-name name lg text-bold">
+  <div class="task__project__header__info flex-row no-wrap">
+    <p class="task__project__header__info-name name text-bold">
       {{ project.name }}
     </p>
-    <p class="project__info__mini-count lg text-bold">
+    <p class="task__project__header__info-count text-bold">
       ({{ project.tasksTotal }}/{{ project.tasksDone }})
     </p>
   </div>
@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: 'ProjectInfoMini',
+  name: 'ProjectInfoName',
   computed: {
     project: function () {
       return this.$store.getters['projects/current']

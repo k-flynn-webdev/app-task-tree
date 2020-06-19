@@ -1,25 +1,27 @@
 <template>
-    <div class="task__project__input-bar">
+  <div class="task__project__input-bar">
+    <div class="flex-row no-wrap">
 
-      <form class="relative flex-auto"
-            @submit.prevent="submitInput">
+        <form class="relative flex-auto"
+              @submit.prevent="submitInput">
 
-        <StatusBar :status="status" />
-        <input type="text"
-               v-model="input"
-               :class="status"
-               @input="resetStatus">
+          <StatusBar :status="status" />
+          <input type="text"
+                 v-model="input"
+                 :class="status"
+                 @input="resetStatus">
 
-      </form>
+        </form>
 
-      <button aria-label="submit"
-              title="submit"
-              class="no-margin-x text-right"
-              :class="[ status, !isValid? 'DISABLED' : '' ]"
-              @click="submitInput">
-        <icTick alt="submit" class="md" />
-      </button>
+        <button aria-label="submit"
+                title="submit"
+                class="no-margin-x text-right"
+                :class="[ status, !isValid? 'DISABLED' : '' ]"
+                @click="submitInput">
+          <icTick alt="submit" class="md" />
+        </button>
 
+      </div>
     </div>
 </template>
 
