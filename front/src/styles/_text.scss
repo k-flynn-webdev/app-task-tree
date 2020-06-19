@@ -65,6 +65,10 @@ button {
   line-height: $unit-default;
 }
 
+.break-word {
+  word-break: break-word;
+}
+
 // TEXT SIZES
 small {
   font-size: $font-size-sm;

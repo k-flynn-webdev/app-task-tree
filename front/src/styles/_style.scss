@@ -94,6 +94,7 @@
 
         &-data {
           flex: auto;
+          word-break: break-word;
         }
 
         &-progress,
@@ -227,5 +228,9 @@
   &__footer {
     text-align: center;
     margin: $margin-default;
+  }
+
+  &__footer {
+    padding-top: $unit-default * 5;
   }
 }

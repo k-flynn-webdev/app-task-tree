@@ -12,6 +12,18 @@
 
     </transition-group>
 
+    <div v-if="project.id < 0"
+         class="text-center">
+      <p class="break-word"> No Project found for account </p>
+      <p class="break-word"> Create a project first before creating a task </p>
+    </div>
+
+    <div v-if="project.id >= 0 && tasks.length < 1"
+         class="text-center">
+      <p class="break-word"> No Tasks found for this project </p>
+      <p class="break-word"> Create a task by typing in a description above </p>
+    </div>
+
   </div>
 </template>
 

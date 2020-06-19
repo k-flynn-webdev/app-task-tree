@@ -5,7 +5,7 @@ import ProjectService from '../services/ProjectService.js'
 export default {
   namespaced: true,
   state: {
-    projects: [general.DEFAULT_PROJECT()],
+    projects: [],
     current: general.DEFAULT_PROJECT()
   },
   getters: {
@@ -173,11 +173,7 @@ export default {
     getProjectsByUserId: function (context, input) {
       return ProjectService.all(input)
         .then(res => {
-          if (res.data.data.projects.length < 1) {
-            const temp = general.DEFAULT_PROJECT(input.user)
-            return context.dispatch('create', temp)
-          }
-
+          if (res.data.data.projects.length < 1) return
           context.commit('projectSet', res.data.data.projects)
           return context.commit('projectCurrent', context.getters.projects[0])
         })

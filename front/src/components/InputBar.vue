@@ -61,6 +61,13 @@ export default {
   },
   watch: {
     mode: function (val, pre) {
+      this.status = status.CLEAR
+
+      if (this.mode === modes.TASKS) {
+        if (this.project.id < 0) {
+          this.status = status.DISABLED
+        }
+      }
       // this.reset()
     }
   },

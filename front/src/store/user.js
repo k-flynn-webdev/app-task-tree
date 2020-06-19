@@ -45,7 +45,8 @@ export default {
     createAnon: function (context) {
       return UserService.createAnon()
         .then(res => {
-          return context.commit('user', res.data.data.account)
+          context.commit('user', res.data.data.account)
+          return res.data.data.account
         })
     }
     // for delayed/time consuming actions
