@@ -159,10 +159,8 @@ export default {
           helpers.timeDelay(() => {
             this.resetStatus()
           }, general.DELAY_SUCCESS + general.DELAY)
-        })
-        .then(() => {
-          return this.$store.dispatch('projects/getProjectById',
-            { id: this.data.project })
+
+          return this.getLatestProject()
         })
         .catch(err => this.handleError(err))
     },
@@ -229,6 +227,8 @@ export default {
           helpers.timeDelay(() => {
             this.resetStatus()
           }, general.DELAY_SUCCESS + general.DELAY)
+
+          return this.getLatestProject()
         })
         .catch(err => this.handleError(err))
     },
@@ -266,6 +266,10 @@ export default {
     },
     resetMode: function () {
       this.options.mode = status.CLEAR
+    },
+    getLatestProject: function () {
+      return this.$store.dispatch('projects/getProjectById',
+        { id: this.data.project })
     },
     handleError: function (err) {
       this.options.status = status.ERROR
