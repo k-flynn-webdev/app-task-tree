@@ -6,11 +6,11 @@
   }
 
   @include screen-sm {
-    margin: 0 $margin-default * 0.5;
+    margin: 0 $margin-default * 0.35;
   }
 
   @include screen-xs {
-    margin: 0 $margin-default * 0.5;
+    margin: 0 $margin-default * 0.1;
   }
 }
 
@@ -39,27 +39,20 @@
         &-status {
           opacity: $color-alpha;
           transition: $transition-default;
+        }
 
-          @include screen-xs {
-            display: none;
-          }
-          @include screen-sm {
-            display: none;
-          }
+        &.TASK &-status {
+          opacity: 1;
+        }
 
-          &.on {
-            opacity: 1;
-          }
+        @mixin options-resize ($value) {
+          width: $unit-default * $value;
+          min-width: $unit-default * $value;
         }
 
         &-status,
         &-option-bar-btn {
           min-width: $unit-default * 2;
-
-          @mixin options-resize ($value) {
-            width: $unit-default * $value;
-            min-width: $unit-default * $value;
-          }
 
           @include screen-xs {
             @include options-resize(0.9);
@@ -71,6 +64,26 @@
 
           @include screen-md {
             @include options-resize(1.5);
+          }
+        }
+
+        &.TASK & {
+          &-status {
+            &:hover {
+              transform: scale($hover-scale);
+            }
+
+            @include screen-xs {
+              @include options-resize(1.2);
+            }
+
+            @include screen-sm {
+              @include options-resize(1.4);
+            }
+
+            @include screen-md {
+              @include options-resize(1.5);
+            }
           }
         }
 

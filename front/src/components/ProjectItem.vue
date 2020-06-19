@@ -7,7 +7,7 @@
          'EDIT': isEdit,
          'DELETE': isDelete }">
 
-      <div class="task__project__list__item-status text-left"
+      <div class="task__project__list__item-status text-left hide-sm-down"
         @click="onSelectProject">
         <icDone v-if="data.isDone" class="xs transition" />
         <icRound v-else class="xs transition" />

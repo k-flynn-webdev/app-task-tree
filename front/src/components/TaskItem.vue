@@ -2,7 +2,7 @@
 
   <li class="list-item">
 
-    <div class="task__project__list__item"
+    <div class="task__project__list__item TASK"
          :class="{ 'EDIT': isEdit,
          'DELETE': isDelete }">
 
@@ -142,6 +142,8 @@ export default {
   },
   methods: {
     onSelectTask: function () {
+      if (this.options.status !== status.CLEAR) return
+
       const taskUpdateBool =
         { id: this.data.id, isDone: !this.data.isDone }
 
