@@ -23,8 +23,9 @@ module.exports = function (app) {
     task.Create(req.body)
     .then(({ insertId }) => task.GetTaskByID(insertId))
     .then(newTask => mysqlVal(newTask))
-      // todo we need to update project count!!
-      .then(taskObj => {
+    .then(taskObj => {
+      app.emit('UPDATE-PROJECT-PROGRESS', { project: taskObj.project })
+
       logger.Log('Task created, id: ' + taskObj.id, req)
       exit(res, 200,
           'Success your task is created',
@@ -51,6 +52,11 @@ module.exports = function (app) {
       // todo if setting isDone (true|false) we need to update project isDone progress count!!
     .then(taskObj => {
       let taskObjTmp = mysqlVal(taskObj)
+
+      if (has.hasAnItem(req.body.isDone)) {
+        app.emit('UPDATE-PROJECT-PROGRESS', { project: taskObjTmp.project })
+      }
+
       logger.Log('Task updated, id: ' + taskObjTmp.id, req)
       exit(res, 200,
         'Success your task is updated',
@@ -71,9 +77,16 @@ module.exports = function (app) {
       // todo this will need securing so
       //  random peeps can't delete other items
       //  check for user token and integrate
+      let taskObjTmp = null
 
-      task.Delete(req.params.task)
+      task.GetTaskByID(req.params.task)
       .then(taskObj => {
+        taskObjTmp = mysqlVal(taskObj)
+        return task.Delete(req.params.task)
+      })
+      .then(() => {
+        app.emit('UPDATE-PROJECT-PROGRESS', { project: taskObjTmp.project })
+
         logger.Log('Task deleted, id: ' + req.params.task, req)
         exit(res, 200,
           'Success your task is deleted')

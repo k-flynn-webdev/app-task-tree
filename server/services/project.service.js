@@ -75,7 +75,7 @@ exports.Create = Create
  * @param   {object}  project data
  * @return  {object}  project object
  */
-function Update({ id, name, user, total: tasksTotal, completed: tasksDone, isDone }) {
+function Update({ id, name, user, tasksTotal, tasksDone, isDone }) {
   const JOIN_CHAR = ','
   let tmpSQLVars = []
   let tmpSQLStart = 'UPDATE ' + DB_PROJECTS + DB_SET
