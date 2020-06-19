@@ -45,6 +45,11 @@
           opacity: 1;
         }
 
+        &.COMPLETE &-status {
+          opacity: 1;
+          fill: $color-status-success;
+        }
+
         @mixin options-resize ($value) {
           width: $unit-default * $value;
           min-width: $unit-default * $value;

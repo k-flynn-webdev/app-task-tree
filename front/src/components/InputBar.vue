@@ -101,8 +101,16 @@ export default {
           helpers.timeDelay(() => {
             this.reset()
           }, general.DELAY_SUCCESS)
+
+          if (this.mode === modes.TASKS) {
+            return this.getLatestProject()
+          }
         })
         .catch(err => this.handleError(err))
+    },
+    getLatestProject: function () {
+      return this.$store.dispatch('projects/getProjectById',
+        { id: this.project.id })
     },
     handleError: function (err) {
       this.status = status.ERROR

@@ -27,7 +27,9 @@ function UpdateProjectProgress ({ project }) {
       }
 
       if (projectUpdate.tasksDone === projectUpdate.tasksTotal) {
-        projectUpdate.isDone = true
+        if (projectUpdate.tasksTotal > 0){
+          projectUpdate.isDone = true
+        }
       }
 
      return projects.Update(projectUpdate)
