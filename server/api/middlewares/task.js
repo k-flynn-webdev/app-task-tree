@@ -17,8 +17,11 @@ const exit = require('../../services/exit.js')
 function Create(req, res, next) {
 
   if (!checkText.required(req, res)) return
+  if (!checkText.valid(req, res)) return
   if (!checkUser.required(req, res)) return
+  if (!checkUser.valid(req, res)) return
   if (!checkProject.required(req, res)) return
+  if (!checkProject.valid(req, res)) return
 
   next()
 }

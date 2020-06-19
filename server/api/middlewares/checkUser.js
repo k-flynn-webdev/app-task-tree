@@ -33,6 +33,11 @@ function valid(req, res) {
       exit(res, 422, 'The user must be valid.')
       return false
     }
+
+    if (req.body.user < 0) {
+      exit(res, 422, 'The user must be valid.')
+      return false
+    }
   }
 
   return true

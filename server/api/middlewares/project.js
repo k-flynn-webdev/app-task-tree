@@ -16,7 +16,9 @@ const exit = require('../../services/exit.js')
 function Create(req, res, next) {
 
   if (!checkName.required(req, res)) return
+  if (!checkName.valid(req, res)) return
   if (!checkUser.required(req, res)) return
+  if (!checkUser.valid(req, res)) return
 
   next()
 }

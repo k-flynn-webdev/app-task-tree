@@ -6,6 +6,8 @@ const user = require('../../services/user.service.js')
 const token = require('../../services/token.service.js')
 const mysqlVal = require('../../helpers/MYSQL_value.js')
 const prepareMiddle = require('../middlewares/prepare.js')
+const constants = require('../../constants/index')
+
 
 module.exports = function (app) {
 
@@ -16,18 +18,22 @@ module.exports = function (app) {
    *    @params { no password, no email, no name }
    *    @return { id }
    */
-  app.post('/api/user/anon', function (req, res) {
+  app.post(constants.paths.API_USER_ANON, function (req, res) {
 
     let userObjTmp
 
-    user.Create({  name: 'anon', email: 'anon', password: 'anon' })
+    user.Create({
+      name: constants.vars.ANON,
+      email: constants.vars.ANON,
+      password: constants.vars.ANON
+    })
     .then(({ insertId }) => user.GetUserByID(insertId))
     .then(userObj => {
       userObjTmp = mysqlVal(userObj)
       return userObjTmp
     })
     .then(userObj => {
-      app.emit('ACCOUNT_CREATE_ANON', userObj)
+      app.emit(constants.events.CREATE_ACCOUNT_ANON, userObj)
 
       exit(res, 200, 'Success your Account is created',
         {

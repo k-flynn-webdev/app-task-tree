@@ -20,8 +20,11 @@ const RECOVER_LENGTH = 50
 function Create(req, res, next) {
 
   if (!checkName.required(req, res)) return
+  if (!checkName.valid(req, res)) return
   if (!checkEmail.required(req, res)) return
+  if (!checkEmail.valid(req, res)) return
   if (!checkPassword.required(req, res)) return
+  if (!checkPassword.valid(req, res)) return
 
   next()
 }

@@ -33,6 +33,11 @@ function valid(req, res) {
       exit(res, 422, 'The project must be valid.')
       return false
     }
+
+    if (req.body.project < 0) {
+      exit(res, 422, 'The project must be valid.')
+      return false
+    }
   }
 
   return true

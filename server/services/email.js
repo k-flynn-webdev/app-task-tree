@@ -1,3 +1,4 @@
+const constants = require('../constants/index')
 const mailConfig = require('../config/config').mail
 const logger = require('./logger.js')
 const mailgun = require('mailgun-js')({
@@ -5,11 +6,6 @@ const mailgun = require('mailgun-js')({
   domain: mailConfig.domain,
   host: mailConfig.host
 })
-
-const ACCOUNT_RESET = 'ACCOUNT_RESET'
-const ACCOUNT_VERIFY = 'ACCOUNT_VERIFY'
-const ACCOUNT_CREATE = 'ACCOUNT_CREATE'
-const ACCOUNT_UPDATE = 'ACCOUNT_UPDATE'
 
 let appTemp = null
 let hasInit = false
@@ -19,10 +15,10 @@ function Init(app) {
     appTemp = app
 
     if (mailConfig.active){
-      app.on(ACCOUNT_CREATE, AccountCreate)
-      app.on(ACCOUNT_VERIFY, AccountVerify)
-      app.on(ACCOUNT_RESET, AccountReset)
-      app.on(ACCOUNT_UPDATE, AccountUpdate)
+      app.on(constants.events.CREATE_ACCOUNT, AccountCreate)
+      app.on(constants.events.VERIFY_ACCOUNT, AccountVerify)
+      app.on(constants.events.RESET_ACCOUNT, AccountReset)
+      app.on(constants.events.UPDATED_ACCOUNT, AccountUpdate)
     }
 
     hasInit = true

@@ -6,32 +6,22 @@ const user = require('../../services/user.service.js')
 const token = require('../../services/token.service.js')
 const mysqlVal = require('../../helpers/MYSQL_value.js')
 const prepareMiddle = require('../middlewares/prepare.js')
+const constants = require('../../constants/index')
 
 module.exports = function (app) {
-
-  app.post('/api/user/byemail', function (req, res) {
-
-    user.GetUserByEmail(req.body.email)
-    .then(found => {
-      return exit(res, 201, 'success', { data: found })
-    })
-    .catch(err => {
-      logger.Log(err.message || err, req)
-      exit(res, 400, 'error', err.message || err)
-    })
-  })
 
   /**
    * Create a user account & return a token key
    */
-  app.post('/api/user', userMiddle.Create, prepareMiddle, function (req, res) {
+  app.post(constants.paths.API_USER,
+    userMiddle.Create, prepareMiddle, function (req, res) {
 
     let userObjTmp
 
     user.GetUserByEmail(req.body.email)
     .then(found => {
       if (found.length > 0) {
-        throw new Error('Email already in use.')
+        throw new Error(constants.errors.EMAIL_IN_USE)
       }
 
       return user.Create(req.body)
@@ -44,9 +34,9 @@ module.exports = function (app) {
       return user.Update({ id: userObjTmp.id, verify: userObjTmp.verify })
     })
     .then(() => {
-      app.emit('ACCOUNT_CREATE', userObjTmp)
+      app.emit(constants.events.CREATE_ACCOUNT, userObjTmp)
 
-      exit(res, 200, 'Success your Account is created',
+      exit(res, 200, constants.messages.SUCCESS_CREATED_ACCOUNT,
         {
           account: user.SafeExport(userObjTmp),
           token: token.Create(userObjTmp)
@@ -61,14 +51,15 @@ module.exports = function (app) {
   /**
    * Login a user account & return a token key
    */
-  app.post('/api/user/login', userMiddle.Login, prepareMiddle, function (req, res) {
+  app.post(constants.paths.API_USER_LOGIN,
+    userMiddle.Login, prepareMiddle, function (req, res) {
 
     let userObjTmp = null
 
     user.GetUserByEmail(req.body.email)
     .then(userObj => {
       if (!userObj || userObj.length < 1) {
-        throw new Error('Account does not exist, please contact support.')
+        throw new Error(constants.errors.ACCOUNT_MISSING)
       }
 
       userObjTmp = mysqlVal(userObj)
@@ -76,9 +67,9 @@ module.exports = function (app) {
     })
     .then(() => user.Update({ id: userObjTmp.id, login: true }))
     .then(() => {
-      app.emit('ACCOUNT_LOGIN', userObjTmp)
+      app.emit(constants.events.LOGIN_ACCOUNT, userObjTmp)
 
-      exit(res, 200, 'Success Account login.', {
+      exit(res, 200, constants.messages.SUCCESS_LOGIN_ACCOUNT, {
         account: user.SafeExport(userObjTmp),
         token: token.Create(userObjTmp) })
     })
@@ -91,12 +82,12 @@ module.exports = function (app) {
   /**
    * Logout a user account & deny token from use
    */
-  app.get('/api/user/Logout', token.Logout, function (req, res) {
+  app.get(constants.paths.API_USER_LOGOUT, token.Logout, function (req, res) {
 
     token.AddTokenToBlackList(req)
     .then(result => {
 
-      app.emit('ACCOUNT_LOGOUT', result)
+      app.emit(constants.events.LOGOUT_ACCOUNT, result)
 
       return exit(res, 201, result, result)
     })
@@ -109,26 +100,25 @@ module.exports = function (app) {
   /**
    * Update a user account
    */
-  app.patch('/api/user', userMiddle.Update, token.Required, prepareMiddle,
-    function (req, res) {
+  app.patch(constants.paths.API_USER, userMiddle.Update,
+    token.Required, prepareMiddle, function (req, res) {
 
     let userObjTmp = null
 
     user.GetUserByID(req.body.token.id)
     .then(userObj => {
       if (!userObj || userObj.length < 1) {
-        throw new Error('Account does not exist, please contact support.')
+        throw new Error(constants.errors.ACCOUNT_MISSING)
       }
 
       userObjTmp = mysqlVal(userObj)
 
       if (has.hasAnItem(userObjTmp.verify)){
-        throw new Error('Account not verified, please verify first')
+        throw new Error(constants.errors.ACCOUNT_UNVERIFIED)
       }
 
       if (has.hasAnItem(userObjTmp.recover)){
-        throw new Error('Account was recently put in recovery modes, ' +
-          'please contact support')
+        throw new Error(constants.errors.ACCOUNT_IN_RECOVERY)
       }
 
       req.body.id = userObjTmp.id
@@ -137,7 +127,7 @@ module.exports = function (app) {
     .then(() => {
         if (has.hasAnItem(req.body.email)) {
           let verifyString = token.Magic(userObjTmp)
-          app.emit('ACCOUNT_VERIFY', userObjTmp)
+          app.emit(constants.events.VERIFY_ACCOUNT, userObjTmp)
 
           return user.Update({ id: userObjTmp.id, verify: verifyString })
         }
@@ -145,9 +135,9 @@ module.exports = function (app) {
     .then(() => user.GetUserByID(req.body.token.id))
     .then(userObj => {
       userObjTmp = mysqlVal(userObj)
-      app.emit('ACCOUNT_UPDATED', userObjTmp)
+      app.emit(constants.events.UPDATED_ACCOUNT, userObjTmp)
 
-      exit(res, 200, 'Success your account is updated',
+      exit(res, 200, constants.messages.SUCCESS_UPDATED_ACCOUNT,
         {
           account: user.SafeExport(userObjTmp),
           token: token.Create(userObjTmp)
@@ -162,34 +152,33 @@ module.exports = function (app) {
   /**
    * Delete a user account & deny token from use
    */
-  app.delete('/api/user', token.Required, function (req, res) {
+  app.delete(constants.paths.API_USER, token.Required, function (req, res) {
 
     let userObjTmp
 
     user.GetUserByID(req.body.token.id)
     .then(userObj => {
       if (userObj.length < 1) {
-        throw new Error('No account found with that ID')
+        throw new Error(constants.errors.ACCOUNT_MISSING)
       }
 
       userObjTmp = mysqlVal(userObj)
 
       if (has.hasAnItem(userObjTmp.verify)){
-        throw new Error('Account not verified, please verify first')
+        throw new Error(constants.errors.ACCOUNT_UNVERIFIED)
       }
 
       if (has.hasAnItem(userObjTmp.recover)){
-        throw new Error('Account was recently put in recovery modes, ' +
-          'please contact support')
+        throw new Error(constants.errors.ACCOUNT_IN_RECOVERY)
       }
 
       return user.Delete(userObjTmp.id)
     })
     .then(() => {
       token.AddTokenToBlackList(req)
-      app.emit('ACCOUNT_DELETED', userObjTmp)
+      app.emit(constants.events.DELETED_ACCOUNT, userObjTmp)
 
-      exit(res, 200, 'Success your account is deleted',
+      exit(res, 200, constants.messages.SUCCESS_DELETED_ACCOUNT,
         {
           account: {},
           token: ''
@@ -204,7 +193,7 @@ module.exports = function (app) {
   /**
    * Verify a users account, one time process to validate email
    */
-  app.get('/api/user/verify', userMiddle.Verify, prepareMiddle,
+  app.get(constants.paths.API_USER_VERIFY, userMiddle.Verify, prepareMiddle,
     function (req, res) {
 
     let userObjTmp
@@ -212,7 +201,7 @@ module.exports = function (app) {
     user.GetUserByVerify(req.query.verify)
     .then(userObj => {
       if (userObj.length < 1) {
-        throw new Error('Verify link does not exist, please contact support.')
+        throw new Error(constants.errors.VERIFY_LINK_MISSING)
       }
 
       userObjTmp = mysqlVal(userObj)
@@ -220,9 +209,9 @@ module.exports = function (app) {
       return user.Update({ id: userObjTmp.id, verify: ' ' })
     })
     .then(() => {
-      app.emit('ACCOUNT_VERIFIED', userObjTmp) // todo
+      app.emit(constants.events.VERIFIED_ACCOUNT, userObjTmp) // todo
 
-      exit(res, 200, 'Success Account verified',
+      exit(res, 200, constants.messages.SUCCESS_VERIFIED_ACCOUNT,
         {
           account: user.SafeExport(userObjTmp),
           token: token.Create(userObjTmp)
@@ -238,7 +227,7 @@ module.exports = function (app) {
    * Triggers reset user password process via email,
    * will invalidate a account until the next stage is complete..
    */
-  app.post('/api/user/reset', userMiddle.Email, prepareMiddle,
+  app.post(constants.paths.API_USER_RESET, userMiddle.Email, prepareMiddle,
     function (req, res) {
 
     let userObjTmp
@@ -246,18 +235,17 @@ module.exports = function (app) {
     user.GetUserByEmail(req.body.email)
     .then(userObj => {
       if (userObj.length < 1) {
-        throw new Error('Account does not exist, please contact support.')
+        throw new Error(constants.errors.ACCOUNT_MISSING)
       }
 
       userObjTmp = mysqlVal(userObj)
 
       if (has.hasAnItem(userObjTmp.verify)){
-        throw new Error('Account not verified, please verify first')
+        throw new Error(constants.errors.ACCOUNT_UNVERIFIED)
       }
 
       if (has.hasAnItem(userObjTmp.recover)){
-        throw new Error('Account was recently put in recovery modes, ' +
-          'please contact support')
+        throw new Error(constants.errors.ACCOUNT_IN_RECOVERY)
       }
 
       userObjTmp.recover = token.Magic(userObjTmp)
@@ -265,11 +253,11 @@ module.exports = function (app) {
     })
    .then(() => {
 
-      app.emit('ACCOUNT_RESET', userObjTmp)
+      app.emit(constants.events.RESET_ACCOUNT, userObjTmp)
 
       return exit(res,
        200,
-       'Success a reset email has been sent.')
+       constants.messages.SUCCESS_RESET_ACCOUNT)
     })
     .catch(err => {
       logger.Log(err.message || err, req)
@@ -280,7 +268,7 @@ module.exports = function (app) {
   /**
    * User reset password with the above token
    */
-  app.patch('/api/user/reset',
+  app.patch(constants.paths.API_USER_RESET,
     userMiddle.Recover, userMiddle.Email, prepareMiddle,
     function (req, res) {
 
@@ -289,13 +277,12 @@ module.exports = function (app) {
       user.GetUserByRecover(req.query.recover)
       .then(userObj => {
         if (userObj.length < 1) {
-          throw new Error(
-            'Recovery link does not exist, please contact support.')
+          throw new Error(constants.errors.RECOVERY_LINK_MISSING)
         }
 
         userObjTmp = mysqlVal(userObj)
 
-        app.emit('ACCOUNT_VERIFIED', userObjTmp)
+        app.emit(constants.events.VERIFIED_ACCOUNT, userObjTmp)
         return user.Update({
           id: userObjTmp.id,
           password: req.body.password,
@@ -306,7 +293,7 @@ module.exports = function (app) {
       .then(() => {
         return exit(res,
           200,
-          'Success a new password has been set, please re-login.')
+          constants.messages.SUCCESS_PASSWORD_RESET_ACCOUNT)
       })
       .catch(err => {
         logger.Log(err.message || err, req)
