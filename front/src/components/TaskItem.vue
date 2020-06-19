@@ -160,6 +160,10 @@ export default {
             this.resetStatus()
           }, general.DELAY_SUCCESS + general.DELAY)
         })
+        .then(() => {
+          return this.$store.dispatch('projects/getProjectById',
+            { id: this.data.project })
+        })
         .catch(err => this.handleError(err))
     },
     onModeEdit: function () {

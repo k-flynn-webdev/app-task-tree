@@ -145,6 +145,23 @@ export default {
         })
     },
     /**
+     * Get a project by the an ID and
+     *    update the store data
+     *
+     * @param {object}    context
+     * @param {object}    input params
+     * @returns {promise} all tasks
+     */
+    getProjectById: function (context, input) {
+      return ProjectService.get(input)
+        .then(res => {
+          context.commit('projectReplace', res.data.data.project)
+          if (context.getters.current.id !== input.id) return
+          context.commit('projectCurrent', res.data.data.project)
+          return res.data.data.project
+        })
+    },
+    /**
      * Get all projects created by the user ID
      *      if no projects, will create a basic
      *      anon project via api and return
