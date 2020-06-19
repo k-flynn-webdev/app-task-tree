@@ -1,13 +1,13 @@
 <template>
-  <div class="task__project__switch">
+  <div class="task__project__header__controls__switch">
 
-    <button class="task__project__switch-projects"
+    <button class="task__project__header__controls__switch-projects"
             :class="{ 'ACTIVE': value === modes.PROJECTS}"
             @click="$emit('input', modes.PROJECTS)">
       projects
     </button>
 
-    <button class="task__project__switch-tasks"
+    <button class="task__project__header__controls__switch-tasks"
             :class="{ 'ACTIVE': value === modes.TASKS}"
             @click="$emit('input', modes.TASKS)">
       tasks
@@ -29,7 +29,7 @@ export default {
   props: {
     value: {
       type: String,
-      default: ''
+      default: modes.CLEAR
     }
   }
 }

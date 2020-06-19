@@ -19,6 +19,8 @@ const routes = [
   //   // which is lazy-loaded when the route is visited.
   //   component: () => import(/* webpackChunkName: "task" */ '../views/Task.vue')
   // }
+
+  // todo 404 page here
 ]
 
 const router = new VueRouter({

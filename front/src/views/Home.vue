@@ -5,11 +5,17 @@
 
       <ProjectInfoName />
 
-      <UserInfoMini />
+    </div>
 
-<!--      <ProjectTaskSwitch v-model="mode" class="task__project__header-switch" />-->
+    <div class="task__project__header__controls">
 
-      <InputBar class="task__project__header-input" :mode="mode" />
+      <div class="flex-row">
+        <ProjectTaskSwitch v-model="mode" />
+
+        <UserInfoMini />
+      </div>
+
+      <InputBar :mode="mode" />
 
     </div>
 
@@ -90,7 +96,7 @@ import InputBar from '../components/InputBar'
 import UserInfoMini from '../components/UserInfoMini'
 import ProjectsList from '../components/ProjectsList'
 import ProjectInfoName from '../components/ProjectInfoName'
-// import ProjectTaskSwitch from '../components/ProjectTaskSwitch'
+import ProjectTaskSwitch from '../components/ProjectTaskSwitch'
 // import icAdd from '../assets/icons/ic_add'
 // import Context from '../components/Context'
 // import User from '../components/User.vue'
@@ -105,8 +111,8 @@ export default {
     InputBar,
     UserInfoMini,
     ProjectsList,
-    ProjectInfoName
-    // ProjectTaskSwitch
+    ProjectInfoName,
+    ProjectTaskSwitch
     // Context
     // icAdd
     // User,

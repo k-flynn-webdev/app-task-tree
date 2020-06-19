@@ -76,58 +76,9 @@
     //}
 
 
-    &__input-bar {
-      display: none;
-      max-width: $unit-default * 20;
 
-      form {
-        display: flex;
-        overflow: hidden;
 
-        input {
-          margin: 0;
-          flex: auto;
-        }
-      }
-    }
 
-    &__switch {
-      min-width: $unit-default * 10;
-
-      &-tasks,
-      &-projects {
-        margin: $margin-default 0;
-        padding: $padding-default;
-        text-transform: uppercase;
-        background-color: $color-mid;
-        color: rgba($color-fore, $color-alpha);
-        -webkit-text-fill-color: rgba($color-fore, $color-alpha);
-        border: $border-size solid $color-bg;
-        border-radius: $border-radius;
-        transition: $transition-default * 0.5;
-
-        &.ACTIVE {
-          color: rgba($color-shadow, $color-alpha);
-          -webkit-text-fill-color: rgba($color-shadow, 1);
-          background-color: $color-success;
-          border: $border-size solid $color-success;
-          outline: none;
-          transform: scaleY(1.1);
-        }
-      }
-
-      &-projects {
-        margin-right: 0;
-        border-right: none;
-        transform-origin: right;
-      }
-
-      &-tasks {
-        margin-left: 0;
-        border-left: none;
-        transform-origin: left;
-      }
-    }
 
     &__list {
       margin: $margin-default 0;
