@@ -30,6 +30,21 @@
         align-items: center;
         margin: $margin-default * 0.4 0;
 
+        .small-margin-xs-sm-md {
+          margin: 0;
+
+          $margin-at-smaller: $unit-default * 0.15;
+          @include screen-xs {
+            margin: $margin-at-smaller;
+          }
+          @include screen-sm {
+            margin: $margin-at-smaller;
+          }
+          @include screen-md {
+            margin: $margin-at-smaller;
+          }
+        }
+
         &-progress,
         &-data,
         &-content,
@@ -184,24 +199,17 @@
               margin: 0;
               padding: 0 $padding-default;
 
-              $adjustedWidth: 98%;
-              $smaller-screen-bar: 2.5;
+              $smaller-screen-bar: $unit-default * 2.5;
               @include screen-xs {
-                width: $adjustedWidth;
-                margin: $unit-default * 0.1;
-                height: $unit-default * $smaller-screen-bar;
+                height: $smaller-screen-bar;
               }
 
               @include screen-sm {
-                width: $adjustedWidth;
-                margin: $unit-default * 0.1;
-                height: $unit-default * $smaller-screen-bar;
+                height: $smaller-screen-bar;
               }
 
               @include screen-md {
-                width: $adjustedWidth;
-                margin: $unit-default * 0.1;
-                height: $unit-default * $smaller-screen-bar;
+                height: $smaller-screen-bar;
               }
             }
           }
