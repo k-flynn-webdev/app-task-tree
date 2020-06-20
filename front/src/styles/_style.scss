@@ -62,7 +62,7 @@
 
         &-status,
         &-option-bar-btn {
-          min-width: $unit-default * 2;
+          min-width: $unit-default * 1.5;
 
           $button-small-size: 1.2;
           @include screen-xs {
