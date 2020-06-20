@@ -276,6 +276,7 @@ input {
   border-color: $color-fore;
   margin: $margin-default * 0.5 $margin-default;
   padding: $padding-default * 0.5 $padding-default;
+  transition: $transition-default;
 
   &::placeholder {
     opacity: 0.5;

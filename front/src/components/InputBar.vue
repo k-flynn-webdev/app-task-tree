@@ -8,7 +8,7 @@
              required
              v-model="input"
              minlength="4"
-             :class="status"
+             :class="[ status, isDisabled? 'DISABLED': '' ]"
              :placeholder="placeHolder"
              @input="resetStatus">
 
@@ -48,7 +48,8 @@ export default {
   data () {
     return {
       input: status.CLEAR,
-      status: status.CLEAR
+      status: status.CLEAR,
+      isDisabled: false
     }
   },
   computed: {
@@ -76,6 +77,12 @@ export default {
       }
     }
   },
+  mounted () {
+    this.$root.$on('EDITING', this.disableInput)
+  },
+  beforeDestroy () {
+    this.$root.$off('EDITING', this.disableInput)
+  },
   methods: {
     reset: function () {
       this.input = status.CLEAR
@@ -83,6 +90,14 @@ export default {
     },
     resetStatus: function () {
       this.status = status.CLEAR
+    },
+    /**
+     * Disable user input bar
+     *
+     * @param input
+     */
+    disableInput: function (input) {
+      this.isDisabled = input
     },
     submitInput: function () {
       if (!this.isValid) return

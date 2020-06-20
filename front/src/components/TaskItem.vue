@@ -171,6 +171,7 @@ export default {
       this.options.showDelete = false
       this.options.showEdit = false
       this.$nextTick(() => this.$refs.itemEdit.focus())
+      this.$root.$emit('EDITING', true)
     },
     onModeDelete: function () {
       this.options.mode = modes.DELETE
@@ -266,6 +267,7 @@ export default {
     },
     resetMode: function () {
       this.options.mode = status.CLEAR
+      this.$root.$emit('EDITING', false)
     },
     getLatestProject: function () {
       return this.$store.dispatch('projects/getProjectById',
