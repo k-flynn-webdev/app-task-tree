@@ -35,7 +35,8 @@ const DB_CREATE_TASKS_TABLE = 'CREATE TABLE tasks ' +
   'created DATETIME default now() not null, ' +
   'updated DATETIME default now() not null, ' +
   'isDone bool default FALSE, ' +
-  'doneDate DATETIME )'
+  'doneDate DATETIME) ' +
+  'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci'
 
 function InitTasks() {
   return db.InitTable(DB_TASKS, DB_CREATE_TASKS_TABLE, DB_READY_TASKS)

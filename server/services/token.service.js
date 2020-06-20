@@ -17,7 +17,8 @@ const DB_SHOW_TOKENS = 'SELECT * FROM tokens'
 const DB_CREATE_TOKEN = 'INSERT INTO tokens SET ?'
 const DB_DELETE_TOKEN = 'DELETE FROM tokens WHERE id = ?'
 const DB_CREATE_TOKENS_TABLE = 'CREATE TABLE tokens ' +
-  '(id int auto_increment primary key, token VARCHAR(300) not null)'
+  '(id int auto_increment primary key, token VARCHAR(300) not null) ' +
+  'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci'
 
 function InitTokens() {
   return db.InitTable(DB_TOKENS, DB_CREATE_TOKENS_TABLE, DB_READY_TOKENS)

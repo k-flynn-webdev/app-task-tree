@@ -37,7 +37,8 @@ const DB_CREATE_PROJECTS_TABLE = 'CREATE TABLE projects ' +
   'tasksTotal int default "0" not null, ' +
   'tasksDone int default "0" not null, ' +
   'isDone bool default FALSE, ' +
-  'doneDate DATETIME )'
+  'doneDate DATETIME) ' +
+  'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci'
 
 function InitProjects() {
   return db.InitTable(DB_PROJECTS, DB_CREATE_PROJECTS_TABLE, DB_READY_PROJECTS)

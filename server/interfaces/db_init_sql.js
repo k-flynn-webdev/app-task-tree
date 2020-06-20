@@ -9,6 +9,7 @@ const DB_USE = 'USE '
 const DB_READY = 'db-ready'
 const DB_SHOW = 'SHOW DATABASES'
 const DB_CREATE = 'CREATE DATABASE '
+const DB_POST_SETTINGS = ' CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci '
 const DB_SHOW_TABLES = 'SHOW TABLES'
 
 let appTemp = null
@@ -81,6 +82,7 @@ function Connect() {
     port: config.db.port,
     user: config.db.user,
     password: config.db.pass,
+    charset : 'utf8mb4',
   })
 
   connection.connect(function (err) {
@@ -123,7 +125,7 @@ function errorHandler(err) {
 }
 
 function CreateDB() {
-  return Query(DB_CREATE + config.db.database)
+  return Query(DB_CREATE + config.db.database + DB_POST_SETTINGS)
 }
 
 function SelectDB() {

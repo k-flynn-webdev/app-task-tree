@@ -39,7 +39,8 @@ const DB_CREATE_USERS_TABLE = 'CREATE TABLE users ' +
   'created DATETIME default now() not null, ' +
   'updated DATETIME default now() not null, ' +
   'verify VARCHAR(50) null, ' +
-  'recover VARCHAR(50) null )'
+  'recover VARCHAR(50) null) ' +
+  'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci'
 
 function InitUsers() {
   return db.InitTable(DB_USERS, DB_CREATE_USERS_TABLE, DB_READY_USERS)
