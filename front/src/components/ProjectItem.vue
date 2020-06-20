@@ -151,6 +151,7 @@ export default {
   },
   methods: {
     onSelectProject: function () {
+      this.$parent.$emit('CLOSE-OPT')
       this.$store.commit('projects/projectCurrent', this.data)
     },
     onModeEdit: function () {
