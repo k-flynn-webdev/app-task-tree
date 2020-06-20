@@ -130,11 +130,11 @@ export default {
             this.reset()
           }, general.DELAY_SUCCESS)
 
+          this.$nextTick(() => this.$refs.itemInput.blur())
+
           if (this.mode === modes.TASKS) {
             return this.getLatestProject()
           }
-
-          this.$nextTick(() => this.$refs.itemInput.blur())
         })
         .catch(err => this.handleError(err))
     },
