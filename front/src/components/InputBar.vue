@@ -6,6 +6,7 @@
       <StatusBar :status="status" />
       <input type="text"
              required
+             ref="itemInput"
              v-model="input"
              minlength="4"
              :class="[ status, isDisabled? 'DISABLED': '' ]"
@@ -132,6 +133,8 @@ export default {
           if (this.mode === modes.TASKS) {
             return this.getLatestProject()
           }
+
+          this.$nextTick(() => this.$refs.itemInput.blur())
         })
         .catch(err => this.handleError(err))
     },

@@ -30,7 +30,6 @@
         align-items: center;
         margin: $margin-default * 0.4 0;
 
-        &-status,
         &-progress,
         &-data,
         &-content,
@@ -41,6 +40,8 @@
         }
 
         &-status {
+          z-index: 1;
+          text-align: center;
           opacity: $color-alpha;
           transition: $transition-default;
         }
@@ -186,14 +187,17 @@
               $smaller-screen-bar: 2.5;
 
               @include screen-xs {
+                margin: $unit-default * 0.1 0;
                 height: $unit-default * $smaller-screen-bar;
               }
 
               @include screen-sm {
+                margin: $unit-default * 0.1 0;
                 height: $unit-default * $smaller-screen-bar;
               }
 
               @include screen-md {
+                margin: $unit-default * 0.1 0;
                 height: $unit-default * $smaller-screen-bar;
               }
             }
