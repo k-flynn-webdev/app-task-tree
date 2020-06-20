@@ -31,7 +31,8 @@
 
         <form class="task__project__list__item__edit"
               @submit.prevent="confirmEdit">
-          <input ref="itemEdit"
+          <input
+              ref="itemEdit"
               class="task__project__list__item__edit-input"
               type="text"
               :class="options.status"
@@ -200,6 +201,7 @@ export default {
       return this.$store.dispatch('tasks/update', updatedText)
         .then(() => {
           this.options.status = status.SUCCESS
+          this.$nextTick(() => this.$refs.itemEdit.blur())
 
           helpers.timeDelay(() => {
             this.resetMode()
