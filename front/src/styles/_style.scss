@@ -63,16 +63,17 @@
         &-option-bar-btn {
           min-width: $unit-default * 2;
 
+          $button-small-size: 1.2;
           @include screen-xs {
-            @include options-resize(0.9);
+            @include options-resize($button-small-size);
           }
 
           @include screen-sm {
-            @include options-resize(1);
+            @include options-resize($button-small-size);
           }
 
           @include screen-md {
-            @include options-resize(1.5);
+            @include options-resize($button-small-size);
           }
         }
 
@@ -126,7 +127,7 @@
           transition: $transition-default;
           padding: $padding-default * 0.33 $padding-default;
 
-          $smaller-margin-y: $padding-default * 0.33;
+          $smaller-margin-y: $padding-default * 1.25;
           $smaller-margin-x: $padding-default * 0.2;
 
           @include screen-xs {
@@ -183,6 +184,20 @@
               width: 100%;
               margin: 0;
               padding: 0 $padding-default;
+
+              $smaller-screen-bar: 2.5;
+
+              @include screen-xs {
+                height: $unit-default * $smaller-screen-bar;
+              }
+
+              @include screen-sm {
+                height: $unit-default * $smaller-screen-bar;
+              }
+
+              @include screen-md {
+                height: $unit-default * $smaller-screen-bar;
+              }
             }
           }
         }
@@ -226,7 +241,7 @@
           &-delete,
           &-confirm {
             margin-right: 0;
-            margin-left: $margin-default * 3;
+            margin-left: $margin-default * 4;
           }
 
           &-confirm {
