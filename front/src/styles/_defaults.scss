@@ -1,12 +1,5 @@
 // MIXINS //
-
-@mixin overflow-text-hide {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-
+@import "mixins";
 
 
 
@@ -43,8 +36,7 @@ body {
 
   @each $size, $value in $all-icon-sizes {
     &.#{$size} {
-      max-width: $value;
-      max-height: $value;
+      @include set-max-wh-size($value);
     }
   }
 }

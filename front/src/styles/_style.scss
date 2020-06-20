@@ -125,6 +125,21 @@
           border-color: transparent;
           transition: $transition-default;
           padding: $padding-default * 0.33 $padding-default;
+
+          $smaller-margin-y: $padding-default * 0.33;
+          $smaller-margin-x: $padding-default * 0.2;
+
+          @include screen-xs {
+            padding: $smaller-margin-y $smaller-margin-x;
+          }
+
+          @include screen-sm {
+            padding: $smaller-margin-y $smaller-margin-x;
+          }
+
+          @include screen-md {
+            padding: $smaller-margin-y $smaller-margin-x;
+          }
         }
 
         &-bg {
