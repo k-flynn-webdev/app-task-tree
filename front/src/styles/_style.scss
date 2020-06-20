@@ -15,6 +15,10 @@
 }
 
 .task {
+  .hint {
+    margin: $margin-default * 2 $margin-default;
+  }
+
   &__project {
     &__list {
       margin: $margin-default 0;

@@ -118,7 +118,7 @@ export default {
   },
   computed: {
     progress: function () {
-      return helpers.renderProgressNum(this.data.tasksDone, this.data.tasksTotal)
+      return helpers.renderProgressNum(this.data)
     },
     date: function () {
       return helpers.renderDate(this.data.updated)

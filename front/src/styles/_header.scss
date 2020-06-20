@@ -24,11 +24,12 @@
     }
 
     &-count {
-      min-width: 4rem;
+      min-width: 5rem;
       word-break: keep-all;
       text-align: right;
       font-size: $font-size-md;
       margin: $margin-default * 0.5 0;
+      padding-left: $padding-default;
 
       @mixin small-size {
         font-size: $font-size;

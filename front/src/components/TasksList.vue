@@ -14,14 +14,12 @@
 
     <div v-if="project.id < 0"
          class="text-center">
-      <p class="break-word"> No Project found for account </p>
-      <p class="break-word"> Create a project first before creating a task </p>
+      <p class="hint"> First you need to create a project to add tasks to </p>
     </div>
 
     <div v-if="project.id >= 0 && tasks.length < 1"
          class="text-center">
-      <p class="break-word"> No Tasks found for this project </p>
-      <p class="break-word"> Create a task by typing in a description above </p>
+      <p class="hint"> Add a new task </p>
     </div>
 
   </div>

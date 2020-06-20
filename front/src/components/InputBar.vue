@@ -5,8 +5,11 @@
 
       <StatusBar :status="status" />
       <input type="text"
+             required
              v-model="input"
+             minlength="4"
              :class="status"
+             :placeholder="placeHolder"
              @input="resetStatus">
 
     </form>
@@ -57,6 +60,9 @@ export default {
     },
     project: function () {
       return this.$store.getters['projects/current']
+    },
+    placeHolder: function () {
+      return this.mode === modes.TASKS ? 'Add a new task' : 'Add a new project'
     }
   },
   watch: {
@@ -68,7 +74,6 @@ export default {
           this.status = status.DISABLED
         }
       }
-      // this.reset()
     }
   },
   methods: {

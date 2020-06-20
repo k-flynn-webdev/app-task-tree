@@ -41,14 +41,31 @@ const renderDateTime = (input) => {
   return renderDate(input) + ' ' + renderTime(input)
 }
 
-const renderProgressNum = (done, total) => {
-  return `(${done}/${total})`
+const BRACKETS = ['(', ')']
+
+/**
+ * Returns the progress from a project object
+ *
+ * @param done
+ * @param total
+ * @returns {string}  (x/y)
+ */
+const renderProgressNum = ({ tasksDone, tasksTotal }) => {
+  return `${BRACKETS[0]}${tasksDone}/${tasksTotal}${BRACKETS[1]}`
 }
 
-const renderProgressPercent = (done, total) => {
-  if (!total || total === 0) return '0%'
-  if (!done || done === 0) return '0%'
-  return Math.floor((done / total) * 100).toString() + '%'
+/**
+ * Render the progress from a project object
+ *
+ * @param done
+ * @param total
+ * @returns {string}  (77%)
+ */
+const renderProgressPercent = ({ tasksDone, tasksTotal }) => {
+  if (!tasksTotal || tasksTotal === 0) return '0%'
+  if (!tasksDone || tasksDone === 0) return '0%'
+  const percNum = Math.floor((tasksDone / tasksTotal) * 100)
+  return `${BRACKETS[0]}${percNum.toString()}%${BRACKETS[1]}`
 }
 
 const helpers = {

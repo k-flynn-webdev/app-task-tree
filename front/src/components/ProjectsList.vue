@@ -14,8 +14,7 @@
 
     <div v-if="projects.length < 1"
       class="text-center">
-      <p class="break-word"> No Projects found for account </p>
-      <p class="break-word"> Create a project by typing in a name above </p>
+      <p class="hint"> Start by creating a new project to add tasks to </p>
     </div>
 
   </div>

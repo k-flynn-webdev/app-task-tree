@@ -285,6 +285,10 @@ input {
   margin: $margin-default * 0.5 $margin-default;
   padding: $padding-default * 0.5 $padding-default;
 
+  &::placeholder {
+    opacity: 0.5;
+  }
+
   @each $status, $value in $all-status-border-colours {
     &.#{to-upper-case($status)} {
       border-color: $value;
