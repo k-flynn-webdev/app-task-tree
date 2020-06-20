@@ -143,6 +143,7 @@ export default {
   methods: {
     onSelectTask: function () {
       if (this.options.status !== status.CLEAR) return
+      if (this.options.mode !== status.CLEAR) return
 
       const taskUpdateBool =
         { id: this.data.id, isDone: !this.data.isDone }

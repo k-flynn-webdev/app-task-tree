@@ -168,10 +168,8 @@
         }
 
         &.EDIT & {
-          &-content {
-            display: none;
-          }
-
+          &-status,
+          &-content,
           &-bg {
             display: none;
           }
