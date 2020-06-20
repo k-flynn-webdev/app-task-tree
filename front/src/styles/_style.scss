@@ -184,19 +184,22 @@
               margin: 0;
               padding: 0 $padding-default;
 
+              $adjustedWidth: 98%;
               $smaller-screen-bar: 2.5;
-
               @include screen-xs {
+                width: $adjustedWidth;
                 margin: $unit-default * 0.1;
                 height: $unit-default * $smaller-screen-bar;
               }
 
               @include screen-sm {
+                width: $adjustedWidth;
                 margin: $unit-default * 0.1;
                 height: $unit-default * $smaller-screen-bar;
               }
 
               @include screen-md {
+                width: $adjustedWidth;
                 margin: $unit-default * 0.1;
                 height: $unit-default * $smaller-screen-bar;
               }
