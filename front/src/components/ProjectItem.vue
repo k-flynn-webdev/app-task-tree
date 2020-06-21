@@ -18,6 +18,7 @@
       <div class="flex-auto no-overflow relative small-margin-xs-sm-md">
 
         <div class="task__project__list__item-content"
+             @dblclick="onShowTasks"
              @click="onSelectProject">
 
           <p class="task__project__list__item-progress hide-xs">
@@ -167,6 +168,9 @@ export default {
     onSelectProject: function () {
       this.$parent.$emit('CLOSE-OPT')
       this.$store.commit('projects/projectCurrent', this.data)
+    },
+    onShowTasks: function () {
+      this.$emit('showTasks')
     },
     onModeEdit: function () {
       this.edit = this.data.name

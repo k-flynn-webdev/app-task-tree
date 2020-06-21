@@ -9,7 +9,7 @@
         'COMPLETE': data.isDone}">
 
       <div class="task__project__list__item-status text-left"
-        @click="onSelectTask">
+           @click="onSelectTask">
         <icDone v-if="isDone" class="transition" />
         <icNone v-else-if="isWaiting" class="transition fill-waiting-status" />
         <icRound v-else class="xs transition" />
@@ -18,7 +18,8 @@
 
       <div class="flex-auto no-overflow relative small-margin-xs-sm-md">
 
-        <div class="task__project__list__item-content">
+        <div class="task__project__list__item-content"
+             @dblclick="onSelectTask">
 
           <p class="task__project__list__item-data">
             {{ data.text }}

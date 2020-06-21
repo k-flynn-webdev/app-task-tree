@@ -8,6 +8,7 @@
         :key="item.id"
         :data="item"
         :selected="project.id === item.id"
+        @showTasks="showTasks"
       />
 
     </transition-group>
@@ -21,7 +22,6 @@
 </template>
 
 <script>
-import status from '../constants/status.js'
 import ProjectItem from '../components/ProjectItem'
 
 export default {
@@ -38,10 +38,8 @@ export default {
     }
   },
   methods: {
-    handleError: function (err) {
-      this.status = status.ERROR
-      this.$emit(status.ERROR, err)
-      this.$store.commit('toasts/toastAdd', err)
+    showTasks: function () {
+      this.$emit('showTasks')
     }
   }
 }
