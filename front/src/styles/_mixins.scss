@@ -6,6 +6,11 @@
   text-overflow: ellipsis;
 }
 
+@mixin set-wh-size ($value) {
+  width: $value;
+  height: $value;
+}
+
 @mixin set-max-wh-size ($value) {
   max-width: $value;
   max-height: $value;

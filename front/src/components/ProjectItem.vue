@@ -12,7 +12,7 @@
         @click="onSelectProject">
         <icDone v-if="isDone" class="transition" />
         <icNone v-else-if="isWaiting" class="transition fill-waiting-status" />
-        <icRound v-else class="xs transition" />
+        <icRound v-else class="icon-50 transition" />
       </div>
 
       <div class="flex-auto no-overflow relative small-margin-xs-sm-md">

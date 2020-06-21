@@ -11,7 +11,7 @@
            @click="onSelectTask">
         <icDone v-if="isDone" class="transition" />
         <icNone v-else-if="isWaiting" class="transition fill-waiting-status" />
-        <icRound v-else class="xs transition" />
+        <icRound v-else class="icon-50 transition" />
 
       </div>
 

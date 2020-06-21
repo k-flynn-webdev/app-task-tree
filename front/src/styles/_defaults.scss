@@ -27,8 +27,8 @@ body {
   font-size: $font-size;
   max-width: $icon-size;
   max-height: $icon-size;
-  min-width: $icon-size * 0.5;
-  min-height: $icon-size * 0.5;
+  min-width: $icon-size * 0.2;
+  min-height: $icon-size * 0.2;
   //vertical-align: middle; // weird seems to hang from middle wtf?!
   color: inherit;
   -webkit-text-fill-color: inherit;
@@ -45,7 +45,7 @@ body {
   .#{$num} {
     @extend .icon;
 
-    width: $value;
+    @include set-wh-size($value);
   }
 }
 
