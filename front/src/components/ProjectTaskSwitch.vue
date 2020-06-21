@@ -2,14 +2,14 @@
   <div class="task__project__header__controls__switch">
 
     <button class="task__project__header__controls__switch-projects"
-            :class="{ 'ACTIVE': value === modes.PROJECTS}"
-            @click="$emit('input', modes.PROJECTS)">
+            :class="{ 'ACTIVE': isProjects}"
+            @click="showProjects">
       projects
     </button>
 
     <button class="task__project__header__controls__switch-tasks"
-            :class="{ 'ACTIVE': value === modes.TASKS}"
-            @click="$emit('input', modes.TASKS)">
+            :class="{ 'ACTIVE': isTasks}"
+            @click="showTasks">
       tasks
     </button>
 
@@ -21,15 +21,26 @@ import modes from '../constants/modes'
 
 export default {
   name: 'ProjectTaskSwitch',
-  data () {
-    return {
-      modes: modes
-    }
-  },
   props: {
     value: {
       type: String,
       default: modes.CLEAR
+    }
+  },
+  computed: {
+    isTasks: function () {
+      return this.value === modes.TASKS
+    },
+    isProjects: function () {
+      return this.value === modes.PROJECTS
+    }
+  },
+  methods: {
+    showTasks: function () {
+      this.$emit('input', modes.TASKS)
+    },
+    showProjects: function () {
+      this.$emit('input', modes.PROJECTS)
     }
   }
 }
