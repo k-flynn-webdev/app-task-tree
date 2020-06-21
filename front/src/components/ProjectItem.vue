@@ -150,6 +150,7 @@ export default {
       return this.options.status === status.WAITING
     },
     isDone: function () {
+      if (this.isWaiting) return false
       return this.data.isDone
     },
     isError: function () {

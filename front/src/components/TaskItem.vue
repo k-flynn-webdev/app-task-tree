@@ -3,14 +3,17 @@
   <li class="list-item">
 
     <div class="task__project__list__item TASK"
-         :class="{ 'EDIT': isEdit,
-         'DELETE': isDelete }">
+        :class="{ 'SELECT': selected,
+        'EDIT': isEdit,
+        'DELETE': isDelete ,
+        'COMPLETE': data.isDone}">
 
       <div class="task__project__list__item-status text-left"
-           :class="{ 'on' :data.isDone}"
         @click="onSelectTask">
-        <icDone v-if="data.isDone" class="transition fill-success-status" />
+        <icDone v-if="isDone" class="transition" />
+        <icNone v-else-if="isWaiting" class="transition fill-waiting-status" />
         <icRound v-else class="xs transition" />
+
       </div>
 
       <div class="flex-auto no-overflow relative small-margin-xs-sm-md">
@@ -73,6 +76,7 @@ import modes from '../constants/modes.js'
 import helpers from '../services/Helpers'
 import general from '../constants/general'
 import status from '../constants/status.js'
+import icNone from '../assets/icons/ic_none'
 import icDone from '../assets/icons/ic_tick'
 import icRound from '../assets/icons/ic_round'
 import icOptions from '../assets/icons/ic_option'
@@ -82,6 +86,7 @@ import StatusBar from './general/StatusBar'
 export default {
   name: 'TaskItem',
   components: {
+    icNone,
     icDone,
     icRound,
     icOptions,
@@ -133,6 +138,16 @@ export default {
     },
     isDelete: function () {
       return this.options.mode === modes.DELETE
+    },
+    isWaiting: function () {
+      return this.options.status === status.WAITING
+    },
+    isDone: function () {
+      if (this.isWaiting) return false
+      return this.data.isDone
+    },
+    isError: function () {
+      return this.options.status === status.ERROR
     }
   },
   mounted () {
@@ -152,17 +167,7 @@ export default {
 
       return this.$store.dispatch('tasks/update', taskUpdateBool)
         .then(() => {
-          this.options.status = status.SUCCESS
-
-          helpers.timeDelay(() => {
-            this.resetMode()
-            this.closeOptions()
-          }, general.DELAY_SUCCESS)
-
-          helpers.timeDelay(() => {
-            this.resetStatus()
-          }, general.DELAY_SUCCESS + general.DELAY)
-
+          this.handleSuccess()
           return this.getLatestProject()
         })
         .catch(err => this.handleError(err))
@@ -201,17 +206,8 @@ export default {
 
       return this.$store.dispatch('tasks/update', updatedText)
         .then(() => {
-          this.options.status = status.SUCCESS
+          this.handleSuccess()
           this.$nextTick(() => this.$refs.itemEdit.blur())
-
-          helpers.timeDelay(() => {
-            this.resetMode()
-            this.closeOptions()
-          }, general.DELAY_SUCCESS)
-
-          helpers.timeDelay(() => {
-            this.resetStatus()
-          }, general.DELAY_SUCCESS + general.DELAY)
         })
         .catch(err => this.handleError(err))
     },
@@ -222,17 +218,7 @@ export default {
 
       return this.$store.dispatch('tasks/remove', this.data)
         .then(() => {
-          this.options.status = status.SUCCESS
-
-          helpers.timeDelay(() => {
-            this.resetMode()
-            this.closeOptions()
-          }, general.DELAY_SUCCESS)
-
-          helpers.timeDelay(() => {
-            this.resetStatus()
-          }, general.DELAY_SUCCESS + general.DELAY)
-
+          this.handleSuccess()
           return this.getLatestProject()
         })
         .catch(err => this.handleError(err))
@@ -276,6 +262,18 @@ export default {
     getLatestProject: function () {
       return this.$store.dispatch('projects/getProjectById',
         { id: this.data.project })
+    },
+    handleSuccess: function () {
+      this.options.status = status.SUCCESS
+
+      helpers.timeDelay(() => {
+        this.resetMode()
+        this.closeOptions()
+      }, general.DELAY_SUCCESS)
+
+      helpers.timeDelay(() => {
+        this.resetStatus()
+      }, general.DELAY_SUCCESS + general.DELAY)
     },
     handleError: function (err) {
       this.options.status = status.ERROR
