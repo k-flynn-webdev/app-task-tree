@@ -146,6 +146,7 @@ export default {
       if (this.options.status !== status.CLEAR) return
       if (this.options.mode !== status.CLEAR) return
 
+      this.options.status = status.WAITING
       const taskUpdateBool =
         { id: this.data.id, isDone: !this.data.isDone }
 

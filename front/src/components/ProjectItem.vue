@@ -10,7 +10,8 @@
 
       <div class="task__project__list__item-status text-left hide-sm-down"
         @click="onSelectProject">
-        <icDone v-if="data.isDone" class="transition" />
+        <icDone v-if="isDone" class="transition" />
+        <icNone v-else-if="isWaiting" class="transition fill-waiting-status" />
         <icRound v-else class="xs transition" />
       </div>
 
@@ -80,6 +81,7 @@ import helpers from '../services/Helpers'
 import general from '../constants/general'
 import status from '../constants/status.js'
 import icDone from '../assets/icons/ic_tick'
+import icNone from '../assets/icons/ic_none'
 import icRound from '../assets/icons/ic_round'
 import icOptions from '../assets/icons/ic_option'
 import RowOption from './general/RowOption'
@@ -88,6 +90,7 @@ import StatusBar from './general/StatusBar'
 export default {
   name: 'ProjectItem',
   components: {
+    icNone,
     icDone,
     icRound,
     icOptions,
@@ -142,6 +145,15 @@ export default {
     },
     isDelete: function () {
       return this.options.mode === modes.DELETE
+    },
+    isWaiting: function () {
+      return this.options.status === status.WAITING
+    },
+    isDone: function () {
+      return this.data.isDone
+    },
+    isError: function () {
+      return this.options.status === status.ERROR
     }
   },
   mounted () {
@@ -189,17 +201,8 @@ export default {
 
       return this.$store.dispatch('projects/update', updatedName)
         .then(() => {
-          this.options.status = status.SUCCESS
+          this.handleSuccess()
           this.$nextTick(() => this.$refs.itemEdit.blur())
-
-          helpers.timeDelay(() => {
-            this.resetMode()
-            this.closeOptions()
-          }, general.DELAY_SUCCESS)
-
-          helpers.timeDelay(() => {
-            this.resetStatus()
-          }, general.DELAY_SUCCESS + general.DELAY)
         })
         .catch(err => this.handleError(err))
     },
@@ -209,18 +212,7 @@ export default {
       this.options.status = status.WAITING
 
       return this.$store.dispatch('projects/remove', this.data)
-        .then(() => {
-          this.options.status = status.SUCCESS
-
-          helpers.timeDelay(() => {
-            this.resetMode()
-            this.closeOptions()
-          }, general.DELAY_SUCCESS)
-
-          helpers.timeDelay(() => {
-            this.resetStatus()
-          }, general.DELAY_SUCCESS + general.DELAY)
-        })
+        .then(() => this.handleSuccess())
         .catch(err => this.handleError(err))
     },
     checkEdit: function () {
@@ -258,6 +250,18 @@ export default {
     resetMode: function () {
       this.options.mode = status.CLEAR
       this.$root.$emit('EDITING', false)
+    },
+    handleSuccess: function () {
+      this.options.status = status.SUCCESS
+
+      helpers.timeDelay(() => {
+        this.resetMode()
+        this.closeOptions()
+      }, general.DELAY_SUCCESS)
+
+      helpers.timeDelay(() => {
+        this.resetStatus()
+      }, general.DELAY_SUCCESS + general.DELAY)
     },
     handleError: function (err) {
       this.options.status = status.ERROR

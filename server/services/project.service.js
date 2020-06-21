@@ -206,7 +206,7 @@ exports.GetProjectsByIsDone = GetProjectsByIsDone
  * @return  {array}   project object
  */
 function GetProjectsByDoneDate(doneDate) {
-  // todo make this work better with dates before & after ..
+  // todo make this work better with dates before & after .. pagination support here
   return db.Query(DB_GET_PROJECTS_BY_IS_DONE_DATE, [doneDate])
 }
 

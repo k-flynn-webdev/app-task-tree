@@ -200,7 +200,7 @@ exports.GetTasksByIsDone = GetTasksByIsDone
  * @return  {array}  task object
  */
 function GetTasksByDoneDate(doneDate) {
-  // todo make this work better with dates before & after ..
+  // todo make this work better with dates before & after .. pagination support needed
   return db.Query(DB_GET_TASK_BY_IS_DONE_DATE, [doneDate])
 }
 
