@@ -6,7 +6,7 @@
          :class="{ 'SELECT': selected,
          'EDIT': isEdit,
          'DELETE': isDelete ,
-         'COMPLETE': data.isDone}">
+         'COMPLETE': data.isDone }">
 
       <div class="task__project__list__item-status text-left hide-sm-down"
         @click="onSelectProject">

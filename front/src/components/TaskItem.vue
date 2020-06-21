@@ -3,10 +3,9 @@
   <li class="list-item">
 
     <div class="task__project__list__item TASK"
-        :class="{ 'SELECT': selected,
-        'EDIT': isEdit,
+        :class="{ 'EDIT': isEdit,
         'DELETE': isDelete ,
-        'COMPLETE': data.isDone}">
+        'COMPLETE': data.isDone }">
 
       <div class="task__project__list__item-status text-left"
            @click="onSelectTask">
