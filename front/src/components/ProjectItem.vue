@@ -8,12 +8,11 @@
          'DELETE': isDelete ,
          'COMPLETE': data.isDone }">
 
-      <div class="task__project__list__item-status text-left hide-sm-down"
-        @click="onSelectProject">
-        <icDone v-if="isDone" class="transition" />
-        <icNone v-else-if="isWaiting" class="transition fill-waiting-status" />
-        <icRound v-else class="icon-50 transition" />
-      </div>
+      <RowStatus
+          :class="{ 'SHADE': !selected && !isDone }"
+          :is-waiting="isWaiting"
+          :is-done="isDone"
+          @click="onSelectProject" />
 
       <div class="flex-auto no-overflow relative small-margin-xs-sm-md">
 
@@ -77,13 +76,14 @@
 </template>
 
 <script>
+import RowStatus from './general/RowStatus'
 import modes from '../constants/modes.js'
 import helpers from '../services/Helpers'
 import general from '../constants/general'
 import status from '../constants/status.js'
-import icDone from '../assets/icons/ic_tick'
-import icNone from '../assets/icons/ic_none'
-import icRound from '../assets/icons/ic_round'
+// import icDone from '../assets/icons/ic_tick'
+// import icNone from '../assets/icons/ic_none'
+// import icRound from '../assets/icons/ic_round'
 import icOptions from '../assets/icons/ic_option'
 import RowOption from './general/RowOption'
 import StatusBar from './general/StatusBar'
@@ -91,9 +91,10 @@ import StatusBar from './general/StatusBar'
 export default {
   name: 'ProjectItem',
   components: {
-    icNone,
-    icDone,
-    icRound,
+    RowStatus,
+    // icNone,
+    // icDone,
+    // icRound,
     icOptions,
     RowOption,
     StatusBar
@@ -152,7 +153,7 @@ export default {
     },
     isDone: function () {
       if (this.isWaiting) return false
-      return this.data.isDone
+      return this.data.isDone > 0
     },
     isError: function () {
       return this.options.status === status.ERROR

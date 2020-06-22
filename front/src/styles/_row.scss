@@ -5,15 +5,21 @@
   &__status {
     @include hide-md-down {
       &-icon {
+        text-align: center;
         position: relative;
         z-index: 1;
-        max-width: $unit-default * 2;
+        width: $unit-default * 1.33;
+        max-width: $unit-default * 1.33;
 
         .icon {
           opacity: 1;
           transition: $transition-default;
         }
       }
+    }
+
+    @include screen-lg {
+      font-size: $font-size-md;
     }
 
     &.SHADE {
