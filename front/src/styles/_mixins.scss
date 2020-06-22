@@ -15,3 +15,40 @@
   max-width: $value;
   max-height: $value;
 }
+
+
+@mixin hide-md-down {
+  @content
+
+  @include screen-md {
+    display: none;
+  }
+
+  @include screen-sm {
+    display: none;
+  }
+
+  @include screen-xs {
+    display: none;
+  }
+}
+
+@mixin hide-md-up {
+  @content
+
+  @include screen-md {
+    display: none;
+  }
+
+  @include screen-lg {
+    display: none;
+  }
+
+  @include screen-xl {
+    display: none;
+  }
+
+  @include screen-xxl {
+    display: none;
+  }
+}
