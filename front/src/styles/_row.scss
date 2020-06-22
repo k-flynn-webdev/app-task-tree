@@ -1,0 +1,32 @@
+// MIXINS //
+@import "mixins";
+
+.row {
+  &__status {
+    @include hide-md-down {
+      &-icon {
+        position: relative;
+        z-index: 1;
+        max-width: $unit-default * 2;
+
+        .icon {
+          opacity: 1;
+          transition: $transition-default;
+        }
+      }
+    }
+
+    &.SHADE {
+      .icon {
+        opacity: $color-alpha;
+      }
+    }
+
+    &.HOVER:hover {
+      .icon {
+        transform-origin: center;
+        transform: scale($hover-scale);
+      }
+    }
+  }
+}

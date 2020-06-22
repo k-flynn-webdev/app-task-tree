@@ -19,6 +19,11 @@
 
     </div>
 
+    <RowStatus
+      :is-done="test.isDone"
+      :is-waiting="test.isWaiting"
+      @click="testing" />
+
     <ProjectsList v-if="isProjects" @showTasks="showTasks" />
 
     <TasksList v-if="isTasks" />
@@ -34,7 +39,10 @@ import ProjectsList from '../components/ProjectsList'
 import ProjectInfoName from '../components/ProjectInfoName'
 import ProjectTaskSwitch from '../components/ProjectTaskSwitch'
 
+import RowStatus from '../components/general/RowStatus'
+
 import TasksList from '../components/TasksList'
+import helpers from '../services/Helpers'
 
 export default {
   name: 'Home',
@@ -44,11 +52,16 @@ export default {
     ProjectsList,
     ProjectInfoName,
     ProjectTaskSwitch,
-    TasksList
+    TasksList,
+    RowStatus
   },
   data () {
     return {
-      mode: modes.PROJECTS
+      mode: modes.PROJECTS,
+      test: {
+        isWaiting: false,
+        isDone: false
+      }
     }
   },
   computed: {
@@ -62,6 +75,14 @@ export default {
   methods: {
     showTasks: function () {
       this.mode = modes.TASKS
+    },
+    testing: function () {
+      this.test.isWaiting = true
+
+      helpers.timeDelay(() => {
+        this.test.isWaiting = false
+        this.test.isDone = !this.test.isDone
+      }, 3000)
     }
   }
 }
