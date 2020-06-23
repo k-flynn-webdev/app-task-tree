@@ -3,8 +3,8 @@
        title="Click to change status"
        @click="onClick">
     <div class="row__item__status-icon">
-      <icDone v-if="isDone" class="fill-success" />
-      <icNone v-else-if="isWaiting" class="fill-waiting" />
+      <icDone v-if="isDone" class="fill-success-status" />
+      <icNone v-else-if="isWaiting" class="fill-waiting-status" />
       <icRound v-else class="icon-60 fill-fore" />
     </div>
   </div>
