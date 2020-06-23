@@ -7,7 +7,6 @@
         v-for="item in tasks"
         :key="item.id"
         :data="item"
-        :selected="task.id === item.id"
       />
 
     </transition-group>

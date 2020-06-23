@@ -12,7 +12,7 @@
         <button
             aria-label="confirm change"
             title="confirm change"
-            :class="[ options.isValidEdit ? '' : 'DISABLED' ]"
+            :class="[ options.isValidEdit ? '' : 'DISABLED', status ]"
             @click="onConfirm">
           <icDone />
         </button>
@@ -31,9 +31,9 @@
               key="showDelete"
               aria-label="delete item"
               title="delete item"
-              class="task__project__list__item__option-bar-delete"
+              class="task__project__list__item__option-bar-delete fill-warning-status"
               @click="onDelete">
-        <icDelete class="fill-warning" />
+        <icDelete />
       </button>
 
       <button v-if="options.showClose"
