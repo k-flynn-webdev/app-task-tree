@@ -52,6 +52,7 @@
           }
 
           &-progress {
+            word-break: keep-all;
             margin-right: $margin-default;
 
             @include screen-xs {
