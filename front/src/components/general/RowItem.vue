@@ -6,7 +6,8 @@
         :class="{
         'OPEN': options.open,
         'EDIT': isEdit,
-        'DELETE': isDelete }">
+        'DELETE': isDelete,
+        'COMPLETE': isDone }">
 
       <RowStatus
         :class="{ 'SHADE': !selected && !isDone }"

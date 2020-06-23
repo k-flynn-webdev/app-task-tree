@@ -121,6 +121,27 @@
           bottom: 0;
           z-index: -5;
           background-color: $color-mid;
+
+          &::after {
+            content: "";
+            position: absolute;
+            left: $unit-default * -1.25;
+            top: $unit-default * -1.25;
+            width: $unit-default * 2;
+            height: $unit-default * 2;
+            transform: rotateZ(45deg);
+            background-color: transparent;
+            transition: $transition-default;
+            z-index: 0;
+          }
+        }
+      }
+
+      &.COMPLETE & {
+        @include show-md-down {
+          &__mid-bg::after {
+            background-color: $color-success;
+          }
         }
       }
 
@@ -132,6 +153,7 @@
 
         &__mid__edit {
           display: block;
+          margin: $margin-default * 0.1;
         }
       }
 
