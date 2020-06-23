@@ -34,21 +34,18 @@
           align-items: center;
           flex-direction: row;
           transition: $transition-default;
-          padding: $padding-default * 0.33 $padding-default;
-
-          $smaller-margin-y: $padding-default * 1.25;
-          $smaller-margin-x: $padding-default * 0.2;
+          padding: $padding-default;
 
           @include screen-xs {
-            padding: $smaller-margin-y $smaller-margin-x;
+            padding: $padding-default * 1.5;
           }
 
           @include screen-sm {
-            padding: $smaller-margin-y $smaller-margin-x;
+            padding: $padding-default * 1.25;
           }
 
           @include screen-md {
-            padding: $smaller-margin-y $smaller-margin-x;
+            padding: $padding-default * 1.25;
           }
 
           &-progress {
@@ -133,6 +130,9 @@
             background-color: transparent;
             transition: $transition-default;
             z-index: 0;
+            border-spacing: $border-size;
+            border-color: transparent;
+            border-style: solid;
           }
         }
       }
@@ -140,6 +140,7 @@
       &.COMPLETE & {
         @include show-md-down {
           &__mid-bg::after {
+            border-color: rgba($color-shadow, $color-alpha);
             background-color: $color-success;
           }
         }
