@@ -1,10 +1,10 @@
 <template>
     <div v-if="options.open"
-         class="task__project__list__item__option-bar">
+         class="row__item__option-bar">
 
       <span v-if="showConfirm"
             key="showConfirm"
-            class="task__project__list__item__option-bar-confirm">
+            class="row__item__option-bar-confirm">
           <span v-if="options.mode === 'DELETE'"> Delete
             <span class="hide-md-down"> Item</span> ?
           </span>
@@ -22,7 +22,7 @@
               key="showEdit"
               aria-label="edit item"
               title="edit item"
-              class="task__project__list__item__option-bar-edit"
+              class="row__item__option-bar-edit"
               @click="onEdit">
         <icEdit />
       </button>
@@ -31,7 +31,7 @@
               key="showDelete"
               aria-label="delete item"
               title="delete item"
-              class="task__project__list__item__option-bar-delete fill-warning-status"
+              class="row__item__option-bar-delete fill-warning-status"
               @click="onDelete">
         <icDelete />
       </button>
@@ -40,7 +40,7 @@
               key="showClose"
               aria-label="close options"
               title="close options"
-              class="task__project__list__item__option-bar-close"
+              class="row__item__option-bar-close"
               @click="closeOptions">
         <icRight />
       </button>

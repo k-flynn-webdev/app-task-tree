@@ -121,6 +121,7 @@
 
           &::after {
             content: "";
+            z-index: 0;
             position: absolute;
             left: $unit-default * -1.25;
             top: $unit-default * -1.25;
@@ -129,10 +130,9 @@
             transform: rotateZ(45deg);
             background-color: transparent;
             transition: $transition-default;
-            z-index: 0;
-            border-spacing: $border-size;
-            border-color: transparent;
             border-style: solid;
+            border-color: transparent;
+            border-spacing: $border-size;
           }
         }
       }
@@ -140,7 +140,7 @@
       &.COMPLETE & {
         @include show-md-down {
           &__mid-bg::after {
-            border-color: rgba($color-shadow, $color-alpha);
+            border-color: rgba($color-shadow, $color-alpha * 2);
             background-color: $color-success;
           }
         }
@@ -227,6 +227,39 @@
         .icon {
           transform-origin: center;
           transform: scale($hover-scale);
+        }
+      }
+    }
+
+    &__option-bar {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      min-height: $unit-default * 0.5;
+      margin: $margin-default * 0.25 0;
+
+      &-close {
+        text-align: right;
+      }
+
+      &-edit,
+      &-close,
+      &-delete,
+      &-confirm {
+        margin-right: 0;
+        margin-left: $margin-default * 4;
+      }
+
+      @include screen-xs {
+        margin: unset;
+        justify-content: space-around;
+
+        &-edit,
+        &-close,
+        &-delete,
+        &-confirm {
+          margin: unset;
         }
       }
     }
