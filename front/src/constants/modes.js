@@ -7,6 +7,11 @@ const CREATE = 'CREATE'
 const DELETE = 'DELETE'
 const ALL = 'ALL'
 const CONFIRM = 'CONFIRM'
+const SELECT = 'SELECT'
+const CLICK = 'CLICk'
+const DOUBLE_CLICK = 'DOUBLE-CLICk'
+const OPEN = 'OPEN'
+const CLOSE = 'CLOSE'
 
 export default {
   CLEAR,
@@ -17,5 +22,10 @@ export default {
   CREATE,
   DELETE,
   ALL,
-  CONFIRM
+  CONFIRM,
+  SELECT,
+  CLICK,
+  DOUBLE_CLICK,
+  OPEN,
+  CLOSE
 }

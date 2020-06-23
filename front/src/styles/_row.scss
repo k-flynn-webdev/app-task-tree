@@ -1,37 +1,183 @@
 // MIXINS //
 @import "mixins";
 
-.row {
-  &__status {
-    @include hide-md-down {
-      &-icon {
-        text-align: center;
-        position: relative;
-        z-index: 1;
-        width: $unit-default * 1.33;
-        max-width: $unit-default * 1.33;
+@mixin options-resize ($value) {
+  width: $value;
+  min-width: $value;
+}
 
-        .icon {
-          opacity: 1;
+.row {
+  &__item {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style: none;
+
+    &__line {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin: $margin-default * 0.4 0;
+
+      &__mid {
+        margin: 0;
+        padding: 0;
+        flex: auto;
+        overflow: hidden;
+        position: relative;
+        border-style: solid;
+        border-width: $border-size;
+        border-color: transparent;
+
+        &__content {
+          display: flex;
+          align-items: center;
+          flex-direction: row;
           transition: $transition-default;
+          padding: $padding-default * 0.33 $padding-default;
+
+          $smaller-margin-y: $padding-default * 1.25;
+          $smaller-margin-x: $padding-default * 0.2;
+
+          @include screen-xs {
+            padding: $smaller-margin-y $smaller-margin-x;
+          }
+
+          @include screen-sm {
+            padding: $smaller-margin-y $smaller-margin-x;
+          }
+
+          @include screen-md {
+            padding: $smaller-margin-y $smaller-margin-x;
+          }
+
+          &-progress {
+            margin-right: $margin-default;
+
+            @include screen-xs {
+              display: none;
+            }
+            @include screen-sm {
+              display: none;
+            }
+          }
+
+          &-date {
+            margin-left: $margin-default;
+
+            small {
+              //display: inline-block;
+              //min-width: $unit-default * 3;
+            }
+          }
+
+          &-data {
+            flex: auto;
+          }
+        }
+
+        &__edit {
+          display: none;
+          position: relative;
+
+          &-input {
+            margin: 0;
+            width: 100%;
+          }
+        }
+
+        &-bg {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: -5;
+          background-color: $color-mid;
+        }
+      }
+
+      &.EDIT & {
+        &__mid__content,
+        &__mid-bg {
+          display: none;
+        }
+
+        &__mid__edit {
+          display: block;
+        }
+      }
+
+      &__option-btn {
+        opacity: 1;
+        text-align: right;
+        min-width: $unit-default * 1.5;
+
+        .OPEN & {
+          pointer-events: none;
+          opacity: $color-alpha;
+
+          button:focus {
+            outline: none;
+          }
+        }
+
+        button {
+          margin: 0;
+          text-align: right;
+          padding-right: 0;
         }
       }
     }
 
-    @include screen-lg {
-      font-size: $font-size-md;
-    }
-
-    &.SHADE {
-      .icon {
-        opacity: $color-alpha;
+    &.HOVER & {
+      &__line__mid:hover {
+        border-color: $color-fore;
       }
     }
 
-    &.HOVER:hover {
-      .icon {
-        transform-origin: center;
-        transform: scale($hover-scale);
+    /* stylelint-disable */
+    &.SELECT & {
+      &__line__mid {
+        &:hover {
+          border-color: transparent;
+        }
+
+        &-bg {
+          background-color: $color-select;
+        }
+      }
+    }
+    /* stylelint-enable */
+
+    &__status {
+      @include hide-md-down {
+        &-icon {
+          text-align: center;
+          position: relative;
+          z-index: 1;
+          font-size: $font-size-md;
+          width: $unit-default;
+          max-width: $unit-default;
+
+          .icon {
+            opacity: 1;
+            transition: $transition-default;
+          }
+        }
+      }
+
+      &.SHADE {
+        .icon {
+          opacity: $color-alpha;
+        }
+      }
+
+      &.HOVER:hover {
+        .icon {
+          transform-origin: center;
+          transform: scale($hover-scale);
+        }
       }
     }
   }

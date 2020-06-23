@@ -8,7 +8,7 @@
         :key="item.id"
         :data="item"
         :selected="project.id === item.id"
-        @showTasks="showTasks"
+        @show-tasks="showTasks"
       />
 
     </transition-group>

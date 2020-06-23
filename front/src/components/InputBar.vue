@@ -79,10 +79,10 @@ export default {
     }
   },
   mounted () {
-    this.$root.$on('EDITING', this.disableInput)
+    this.$root.$on(status.EDIT.toLowerCase(), this.disableInput)
   },
   beforeDestroy () {
-    this.$root.$off('EDITING', this.disableInput)
+    this.$root.$off(status.EDIT.toLowerCase(), this.disableInput)
   },
   methods: {
     reset: function () {

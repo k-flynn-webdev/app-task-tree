@@ -16,9 +16,8 @@
   max-height: $value;
 }
 
-
 @mixin hide-md-down {
-  @content
+  @content;
 
   @include screen-md {
     display: none;
@@ -33,8 +32,24 @@
   }
 }
 
+@mixin show-md-down {
+  display: none;
+
+  @include screen-md {
+    @content;
+  }
+
+  @include screen-sm {
+    @content;
+  }
+
+  @include screen-xs {
+    @content;
+  }
+}
+
 @mixin hide-md-up {
-  @content
+  @content;
 
   @include screen-md {
     display: none;
@@ -50,5 +65,25 @@
 
   @include screen-xxl {
     display: none;
+  }
+}
+
+@mixin show-md-up {
+  display: none;
+
+  @include screen-md {
+    @content;
+  }
+
+  @include screen-lg {
+    @content;
+  }
+
+  @include screen-xl {
+    @content;
+  }
+
+  @include screen-xxl {
+    @content;
   }
 }

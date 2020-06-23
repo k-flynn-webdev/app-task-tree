@@ -1,10 +1,11 @@
 <template>
-  <div class="row__status"
+  <div class="row__item__status"
+       title="Click to change status"
        @click="onClick">
-    <div class="row__status-icon">
+    <div class="row__item__status-icon">
       <icDone v-if="isDone" class="fill-success" />
       <icNone v-else-if="isWaiting" class="fill-waiting" />
-      <icRound v-else class="icon-50 fill-fore" />
+      <icRound v-else class="icon-60 fill-fore" />
     </div>
   </div>
 </template>
@@ -15,7 +16,7 @@ import icDone from '../../assets/icons/ic_tick'
 import icRound from '../../assets/icons/ic_round'
 
 export default {
-  name: 'RowOption',
+  name: 'RowStatus',
   components: {
     icNone,
     icDone,

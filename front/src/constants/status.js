@@ -7,8 +7,14 @@ const OPEN = 'OPEN'
 const CLOSE = 'CLOSE'
 const COMPLETE = 'COMPLETE'
 const SELECT = 'SELECT'
+const RESET = 'RESET'
+const VALUE = 'VALUE'
+const INPUT = 'INPUT'
+const EDIT = 'EDIT'
+const CLICK = 'CLICK'
 
 export default {
+  RESET,
   CLEAR,
   WAITING,
   SUCCESS,
@@ -17,5 +23,9 @@ export default {
   OPEN,
   CLOSE,
   SELECT,
-  COMPLETE
+  COMPLETE,
+  VALUE,
+  INPUT,
+  EDIT,
+  CLICK
 }

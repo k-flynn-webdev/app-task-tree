@@ -1,5 +1,5 @@
 <template>
-    <div v-if="options.show"
+    <div v-if="options.open"
          class="task__project__list__item__option-bar">
 
       <span v-if="showConfirm"
@@ -12,7 +12,7 @@
         <button
             aria-label="confirm change"
             title="confirm change"
-            :class="[ options.status, options.isValidEdit ? '' : 'DISABLED' ]"
+            :class="[ options.isValidEdit ? '' : 'DISABLED' ]"
             @click="onConfirm">
           <icDone />
         </button>
@@ -49,8 +49,6 @@
 </template>
 
 <script>
-// import helpers from '../../services/Helpers'
-// import general from '../../constants/general'
 import status from '../../constants/status.js'
 import modes from '../../constants/modes.js'
 import icEdit from '../../assets/icons/ic_edit'
@@ -61,8 +59,7 @@ import icDelete from '../../assets/icons/ic_cross'
 const optionDefault = () => {
   return {
     mode: status.CLEAR,
-    status: status.CLEAR,
-    show: false,
+    open: false,
     showEdit: true,
     showDelete: true,
     showClose: true,
@@ -82,6 +79,10 @@ export default {
     options: {
       type: Object,
       default: optionDefault()
+    },
+    status: {
+      type: String,
+      default: status.CLEAR
     }
   },
   computed: {
