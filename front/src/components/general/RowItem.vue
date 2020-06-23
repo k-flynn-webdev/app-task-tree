@@ -29,12 +29,17 @@
             {{ textOrName }}
           </p>
 
-          <p v-if="data.updated"
-             class="row__item__line__mid__content-date">
-            <small class="hide-sm-down">{{ dayMonth }}</small>
-            <small class="hide-md-down">/{{year }}</small>
-            <small class="hide-lg-down"> {{ time }} </small>
-          </p>
+          <small v-if="data.updated" class="row__item__line__mid__content-date-md">
+            {{ dayMonth }}
+          </small>
+
+          <small v-if="data.updated" class="row__item__line__mid__content-date-lg">
+            {{ dayMonth + '/' + year }}
+          </small>
+
+          <small v-if="data.updated" class="row__item__line__mid__content-date-xl">
+            {{ dayMonth + '/' + year + ' ' + time }}
+          </small>
 
         </div>
 

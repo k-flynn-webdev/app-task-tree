@@ -63,11 +63,37 @@
           }
 
           &-date {
-            margin-left: $margin-default;
+            &-md,
+            &-lg,
+            &-xl {
+              display: none;
+              text-align: right;
+              word-break: keep-all;
+              margin-left: $margin-default;
+            }
 
-            small {
-              //display: inline-block;
-              //min-width: $unit-default * 3;
+            &-md {
+              @include screen-md {
+                display: inline-block;
+                min-width: $unit-default * 3;
+              }
+            }
+
+            &-lg {
+              @include screen-lg {
+                display: inline-block;
+                min-width: $unit-default * 6;
+              }
+            }
+
+            &-xl {
+              @include hide-md-down {
+                display: inline-block;
+                min-width: $unit-default * 10;
+              }
+              @include screen-lg {
+                display: none;
+              }
             }
           }
 
