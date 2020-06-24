@@ -4,7 +4,7 @@
 
       <span v-if="showConfirm"
             key="showConfirm"
-            class="row__item__option-bar-confirm">
+            class="row__item__option-bar-confirm anim-show">
           <span v-if="options.mode === 'DELETE'"> Delete
             <span class="hide-md-down"> Item</span> ?
           </span>
@@ -22,7 +22,7 @@
               key="showEdit"
               aria-label="edit item"
               title="edit item"
-              class="row__item__option-bar-edit"
+              class="row__item__option-bar-edit anim-show"
               @click="onEdit">
         <icEdit />
       </button>
@@ -31,7 +31,7 @@
               key="showDelete"
               aria-label="delete item"
               title="delete item"
-              class="row__item__option-bar-delete fill-warning-status"
+              class="row__item__option-bar-delete fill-warning-status anim-show"
               @click="onDelete">
         <icDelete />
       </button>
@@ -40,7 +40,7 @@
               key="showClose"
               aria-label="close options"
               title="close options"
-              class="row__item__option-bar-close"
+              class="row__item__option-bar-close anim-show"
               @click="closeOptions">
         <icRight />
       </button>

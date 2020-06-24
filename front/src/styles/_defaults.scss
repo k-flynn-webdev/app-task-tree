@@ -307,49 +307,40 @@ body {
   }
 }
 
+// create a staggered time delay for a class
+@mixin delay_anims($count:2, $nth:1, $step:0.1, $initial:0) {
+  @for $i from $nth through $count{
+    &:nth-of-type(#{$i}) {
+      animation-delay: #{$initial}s;
+      $initial: $initial + $step;
+    }
+  }
+}
 
-//.fade-enter-active,
-//.fade-leave-active,
-//.move-enter-active,
-//.move-leave-active {
-//  transition: all $transition-default * 5;
-//}
-//
-//.fade-enter
-//  /* .fade-leave-active below version 2.1.8 */ {
-//  opacity: 0;
-//  transform: translateY($unit-default * -1);
-//}
-//
-//.fade-leave-to
-//  /* .fade-leave-active below version 2.1.8 */ {
-//  opacity: 0;
-//  transform: translateY($unit-default);
-//}
-//
-//.fade-leave-active {
-//  //position: absolute;
-//}
-//
-//.move-item {
-//  //transition: $transition-default * 2;
-//  display: inline-block;
-//  width: 100%;
-//}
-//
-//.move-enter,
-//.move-leave-to
-//  /* .move-leave-active below version 2.1.8 */ {
-//  opacity: 0;
-//  transform: translateY($unit-default * -1);
-//}
-//
-//
-//.move-move {
-//  position: absolute;
-//}
+.anim-show {
+  animation-delay: 0s;
+  animation-name: anim_show;
+  animation-fill-mode: both;
+  animation-duration: $transition-default * 0.5;
+  animation-direction: normal;
+  animation-timing-function: ease-in-out;
 
+  @include delay_anims(10, 1, 0.15, 0);
+}
 
+@keyframes anim_show {
+  0% {
+    opacity: 0.1;
+    transform: translateY(-2.5rem) scale(0.3);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// vuejs transition anims
 .list-item {
   width: 100%;
   //transition: all $transition-default * 2 ease-out;
