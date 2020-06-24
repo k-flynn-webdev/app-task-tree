@@ -22,10 +22,10 @@
              @dblclick="onDblClick"
              @click="onClick">
 
-          <p v-if="progress"
+          <small v-if="progress"
              class="row__item__line__mid__content-progress">
             {{ progress }}
-          </p>
+          </small>
 
           <p class="row__item__line__mid__content-data break-word">
             {{ textOrName }}
