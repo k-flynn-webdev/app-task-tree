@@ -29,7 +29,7 @@
         border-style: solid;
         border-width: $border-size;
         border-color: transparent;
-        border-radius: $unit-default * 0.35;
+        border-radius: $border-radius;
 
         &__content {
           display: flex;

@@ -70,6 +70,9 @@
     &__switch {
       &-tasks,
       &-projects {
+        position: relative;
+        transform-origin: center;
+        z-index: 0;
         margin: $margin-default 0;
         padding: $padding-default;
         text-transform: uppercase;
@@ -81,6 +84,7 @@
         -webkit-text-fill-color: rgba($color-fore, $color-alpha);
 
         &.ACTIVE {
+          z-index: 1;
           outline: none;
           transform: scaleY(1.1);
           background-color: $color-success;
@@ -93,13 +97,13 @@
       &-projects {
         margin-right: 0;
         border-right: none;
-        transform-origin: right;
+        transform: translateX(3px);
       }
 
       &-tasks {
         margin-left: 0;
         border-left: none;
-        transform-origin: left;
+        transform: translateX(-3px);
       }
     }
 

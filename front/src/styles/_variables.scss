@@ -50,7 +50,7 @@ $all-icon-sizes: (
 );
 
 $border-size: $unit-default * 0.1;
-$border-radius: $unit-default * 0.1;
+$border-radius: $unit-default * 0.35;
 
 $form-corner: 0.4em;
 $button-corner: 0.4em;
@@ -58,7 +58,6 @@ $margin-default: 0.5em;
 $padding-default: 0.25em;
 $hover-scale: 1.066;
 $transition-default: 0.33s;
-
 
 $color-alpha: 0.3;
 $color-bg: rgb(33, 62, 69);
