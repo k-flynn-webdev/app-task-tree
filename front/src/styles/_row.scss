@@ -22,6 +22,7 @@
 
       &__mid {
         margin: 0;
+        padding: $padding-default * 0.1 0;
         flex: auto;
         overflow: hidden;
         position: relative;
@@ -154,7 +155,7 @@
 
         &__mid__edit {
           display: block;
-          margin: $margin-default * 0.1;
+          //margin: $margin-default * 0.1;
         }
       }
 
@@ -219,12 +220,17 @@
     &__status {
       $tmp: $unit-default * 1.3;
 
+      &.NO-CHECKBOX {
+        input {
+          display: none;
+        }
+      }
+
       height: $tmp;
       width: $tmp;
       min-height: $tmp;
       min-width: $tmp;
       position: relative;
-      //margin: 0 $margin-default * 0.5;
 
       &-icon {
         position: absolute;

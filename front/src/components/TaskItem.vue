@@ -6,6 +6,7 @@
     :data="data"
     :status="status"
     :selected="selected"
+    :statusCheckBox="hasCheckBox"
     @reset="resetValue"
     @confirm="onConfirm"
     @dblclick="onSelectTask"
@@ -38,7 +39,8 @@ export default {
   data () {
     return {
       status: status.CLEAR,
-      input: status.CLEAR
+      input: status.CLEAR,
+      hasCheckBox: true
     }
   },
   methods: {

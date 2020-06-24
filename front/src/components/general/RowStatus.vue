@@ -1,5 +1,6 @@
 <template>
   <div class="row__item__status"
+       :class="{ 'NO-CHECKBOX': !isCheckBox }"
        title="Click to change status">
 
     <label>
@@ -39,6 +40,10 @@ export default {
     isDone: {
       type: Boolean,
       default: false
+    },
+    isCheckBox: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {

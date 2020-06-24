@@ -13,6 +13,7 @@
         :class="{ 'SHADE': !selected && !isDone }"
         :is-waiting="isWaiting"
         :is-done="isDone"
+        :is-check-box="statusCheckBox"
         @click="onStatusClick" />
 
       <div class="row__item__line__mid">
@@ -125,6 +126,10 @@ export default {
     status: {
       type: String,
       default: status.CLEAR
+    },
+    statusCheckBox: {
+      type: Boolean,
+      default: false
     },
     selected: {
       type: Boolean,
