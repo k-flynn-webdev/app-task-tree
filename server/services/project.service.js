@@ -228,7 +228,7 @@ function SafeExport(projectData) {
   }
 
   if (has.hasAnItem(projectData.name)) {
-    freshProject.name = projectData.name
+    freshProject.name = sanitizer.unescapeEntities(projectData.name)
   }
 
   if (has.hasAnItem(projectData.user)) {

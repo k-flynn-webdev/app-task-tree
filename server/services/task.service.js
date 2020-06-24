@@ -1,3 +1,4 @@
+const sanitizer = require('sanitizer')
 const logger = require('./logger.js')
 const has = require('../helpers/has.js')
 const config = require('../config/config.js')
@@ -221,7 +222,7 @@ function SafeExport(taskData) {
   }
 
   if (has.hasAnItem(taskData.text)) {
-    freshTask.text = taskData.text
+    freshTask.text = sanitizer.unescapeEntities(taskData.text)
   }
 
   if (has.hasAnItem(taskData.project)) {

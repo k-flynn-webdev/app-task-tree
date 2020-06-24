@@ -1,8 +1,9 @@
 const bcrypt = require('bcrypt')
-
+const sanitizer = require('sanitizer')
 const logger = require('./logger.js')
 const has = require('../helpers/has.js')
 const config = require('../config/config.js')
+const constants = require('../constants/index')
 const db = require('../interfaces/db_init_sql.js')
 const MysqlVal = require('../helpers/MYSQL_value.js')
 
@@ -49,7 +50,11 @@ function InitUsers() {
 function CheckUsers() {
   return GetAllUser()
   .then((items) => {
-    logger.Log(items.length + ' Users found')
+    const anonUsers = items.filter(item => item.name === constants.vars.ANON).length
+    const normalUsers = items.length - anonUsers
+    logger.Log( 'Users found')
+    logger.Log( ` \t anon: \t ${anonUsers}`)
+    logger.Log( ` \t normal: ${normalUsers}`)
   })
 }
 
@@ -238,7 +243,7 @@ function ComparePassword(input, dbHash) {
   return bcrypt.compare(config.secure.hash + input, dbHash)
   .then(passwordTest => {
     if (!passwordTest) {
-      throw new Error('Incorrect password.')
+      throw new Error(constants.errors.PASSWORD_INCORRECT)
     }
 
     return Promise.resolve(true)
@@ -264,7 +269,7 @@ function SafeExport(userData, meta = false) {
   }
 
   if (has.hasAnItem(userData.name)) {
-    freshUser.name = userData.name
+    freshUser.name = sanitizer.unescapeEntities(userData.name)
   }
 
   if (has.hasAnItem(userData.email)) {
