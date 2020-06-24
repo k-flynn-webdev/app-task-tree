@@ -15,6 +15,12 @@
 }
 
 .task {
+  &.max-screen-size {
+    overflow: hidden;
+    max-width: 97vw;
+    max-height: 97vh;
+  }
+
   .hint {
     margin: $margin-default * 2 $margin-default;
   }

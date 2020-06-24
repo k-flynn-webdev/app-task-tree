@@ -1,10 +1,14 @@
 <template>
-  <div class="toast">
-    <Toast
-      v-for="toast in Toasts"
-      :key="toast.id"
-      :data="toast"
-    />
+  <div class="toast__holder" :class="{ 'SHOW': Toasts.length > 0}">
+
+    <div class="toast__holder__body">
+      <Toast
+        v-for="toast in Toasts"
+        :key="toast.id"
+        :data="toast"
+      />
+    </div>
+
   </div>
 </template>
 

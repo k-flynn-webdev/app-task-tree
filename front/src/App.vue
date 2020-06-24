@@ -1,5 +1,8 @@
 <template>
-  <div id="app" class="task">
+  <div
+    id="app"
+    class="task"
+    :class="{ 'max-screen-size': hasToast }">
 
     <ToastHolder />
 
@@ -29,6 +32,11 @@ export default {
   name: 'App',
   components: {
     ToastHolder
+  },
+  computed: {
+    hasToast: function () {
+      return this.$store.getters['toasts/toasts'].length > 0
+    }
   }
 }
 </script>

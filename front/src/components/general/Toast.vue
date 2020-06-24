@@ -1,13 +1,26 @@
 <template>
-  <div class="toast" :class="{ 'ERROR': data.isError }">
-    <div class="toast__content">
-      {{ data }}
+  <div class="toast__message" :class="{ 'ERROR': isError }">
+
+    <div class="toast__message__content ">
+
+      <p class="color-bg text-bold md"
+      :class="{ 'color-fore': !isError }">
+        {{ data.title }}
+      </p>
+
+      <p class="color-bg text-bold"
+      :class="{ 'color-fore': !isError }">
+        {{ data.message }}
+      </p>
+
     </div>
-    <button
-      class="toast__close"
-      @click="closeToast">
-      X
+
+    <br>
+
+    <button @click="closeToast">
+     OK
     </button>
+
   </div>
 </template>
 
@@ -29,6 +42,11 @@ export default {
   name: 'Toast',
   props: {
     data: DefaultObj()
+  },
+  computed: {
+    isError: function () {
+      return this.data.isError === true
+    }
   },
   methods: {
     closeToast: function () {

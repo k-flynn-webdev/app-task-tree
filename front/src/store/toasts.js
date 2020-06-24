@@ -11,7 +11,11 @@ function createToast (input) {
   const message = input.response && input.response && input.response.data
     ? input.response.data.message : input.message
 
-  const isError = input.isError ? input.isError : true
+  let isError = true
+  if (input.isError !== undefined) {
+    isError = input.isError
+  }
+
   const isTimed = input.isTimed ? input.isTimed : false
   const time = () => {
     if (input.isTimed) {

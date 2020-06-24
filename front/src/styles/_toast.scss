@@ -1,0 +1,59 @@
+.toast {
+  &__holder {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -100;
+    overflow-y: auto;
+    background-color: transparent;
+    transition: background-color $transition-default;
+
+    &.SHOW {
+      z-index: 90;
+      //pointer-events: none;
+      background-color: rgba(black, $color-alpha);
+    }
+
+    &__body {
+      width: 75%;
+      margin: 0 auto;
+      padding: $padding-default;
+      min-width: $unit-default * 10;
+      min-height: $unit-default * 5;
+    }
+  }
+
+  &__message {
+    position: relative;
+    text-align: center;
+    margin: $margin-default;
+    padding: $padding-default;
+    background-color: $color-mid;
+    min-height: $unit-default * 5;
+    min-width: $unit-default * 10;
+    border-radius: $border-radius;
+
+    &.ERROR {
+      background-color: $color-waiting;
+    }
+
+    &__content {
+      text-align: center;
+    }
+
+    button {
+      margin: $margin-default;
+      padding: $padding-default;
+      border-radius: $border-radius * 2;
+      background-color: $color-bg;
+    }
+
+    &-close {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+}
