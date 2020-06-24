@@ -29,10 +29,11 @@
         border-style: solid;
         border-width: $border-size;
         border-color: transparent;
+        border-radius: $unit-default * 0.35;
 
         &__content {
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           flex-direction: row;
           transition: $transition-default;
           padding: $padding-default;
@@ -148,6 +149,11 @@
       }
 
       &.EDIT & {
+
+        &__mid {
+          border-radius: 0;
+        }
+
         &__mid__content,
         &__mid-bg {
           display: none;
