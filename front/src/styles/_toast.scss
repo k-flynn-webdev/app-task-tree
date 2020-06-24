@@ -12,15 +12,14 @@
 
     &.SHOW {
       z-index: 90;
-      //pointer-events: none;
       background-color: rgba(black, $color-alpha);
     }
 
     &__body {
-      width: 75%;
+      width: $unit-default * 20;
       margin: 0 auto;
       padding: $padding-default;
-      min-width: $unit-default * 10;
+      max-width: 80vw;
       min-height: $unit-default * 5;
     }
   }

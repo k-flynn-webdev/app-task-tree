@@ -19,9 +19,6 @@
 
     </div>
 
-    <button @click="createToast">Create toast</button>
-    <button @click="createError">Create error</button>
-
     <ProjectsList v-if="isProjects" @showTasks="showTasks" />
 
     <TasksList v-if="isTasks" />
@@ -68,21 +65,6 @@ export default {
   methods: {
     showTasks: function () {
       this.mode = modes.TASKS
-    },
-    createError: function () {
-      this.$store.commit('toasts/toastAdd',
-        new Error('this is an error'))
-    },
-    createToast: function () {
-      const msg = { isError: false, message: 'just a toast' }
-      this.$store.commit('toasts/toastAdd', msg)
-      this.$store.commit('toasts/toastAdd', msg)
-      this.$store.commit('toasts/toastAdd', msg)
-      this.$store.commit('toasts/toastAdd', msg)
-      this.$store.commit('toasts/toastAdd', msg)
-      this.$store.commit('toasts/toastAdd', msg)
-      this.$store.commit('toasts/toastAdd', msg)
-      this.$store.commit('toasts/toastAdd', msg)
     }
   }
 }
