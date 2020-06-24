@@ -323,7 +323,7 @@ body {
   animation-fill-mode: both;
   animation-duration: $transition-default * 0.5;
   animation-direction: normal;
-  animation-timing-function: ease-in-out;
+  animation-timing-function: ease-out;
 
   @include delay_anims(10, 1, 0.15, 0);
 }
