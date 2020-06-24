@@ -26,6 +26,7 @@ const SUCCESS = 'success'
 
 // ERRORS
 const EMAIL_IN_USE = 'Email already in use.'
+const PASSWORD_INCORRECT = 'Incorrect password.'
 const ACCOUNT_MISSING = 'Account does not exist, please contact support.'
 const ACCOUNT_UNVERIFIED = 'Account not verified, please verify first.'
 const ACCOUNT_IN_RECOVERY = 'Account was recently put in recovery modes, please contact support'
@@ -83,5 +84,6 @@ module.exports = {
 		ACCOUNT_IN_RECOVERY,
 		VERIFY_LINK_MISSING,
 		RECOVERY_LINK_MISSING,
+		PASSWORD_INCORRECT,
 	}
 }

@@ -1,3 +1,4 @@
+const sanitizer = require('sanitizer')
 const logger = require('./logger.js')
 const has = require('../helpers/has.js')
 const config = require('../config/config.js')

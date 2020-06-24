@@ -1,6 +1,6 @@
+const logger = require('./logger.js')
 const constants = require('../constants/index')
 const mailConfig = require('../config/config').mail
-const logger = require('./logger.js')
 const mailgun = require('mailgun-js')({
   apiKey: mailConfig.api,
   domain: mailConfig.domain,
