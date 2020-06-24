@@ -282,85 +282,7 @@ body {
   width: 1px;
 }
 
-// INPUTS && CONTROLS TO BE SEPARATED //
 
-input {
-  height: $unit-default * 1.4;
-  min-width: $unit-default * 2;
-  background-color: transparent;
-  border-style: solid;
-  border-spacing: $border-size;
-  border-color: $color-fore;
-  margin: $margin-default * 0.5 $margin-default;
-  padding: $padding-default * 0.5 $padding-default;
-  transition: $transition-default;
-
-  &::placeholder {
-    opacity: 0.5;
-  }
-
-  $smaller-screen-bar: $unit-default * 2.5;
-  @include screen-xs {
-    height: $smaller-screen-bar;
-  }
-
-  @include screen-sm {
-    height: $smaller-screen-bar;
-  }
-
-  @include screen-md {
-    height: $smaller-screen-bar;
-  }
-
-  @each $status, $value in $all-status-border-colours {
-    &.#{to-upper-case($status)} {
-      border-color: $value;
-    }
-  }
-
-  &.DISABLED {
-    pointer-events: none;
-
-    &:focus {
-      outline: none;
-    }
-  }
-}
-
-button {
-  text-align: center;
-  font-size: $font-size;
-  vertical-align: middle;
-  transition: $transition-default;
-  padding: $padding-default * 0.1;
-  margin: $margin-default * 0.25 $margin-default;
-
-  &:hover {
-    transform: scale($hover-scale);
-  }
-
-  @each $size, $value in $all-font-sizes {
-    &.#{$size} {
-      font-size: $value;
-    }
-  }
-
-  @each $status, $value in $all-status-border-colours {
-    &.#{to-upper-case($status)} {
-      svg {
-        fill: $value;
-      }
-    }
-  }
-
-  &.DISABLED {
-    pointer-events: none;
-
-    &:focus {
-      outline: none;
-    }
-  }
-}
 
 @each $color, $value in $all-colours {
   .stroke-#{$color} {
@@ -385,48 +307,6 @@ button {
   }
 }
 
-.status.bar {
-  $offPos: -5px;
-
-  position: absolute;
-  left: $offPos;
-  right: 105%;
-  height: 0;
-  bottom: $offPos;
-  z-index: -1;
-  background-color: transparent;
-  transition: background-color 0.6s, right 0.6s, height 1s;
-
-  @each $status, $value in $all-status-colours {
-    &.#{to-upper-case($status)} {
-      right: $offPos;
-      background-color: $value;
-      height: $unit-default * 0.7;
-      transition: right 0.6s;
-
-      @include screen-xs {
-        height: $unit-default;
-      }
-      @include screen-sm {
-        height: $unit-default;
-      }
-      @include screen-md {
-        height: $unit-default * 0.85;
-      }
-    }
-  }
-
-  &.WAITING {
-    transition: right 6s;
-  }
-
-  &.COMPLETE {
-    left: $offPos;
-    right: $offPos;
-    height: 0;
-    bottom: $offPos;
-  }
-}
 
 //.fade-enter-active,
 //.fade-leave-active,

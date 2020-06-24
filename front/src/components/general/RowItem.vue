@@ -65,7 +65,7 @@
         <button aria-label="open options"
           title="open options"
           @click="onOpenOption">
-          <icOptions class="icon-70" />
+          <icOptions class="icon-90" />
         </button>
       </div>
 

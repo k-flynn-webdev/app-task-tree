@@ -1,0 +1,105 @@
+label {
+  input[type="checkbox"] {
+    opacity: 0;
+    position: absolute;
+    width: $unit-default;
+    height: $unit-default;
+  }
+
+  input[type="checkbox"]:focus + .control {
+    outline-offset: -1px;
+    outline: 2px solid $color-select-outline;
+  }
+
+  // hide any attached label span text
+  span {
+    display: none;
+  }
+}
+
+// INPUTS && CONTROLS TO BE SEPARATED //
+
+input,
+button {
+  &:focus {
+    outline-style: solid;
+    outline-width: $border-size;
+    outline-color: $color-select-outline;
+  }
+
+  &.DISABLED {
+    pointer-events: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+input {
+  height: $unit-default * 1.4;
+  min-width: $unit-default * 2;
+  background-color: transparent;
+  border-style: solid;
+  border-color: $color-fore;
+  border-spacing: $border-size;
+  transition: $transition-default;
+  margin: $margin-default * 0.5 $margin-default;
+  padding: $padding-default * 0.5 $padding-default;
+
+  &::placeholder {
+    opacity: $color-alpha;
+  }
+
+  $smaller-screen-bar: $unit-default * 2.5;
+  @include screen-xs {
+    height: $smaller-screen-bar;
+  }
+
+  @include screen-sm {
+    height: $smaller-screen-bar;
+  }
+
+  @include screen-md {
+    height: $smaller-screen-bar;
+  }
+
+  @each $status, $value in $all-status-border-colours {
+    &.#{to-upper-case($status)} {
+      border-color: $value;
+    }
+  }
+}
+
+button {
+  text-align: center;
+  font-size: $font-size;
+  vertical-align: middle;
+  transition: $transition-default;
+  padding: $padding-default * 0.1;
+  margin: $margin-default * 0.25 $margin-default;
+
+  &:hover {
+    transform: scale($hover-scale);
+  }
+
+  outline-offset: $border-size * 0.5;
+
+  &:focus {
+    outline-width: $border-size * 1.5;
+  }
+
+  @each $size, $value in $all-font-sizes {
+    &.#{$size} {
+      font-size: $value;
+    }
+  }
+
+  @each $status, $value in $all-status-border-colours {
+    &.#{to-upper-case($status)} {
+      svg {
+        fill: $value;
+      }
+    }
+  }
+}

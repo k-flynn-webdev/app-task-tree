@@ -1,0 +1,42 @@
+.status.bar {
+  $offPos: -5px;
+
+  position: absolute;
+  left: $offPos;
+  right: 105%;
+  height: 0;
+  bottom: $offPos;
+  z-index: -1;
+  background-color: transparent;
+  transition: background-color 0.6s, right 0.6s, height 1s;
+
+  @each $status, $value in $all-status-colours {
+    &.#{to-upper-case($status)} {
+      right: $offPos;
+      background-color: $value;
+      height: $unit-default * 0.7;
+      transition: right 0.6s;
+
+      @include screen-xs {
+        height: $unit-default;
+      }
+      @include screen-sm {
+        height: $unit-default;
+      }
+      @include screen-md {
+        height: $unit-default * 0.85;
+      }
+    }
+  }
+
+  &.WAITING {
+    transition: right 6s;
+  }
+
+  &.COMPLETE {
+    left: $offPos;
+    right: $offPos;
+    height: 0;
+    bottom: $offPos;
+  }
+}
