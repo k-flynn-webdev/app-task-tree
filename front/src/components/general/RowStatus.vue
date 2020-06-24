@@ -10,7 +10,7 @@
       <div class="row__item__status-icon control">
         <icDone v-if="isDone" class="fill-success-status" />
         <icNone v-else-if="isWaiting" class="fill-waiting-status" />
-        <icRound v-else class="icon-60 fill-fore" />
+        <icRound v-else class="fill-fore" />
       </div>
 
       <span>label here</span>
