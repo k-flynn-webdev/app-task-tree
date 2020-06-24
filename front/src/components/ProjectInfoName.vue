@@ -1,5 +1,5 @@
 <template>
-  <div class="task__project__header__info flex-row no-wrap"
+  <div class="task__project__header__info"
       title="click to toggle between % or total"
       @click="showTotals = !showTotals">
     <p class="task__project__header__info-name name text-bold">
