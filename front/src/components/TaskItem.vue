@@ -76,6 +76,7 @@ export default {
       const updatedText = { id: this.data.id, text: this.input }
 
       return this.$store.dispatch('tasks/update', updatedText)
+        .then(() => this.$root.$emit('blur'))
         .then(() => this.handleSuccess())
         .catch(err => this.handleError(err))
     },

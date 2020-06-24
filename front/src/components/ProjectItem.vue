@@ -70,6 +70,7 @@ export default {
       const updatedName = { id: this.data.id, name: this.input }
 
       return this.$store.dispatch('projects/update', updatedName)
+        .then(() => this.$root.$emit('blur'))
         .then(() => this.handleSuccess())
         .catch(err => this.handleError(err))
     },

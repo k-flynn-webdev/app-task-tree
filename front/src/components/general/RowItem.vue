@@ -186,9 +186,11 @@ export default {
   },
   mounted () {
     this.$root.$on(status.CLOSE.toLowerCase(), this.onCloseImmediate)
+    this.$root.$on('blur', this.onBlur)
   },
   beforeDestroy () {
     this.$root.$off(status.CLOSE.toLowerCase(), this.onCloseImmediate)
+    this.$root.$off('blur', this.onBlur)
   },
   methods: {
     resetStatus: function () {
@@ -217,6 +219,9 @@ export default {
       this.options.showEdit = false
       this.options.showDelete = false
       this.$nextTick(() => this.$refs.itemEdit.focus())
+    },
+    onBlur: function () {
+      this.$refs.itemEdit.blur()
     },
     onModeDelete: function () {
       this.onClick()
