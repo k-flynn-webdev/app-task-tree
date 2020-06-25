@@ -80,15 +80,15 @@
         border-radius: $border-radius;
         border: $border-size solid $color-bg;
         transition: $transition-default * 0.5;
-        color: rgba($color-fore, $color-alpha);
-        -webkit-text-fill-color: rgba($color-fore, $color-alpha);
+        color: rgba($color-fore, 0.8);
+        -webkit-text-fill-color: rgba($color-fore, 0.8);
 
         &.ACTIVE {
           z-index: 1;
           outline: none;
           transform: scaleY(1.1);
           background-color: $color-success;
-          color: rgba($color-shadow, $color-alpha);
+          color: rgba($color-shadow, 1);
           border: $border-size solid $color-success;
           -webkit-text-fill-color: rgba($color-shadow, 1);
         }
