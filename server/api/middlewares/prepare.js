@@ -1,4 +1,4 @@
-const sanitizer = require('sanitizer').sanitize
+const sanitizer = require('sanitizer').escape
 
 /**
  * Prepare/sanitize incoming user data from a request

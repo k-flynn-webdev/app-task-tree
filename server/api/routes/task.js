@@ -136,13 +136,12 @@ module.exports = function (app) {
         promiseValue = req.query.project
       }
 
-      promiseTask(promiseValue)
+      return promiseTask(promiseValue)
       .then(taskObjs => {
-        let allTasks = taskObjs.filter(item => task.SafeExport(mysqlVal(item)))
-
+        const allSafeTasks = taskObjs.map(item => task.SafeExport(item))
         exit(res, 200,
-          'Success all tasks found: ' + allTasks.length,
-          { tasks: allTasks })
+          'Success all tasks found: ' + allSafeTasks.length,
+          { tasks: allSafeTasks })
       })
       .catch(err => {
         logger.Log(err.message || err, req)

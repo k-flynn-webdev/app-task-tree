@@ -113,11 +113,10 @@ module.exports = function (app) {
 
       project.GetProjectsByUser(req.query.user)
       .then(projectObjs => {
-        let allProjects =
-          projectObjs.filter(item => project.SafeExport(mysqlVal(item)))
+        const allSafeProjects = projectObjs.map(item => project.SafeExport(item))
         exit(res, 200,
-          'Success all projects found: ' + allProjects.length,
-          { projects: allProjects })
+          'Success all projects found: ' + allSafeProjects.length,
+          { projects: allSafeProjects })
       })
       .catch(err => {
         logger.Log(err.message || err, req)
