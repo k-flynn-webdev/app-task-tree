@@ -178,7 +178,7 @@ export default {
     },
     isDone: function () {
       if (this.isWaiting) return false
-      return this.data.isDone > 0
+      return this.data.isDone
     },
     isError: function () {
       return this.status === status.ERROR

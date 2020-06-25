@@ -234,7 +234,7 @@ function SafeExport(taskData) {
   }
 
   if (has.hasAnItem(taskData.isDone)) {
-    freshTask.isDone = taskData.isDone
+    freshTask.isDone = taskData.isDone === 1
     freshTask.doneDate = taskData.doneDate
   }
 

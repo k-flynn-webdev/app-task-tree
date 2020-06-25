@@ -244,7 +244,7 @@ function SafeExport(projectData) {
   }
 
   if (has.hasAnItem(projectData.isDone)) {
-    freshProject.isDone = projectData.isDone
+    freshProject.isDone = projectData.isDone === 1
     freshProject.doneDate = projectData.doneDate
   }
 

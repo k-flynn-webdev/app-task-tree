@@ -5,15 +5,36 @@ const DELAY_SUCCESS = 900
 const DELAY_ERROR = 6000
 
 const DEFAULT_PROJECT = (user = -1) => {
-  return { id: -1, name: 'Project', user: user, tasksDone: 0, tasksTotal: 0 }
+  return {
+    id: -1,
+    name: 'Project',
+    user: user,
+    tasksDone: 0,
+    tasksTotal: 0,
+    isDone: false,
+    doneDate: null
+  }
 }
 
 const DEFAULT_PROJECT_NO_ID = (user = -1) => {
-  return { name: 'Project', user: user, tasksDone: 0, tasksTotal: 0 }
+  return {
+    name: 'Project',
+    user: user,
+    tasksDone: 0,
+    tasksTotal: 0,
+    isDone: false,
+    doneDate: null
+  }
 }
 
 const DEFAULT_TASK = (user = -1) => {
-  return { id: -1, text: 'Task', project: -1, user: user, isDone: false }
+  return {
+    id: -1,
+    text: 'Task',
+    project: -1,
+    user: user,
+    isDone: false
+  }
 }
 
 export default {
