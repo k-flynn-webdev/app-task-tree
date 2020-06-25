@@ -10,6 +10,11 @@ const routes = [
     path: '/',
     name: Paths.HOME,
     component: Home
+  },
+  {
+    path: '/switch',
+    name: 'switch',
+    component: () => import(/* webpackChunkName: "switch" */ '../views/Switch.vue')
   }
   // {
   //   path: '/',

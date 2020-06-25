@@ -20,6 +20,7 @@
 
     <div class="task__footer">
       <p>footer</p>
+      <router-link to="/switch">Switch</router-link>
     </div>
 
   </div>
