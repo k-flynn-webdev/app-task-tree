@@ -150,7 +150,6 @@
       }
 
       &.EDIT & {
-
         &__mid {
           border-radius: 0;
         }
@@ -162,7 +161,6 @@
 
         &__mid__edit {
           display: block;
-          //margin: $margin-default * 0.1;
         }
       }
 
@@ -259,8 +257,9 @@
         left: 50%;
         width: 90%;
         height: 90%;
-        min-height: $icon-size * 0.7;
         min-width: $icon-size * 0.7;
+        min-height: $icon-size * 0.7;
+        transition: $transition-default;
         transform: translateX(-50%) translateY(-50%);
       }
 
@@ -284,7 +283,7 @@
       &.HOVER:hover {
         .icon {
           transform-origin: center;
-          transform: scale($hover-scale);
+          transform: translateX(-40%) translateY(-50%) scale($hover-scale);
         }
       }
     }
@@ -312,6 +311,18 @@
       &-confirm {
         margin-right: 0;
         margin-left: $margin-default * 4;
+
+        &:hover {
+          .icon {
+            transform: scale($hover-scale);
+          }
+
+          .DISABLED {
+            .icon {
+              transform: unset;
+            }
+          }
+        }
       }
 
       @include screen-sm {

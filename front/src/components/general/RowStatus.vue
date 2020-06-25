@@ -1,6 +1,6 @@
 <template>
   <div class="row__item__status"
-       :class="{ 'NO-CHECKBOX': !isCheckBox }"
+       :class="{ 'NO-CHECKBOX': !isCheckBox, 'HOVER': isCheckBox }"
        title="Click to change status">
 
     <label>
