@@ -6,6 +6,7 @@ const task = require('../../services/task.service.js')
 const token = require('../../services/token.service.js')
 const mysqlVal = require('../../helpers/MYSQL_value.js')
 const prepareMiddle = require('../middlewares/prepare.js')
+const constants = require('../../constants/index')
 
 // todo
 //    add passive token check, & if theres a user
@@ -16,7 +17,7 @@ module.exports = function (app) {
   /**
    * Create a task & return
    */
-  app.post('/api/task/create', taskMiddle.Create, prepareMiddle,
+  app.post(constants.paths.API_TASK_CREATE, taskMiddle.Create, prepareMiddle,
     function (req, res) {
     // todo check for user token and integrate
 
@@ -24,11 +25,12 @@ module.exports = function (app) {
     .then(({ insertId }) => task.GetTaskByID(insertId))
     .then(newTask => mysqlVal(newTask))
     .then(taskObj => {
-      app.emit('UPDATE-PROJECT-PROGRESS', { project: taskObj.project })
+      app.emit(constants.events.UPDATE_PROGRESS_PROJECT,
+        { project: taskObj.project })
 
       logger.Log('Task created, id: ' + taskObj.id, req)
       exit(res, 200,
-          'Success your task is created',
+        constants.messages.SUCCESS_CREATED_TASK,
           { task: task.SafeExport(taskObj) })
     })
     .catch(err => {
@@ -40,7 +42,7 @@ module.exports = function (app) {
   /**
    * Update a task by id
    */
-  app.patch('/api/task/:task', taskMiddle.Update, taskMiddle.HasParam,
+  app.patch(constants.paths.API_TASK, taskMiddle.Update, taskMiddle.HasParam,
     prepareMiddle, function (req, res) {
 
       let updateData = Object.assign(
@@ -54,12 +56,13 @@ module.exports = function (app) {
       let taskObjTmp = mysqlVal(taskObj)
 
       if (has.hasAnItem(req.body.isDone)) {
-        app.emit('UPDATE-PROJECT-PROGRESS', { project: taskObjTmp.project })
+        app.emit(constants.events.UPDATE_PROGRESS_PROJECT,
+          { project: taskObjTmp.project })
       }
 
       logger.Log('Task updated, id: ' + taskObjTmp.id, req)
       exit(res, 200,
-        'Success your task is updated',
+        constants.messages.SUCCESS_UPDATED_TASK,
         { task: task.SafeExport(taskObjTmp) })
     })
     .catch(err => {
@@ -71,7 +74,7 @@ module.exports = function (app) {
   /**
    * Delete a task by id
    */
-  app.delete('/api/task/:task', taskMiddle.HasParam,
+  app.delete(constants.paths.API_TASK, taskMiddle.HasParam,
     prepareMiddle, function (req, res) {
 
       // todo this will need securing so
@@ -85,11 +88,12 @@ module.exports = function (app) {
         return task.Delete(req.params.task)
       })
       .then(() => {
-        app.emit('UPDATE-PROJECT-PROGRESS', { project: taskObjTmp.project })
+        app.emit(constants.events.UPDATE_PROGRESS_PROJECT,
+          { project: taskObjTmp.project })
 
         logger.Log('Task deleted, id: ' + req.params.task, req)
         exit(res, 200,
-          'Success your task is deleted')
+          constants.messages.SUCCESS_DELETED_TASK)
       })
       .catch(err => {
         logger.Log(err.message || err, req)
@@ -100,13 +104,13 @@ module.exports = function (app) {
   /**
    * Get task by id query
    */
-  app.get('/api/task/:task', taskMiddle.HasParam, prepareMiddle,
+  app.get(constants.paths.API_TASK, taskMiddle.HasParam, prepareMiddle,
     function (req, res) {
 
       task.GetTaskByID(req.params.task)
       .then(taskObj => {
         exit(res, 200,
-          'Success task found.',
+          constants.messages.SUCCESS,
           { task: task.SafeExport(mysqlVal(taskObj)) })
       })
       .catch(err => {
@@ -118,7 +122,7 @@ module.exports = function (app) {
   /**
    * Get all tasks by user/project id query
    */
-  app.get('/api/tasks', taskMiddle.HasUserOrProject, prepareMiddle,
+  app.get(constants.paths.API_TASKS, taskMiddle.HasUserOrProject, prepareMiddle,
     function (req, res) {
 
       // todo check for user token and integrate
@@ -140,7 +144,7 @@ module.exports = function (app) {
       .then(taskObjs => {
         const allSafeTasks = taskObjs.map(item => task.SafeExport(item))
         exit(res, 200,
-          'Success all tasks found: ' + allSafeTasks.length,
+          constants.messages.SUCCESS_FOUND_TASKS + allSafeTasks.length,
           { tasks: allSafeTasks })
       })
       .catch(err => {

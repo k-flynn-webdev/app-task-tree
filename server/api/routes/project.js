@@ -18,7 +18,7 @@ module.exports = function (app) {
   /**
    * Create a project & return
    */
-  app.post('/api/project/create', projectMiddle.Create, prepareMiddle,
+  app.post(constants.paths.API_PROJECT_CREATE, projectMiddle.Create, prepareMiddle,
     function (req, res) {
     // todo check for user token and integrate
 
@@ -28,7 +28,7 @@ module.exports = function (app) {
     .then(projectObj => {
       logger.Log('Project created, id: ' + projectObj.id, req)
         exit(res, 200,
-          'Success your project is created',
+          constants.messages.SUCCESS_CREATED_PROJECT,
           { project: project.SafeExport(projectObj) })
     })
     .catch(err => {
@@ -40,7 +40,7 @@ module.exports = function (app) {
   /**
    * Update a project by id
    */
-  app.patch('/api/project/:project', projectMiddle.Update, projectMiddle.HasParam,
+  app.patch(constants.paths.API_PROJECT, projectMiddle.Update, projectMiddle.HasParam,
     prepareMiddle, function (req, res) {
 
       let updateData = Object.assign(
@@ -53,7 +53,7 @@ module.exports = function (app) {
       let projectObjTmp = mysqlVal(projectObj)
       logger.Log('Project updated, id: ' + req.params.project, req)
       exit(res, 200,
-        'Success your project is updated',
+        constants.messages.SUCCESS_UPDATED_PROJECT,
         { project: project.SafeExport(projectObjTmp) })
     })
     .catch(err => {
@@ -65,7 +65,7 @@ module.exports = function (app) {
   /**
    * Delete a project by id
    */
-  app.delete('/api/project/:project', projectMiddle.HasParam, prepareMiddle,
+  app.delete(constants.paths.API_PROJECT, projectMiddle.HasParam, prepareMiddle,
     function (req, res) {
 
       // todo check for user token and integrate
@@ -74,7 +74,7 @@ module.exports = function (app) {
       .then(projectObj => {
         logger.Log('Project deleted, id: ' + req.params.project, req)
         exit(res, 200,
-          'Success your project is deleted',
+          constants.messages.SUCCESS_DELETED_PROJECT,
           { project: null })
       })
       .catch(err => {
@@ -86,14 +86,14 @@ module.exports = function (app) {
   /**
    * Get project by id
    */
-  app.get('/api/project/:project', projectMiddle.HasParam,
+  app.get(constants.paths.API_PROJECT, projectMiddle.HasParam,
     prepareMiddle, function (req, res) {
 
       project.GetProjectByID(req.params.project)
       .then(projectObj => {
         let projectObjTmp = mysqlVal(projectObj)
         exit(res, 200,
-          'Success project found.',
+          constants.messages.SUCCESS,
           { project: project.SafeExport(projectObjTmp) })
       })
       .catch(err => {
@@ -105,7 +105,7 @@ module.exports = function (app) {
   /**
    * Get all projects by user id
    */
-  app.get('/api/projects', userMiddle.HasQuery, prepareMiddle,
+  app.get(constants.paths.API_PROJECTS, userMiddle.HasQuery, prepareMiddle,
     function (req, res) {
 
       // todo check for user token and integrate
@@ -115,7 +115,7 @@ module.exports = function (app) {
       .then(projectObjs => {
         const allSafeProjects = projectObjs.map(item => project.SafeExport(item))
         exit(res, 200,
-          'Success all projects found: ' + allSafeProjects.length,
+          constants.messages.SUCCESS_FOUND_PROJECTS + allSafeProjects.length,
           { projects: allSafeProjects })
       })
       .catch(err => {

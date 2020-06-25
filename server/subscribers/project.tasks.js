@@ -3,9 +3,11 @@ const logger = require('../services/logger.js')
 const mysqlVal = require('../helpers/MYSQL_value.js')
 const tasks = require('../services/task.service.js')
 const projects = require('../services/project.service.js')
+const constants = require('../constants/index')
 
 function Init(app) {
-  app.on('UPDATE-PROJECT-PROGRESS', UpdateProjectProgress)
+  app.on(constants.events.UPDATE_PROGRESS_PROJECT,
+    UpdateProjectProgress)
 }
 
 module.exports = Init

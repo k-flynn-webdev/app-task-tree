@@ -8,6 +8,13 @@ const API_USER_LOGOUT = '/api/user/logout'
 const API_USER_VERIFY = '/api/user/verify'
 const API_USER_RESET = '/api/user/reset'
 
+const API_PROJECT_CREATE = '/api/project/create'
+const API_PROJECTS = '/api/projects'
+const API_PROJECT = '/api/project/:project'
+const API_TASK_CREATE = '/api/task/create'
+const API_TASKS = '/api/tasks'
+const API_TASK = '/api/task/:task'
+
 // EVENTS
 const CREATE_ACCOUNT_ANON = 'CREATE-ACCOUNT-ANON'
 const CREATE_ACCOUNT = 'CREATE-ACCOUNT'
@@ -18,6 +25,15 @@ const VERIFIED_ACCOUNT = 'VERIFIED-ACCOUNT'
 const UPDATED_ACCOUNT = 'UPDATED-ACCOUNT'
 const DELETED_ACCOUNT = 'DELETED-ACCOUNT'
 const RESET_ACCOUNT = 'RESET-ACCOUNT'
+
+const CREATED_PROJECT = 'CREATED-PROJECT'
+const UPDATED_PROJECT = 'UPDATED-PROJECT'
+const DELETED_PROJECT = 'DELETED-PROJECT'
+const UPDATE_PROGRESS_PROJECT = 'UPDATE-PROGRESS-PROJECT'
+
+const CREATED_TASK = 'CREATED-TASK'
+const UPDATED_TASK = 'UPDATED-TASK'
+const DELETED_TASK = 'DELETED-TASK'
 
 // GENERAL
 const ANON = 'anon'
@@ -42,6 +58,16 @@ const SUCCESS_VERIFIED_ACCOUNT = 'Success Account verified.'
 const SUCCESS_RESET_ACCOUNT = 'Success a reset email has been sent.'
 const SUCCESS_PASSWORD_RESET_ACCOUNT = 'Success a new password has been set, please re-login.'
 
+const SUCCESS_CREATED_PROJECT = 'Success your Project is created'
+const SUCCESS_UPDATED_PROJECT = 'Success your Project is updated'
+const SUCCESS_DELETED_PROJECT = 'Success your Project is deleted'
+const SUCCESS_FOUND_PROJECTS = 'Success Projects found: '
+
+const SUCCESS_CREATED_TASK = 'Success your Task is created'
+const SUCCESS_UPDATED_TASK = 'Success your Task is updated'
+const SUCCESS_DELETED_TASK = 'Success your Task is deleted'
+const SUCCESS_FOUND_TASKS = 'Success Tasks found: '
+
 //
 module.exports = {
 	vars: {
@@ -56,6 +82,12 @@ module.exports = {
 		API_USER_LOGOUT,
 		API_USER_VERIFY,
 		API_USER_RESET,
+		API_PROJECT_CREATE,
+		API_PROJECTS,
+		API_PROJECT,
+		API_TASK_CREATE,
+		API_TASKS,
+		API_TASK,
 	},
 	events: {
 		CREATE_ACCOUNT,
@@ -67,8 +99,16 @@ module.exports = {
 		DELETED_ACCOUNT,
 		VERIFIED_ACCOUNT,
 		RESET_ACCOUNT,
+		CREATED_PROJECT,
+		UPDATED_PROJECT,
+		DELETED_PROJECT,
+		UPDATE_PROGRESS_PROJECT,
+		CREATED_TASK,
+		UPDATED_TASK,
+		DELETED_TASK,
 	},
 	messages: {
+		SUCCESS,
 		SUCCESS_CREATED_ACCOUNT,
 		SUCCESS_LOGIN_ACCOUNT,
 		SUCCESS_UPDATED_ACCOUNT,
@@ -76,6 +116,14 @@ module.exports = {
 		SUCCESS_VERIFIED_ACCOUNT,
 		SUCCESS_RESET_ACCOUNT,
 		SUCCESS_PASSWORD_RESET_ACCOUNT,
+		SUCCESS_CREATED_PROJECT,
+		SUCCESS_UPDATED_PROJECT,
+		SUCCESS_DELETED_PROJECT,
+		SUCCESS_FOUND_PROJECTS,
+		SUCCESS_CREATED_TASK,
+		SUCCESS_UPDATED_TASK,
+		SUCCESS_DELETED_TASK,
+		SUCCESS_FOUND_TASKS,
 	},
 	errors: {
 		EMAIL_IN_USE,
