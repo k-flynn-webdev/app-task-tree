@@ -3,7 +3,7 @@
   <RowItem
     ref="projItem"
     v-model="input"
-    class="HOVER"
+    class="HOVER-BORDER"
     :class="{ 'SELECT': selected }"
     :data="data"
     :status="status"

@@ -202,9 +202,15 @@
       }
     }
 
-    &.HOVER & {
+    &.HOVER-BORDER & {
       &__line__mid:hover {
         border-color: $color-fore;
+      }
+    }
+
+    &.HOVER-BG & {
+      &__line__mid__content:hover {
+        background-color: rgba($color-fore, $color-alpha);
       }
     }
 
