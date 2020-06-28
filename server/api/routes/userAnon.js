@@ -35,7 +35,7 @@ module.exports = function (app) {
     .then(userObj => {
       app.emit(constants.events.CREATE_ACCOUNT_ANON, userObj)
 
-      exit(res, 200, constants.messages.SUCCESS_CREATED_ACCOUNT,
+      exit(res, 201, constants.messages.SUCCESS_CREATED_ACCOUNT,
         {
           account: user.SafeExport(userObjTmp),
           token: ''
@@ -43,7 +43,7 @@ module.exports = function (app) {
     })
     .catch(err => {
       logger.Log(err.message || err, req)
-      exit(res, 401, 'error', err.message || err)
+      exit(res, 400, 'error', err.message || err)
     })
   })
 

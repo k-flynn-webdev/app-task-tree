@@ -7,7 +7,7 @@
     "production": "NODE_ENV=production pm2 start ./config/pm2.config.js",
     "start": "NODE_ENV=development nodemon app.js",
     "dev": "NODE_ENV=development nodemon --ignore test",
-    "test": "NODE_ENV=test mocha"
+    "test": "NODE_ENV=test mocha --delay --exit"
   },
   "keywords": [
     "base"
