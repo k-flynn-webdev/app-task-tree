@@ -21,6 +21,7 @@ function DirFind(folder, ext='.js', next) {
     fs.readdir(tmpPath, function (error, files) {
 
       if (error) {
+        // todo sometimes this can be broken on with funky input too easily?
         next(error)
       }
 
@@ -44,7 +45,7 @@ function DirFind(folder, ext='.js', next) {
   }
 
   getFiles('')
-};
+}
 
 module.exports = DirFind
 
