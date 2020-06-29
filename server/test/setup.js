@@ -1,15 +1,19 @@
-// // const app = require('../app.js');
+// const app = require('../app.js');
 // const dbConnection = require('../interfaces/db_init_sql')
 // const config = require('../config/config.js');
 // const waitTime = 10 * 1000
 //
 // // dbConnection.Init(app)
 //
-// // jest.setTimeout(3 * 60 * 1000);
+// jest.setTimeout(3 * 60 * 1000);
 //
+// setTimeout(() => {
+//
+// }, 5000)
+
 // beforeAll(() => {
 // 	// wait 10 seconds for startup/cleanup
-// }, waitTime)
+// })
 //
 // beforeEach(function(done) {
 // 	// todo need to clear sql transactions!!

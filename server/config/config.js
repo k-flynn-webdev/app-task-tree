@@ -12,7 +12,7 @@ function getEnvPath () {
     return 'vars.prod.env'
   }
   if (process.env.NODE_ENV.toLowerCase() === 'development') {
-    return 'vars.test.env'
+    return 'vars.dev.env'
   }
   if (process.env.NODE_ENV.toLowerCase() === 'test') {
     return 'vars.test.env'

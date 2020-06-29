@@ -35,9 +35,9 @@ module.exports = function (app) {
     .then(userObj => {
       app.emit(constants.events.CREATE_ACCOUNT_ANON, userObj)
 
-      exit(res, 201, constants.messages.SUCCESS_CREATED_ACCOUNT,
-        {
-          account: user.SafeExport(userObjTmp),
+      exit(res, 201,
+        constants.messages.SUCCESS_CREATED_ACCOUNT,
+        { account: user.SafeExport(userObjTmp),
           token: ''
         })
     })

@@ -29,13 +29,13 @@ module.exports = function (app) {
         { project: taskObj.project })
 
       logger.Log('Task created, id: ' + taskObj.id, req)
-      exit(res, 200,
+      exit(res, 201,
         constants.messages.SUCCESS_CREATED_TASK,
           { task: task.SafeExport(taskObj) })
     })
     .catch(err => {
       logger.Log(err.message || err, req)
-      exit(res, 401, 'error', err.message || err)
+      exit(res, 400, 'error', err.message || err)
     })
   })
 

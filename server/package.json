@@ -5,9 +5,8 @@
   "main": "app.js",
   "scripts": {
     "production": "NODE_ENV=production pm2 start ./config/pm2.config.js",
-    "start": "NODE_ENV=development nodemon app.js",
     "dev": "NODE_ENV=development nodemon --ignore test",
-    "test": "NODE_ENV=test mocha --delay --exit"
+    "test": "NODE_ENV=test nodemon --ignore test sleep 5s & jest --watchAll"
   },
   "keywords": [
     "base"
@@ -43,9 +42,16 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "jest": "^26.1.0",
     "mocha": "^5.2.0",
     "nodemon": "^1.19.1",
     "request": "^2.88.0"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "./test/setup.js"
+    ],
+    "testEnvironment": "node"
   },
   "eslintConfig": {
     "root": true,

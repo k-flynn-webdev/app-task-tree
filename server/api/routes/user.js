@@ -36,9 +36,9 @@ module.exports = function (app) {
     .then(() => {
       app.emit(constants.events.CREATE_ACCOUNT, userObjTmp)
 
-      exit(res, 200, constants.messages.SUCCESS_CREATED_ACCOUNT,
-        {
-          account: user.SafeExport(userObjTmp),
+      exit(res, 200,
+        constants.messages.SUCCESS_CREATED_ACCOUNT,
+        { account: user.SafeExport(userObjTmp),
           token: token.Create(userObjTmp)
         })
     })
@@ -69,8 +69,9 @@ module.exports = function (app) {
     .then(() => {
       app.emit(constants.events.LOGIN_ACCOUNT, userObjTmp)
 
-      exit(res, 200, constants.messages.SUCCESS_LOGIN_ACCOUNT, {
-        account: user.SafeExport(userObjTmp),
+      exit(res, 200,
+        constants.messages.SUCCESS_LOGIN_ACCOUNT,
+        { account: user.SafeExport(userObjTmp),
         token: token.Create(userObjTmp) })
     })
     .catch(err => {
@@ -137,9 +138,9 @@ module.exports = function (app) {
       userObjTmp = mysqlVal(userObj)
       app.emit(constants.events.UPDATED_ACCOUNT, userObjTmp)
 
-      exit(res, 200, constants.messages.SUCCESS_UPDATED_ACCOUNT,
-        {
-          account: user.SafeExport(userObjTmp),
+      exit(res, 200,
+        constants.messages.SUCCESS_UPDATED_ACCOUNT,
+        { account: user.SafeExport(userObjTmp),
           token: token.Create(userObjTmp)
         })
     })
@@ -211,9 +212,9 @@ module.exports = function (app) {
     .then(() => {
       app.emit(constants.events.VERIFIED_ACCOUNT, userObjTmp) // todo
 
-      exit(res, 200, constants.messages.SUCCESS_VERIFIED_ACCOUNT,
-        {
-          account: user.SafeExport(userObjTmp),
+      exit(res, 200,
+        constants.messages.SUCCESS_VERIFIED_ACCOUNT,
+        { account: user.SafeExport(userObjTmp),
           token: token.Create(userObjTmp)
         })
     })
@@ -255,8 +256,7 @@ module.exports = function (app) {
 
       app.emit(constants.events.RESET_ACCOUNT, userObjTmp)
 
-      return exit(res,
-       200,
+      return exit(res, 200,
        constants.messages.SUCCESS_RESET_ACCOUNT)
     })
     .catch(err => {

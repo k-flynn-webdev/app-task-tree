@@ -41,6 +41,20 @@ const DB_CREATE_PROJECTS_TABLE = 'CREATE TABLE projects ' +
   'doneDate DATETIME) ' +
   'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci'
 
+const ALL_QUERIES = {
+  DB_SHOW_PROJECTS,
+  DB_CREATE_PROJECT,
+  DB_DELETE_PROJECT_BY_ID,
+  DB_GET_PROJECT_BY_ID,
+  DB_GET_PROJECT_BY_USER,
+  DB_GET_PROJECT_BY_NAME,
+  DB_GET_PROJECTS_BY_IS_DONE,
+  DB_GET_PROJECTS_BY_IS_DONE_DATE
+}
+
+exports.ALL_QUERIES = ALL_QUERIES
+
+
 function InitProjects() {
   return db.InitTable(DB_PROJECTS, DB_CREATE_PROJECTS_TABLE, DB_READY_PROJECTS)
 }
@@ -167,7 +181,7 @@ exports.GetProjectByID = GetProjectByID
 /**
  * Returns all project objects from the db if found via name
  *
- * @param   {string}  project
+ * @param   {string}  name    project name
  * @return  {array}   project object
  */
 function GetProjectByName(name) {
@@ -179,7 +193,7 @@ exports.GetProjectByName = GetProjectByName
 /**
  * Returns all project objects from the db if found via user
  *
- * @param   {int}     user
+ * @param   {int}     user      user id
  * @return  {array}   project object
  */
 function GetProjectsByUser(user) {
