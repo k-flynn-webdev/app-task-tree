@@ -8,6 +8,11 @@ const token = require('../../services/token.service.js')
 const mysqlVal = require('../../helpers/MYSQL_value.js')
 const prepareMiddle = require('../middlewares/prepare.js')
 const constants = require('../../constants/index')
+// business
+const projectCreateLogic = require('../../logic/project.create.js')
+const projectUpdateLogic = require('../../logic/project.update.js')
+const projectDeleteLogic = require('../../logic/project.delete.js')
+
 
 // todo
 //    add passive token check, & if theres a user
@@ -24,14 +29,12 @@ module.exports = function (app) {
     function (req, res) {
     // todo check for user token and integrate
 
-    project.Create(req.body)
-    .then(({ insertId }) => project.GetProjectByID(insertId))
-    .then(newProject => mysqlVal(newProject))
+    projectCreateLogic(req.body, app)
     .then(projectObj => {
       logger.Log('Project created, id: ' + projectObj.id, req)
         exit(res, 201,
           constants.messages.SUCCESS_CREATED_PROJECT,
-          { project: project.SafeExport(projectObj) })
+          { project: projectObj })
     })
     .catch(err => {
       logger.Log(err.message || err, req)
@@ -52,14 +55,12 @@ module.exports = function (app) {
         { id: req.params.task }, req.body)
       // todo check for user token and integrate
 
-    project.Update(updateData)
-    .then(() => project.GetProjectByID(req.params.project))
+    projectUpdateLogic(updateData, app)
     .then(projectObj => {
-      let projectObjTmp = mysqlVal(projectObj)
-      logger.Log('Project updated, id: ' + req.params.project, req)
+      logger.Log('Project updated, id: ' + projectObj.id, req)
       exit(res, 202,
         constants.messages.SUCCESS_UPDATED_PROJECT,
-        { project: project.SafeExport(projectObjTmp) })
+        { project: projectObj })
     })
     .catch(err => {
       logger.Log(err.message || err, req)
@@ -79,12 +80,9 @@ module.exports = function (app) {
       //  random peeps can't delete other items
       //  check for user token and integrate
 
-      project.Delete(req.params.project)
-      .then(() => {
-        app.emit(constants.events.DELETED_PROJECT,
-          { project: req.params.project })
-
-        logger.Log('Project deleted, id: ' + req.params.project, req)
+      projectDeleteLogic({ id: req.params.project }, app)
+      .then(projectObj => {
+        logger.Log('Project deleted, id: ' + projectObj.id, req)
         exit(res, 202,
           constants.messages.SUCCESS_DELETED_PROJECT)
       })
