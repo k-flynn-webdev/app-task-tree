@@ -30,7 +30,7 @@ module.exports = {
   version: appVersion,
   rate: {
     time: 10 * 60 * 1000,
-    max: 200
+    max: 500
   },
   secure: {
     salt: Number(envs.parsed.SALT_ROUNDS),

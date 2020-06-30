@@ -17,7 +17,9 @@ module.exports = function (app) {
   /**
    * Create a task & return
    */
-  app.post(constants.paths.API_TASK_CREATE, taskMiddle.Create, prepareMiddle,
+  app.post(constants.paths.API_TASK_CREATE,
+    taskMiddle.Create,
+    prepareMiddle,
     function (req, res) {
     // todo check for user token and integrate
 
@@ -42,8 +44,11 @@ module.exports = function (app) {
   /**
    * Update a task by id
    */
-  app.patch(constants.paths.API_TASK, taskMiddle.Update, taskMiddle.HasParam,
-    prepareMiddle, function (req, res) {
+  app.patch(constants.paths.API_TASK(),
+    taskMiddle.Update,
+    taskMiddle.HasParam,
+    prepareMiddle,
+    function (req, res) {
 
       let updateData = Object.assign(
       { id: req.params.task }, req.body)
@@ -51,7 +56,6 @@ module.exports = function (app) {
 
     task.Update(updateData)
     .then(() => task.GetTaskByID(req.body.id))
-      // todo if setting isDone (true|false) we need to update project isDone progress count!!
     .then(taskObj => {
       let taskObjTmp = mysqlVal(taskObj)
 
@@ -61,7 +65,7 @@ module.exports = function (app) {
       }
 
       logger.Log('Task updated, id: ' + taskObjTmp.id, req)
-      exit(res, 200,
+      exit(res, 202,
         constants.messages.SUCCESS_UPDATED_TASK,
         { task: task.SafeExport(taskObjTmp) })
     })
@@ -74,8 +78,10 @@ module.exports = function (app) {
   /**
    * Delete a task by id
    */
-  app.delete(constants.paths.API_TASK, taskMiddle.HasParam,
-    prepareMiddle, function (req, res) {
+  app.delete(constants.paths.API_TASK(),
+    taskMiddle.HasParam,
+    prepareMiddle,
+    function (req, res) {
 
       // todo this will need securing so
       //  random peeps can't delete other items
@@ -92,7 +98,7 @@ module.exports = function (app) {
           { project: taskObjTmp.project })
 
         logger.Log('Task deleted, id: ' + req.params.task, req)
-        exit(res, 200,
+        exit(res, 202,
           constants.messages.SUCCESS_DELETED_TASK)
       })
       .catch(err => {
@@ -104,16 +110,24 @@ module.exports = function (app) {
   /**
    * Get task by id query
    */
-  app.get(constants.paths.API_TASK, taskMiddle.HasParam, prepareMiddle,
+  app.get(constants.paths.API_TASK(),
+    taskMiddle.HasParam,
+    prepareMiddle,
     function (req, res) {
 
       task.GetTaskByID(req.params.task)
       .then(taskObj => {
+        if (!taskObj || taskObj.length < 1) {
+          return exit(res, 404,
+            constants.errors.TASK_NOT_FOUND)
+        }
+
         exit(res, 200,
           constants.messages.SUCCESS,
           { task: task.SafeExport(mysqlVal(taskObj)) })
       })
       .catch(err => {
+        console.log(err)
         logger.Log(err.message || err, req)
         exit(res, 401, 'error', err.message || err)
       })
@@ -122,7 +136,9 @@ module.exports = function (app) {
   /**
    * Get all tasks by user/project id query
    */
-  app.get(constants.paths.API_TASKS, taskMiddle.HasUserOrProject, prepareMiddle,
+  app.get(constants.paths.API_TASKS,
+    taskMiddle.HasUserOrProject,
+    prepareMiddle,
     function (req, res) {
 
       // todo check for user token and integrate

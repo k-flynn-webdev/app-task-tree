@@ -10,10 +10,10 @@ const API_USER_RESET = '/api/user/reset'
 
 const API_PROJECT_CREATE = '/api/project/create'
 const API_PROJECTS = '/api/projects'
-const API_PROJECT = '/api/project/:project'
+const API_PROJECT = (id=':project') => `/api/project/${id}`
 const API_TASK_CREATE = '/api/task/create'
 const API_TASKS = '/api/tasks'
-const API_TASK = '/api/task/:task'
+const API_TASK = (id=':task') => `/api/task/${id}`
 
 // EVENTS
 const CREATE_ACCOUNT_ANON = 'CREATE-ACCOUNT-ANON'
@@ -48,6 +48,8 @@ const ACCOUNT_UNVERIFIED = 'Account not verified, please verify first.'
 const ACCOUNT_IN_RECOVERY = 'Account was recently put in recovery modes, please contact support'
 const VERIFY_LINK_MISSING = 'Verify link does not exist, please contact support.'
 const RECOVERY_LINK_MISSING = 'Recovery link does not exist, please contact support.'
+const TASK_NOT_FOUND = 'Task was not found'
+const PROJECT_NOT_FOUND = 'Project was not found'
 
 // MESSAGES
 const SUCCESS_CREATED_ACCOUNT = 'Success your Account is created'
@@ -133,5 +135,7 @@ module.exports = {
 		VERIFY_LINK_MISSING,
 		RECOVERY_LINK_MISSING,
 		PASSWORD_INCORRECT,
+		TASK_NOT_FOUND,
+		PROJECT_NOT_FOUND
 	}
 }
