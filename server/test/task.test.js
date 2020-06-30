@@ -111,7 +111,7 @@ describe('Tasks', () => {
     })
   })
 
-  test('Should create a new task', (done) => {
+  test('Should create a new task with valid properties', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_TASK_CREATE)
     .send({
@@ -241,7 +241,7 @@ describe('Tasks', () => {
       expect(res).toBeDefined()
       expect(res.status).toBe(202)
       expect(res.body.message).toEqual(constants.messages.SUCCESS_DELETED_TASK)
-      expect(res.body.data).toStrictEqual({})
+      expect(res.body.data).toBeNull()
       done()
     })
   })
@@ -253,7 +253,7 @@ describe('Tasks', () => {
       expect(res).toBeDefined()
       expect(res.status).toBe(404)
       expect(res.body.message).toEqual(constants.errors.TASK_NOT_FOUND)
-      expect(res.body.data).toStrictEqual({})
+      expect(res.body.data).toBeNull()
       done()
     })
   })

@@ -7,6 +7,12 @@ const token = require('../../services/token.service.js')
 const mysqlVal = require('../../helpers/MYSQL_value.js')
 const prepareMiddle = require('../middlewares/prepare.js')
 const constants = require('../../constants/index')
+// business
+const taskCreateLogic = require('../../logic/task.create.js')
+const taskUpdateLogic = require('../../logic/task.update.js')
+const taskDeleteLogic = require('../../logic/task.delete.js')
+
+
 
 // todo
 //    add passive token check, & if theres a user
@@ -23,22 +29,17 @@ module.exports = function (app) {
     function (req, res) {
     // todo check for user token and integrate
 
-    task.Create(req.body)
-    .then(({ insertId }) => task.GetTaskByID(insertId))
-    .then(newTask => mysqlVal(newTask))
-    .then(taskObj => {
-      app.emit(constants.events.UPDATE_PROGRESS_PROJECT,
-        { project: taskObj.project })
-
-      logger.Log('Task created, id: ' + taskObj.id, req)
-      exit(res, 201,
-        constants.messages.SUCCESS_CREATED_TASK,
-          { task: task.SafeExport(taskObj) })
-    })
-    .catch(err => {
-      logger.Log(err.message || err, req)
-      exit(res, 400, 'error', err.message || err)
-    })
+      taskCreateLogic(req.body, app)
+      .then(taskObj => {
+        logger.Log('Task created, id: ' + taskObj.id, req)
+        exit(res, 201,
+          constants.messages.SUCCESS_CREATED_TASK,
+            { task: taskObj })
+      })
+      .catch(err => {
+        logger.Log(err.message || err, req)
+        exit(res, 400, 'error', err.message || err)
+      })
   })
 
   /**
@@ -54,20 +55,12 @@ module.exports = function (app) {
       { id: req.params.task }, req.body)
     // todo check for user token and integrate
 
-    task.Update(updateData)
-    .then(() => task.GetTaskByID(req.body.id))
+    taskUpdateLogic(updateData, app)
     .then(taskObj => {
-      let taskObjTmp = mysqlVal(taskObj)
-
-      if (has.hasAnItem(req.body.isDone)) {
-        app.emit(constants.events.UPDATE_PROGRESS_PROJECT,
-          { project: taskObjTmp.project })
-      }
-
-      logger.Log('Task updated, id: ' + taskObjTmp.id, req)
+      logger.Log('Task updated, id: ' + taskObj.id, req)
       exit(res, 202,
         constants.messages.SUCCESS_UPDATED_TASK,
-        { task: task.SafeExport(taskObjTmp) })
+        { task: taskObj })
     })
     .catch(err => {
       logger.Log(err.message || err, req)
@@ -86,18 +79,10 @@ module.exports = function (app) {
       // todo this will need securing so
       //  random peeps can't delete other items
       //  check for user token and integrate
-      let taskObjTmp = null
 
-      task.GetTaskByID(req.params.task)
+      taskDeleteLogic({ id: req.params.task }, app)
       .then(taskObj => {
-        taskObjTmp = mysqlVal(taskObj)
-        return task.Delete(req.params.task)
-      })
-      .then(() => {
-        app.emit(constants.events.UPDATE_PROGRESS_PROJECT,
-          { project: taskObjTmp.project })
-
-        logger.Log('Task deleted, id: ' + req.params.task, req)
+        logger.Log('Task deleted, id: ' + taskObj.id, req)
         exit(res, 202,
           constants.messages.SUCCESS_DELETED_TASK)
       })
@@ -127,7 +112,6 @@ module.exports = function (app) {
           { task: task.SafeExport(mysqlVal(taskObj)) })
       })
       .catch(err => {
-        console.log(err)
         logger.Log(err.message || err, req)
         exit(res, 401, 'error', err.message || err)
       })

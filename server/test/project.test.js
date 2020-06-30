@@ -199,7 +199,7 @@ describe('Projects', () => {
       expect(res).toBeDefined()
       expect(res.status).toBe(202)
       expect(res.body.message).toEqual(constants.messages.SUCCESS_DELETED_PROJECT)
-      expect(res.body.data).toStrictEqual({})
+      expect(res.body.data).toBeNull()
       done()
     })
   })
@@ -211,7 +211,7 @@ describe('Projects', () => {
       expect(res).toBeDefined()
       expect(res.status).toBe(404)
       expect(res.body.message).toEqual(constants.errors.PROJECT_NOT_FOUND)
-      expect(res.body.data).toStrictEqual({})
+      expect(res.body.data).toBeNull()
       done()
     })
   })
@@ -232,5 +232,6 @@ describe('Projects', () => {
   test('Updating a task should update a projects done tasks count', () => {}) // todo
   test('Updating all tasks should update a projects to be complete', () => {}) // todo
   test('Deleting a task should update a projects total tasks count', () => {}) // todo
+  test('Deleting a project with tasks should remove all related tasks', () => {}) // todo
 
 })

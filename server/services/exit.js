@@ -9,7 +9,7 @@
 
 // todo in future add pagination data obj here ..
 
-function Exit(res, status, message, data= {}, notify) {
+function Exit(res, status, message, data= null, notify = null) {
   
   return res.status(status).json({
     status: status,
