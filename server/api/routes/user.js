@@ -7,6 +7,9 @@ const token = require('../../services/token.service.js')
 const mysqlVal = require('../../helpers/MYSQL_value.js')
 const prepareMiddle = require('../middlewares/prepare.js')
 const constants = require('../../constants/index')
+// business
+const userCreateLogic = require('../../logic/user.create.js')
+
 
 module.exports = function (app) {
 
@@ -14,38 +17,23 @@ module.exports = function (app) {
    * Create a user account & return a token key
    */
   app.post(constants.paths.API_USER,
-    userMiddle.Create, prepareMiddle, function (req, res) {
+    userMiddle.Create,
+    prepareMiddle,
+    function (req, res) {
 
-    let userObjTmp
+      userCreateLogic(req.body, app)
+      .then(userObj => {
 
-    user.GetUserByEmail(req.body.email)
-    .then(found => {
-      if (found.length > 0) {
-        throw new Error(constants.errors.EMAIL_IN_USE)
-      }
-
-      return user.Create(req.body)
-    })
-    .then(({ insertId }) => user.GetUserByID(insertId))
-    .then(userObj => {
-      userObjTmp = mysqlVal(userObj)
-      userObjTmp.verify = token.Magic(userObj)
-
-      return user.Update({ id: userObjTmp.id, verify: userObjTmp.verify })
-    })
-    .then(() => {
-      app.emit(constants.events.CREATE_ACCOUNT, userObjTmp)
-
-      exit(res, 200,
-        constants.messages.SUCCESS_CREATED_ACCOUNT,
-        { account: user.SafeExport(userObjTmp),
-          token: token.Create(userObjTmp)
-        })
-    })
-    .catch(err => {
-      logger.Log(err.message || err, req, req)
-      exit(res, 401, 'error', err.message || err)
-    })
+        exit(res, 201,
+          constants.messages.SUCCESS_CREATED_ACCOUNT,
+          { account: userObj,
+            token: token.Create(userObj)
+          })
+      })
+      .catch(err => {
+        logger.Log(err.message || err, req, req)
+        exit(res, 401, 'error', err.message || err)
+      })
   })
 
   /**

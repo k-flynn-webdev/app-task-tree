@@ -7,6 +7,8 @@ const token = require('../../services/token.service.js')
 const mysqlVal = require('../../helpers/MYSQL_value.js')
 const prepareMiddle = require('../middlewares/prepare.js')
 const constants = require('../../constants/index')
+// business
+const userCreateLogic = require('../../logic/user.anon.create.js')
 
 
 module.exports = function (app) {
@@ -18,33 +20,21 @@ module.exports = function (app) {
    *    @params { no password, no email, no name }
    *    @return { id }
    */
-  app.post(constants.paths.API_USER_ANON, function (req, res) {
+  app.post(constants.paths.API_USER_ANON,
+    function (req, res) {
 
-    let userObjTmp
-
-    user.Create({
-      name: constants.vars.ANON,
-      email: constants.vars.ANON,
-      password: constants.vars.ANON
-    })
-    .then(({ insertId }) => user.GetUserByID(insertId))
-    .then(userObj => {
-      userObjTmp = mysqlVal(userObj)
-      return userObjTmp
-    })
-    .then(userObj => {
-      app.emit(constants.events.CREATE_ACCOUNT_ANON, userObj)
-
-      exit(res, 201,
-        constants.messages.SUCCESS_CREATED_ACCOUNT,
-        { account: user.SafeExport(userObjTmp),
-          token: ''
-        })
-    })
-    .catch(err => {
-      logger.Log(err.message || err, req)
-      exit(res, 400, 'error', err.message || err)
-    })
+      userCreateLogic(req.body, app)
+      .then(userObj => {
+        exit(res, 201,
+          constants.messages.SUCCESS_CREATED_ACCOUNT,
+          { account: userObj,
+            token: ''
+          })
+      })
+      .catch(err => {
+        logger.Log(err.message || err, req)
+        exit(res, 400, 'error', err.message || err)
+      })
   })
 
   return app

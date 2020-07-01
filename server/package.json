@@ -48,9 +48,7 @@
     "request": "^2.88.0"
   },
   "jest": {
-    "setupFilesAfterEnv": [
-      "./test/setup.js"
-    ],
+    "setupFilesAfterEnv": [],
     "testEnvironment": "node"
   },
   "eslintConfig": {

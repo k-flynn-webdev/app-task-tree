@@ -5,7 +5,6 @@ const taskServiceQueries = require('../services/task.service').ALL_QUERIES
 const constants = require('../constants/index')
 const config = require('../config/config.js')
 const chaiHttp = require('chai-http')
-const request = require('request')
 const chai = require('chai')
 chai.use(chaiHttp)
 

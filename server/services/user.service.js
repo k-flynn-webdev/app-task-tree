@@ -11,7 +11,7 @@ const ERROR = 'error'
 const DB_USERS = 'users'
 const DB_READY = 'db-ready'
 const DB_READY_USERS = 'db-ready-users'
-const DB_SHOW_USERS = 'SELECT * FROM users'
+const DB_SHOW_USERS = 'SELECT * FROM users ORDER BY created DESC'
 const DB_CREATE_USER = 'INSERT INTO users SET ?'
 const DB_GET_USER_BY_ID = 'SELECT * FROM users WHERE id = ?'
 const DB_DELETE_USER_BY_ID = 'DELETE FROM users WHERE id = ?'
@@ -42,6 +42,19 @@ const DB_CREATE_USERS_TABLE = 'CREATE TABLE users ' +
   'verify VARCHAR(50) null, ' +
   'recover VARCHAR(50) null) ' +
   'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci'
+
+ALL_QUERIES = {
+  DB_READY_USERS,
+  DB_SHOW_USERS,
+  DB_CREATE_USER,
+  DB_GET_USER_BY_ID,
+  DB_DELETE_USER_BY_ID,
+  DB_GET_USER_BY_EMAIL,
+  DB_GET_USER_BY_VERIFY,
+  DB_GET_USER_BY_RECOVER
+}
+
+exports.ALL_QUERIES = ALL_QUERIES
 
 function InitUsers() {
   return db.InitTable(DB_USERS, DB_CREATE_USERS_TABLE, DB_READY_USERS)

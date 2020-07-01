@@ -5,7 +5,6 @@ const taskServiceQueries = require('../services/task.service').ALL_QUERIES
 const constants = require('../constants/index')
 const config = require('../config/config.js')
 const chaiHttp = require('chai-http')
-const request = require('request')
 const chai = require('chai')
 chai.use(chaiHttp)
 
@@ -13,7 +12,6 @@ let taskObjs = []
 let projectObj = null
 let projectUser = 333
 let projectName = 'This is a test project created by a test project.logic'
-
 
 /**
  * Used to mock express app
@@ -27,10 +25,6 @@ function appFake () {
   return this
 }
 const mockApp = appFake()
-
-const deleteTasksOnProjectDelete =
-  require('../subscribers/delete.tasks.on.project.delete')(mockApp)
-
 
 function clearTable () {
   return dbConnection.Query('TRUNCATE TABLE projects')
