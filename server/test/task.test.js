@@ -9,20 +9,11 @@ const chai = require('chai')
 chai.use(chaiHttp)
 
 
-beforeAll(() => {
-  dbConnection.Connect()
-  dbConnection.SelectDB(config.db.database)
-  return clearTable()
-  .then(() => createProject())
-})
-
-afterAll(() => {
-  dbConnection.Close()
-})
-
-function clearTable () {
-  return dbConnection.Query('TRUNCATE TABLE tasks')
-}
+let projectObj = null
+let taskObj = null
+let taskUser = 222
+let taskProject = -1
+let taskText = 'This is a test task created by a task.test'
 
 function createProject () {
   return dbConnection.Query(projectServiceQueries.DB_CREATE_PROJECT,
@@ -33,16 +24,20 @@ function createProject () {
   })
 }
 
-function getTaskById (id) {
-  return dbConnection.Query(taskServiceQueries.DB_GET_TASK_BY_ID, [id])
+function clearTable () {
+  return dbConnection.Query('TRUNCATE TABLE tasks')
 }
 
-let projectObj = null
-let taskObj = null
-let taskUser = 33
-let taskProject = -1
-let taskText = 'This is a test task created by a test'
+beforeAll(() => {
+  dbConnection.Connect()
+  return dbConnection.SelectDB(config.db.database)
+  .then(() => clearTable())
+  .then(() => createProject())
+})
 
+afterAll(() => {
+  dbConnection.Close()
+})
 
 describe('Tasks', () => {
 

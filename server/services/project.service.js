@@ -12,6 +12,7 @@ const DB_READY_PROJECTS = 'db-ready-projects'
 const DB_SHOW_PROJECTS = 'SELECT * FROM projects ORDER BY updated DESC'
 const DB_CREATE_PROJECT = 'INSERT INTO projects SET ?'
 const DB_DELETE_PROJECT_BY_ID = 'DELETE FROM projects WHERE id = ?'
+const DB_DELETE_PROJECTS_BY_USER = 'SELECT * FROM projects WHERE user = ?'
 const DB_GET_PROJECT_BY_ID = 'SELECT * FROM projects WHERE id = ?'
 const DB_GET_PROJECT_BY_USER = 'SELECT * FROM projects WHERE user = ? ORDER BY updated DESC'
 const DB_GET_PROJECT_BY_NAME = 'SELECT * FROM projects WHERE name = ? ORDER BY updated DESC'
@@ -45,6 +46,7 @@ const ALL_QUERIES = {
   DB_SHOW_PROJECTS,
   DB_CREATE_PROJECT,
   DB_DELETE_PROJECT_BY_ID,
+  DB_DELETE_PROJECTS_BY_USER,
   DB_GET_PROJECT_BY_ID,
   DB_GET_PROJECT_BY_USER,
   DB_GET_PROJECT_BY_NAME,
@@ -201,6 +203,18 @@ function GetProjectsByUser(user) {
 }
 
 exports.GetProjectsByUser = GetProjectsByUser
+
+/**
+ * Deletes all project objects from the db via user id
+ *
+ * @param   {int}     user      user id
+ * @return  {array}   project object
+ */
+function DeleteProjectsByUser(user) {
+  return db.Query(DB_DELETE_PROJECTS_BY_USER, [user])
+}
+
+exports.DeleteProjectsByUser = DeleteProjectsByUser
 
 /**
  * Returns all project objects by the isDone value

@@ -5,43 +5,22 @@ const taskServiceQueries = require('../services/task.service').ALL_QUERIES
 const constants = require('../constants/index')
 const config = require('../config/config.js')
 const chaiHttp = require('chai-http')
+const request = require('request')
 const chai = require('chai')
 chai.use(chaiHttp)
 
+let projectObj = null
+let projectUser = 111
+let projectName = 'This is a test project created by a project.test'
 
 beforeAll(() => {
   dbConnection.Connect()
-  dbConnection.SelectDB(config.db.database)
-  return clearTable()
+  return dbConnection.SelectDB(config.db.database)
 })
 
 afterAll(() => {
   dbConnection.Close()
 })
-
-function clearTable () {
-  return dbConnection.Query('TRUNCATE TABLE projects')
-}
-
-function createTask (id) {
-  return dbConnection.Query(taskServiceQueries.DB_CREATE_TASK,
-    { text: 'random text for a task',
-      user: projectUser,
-      project: id })
-    .then(tmpObj => {
-      taskObjs.push(tmpObj)
-    })
-}
-
-function getProjectById (id) {
-  return dbConnection.Query(projectServiceQueries.DB_GET_PROJECT_BY_ID, [id])
-}
-
-let taskObjs = []
-let projectObj = null
-let projectUser = 45
-let projectName = 'This is a test project created by a test'
-
 
 describe('Projects', () => {
 
@@ -137,10 +116,6 @@ describe('Projects', () => {
       expect(res.body.message).toBeDefined()
       expect(res.body.message).toEqual(constants.messages.SUCCESS_CREATED_PROJECT)
       projectObj = res.body.data.project
-      createTask(projectObj.id)
-      createTask(projectObj.id)
-      createTask(projectObj.id)
-      createTask(projectObj.id)
       done()
     })
   })
@@ -227,11 +202,5 @@ describe('Projects', () => {
       done()
     })
   })
-
-  test('Creating a task should update a projects total tasks count', () => {}) // todo
-  test('Updating a task should update a projects done tasks count', () => {}) // todo
-  test('Updating all tasks should update a projects to be complete', () => {}) // todo
-  test('Deleting a task should update a projects total tasks count', () => {}) // todo
-  test('Deleting a project with tasks should remove all related tasks', () => {}) // todo
 
 })

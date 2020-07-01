@@ -8,6 +8,8 @@ const constants = require('../constants/index')
 function Init(app) {
   app.on(constants.events.UPDATE_PROGRESS_PROJECT,
     UpdateProjectProgress)
+
+  return UpdateProjectProgress
 }
 
 module.exports = Init
