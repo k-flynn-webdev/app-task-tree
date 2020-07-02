@@ -3,6 +3,7 @@
   <RowItem
     ref="taskItem"
     v-model="input"
+    class="HOVER-BG"
     :data="data"
     :status="status"
     :selected="selected"

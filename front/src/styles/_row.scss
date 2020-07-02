@@ -202,9 +202,15 @@
       }
     }
 
-    &.HOVER & {
+    &.HOVER-BORDER & {
       &__line__mid:hover {
         border-color: $color-fore;
+      }
+    }
+
+    &.HOVER-BG & {
+      &__line__mid__content:hover {
+        background-color: rgba($color-fore, $color-alpha);
       }
     }
 
@@ -225,7 +231,11 @@
     &__status {
       $tmp: $unit-default * 1.3;
 
-      &.NO-CHECKBOX {
+      &.NO-CHECKBOX & {
+        &-icon {
+          cursor: default;
+        }
+
         input {
           display: none;
         }
@@ -238,6 +248,7 @@
       position: relative;
 
       &-icon {
+        cursor: pointer;
         position: absolute;
         top: 0;
         left: 0;
