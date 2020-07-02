@@ -15,13 +15,14 @@ const constants = require('../constants')
  */
 function userCreate(input,  app) {
 
-  return user.GetUserByEmail(input)
+  return user.GetUserByEmail(input.email)
   .then(found => {
     if (found.length > 0) {
-      throw new Error(constants.errors.EMAIL_IN_USE)
+      throw { status: 400,
+        message: constants.errors.EMAIL_IN_USE }
     }
 
-    return input
+    return true
   })
   .then(() => {
     return user.Create({
@@ -32,16 +33,20 @@ function userCreate(input,  app) {
   })
   .then(({ insertId }) => user.GetUserByID(insertId))
   .then(userObj => {
-    return user.Update({
-      id: userObj.id,
-      verify: token.Magic(userObj)
-    })
+    const userObjTmp = mysqlVal(userObj)
+
+    return Promise.all( [
+      Promise.resolve(userObjTmp),
+      user.Update({
+        id: userObjTmp.id,
+        verify: token.Magic(userObjTmp)
+      })])
   })
-  .then(userObj => {
+  .then(([userObj, updateResult]) => {
 
     app.emit(constants.events.CREATE_ACCOUNT, userObj)
 
-    return user.SafeExport(mysqlVal(userObj))
+    return user.SafeExport(userObj)
   })
 }
 

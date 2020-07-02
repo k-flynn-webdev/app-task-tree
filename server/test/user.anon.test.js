@@ -1,10 +1,19 @@
 //Require the dev-dependencies
+const dbConnection = require('../interfaces/db_init_sql')
 const constants = require('../constants/index')
 const config = require('../config/config.js')
 const chaiHttp = require('chai-http')
 const chai = require('chai')
 chai.use(chaiHttp)
 
+beforeAll(() => {
+  dbConnection.Connect()
+  return dbConnection.SelectDB(config.db.database)
+})
+
+afterAll(() => {
+  dbConnection.Close()
+})
 
 describe('User anon', () => {
 

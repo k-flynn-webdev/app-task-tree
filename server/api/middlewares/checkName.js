@@ -23,7 +23,7 @@ function validNameText(input) {
  */
 function required(req, res) {
   if (!has.hasAnItem(req.body.name)) {
-    exit(res, 422, missing('name'))
+    exit(res, 400, missing('name'))
     return false
   }
 
@@ -42,7 +42,7 @@ exports.required = required
 function valid(req, res) {
   if (has.hasAnItem(req.body.name)) {
     if (!validNameText(req.body.name.trim())) {
-      exit(res, 422,
+      exit(res, 400,
         `The name must be at least ${TEXT_LENGTH} characters long.`)
       return false
     }

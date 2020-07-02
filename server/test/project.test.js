@@ -29,7 +29,7 @@ describe('Projects', () => {
     .send({})
     .end(function(err, res){
       expect(res).toBeDefined()
-      expect(res.status).toBe(422)
+      expect(res.status).toBe(400)
       expect(res.text).toBeDefined()
       expect(res.body.message).toBeDefined()
       expect(res.body.message).toEqual("Missing name field.")
@@ -45,7 +45,7 @@ describe('Projects', () => {
       name: projectName })
     .end(function(err, res){
       expect(res).toBeDefined()
-      expect(res.status).toBe(422)
+      expect(res.status).toBe(400)
       expect(res.text).toBeDefined()
       expect(res.body.message).toBeDefined()
       expect(res.body.message).toEqual("The user must be valid.")
@@ -61,7 +61,7 @@ describe('Projects', () => {
       name: null })
     .end(function(err, res){
       expect(res).toBeDefined()
-      expect(res.status).toBe(422)
+      expect(res.status).toBe(400)
       expect(res.text).toBeDefined()
       expect(res.body.message).toBeDefined()
       expect(res.body.message).toEqual("Missing name field.")
@@ -77,7 +77,7 @@ describe('Projects', () => {
       name: 'sam' })
     .end(function(err, res){
       expect(res).toBeDefined()
-      expect(res.status).toBe(422)
+      expect(res.status).toBe(400)
       expect(res.text).toBeDefined()
       expect(res.body.message).toBeDefined()
       expect(res.body.message).toEqual("The name must be at least 4 characters long.")
@@ -173,7 +173,6 @@ describe('Projects', () => {
       expect(res).toBeDefined()
       expect(res.status).toBe(202)
       expect(res.body.message).toEqual(constants.messages.SUCCESS_DELETED_PROJECT)
-      expect(res.body.data).toBeNull()
       done()
     })
   })
@@ -185,7 +184,6 @@ describe('Projects', () => {
       expect(res).toBeDefined()
       expect(res.status).toBe(404)
       expect(res.body.message).toEqual(constants.errors.PROJECT_NOT_FOUND)
-      expect(res.body.data).toBeNull()
       done()
     })
   })

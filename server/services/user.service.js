@@ -173,7 +173,6 @@ exports.Delete = Delete
 /**
  * Returns a jsonweb token object from a user object
  *
- * @param   {object}  user  user data
  * @return  {string}  token string
  */
 function GetAllUser() {
@@ -256,12 +255,12 @@ function ComparePassword(input, dbHash) {
   return bcrypt.compare(config.secure.hash + input, dbHash)
   .then(passwordTest => {
     if (!passwordTest) {
-      throw new Error(constants.errors.PASSWORD_INCORRECT)
+      throw { status: 403,
+        message: constants.errors.PASSWORD_INCORRECT }
     }
 
     return Promise.resolve(true)
   })
-  .catch(err => Promise.reject(err))
 }
 
 exports.ComparePassword = ComparePassword

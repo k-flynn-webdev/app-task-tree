@@ -38,7 +38,7 @@ module.exports = function (app) {
     })
     .catch(err => {
       logger.Log(err.message || err, req)
-      exit(res, 400, 'error', err.message || err)
+      exit(res, 400, err.message || 'error', err)
     })
   })
 
@@ -64,7 +64,7 @@ module.exports = function (app) {
     })
     .catch(err => {
       logger.Log(err.message || err, req)
-      exit(res, 401, 'error', err.message || err)
+      exit(res, 401, err.message || 'error', err)
     })
   })
 
@@ -88,7 +88,7 @@ module.exports = function (app) {
       })
       .catch(err => {
         logger.Log(err.message || err, req)
-        exit(res, 401, 'error', err.message || err)
+        exit(res, 400, err.message || 'error', err)
       })
     })
 
@@ -103,8 +103,8 @@ module.exports = function (app) {
       project.GetProjectByID(req.params.project)
       .then(projectObj => {
         if (!projectObj || projectObj.length < 1) {
-          return exit(res, 404,
-            constants.errors.PROJECT_NOT_FOUND)
+          throw { status: 404,
+            message: constants.errors.PROJECT_NOT_FOUND }
         }
 
         exit(res, 200,
@@ -113,7 +113,7 @@ module.exports = function (app) {
       })
       .catch(err => {
         logger.Log(err.message || err, req)
-        exit(res, 401, 'error', err.message || err)
+        exit(res, 400, err)
       })
     })
 
@@ -137,7 +137,7 @@ module.exports = function (app) {
       })
       .catch(err => {
         logger.Log(err.message || err, req)
-        exit(res, 401, 'error', err.message || err)
+        exit(res, 400, err.message || 'error', err)
       })
     })
 

@@ -39,12 +39,19 @@ exports.Create = Create
  * @param next  the cb
  */
 function Verify(req, res, next) {
-  if (!has.hasAnItem(req.query)) return exit(res, 422,
-    'Missing verify link.')
-  if (!has.hasAnItem(req.query.verify)) return exit(res, 422,
-    'Missing verify link.')
-  if (req.query.verify.length < VERIFY_LENGTH) return exit(res, 422,
-    'Invalid verify link.')
+  if (!has.hasAnItem(req.query))
+  {
+    exit (res, 400, 'Missing verify link.')
+    return false
+  }
+  if (!has.hasAnItem(req.query.verify)) {
+    exit(res, 400, 'Missing verify link.')
+    return false
+  }
+  if (req.query.verify.length < VERIFY_LENGTH) {
+    exit(res, 400, 'Invalid verify link.')
+    return false
+  }
 
   next()
 }
@@ -59,12 +66,18 @@ exports.Verify = Verify
  * @param next  the cb
  */
 function Recover(req, res, next) {
-  if (!has.hasAnItem(req.query)) return exit(res, 422,
-    'Missing recover link.')
-  if (!has.hasAnItem(req.query.recover)) return exit(res, 422,
-    'Missing recover link.')
-  if (req.query.recover.length < RECOVER_LENGTH) return exit(res, 422,
-    'Invalid recover link.')
+  if (!has.hasAnItem(req.query)) {
+    exit(res, 400, 'Missing recover link.')
+    return false
+  }
+  if (!has.hasAnItem(req.query.recover)) {
+    exit(res, 400, 'Missing recover link.')
+    return false
+  }
+  if (req.query.recover.length < RECOVER_LENGTH) {
+    exit(res, 400, 'Invalid recover link.')
+    return false
+  }
 
   next()
 }
@@ -96,7 +109,8 @@ exports.Login = Login
  */
 function Update(req, res, next) {
   if (Object.keys(req.body).length < 1) {
-    return exit(res, 422, 'No properties received.')
+    exit(res, 400, 'No properties received.')
+    return false
   }
 
   let newBody = {}

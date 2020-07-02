@@ -11,7 +11,7 @@ const exit = require('../../services/exit.js')
  */
 function required(req, res) {
   if (!has.hasAnItem(req.body.user)) {
-    exit(res, 422, missing('user'))
+    exit(res, 400, missing('user'))
     return false
   }
 
@@ -30,12 +30,12 @@ exports.required = required
 function valid(req, res) {
   if (has.hasAnItem(req.body.user)) {
     if (!has.isANumber(req.body.user)) {
-      exit(res, 422, 'The user must be valid.')
+      exit(res, 400, 'The user must be valid.')
       return false
     }
 
     if (req.body.user < 0) {
-      exit(res, 422, 'The user must be valid.')
+      exit(res, 400, 'The user must be valid.')
       return false
     }
   }

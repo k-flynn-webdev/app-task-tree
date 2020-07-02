@@ -47,7 +47,7 @@ describe('Tasks', () => {
     .send({})
     .end(function(err, res){
       expect(res).toBeDefined()
-      expect(res.status).toBe(422)
+      expect(res.status).toBe(400)
       expect(res.text).toBeDefined()
       expect(res.body.message).toBeDefined()
       expect(res.body.message).toEqual("Missing text field.")
@@ -64,7 +64,7 @@ describe('Tasks', () => {
       text: taskText })
     .end(function(err, res){
       expect(res).toBeDefined()
-      expect(res.status).toBe(422)
+      expect(res.status).toBe(400)
       expect(res.text).toBeDefined()
       expect(res.body.message).toBeDefined()
       expect(res.body.message).toEqual("The user must be valid.")
@@ -81,7 +81,7 @@ describe('Tasks', () => {
       text: taskText })
     .end(function(err, res){
       expect(res).toBeDefined()
-      expect(res.status).toBe(422)
+      expect(res.status).toBe(400)
       expect(res.text).toBeDefined()
       expect(res.body.message).toBeDefined()
       expect(res.body.message).toEqual("The project must be valid.")
@@ -98,7 +98,7 @@ describe('Tasks', () => {
       text: 'sma' })
     .end(function(err, res){
       expect(res).toBeDefined()
-      expect(res.status).toBe(422)
+      expect(res.status).toBe(400)
       expect(res.text).toBeDefined()
       expect(res.body.message).toBeDefined()
       expect(res.body.message).toEqual("The task text must be at least 4 characters long.")
@@ -236,7 +236,6 @@ describe('Tasks', () => {
       expect(res).toBeDefined()
       expect(res.status).toBe(202)
       expect(res.body.message).toEqual(constants.messages.SUCCESS_DELETED_TASK)
-      expect(res.body.data).toBeNull()
       done()
     })
   })
@@ -248,7 +247,6 @@ describe('Tasks', () => {
       expect(res).toBeDefined()
       expect(res.status).toBe(404)
       expect(res.body.message).toEqual(constants.errors.TASK_NOT_FOUND)
-      expect(res.body.data).toBeNull()
       done()
     })
   })

@@ -34,7 +34,8 @@ exports.Create = Create
  */
 function Update(req, res, next) {
   if (Object.keys(req.body).length < 1) {
-    return exit(res, 422, 'No properties received.')
+    exit(res, 400, 'No properties received.')
+    return false
   }
 
   let newBody = {}

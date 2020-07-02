@@ -37,7 +37,8 @@ exports.Create = Create
  */
 function Update(req, res, next) {
   if (Object.keys(req.body).length < 1) {
-    return exit(res, 422, 'No properties received.')
+    exit(res, 400, 'No properties received.')
+    return false
   }
 
   let newBody = {}
@@ -99,18 +100,23 @@ exports.Delete = Delete
  */
 function HasUserOrProject(req, res, next) {
   let hasEither = (has.hasAnItem(req.query.user) || has.hasAnItem(req.query.project))
-  if (!hasEither) return exit(res, 422, missing('user or project'))
+  if (!hasEither) {
+    exit(res, 400, missing('user or project'))
+    return false
+  }
 
 
   if (has.hasAnItem(req.query.user)) {
     if (!has.isANumber(req.query.user)) {
-      return exit(res, 422, 'The user must be valid.')
+      exit(res, 400, 'The user must be valid.')
+      return false
     }
   }
 
   if (has.hasAnItem(req.query.project)) {
     if (!has.isANumber(req.query.project)) {
-      return exit(res, 422, 'The project must be valid.')
+      exit(res, 400, 'The project must be valid.')
+      return false
     }
   }
 

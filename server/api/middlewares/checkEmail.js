@@ -9,11 +9,11 @@ const exit = require('../../services/exit.js')
  * @returns   {boolean}
  */
 function validEmail(input) {
-  let emailTmp = input.trim()
-  let tmp = emailTmp.split('@')
-  if (emailTmp.length < 5 || tmp.length < 2) return false
-  let domainStop = tmp[1].indexOf('.')
-  return (domainStop > 0 && domainStop < tmp[1].length - 1)
+    let emailTmp = input.trim()
+    let tmp = emailTmp.split('@')
+    if (emailTmp.length < 5 || tmp.length < 2) return false
+    let domainStop = tmp[1].indexOf('.')
+    return (domainStop > 0 && domainStop < tmp[1].length - 1)
 }
 
 /**
@@ -25,7 +25,7 @@ function validEmail(input) {
  */
 function required(req, res) {
   if (!has.hasAnItem(req.body.email)) {
-    exit(res, 422, missing('email'))
+    exit(res, 400, missing('email'))
     return false
   }
 
@@ -43,8 +43,8 @@ exports.required = required
  */
 function valid(req, res) {
   if (has.hasAnItem(req.body.email)) {
-    if (validEmail(req.body.email)) {
-      exit(res, 422, 'The email must be valid.')
+    if (!validEmail(req.body.email)) {
+      exit(res, 400, 'The email must be valid.')
       return false
     }
   }
