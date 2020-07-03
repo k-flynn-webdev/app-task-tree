@@ -64,6 +64,11 @@ function Update(req, res, next) {
   }
 
   if (has.hasAnItem(req.body.isDone)) {
+    if (!(typeof req.body.isDone === "boolean")) {
+      exit(res, 400, 'The isDone property must be a boolean.')
+      return false
+    }
+
     newBody.isDone = req.body.isDone
   }
 
@@ -99,7 +104,8 @@ exports.Delete = Delete
  * @param next  the cb
  */
 function HasUserOrProject(req, res, next) {
-  let hasEither = (has.hasAnItem(req.query.user) || has.hasAnItem(req.query.project))
+  let hasEither = (has.hasAnItem(req.query.user) ||
+    has.hasAnItem(req.query.project))
   if (!hasEither) {
     exit(res, 400, missing('user or project'))
     return false

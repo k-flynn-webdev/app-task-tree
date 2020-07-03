@@ -18,7 +18,7 @@ function userCreate(input,  app) {
   return user.GetUserByEmail(input.email)
   .then(found => {
     if (found.length > 0) {
-      throw { status: 400,
+      throw { status: 401,
         message: constants.errors.EMAIL_IN_USE }
     }
 

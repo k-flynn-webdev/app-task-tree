@@ -38,7 +38,7 @@ module.exports = function (app) {
       })
       .catch(err => {
         logger.Log(err.message || err, req)
-        exit(res, 400, err.message || 'error', err)
+        exit(res, 400, err || 'error')
       })
   })
 
@@ -46,8 +46,8 @@ module.exports = function (app) {
    * Update a task by id
    */
   app.patch(constants.paths.API_TASK(),
-    taskMiddle.Update,
     taskMiddle.HasParam,
+    taskMiddle.Update,
     prepareMiddle,
     function (req, res) {
 
@@ -64,7 +64,7 @@ module.exports = function (app) {
     })
     .catch(err => {
       logger.Log(err.message || err, req)
-      exit(res, 400, err.message || 'error', err)
+      exit(res, 400, err || 'error')
     })
   })
 
@@ -88,7 +88,7 @@ module.exports = function (app) {
       })
       .catch(err => {
         logger.Log(err.message || err, req)
-        exit(res, 400, err.message || 'error', err)
+        exit(res, 400, err || 'error')
       })
     })
 
@@ -113,7 +113,7 @@ module.exports = function (app) {
       })
       .catch(err => {
         logger.Log(err.message || err, req)
-        exit(res, 400, err.message || 'error', err)
+        exit(res, 400, err || 'error')
       })
     })
 
@@ -149,7 +149,7 @@ module.exports = function (app) {
       })
       .catch(err => {
         logger.Log(err.message || err, req)
-        exit(res, 400, err.message || 'error', err)
+        exit(res, 400, err || 'error')
       })
     })
 

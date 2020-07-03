@@ -62,10 +62,16 @@ exports.valid = valid
  */
 function HasParam(req, res) {
   if (!has.hasAnItem(req.params.name)) {
+    exit(res, 400, 'Missing name parameter.')
     return false
   }
 
-  return validNameText(req.params.name.trim())
+  if (!validNameText(req.params.name.trim())) {
+    exit(res, 400, 'The name parameter must be valid.')
+    return false
+  }
+
+  return true
 }
 
 exports.HasParam = HasParam

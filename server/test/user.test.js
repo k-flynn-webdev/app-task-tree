@@ -65,7 +65,7 @@ describe('User', () => {
     })
     .end(function(err, res){
       expect(res).toBeDefined()
-      expect(res.status).toBe(400)
+      expect(res.status).toBe(401)
       expect(res.body).toBeDefined()
       expect(res.body.message).toBeDefined()
       expect(res.body.message).toEqual(constants.errors.EMAIL_IN_USE)

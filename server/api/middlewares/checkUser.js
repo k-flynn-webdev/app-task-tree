@@ -54,10 +54,16 @@ exports.valid = valid
  */
 function HasParam(req, res) {
   if (!has.hasAnItem(req.params.user)) {
+    exit(res, 400, 'Missing user parameter.')
     return false
   }
 
-  return has.isANumber(req.params.user)
+  if (!has.isANumber(req.params.user)) {
+    exit(res, 400, 'The user parameter must be valid.')
+    return false
+  }
+
+  return true
 }
 
 exports.HasParam = HasParam
@@ -71,10 +77,16 @@ exports.HasParam = HasParam
  */
 function HasQuery(req, res) {
   if (!has.hasAnItem(req.query.user)) {
+    exit(res, 400, 'Missing user parameter.')
     return false
   }
 
-  return has.isANumber(req.query.user)
+  if (!has.isANumber(req.query.user)) {
+    exit(res, 400, 'The user parameter must be valid.')
+    return false
+  }
+
+  return true
 }
 
 exports.HasQuery = HasQuery

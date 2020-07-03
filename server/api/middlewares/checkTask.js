@@ -54,10 +54,16 @@ exports.valid = valid
  */
 function HasParam(req, res) {
   if (!has.hasAnItem(req.params.task)) {
+    exit(res, 400, 'Missing task parameter.')
     return false
   }
 
-  return has.isANumber(req.params.task)
+  if (!has.isANumber(req.params.task)) {
+    exit(res, 400, 'The task parameter must be valid.')
+    return false
+  }
+
+  return true
 }
 
 exports.HasParam = HasParam

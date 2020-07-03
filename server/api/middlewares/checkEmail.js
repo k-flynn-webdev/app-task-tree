@@ -63,10 +63,16 @@ exports.valid = valid
  */
 function HasParam(req, res) {
   if (!has.hasAnItem(req.params.email)) {
+    exit(res, 400, 'Missing email parameter.')
     return false
   }
 
-  return validEmail(req.params.email)
+  if (!validEmail(req.params.email)) {
+    exit(res, 400, 'The email parameter must be valid.')
+    return false
+  }
+
+  return true
 }
 
 exports.HasParam = HasParam

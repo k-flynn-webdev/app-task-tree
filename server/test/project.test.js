@@ -8,6 +8,7 @@ const chaiHttp = require('chai-http')
 const chai = require('chai')
 chai.use(chaiHttp)
 
+
 let projectObj = null
 let projectUser = 111
 let projectName = 'This is a test project created by a project.test'
@@ -37,6 +38,21 @@ describe('Projects', () => {
     })
   })
 
+  test('Should not create a new project without a user id', (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .post(constants.paths.API_PROJECT_CREATE)
+    .send({
+      name: projectName })
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(400)
+      expect(res.text).toBeDefined()
+      expect(res.body.message).toBeDefined()
+      expect(res.body.message).toEqual("Missing user field.")
+      done()
+    })
+  })
+
   test('Should not create a new project with a invalid user', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_PROJECT_CREATE)
@@ -53,12 +69,27 @@ describe('Projects', () => {
     })
   })
 
-  test('Should not create a new project with a invalid name', (done) => {
+  test('Should not create a new project with a invalid user #2', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_PROJECT_CREATE)
     .send({
-      user: projectUser,
-      name: null })
+      user: 'ds23',
+      name: projectName })
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(400)
+      expect(res.text).toBeDefined()
+      expect(res.body.message).toBeDefined()
+      expect(res.body.message).toEqual("The user must be valid.")
+      done()
+    })
+  })
+
+  test('Should not create a new project with a missing name', (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .post(constants.paths.API_PROJECT_CREATE)
+    .send({
+      user: projectUser })
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(400)
@@ -119,6 +150,28 @@ describe('Projects', () => {
     })
   })
 
+  test("Should not return a project that's invalid", (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .get(constants.paths.API_PROJECT('sdf35rs'))
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(400)
+      expect(res.body.message).toEqual('The project parameter must be valid.')
+      done()
+    })
+  })
+
+  test("Should not return a project that does not exist", (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .get(constants.paths.API_PROJECT(23432423))
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(404)
+      expect(res.body.message).toEqual(constants.errors.PROJECT_NOT_FOUND)
+      done()
+    })
+  })
+
   test('Should return the correct project', (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_PROJECT(projectObj.id))
@@ -131,6 +184,18 @@ describe('Projects', () => {
       expect(res.body.data.project.user).toBe(projectObj.user)
       expect(res.body.data.project.isDone).toBe(false)
       expect(res.body.data.project.tasksTotal).toBe(0)
+      done()
+    })
+  })
+
+  test('Should not update project name with invalid name', (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .patch(constants.paths.API_PROJECT(projectObj.id))
+    .send({ id: projectObj.id, name: 'err' })
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(400)
+      expect(res.body.message).toEqual('The name must be at least 4 characters long.')
       done()
     })
   })
@@ -149,6 +214,29 @@ describe('Projects', () => {
       expect(res.body.data.project.name).toBe(updatedName)
       expect(res.body.data.project.user).toBe(projectObj.user)
       expect(res.body.data.project.isDone).toBe(false)
+      done()
+    })
+  })
+
+  test('Should not return an array of projects with a user that does not exist', (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .get(constants.paths.API_PROJECTS + '?user=' + 23131)
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(200)
+      expect(res.body.message.indexOf(constants.messages.SUCCESS_FOUND_PROJECTS) !== -1)
+      expect(res.body.data.projects.length).toBe(0)
+      done()
+    })
+  })
+
+  test('Should not return an array of projects with a user that is invalid', (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .get(constants.paths.API_PROJECTS + '?user=' + 'ad3e')
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(400)
+      expect(res.body.message).toEqual('The user parameter must be valid.')
       done()
     })
   })

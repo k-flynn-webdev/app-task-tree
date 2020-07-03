@@ -55,6 +55,22 @@ describe('Tasks', () => {
     })
   })
 
+  test('Should not create a new task without a user id', (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .post(constants.paths.API_TASK_CREATE)
+    .send({
+      project: taskProject,
+      text: taskText })
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(400)
+      expect(res.text).toBeDefined()
+      expect(res.body.message).toBeDefined()
+      expect(res.body.message).toEqual("Missing user field.")
+      done()
+    })
+  })
+
   test('Should not create a new task with a invalid user', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_TASK_CREATE)
@@ -72,12 +88,78 @@ describe('Tasks', () => {
     })
   })
 
+  test('Should not create a new task with a invalid user #2', (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .post(constants.paths.API_TASK_CREATE)
+    .send({
+      user: '13a',
+      project: taskProject,
+      text: taskText })
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(400)
+      expect(res.text).toBeDefined()
+      expect(res.body.message).toBeDefined()
+      expect(res.body.message).toEqual("The user must be valid.")
+      done()
+    })
+  })
+
+  test('Should not create a new task without the text', (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .post(constants.paths.API_TASK_CREATE)
+    .send({
+      project: taskProject,
+      user: taskUser })
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(400)
+      expect(res.text).toBeDefined()
+      expect(res.body.message).toBeDefined()
+      expect(res.body.message).toEqual("Missing text field.")
+      done()
+    })
+  })
+
+  test('Should not create a new task without a project id', (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .post(constants.paths.API_TASK_CREATE)
+    .send({
+      text: taskText,
+      user: taskUser })
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(400)
+      expect(res.text).toBeDefined()
+      expect(res.body.message).toBeDefined()
+      expect(res.body.message).toEqual("Missing project field.")
+      done()
+    })
+  })
+
   test('Should not create a new task with a invalid project', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_TASK_CREATE)
     .send({
       user: taskUser,
       project: -1,
+      text: taskText })
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(400)
+      expect(res.text).toBeDefined()
+      expect(res.body.message).toBeDefined()
+      expect(res.body.message).toEqual("The project must be valid.")
+      done()
+    })
+  })
+
+  test('Should not create a new task with a invalid project #2', (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .post(constants.paths.API_TASK_CREATE)
+    .send({
+      user: taskUser,
+      project: 'a2j',
       text: taskText })
     .end(function(err, res){
       expect(res).toBeDefined()
@@ -139,7 +221,29 @@ describe('Tasks', () => {
     })
   })
 
-  test('Should return the correct task', (done) => {
+  test("Should not return a task that doesn't exist", (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .get(constants.paths.API_TASK(2357))
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(404)
+      expect(res.body.message).toEqual(constants.errors.TASK_NOT_FOUND)
+      done()
+    })
+  })
+
+  test("Should not return a task that's invalid", (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .get(constants.paths.API_TASK('dfs24'))
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(400)
+      expect(res.body.message).toEqual('The task parameter must be valid.')
+      done()
+    })
+  })
+
+  test('Should return a task that exists', (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_TASK(taskObj.id))
     .end(function(err, res){
@@ -151,6 +255,30 @@ describe('Tasks', () => {
       expect(res.body.data.task.project).toBe(taskObj.project)
       expect(res.body.data.task.user).toBe(taskObj.user)
       expect(res.body.data.task.isDone).toBe(false)
+      done()
+    })
+  })
+
+  test('Should not update task text with invalid text', (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .patch(constants.paths.API_TASK(taskObj.id))
+    .send({ id: taskObj.id, text: 'err' })
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(400)
+      expect(res.body.message).toEqual('The task text must be at least 4 characters long.')
+      done()
+    })
+  })
+
+  test('Should not update task isDone with an invalid value', (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .patch(constants.paths.API_TASK(taskObj.id))
+    .send({ id: taskObj.id, isDone: 'err' })
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(400)
+      expect(res.body.message).toEqual('The isDone property must be a boolean.')
       done()
     })
   })
@@ -200,6 +328,17 @@ describe('Tasks', () => {
       expect(res.body.data.task.id).toBe(taskObj.id)
       expect(res.body.data.task.isDone).toBe(false)
       expect(res.body.data.task.doneDate).toBeNull()
+      done()
+    })
+  })
+
+  test('Should not return results from a invalid user id', (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .get(constants.paths.API_TASKS + '?user=' + 'sd3fs')
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(400)
+      expect(res.body.message).toBe('The user must be valid.')
       done()
     })
   })

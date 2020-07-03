@@ -36,7 +36,8 @@ exports.HasNumbers = HasNumbers
  * @returns {boolean}
  */
 function isANumber(input) {
-  return typeof Number(input) === 'number'
+  const numResult = Number(input)
+  return (typeof numResult === 'number' && !Number.isNaN(numResult))
 }
 
 exports.isANumber = isANumber

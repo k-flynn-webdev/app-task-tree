@@ -38,7 +38,7 @@ module.exports = function (app) {
     })
     .catch(err => {
       logger.Log(err.message || err, req)
-      exit(res, 400, err.message || 'error', err)
+      exit(res, 400, err || 'error')
     })
   })
 
@@ -64,7 +64,7 @@ module.exports = function (app) {
     })
     .catch(err => {
       logger.Log(err.message || err, req)
-      exit(res, 401, err.message || 'error', err)
+      exit(res, 400, err || 'error')
     })
   })
 
@@ -88,7 +88,7 @@ module.exports = function (app) {
       })
       .catch(err => {
         logger.Log(err.message || err, req)
-        exit(res, 400, err.message || 'error', err)
+        exit(res, 400, err || 'error')
       })
     })
 
@@ -113,7 +113,7 @@ module.exports = function (app) {
       })
       .catch(err => {
         logger.Log(err.message || err, req)
-        exit(res, 400, err)
+        exit(res, 400, err || 'error')
       })
     })
 
@@ -137,7 +137,7 @@ module.exports = function (app) {
       })
       .catch(err => {
         logger.Log(err.message || err, req)
-        exit(res, 400, err.message || 'error', err)
+        exit(res, 400, err || 'error')
       })
     })
 

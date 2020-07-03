@@ -54,10 +54,16 @@ exports.valid = valid
  */
 function HasParam(req, res) {
   if (!has.hasAnItem(req.params.project)) {
+    exit(res, 400, 'Missing project parameter.')
     return false
   }
 
-  return has.isANumber(req.params.project)
+  if (!has.isANumber(req.params.project)) {
+    exit(res, 400, 'The project parameter must be valid.')
+    return false
+  }
+
+  return true
 }
 
 exports.HasParam = HasParam

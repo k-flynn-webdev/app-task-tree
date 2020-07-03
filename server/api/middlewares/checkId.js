@@ -49,10 +49,16 @@ exports.valid = valid
  */
 function HasParam(req, res) {
   if (!has.hasAnItem(req.params.id)) {
+    exit(res, 400, 'Missing id parameter.')
     return false
   }
 
-  return has.isANumber(req.params.id)
+  if (!has.isANumber(req.params.id)) {
+    exit(res, 400, 'The id parameter must be valid.')
+    return false
+  }
+
+  return true
 }
 
 exports.HasParam = HasParam
