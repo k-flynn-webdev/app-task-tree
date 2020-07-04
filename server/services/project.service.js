@@ -127,11 +127,11 @@ function Update({ id, name, user, tasksTotal, tasksDone, isDone }) {
     let value = isDone ? 1 : 0
     tmpSQLCommand.push(DB_SET_IS_DONE)
     tmpSQLVars.push(value)
+
+    tmpSQLCommand.push(DB_SET_DONE_DATE)
     if (isDone) {
-      tmpSQLCommand.push(DB_SET_DONE_DATE)
       tmpSQLVars.push(new Date())
     } else {
-      tmpSQLCommand.push(DB_SET_DONE_DATE)
       tmpSQLVars.push(undefined)
     }
   }

@@ -108,7 +108,8 @@ exports.Login = Login
  * @param next  the cb
  */
 function Update(req, res, next) {
-  if (Object.keys(req.body).length < 1) {
+  varCount = Object.keys(req.body).filter(item => item !== 'id').length
+  if (varCount < 1) {
     exit(res, 400, 'No properties received.')
     return false
   }
@@ -133,6 +134,7 @@ function Update(req, res, next) {
   if (has.hasAnItem(req.body.password)) {
     newBody.password = req.body.password
   }
+
 
   // ensure only the above items are allowed for an account update
   delete req.body

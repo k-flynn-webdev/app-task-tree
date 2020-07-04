@@ -17,7 +17,7 @@ afterAll(() => {
 
 describe('User anon', () => {
 
-  it('Should get a valid anon account response', (done) => {
+  it('Should create a valid user anon account', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_USER_ANON)
     .send({})

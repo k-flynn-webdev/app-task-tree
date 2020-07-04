@@ -188,6 +188,18 @@ describe('Projects', () => {
     })
   })
 
+  test("Should not update a project that doesn't exist", (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .patch(constants.paths.API_PROJECT(2357))
+    .send({ id: 2357, name: 'dsfdsdsf' })
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(404)
+      expect(res.body.message).toEqual(constants.errors.PROJECT_NOT_FOUND)
+      done()
+    })
+  })
+
   test('Should not update project name with invalid name', (done) => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_PROJECT(projectObj.id))
@@ -249,6 +261,18 @@ describe('Projects', () => {
       expect(res.status).toBe(200)
       expect(res.body.message.indexOf(constants.messages.SUCCESS_FOUND_PROJECTS) !== -1)
       expect(res.body.data.projects.length).toBeGreaterThan(0)
+      done()
+    })
+  })
+
+  test("Should not delete a project that doesn't exist", (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .patch(constants.paths.API_PROJECT(2357))
+    .send({ id: 2357, name: 'dsfdsdsf' })
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(404)
+      expect(res.body.message).toEqual(constants.errors.PROJECT_NOT_FOUND)
       done()
     })
   })

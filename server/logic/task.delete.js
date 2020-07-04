@@ -15,9 +15,18 @@ const constants = require('../constants')
  */
 function taskDelete(input, app) {
   return task.GetTaskByID(input.id)
-  .then(taskObj => {
+  .then(tskFnd => {
+    let taskObj = mysqlVal(tskFnd)
+
+    if (!has.hasAnItem(taskObj)) {
+      throw {
+        status: 404,
+        message: constants.errors.TASK_NOT_FOUND
+      }
+    }
+
     return Promise.all(
-      [Promise.resolve(mysqlVal(taskObj)),
+      [Promise.resolve(taskObj),
       task.Delete(input.id)])
   })
   .then(([taskObj, deleted]) => {

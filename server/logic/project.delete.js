@@ -15,9 +15,18 @@ const constants = require('../constants')
  */
 function projectDelete(input, app) {
   return project.GetProjectByID(input.id)
-  .then(projectObj => {
+  .then(prjFnd => {
+    let projectObj = mysqlVal(prjFnd)
+
+    if (!has.hasAnItem(projectObj)) {
+      throw {
+        status: 404,
+        message: constants.errors.PROJECT_NOT_FOUND
+      }
+    }
+
     return Promise.all(
-      [Promise.resolve(mysqlVal(projectObj)),
+      [Promise.resolve(projectObj),
         project.Delete(input.id)])
   })
   .then(([projectObj, deleted]) => {

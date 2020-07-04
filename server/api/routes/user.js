@@ -9,6 +9,7 @@ const prepareMiddle = require('../middlewares/prepare.js')
 const constants = require('../../constants/index')
 // business
 const userCreateLogic = require('../../logic/user.create.js')
+const userUpdateLogic = require('../../logic/user.update.js')
 
 
 module.exports = function (app) {
@@ -35,6 +36,28 @@ module.exports = function (app) {
         exit(res, 400, err || 'error')
       })
   })
+
+  /**
+   * Update a user account
+   */
+  app.patch(constants.paths.API_USER,
+    userMiddle.Update,
+    prepareMiddle,
+    function (req, res) {
+
+      userUpdateLogic(req.body, app)
+      .then(userObj => {
+        exit(res, 200,
+          constants.messages.SUCCESS_UPDATED_ACCOUNT,
+          { account: userObj,
+            token: token.Create(userObj)
+          })
+      })
+      .catch(err => {
+        logger.Log(err.message || err, req)
+        exit(res, 400, err || 'error')
+      })
+    })
 
   // /**
   //  * Login a user account & return a token key
@@ -86,58 +109,8 @@ module.exports = function (app) {
   //   })
   // })
 
-  // /**
-  //  * Update a user account
-  //  */
-  // app.patch(constants.paths.API_USER, userMiddle.Update,
-  //   token.Required, prepareMiddle, function (req, res) {
-  //
-  //   let userObjTmp = null
-  //
-  //   user.GetUserByID(req.body.token.id)
-  //   .then(userObj => {
-  //     if (!userObj || userObj.length < 1) {
-  //       throw new Error(constants.errors.ACCOUNT_MISSING)
-  //     }
-  //
-  //     userObjTmp = mysqlVal(userObj)
-  //
-  //     if (has.hasAnItem(userObjTmp.verify)){
-  //       throw new Error(constants.errors.ACCOUNT_UNVERIFIED)
-  //     }
-  //
-  //     if (has.hasAnItem(userObjTmp.recover)){
-  //       throw new Error(constants.errors.ACCOUNT_IN_RECOVERY)
-  //     }
-  //
-  //     req.body.id = userObjTmp.id
-  //     return user.Update(req.body)
-  //   })
-  //   .then(() => {
-  //       if (has.hasAnItem(req.body.email)) {
-  //         let verifyString = token.Magic(userObjTmp)
-  //         app.emit(constants.events.VERIFY_ACCOUNT, userObjTmp)
-  //
-  //         return user.Update({ id: userObjTmp.id, verify: verifyString })
-  //       }
-  //   })
-  //   .then(() => user.GetUserByID(req.body.token.id))
-  //   .then(userObj => {
-  //     userObjTmp = mysqlVal(userObj)
-  //     app.emit(constants.events.UPDATED_ACCOUNT, userObjTmp)
-  //
-  //     exit(res, 200,
-  //       constants.messages.SUCCESS_UPDATED_ACCOUNT,
-  //       { account: user.SafeExport(userObjTmp),
-  //         token: token.Create(userObjTmp)
-  //       })
-  //   })
-  //   .catch(err => {
-  //     logger.Log(err.message || err, req)
-  //     exit(res, 400, 'error', err.message || err)
-  //   })
-  // })
-  //
+
+
   // /**
   //  * Delete a user account & deny token from use
   //  */

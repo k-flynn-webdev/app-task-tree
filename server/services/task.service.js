@@ -93,7 +93,6 @@ exports.Create = Create
  * @return  {object}  task object
  */
 function Update({ id, text, project, user, isDone }) {
-
   const JOIN_CHAR = ','
   let tmpSQLVars = []
   let tmpSQLStart = 'UPDATE ' + DB_TASKS + DB_SET

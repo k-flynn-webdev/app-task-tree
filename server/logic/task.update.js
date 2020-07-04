@@ -14,7 +14,19 @@ const constants = require('../constants')
  * @returns {object}  taskObj promise
  */
 function taskUpdate(input, app) {
-  return task.Update(input)
+  return task.GetTaskByID(input.id)
+    .then(tskFnd => {
+      let taskObj = mysqlVal(tskFnd)
+
+      if (!has.hasAnItem(taskObj)) {
+        throw {
+          status: 404,
+          message: constants.errors.TASK_NOT_FOUND
+        }
+      }
+
+      return task.Update(input)
+    })
     .then(() => task.GetTaskByID(input.id))
     .then(taskObj => {
       let taskObjTmp = mysqlVal(taskObj)

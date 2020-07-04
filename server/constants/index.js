@@ -45,14 +45,15 @@ const EMAIL_IN_USE = 'Email already in use.'
 const PASSWORD_INCORRECT = 'Incorrect password.'
 const ACCOUNT_MISSING = 'Account does not exist, please contact support.'
 const ACCOUNT_UNVERIFIED = 'Account not verified, please verify first.'
-const ACCOUNT_IN_RECOVERY = 'Account was recently put in recovery modes, please contact support'
+const ACCOUNT_IN_RECOVERY = 'Account was recently put in recovery modes, please contact support.'
 const VERIFY_LINK_MISSING = 'Verify link does not exist, please contact support.'
 const RECOVERY_LINK_MISSING = 'Recovery link does not exist, please contact support.'
-const TASK_NOT_FOUND = 'Task was not found'
-const PROJECT_NOT_FOUND = 'Project was not found'
+const TASK_NOT_FOUND = 'Task was not found.'
+const PROJECT_NOT_FOUND = 'Project was not found.'
+const MISSING_PROPERTY = 'Missing a property to update.'
 
 // MESSAGES
-const SUCCESS_CREATED_ACCOUNT = 'Success your Account is created'
+const SUCCESS_CREATED_ACCOUNT = 'Success your Account is created.'
 const SUCCESS_LOGIN_ACCOUNT = 'Success Account login.'
 const SUCCESS_UPDATED_ACCOUNT = 'Success Account updated.'
 const SUCCESS_DELETED_ACCOUNT = 'Success Account deleted.'
@@ -60,14 +61,14 @@ const SUCCESS_VERIFIED_ACCOUNT = 'Success Account verified.'
 const SUCCESS_RESET_ACCOUNT = 'Success a reset email has been sent.'
 const SUCCESS_PASSWORD_RESET_ACCOUNT = 'Success a new password has been set, please re-login.'
 
-const SUCCESS_CREATED_PROJECT = 'Success your Project is created'
-const SUCCESS_UPDATED_PROJECT = 'Success your Project is updated'
-const SUCCESS_DELETED_PROJECT = 'Success your Project is deleted'
+const SUCCESS_CREATED_PROJECT = 'Success your Project is created.'
+const SUCCESS_UPDATED_PROJECT = 'Success your Project is updated.'
+const SUCCESS_DELETED_PROJECT = 'Success your Project is deleted.'
 const SUCCESS_FOUND_PROJECTS = 'Success Projects found: '
 
-const SUCCESS_CREATED_TASK = 'Success your Task is created'
-const SUCCESS_UPDATED_TASK = 'Success your Task is updated'
-const SUCCESS_DELETED_TASK = 'Success your Task is deleted'
+const SUCCESS_CREATED_TASK = 'Success your Task is created.'
+const SUCCESS_UPDATED_TASK = 'Success your Task is updated.'
+const SUCCESS_DELETED_TASK = 'Success your Task is deleted.'
 const SUCCESS_FOUND_TASKS = 'Success Tasks found: '
 
 //
@@ -136,6 +137,7 @@ module.exports = {
 		RECOVERY_LINK_MISSING,
 		PASSWORD_INCORRECT,
 		TASK_NOT_FOUND,
-		PROJECT_NOT_FOUND
+		PROJECT_NOT_FOUND,
+		MISSING_PROPERTY
 	}
 }

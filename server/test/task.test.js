@@ -259,6 +259,18 @@ describe('Tasks', () => {
     })
   })
 
+  test("Should not update a task that doesn't exist", (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .patch(constants.paths.API_TASK(2357))
+    .send({ id: 2357, text: 'updated text' })
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(404)
+      expect(res.body.message).toEqual(constants.errors.TASK_NOT_FOUND)
+      done()
+    })
+  })
+
   test('Should not update task text with invalid text', (done) => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_TASK(taskObj.id))
@@ -363,6 +375,17 @@ describe('Tasks', () => {
       expect(res.status).toBe(200)
       expect(res.body.message.indexOf(constants.messages.SUCCESS_FOUND_TASKS) !== -1)
       expect(res.body.data.tasks.length).toBeGreaterThan(0)
+      done()
+    })
+  })
+
+  test("Should not delete a task that doesn't exist", (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .delete(constants.paths.API_TASK(2357))
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(404)
+      expect(res.body.message).toEqual(constants.errors.TASK_NOT_FOUND)
       done()
     })
   })

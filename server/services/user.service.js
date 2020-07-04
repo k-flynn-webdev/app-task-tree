@@ -61,7 +61,7 @@ function InitUsers() {
 }
 
 function CheckUsers() {
-  return GetAllUser()
+  return GetAllUsers()
   .then((items) => {
     const anonUsers = items.filter(item => item.name === constants.vars.ANON).length
     const normalUsers = items.length - anonUsers
@@ -104,45 +104,54 @@ function Update({ id, name, email, role, password, verify, recover, login }) {
   let tmpSQLCommand = []
 
   function CreateSQLQuery() {
+    console.log(tmpSQLStart + tmpSQLCommand.join(JOIN_CHAR) + DB_WHERE)
     return tmpSQLStart + tmpSQLCommand.join(JOIN_CHAR) + DB_WHERE
   }
 
-  if (login) {
+  if (has.hasAnItem(login)) {
     tmpSQLCommand.push(DB_SET_LOGIN)
     tmpSQLVars.push(new Date())
     tmpSQLVars.push(id)
     return db.Query(CreateSQLQuery(), tmpSQLVars)
   }
 
-  if (name) {
+  if (has.hasAnItem(name)) {
     tmpSQLCommand.push(DB_SET_NAME)
     tmpSQLVars.push(name.trim())
   }
 
-  if (email) {
+  if (has.hasAnItem(email)) {
     tmpSQLCommand.push(DB_SET_EMAIL)
     tmpSQLVars.push(email)
   }
 
-  if (role) {
+  if (has.hasAnItem(role)) {
     tmpSQLCommand.push(DB_SET_ROLE)
     tmpSQLVars.push(role)
   }
 
-  if (verify) {
+  if (has.hasAnItem(verify)) {
     tmpSQLCommand.push(DB_SET_VERIFY)
-    tmpSQLVars.push(verify.trim())
+    if (!verify) {
+      tmpSQLVars.push(undefined)
+    } else {
+      tmpSQLVars.push(verify.trim())
+    }
   }
 
-  if (recover) {
+  if (has.hasAnItem(recover)) {
     tmpSQLCommand.push(DB_SET_RECOVER)
-    tmpSQLVars.push(recover.trim())
+    if (!recover) {
+      tmpSQLVars.push(undefined)
+    } else {
+      tmpSQLVars.push(recover.trim())
+    }
   }
 
   tmpSQLCommand.push(DB_SET_UPDATED)
   tmpSQLVars.push(new Date())
 
-  if (!password) {
+  if (!has.hasAnItem(password)) {
     tmpSQLVars.push(id)
     return db.Query(CreateSQLQuery(), tmpSQLVars)
   } else {
@@ -171,15 +180,15 @@ function Delete(id) {
 exports.Delete = Delete
 
 /**
- * Returns a jsonweb token object from a user object
+ * Returns all users from the db
  *
- * @return  {string}  token string
+ * @return  {Array}  all users found
  */
-function GetAllUser() {
+function GetAllUsers() {
   return db.Query(DB_SHOW_USERS)
 }
 
-exports.GetAllUser = GetAllUser
+// exports.GetAllUsers = GetAllUsers
 
 /**
  * Returns a user object from the db if found via id int
@@ -297,7 +306,8 @@ function SafeExport(userData, meta = false) {
       login: userData.login,
       created: userData.created,
       updated: userData.updated,
-      verified: userData.verify.length < 1
+      verified: userData.verify.length < 1 &&
+        userData.recover.length
     }
   }
 

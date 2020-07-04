@@ -14,7 +14,19 @@ const constants = require('../constants')
  * @returns {object}  projectObj promise
  */
 function projectUpdate(input, app) {
-  return project.Update(input)
+  return project.GetProjectByID(input.id)
+    .then(prjFnd => {
+      let projectObj = mysqlVal(prjFnd)
+
+      if (!has.hasAnItem(projectObj)) {
+        throw {
+          status: 404,
+          message: constants.errors.PROJECT_NOT_FOUND
+        }
+      }
+
+      return project.Update(input)
+    })
     .then(() => project.GetProjectByID(input.id))
     .then(projectObj => {
       return project.SafeExport(mysqlVal(projectObj))
