@@ -55,6 +55,7 @@ const MISSING_PROPERTY = 'Missing a property to update.'
 // MESSAGES
 const SUCCESS_CREATED_ACCOUNT = 'Success your Account is created.'
 const SUCCESS_LOGIN_ACCOUNT = 'Success Account login.'
+const SUCCESS_LOGOUT_ACCOUNT = 'Success Account logout.'
 const SUCCESS_UPDATED_ACCOUNT = 'Success Account updated.'
 const SUCCESS_DELETED_ACCOUNT = 'Success Account deleted.'
 const SUCCESS_VERIFIED_ACCOUNT = 'Success Account verified.'
@@ -114,6 +115,7 @@ module.exports = {
 		SUCCESS,
 		SUCCESS_CREATED_ACCOUNT,
 		SUCCESS_LOGIN_ACCOUNT,
+		SUCCESS_LOGOUT_ACCOUNT,
 		SUCCESS_UPDATED_ACCOUNT,
 		SUCCESS_DELETED_ACCOUNT,
 		SUCCESS_VERIFIED_ACCOUNT,

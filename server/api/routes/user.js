@@ -11,6 +11,7 @@ const constants = require('../../constants/index')
 const userCreateLogic = require('../../logic/user.create.js')
 const userUpdateLogic = require('../../logic/user.update.js')
 const userDeleteLogic = require('../../logic/user.delete.js')
+const userLoginLogic = require('../../logic/user.login.js')
 
 
 module.exports = function (app) {
@@ -74,8 +75,7 @@ module.exports = function (app) {
       userDeleteLogic(req.body, app)
       .then(() => {
 
-        // todo blacklist old token
-        // token.AddTokenToBlackList(req)
+        // token.AddTokenToBlackList(req) // todo
 
         exit(res, 200,
           constants.messages.SUCCESS_DELETED_ACCOUNT,
@@ -89,55 +89,51 @@ module.exports = function (app) {
       })
     })
 
-  // /**
-  //  * Login a user account & return a token key
-  //  */
-  // app.post(constants.paths.API_USER_LOGIN,
-  //   userMiddle.Login, prepareMiddle, function (req, res) {
-  //
-  //   let userObjTmp = null
-  //
-  //   user.GetUserByEmail(req.body.email)
-  //   .then(userObj => {
-  //     if (!userObj || userObj.length < 1) {
-  //       throw new Error(constants.errors.ACCOUNT_MISSING)
-  //     }
-  //
-  //     userObjTmp = mysqlVal(userObj)
-  //     return user.ComparePassword(req.body.password, userObjTmp.password)
-  //   })
-  //   .then(() => user.Update({ id: userObjTmp.id, login: true }))
-  //   .then(() => {
-  //     app.emit(constants.events.LOGIN_ACCOUNT, userObjTmp)
-  //
-  //     exit(res, 200,
-  //       constants.messages.SUCCESS_LOGIN_ACCOUNT,
-  //       { account: user.SafeExport(userObjTmp),
-  //       token: token.Create(userObjTmp) })
-  //   })
-  //   .catch(err => {
-  //     logger.Log(err.message || err, req)
-  //     exit(res, 400, 'error', err.message || err)
-  //   })
-  // })
-  //
-  // /**
-  //  * Logout a user account & deny token from use
-  //  */
-  // app.get(constants.paths.API_USER_LOGOUT, token.Logout, function (req, res) {
-  //
-  //   token.AddTokenToBlackList(req)
-  //   .then(result => {
-  //
-  //     app.emit(constants.events.LOGOUT_ACCOUNT, result)
-  //
-  //     return exit(res, 201, result, result)
-  //   })
-  //   .catch(err => {
-  //     logger.Log(err.message || err, req)
-  //     exit(res, 400, 'error', err.message || err)
-  //   })
-  // })
+  /**
+   * Login a user account & return a token key
+   */
+  app.post(constants.paths.API_USER_LOGIN,
+    userMiddle.Login,
+    prepareMiddle,
+    function (req, res) {
+
+    userLoginLogic(req.body, app)
+    .then(userObj => {
+      console.log(userObj)
+
+      exit(res, 200,
+        constants.messages.SUCCESS_LOGIN_ACCOUNT,
+        { account: userObj,
+        token: token.Create(userObj) })
+    })
+    .catch(err => {
+      logger.Log(err.message || err, req)
+      exit(res, 400, err || 'error')
+    })
+  })
+
+  /**
+   * Logout a user account & deny token from use
+   */
+  app.get(constants.paths.API_USER_LOGOUT,
+    token.Logout,
+    function (req, res) {
+
+    user.GetUserByID(req.body.token.id)
+    .then(() => {
+
+      // token.AddTokenToBlackList(req) // todo
+
+      app.emit(constants.events.LOGOUT_ACCOUNT, req.body.token.id)
+
+      return exit(res, 200, constants.messages.SUCCESS_LOGOUT_ACCOUNT,
+        { token: null, account: null })
+    })
+    .catch(err => {
+      logger.Log(err.message || err, req)
+      exit(res, 400, err || 'error')
+    })
+  })
 
 
 
