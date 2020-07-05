@@ -7,9 +7,9 @@ const constants = require('../constants/index')
 
 function Init(app) {
   app.on(constants.events.UPDATE_PROGRESS_PROJECT,
-    UpdateProjectProgress)
+    UpdateProject)
 
-  return UpdateProjectProgress
+  return UpdateProject
 }
 
 module.exports = Init
@@ -20,7 +20,7 @@ module.exports = Init
  *
  * @param id
  */
-function UpdateProjectProgress ({ project }) {
+function UpdateProject ({ project }) {
   return tasks.GetTasksByProject(project)
   .then(allTasks => {
       const prjUpd = {

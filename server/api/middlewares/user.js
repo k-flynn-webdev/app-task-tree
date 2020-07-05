@@ -145,20 +145,20 @@ function Update(req, res, next) {
 
 exports.Update = Update
 
-// /**
-//  * Ensure the incoming request has a email property
-//  *
-//  * @param req   incoming request obj
-//  * @param res   outgoing response obj
-//  * @param next  the cb
-//  */
-// function Email(req, res, next) {
-//   if (!checkEmail.required(req, res)) return
-//
-//   next()
-// }
-//
-// exports.Email = Email
+/**
+ * Ensure the incoming request has a id property
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @param next  the cb
+ */
+function Delete(req, res, next) {
+  if (!checkId.required(req, res)) return
+
+  next()
+}
+
+exports.Delete = Delete
 
 /**
  * Ensure the incoming request has a user property

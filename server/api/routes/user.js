@@ -10,6 +10,7 @@ const constants = require('../../constants/index')
 // business
 const userCreateLogic = require('../../logic/user.create.js')
 const userUpdateLogic = require('../../logic/user.update.js')
+const userDeleteLogic = require('../../logic/user.delete.js')
 
 
 module.exports = function (app) {
@@ -47,10 +48,39 @@ module.exports = function (app) {
 
       userUpdateLogic(req.body, app)
       .then(userObj => {
+
+        // todo blacklist old token
+
         exit(res, 200,
           constants.messages.SUCCESS_UPDATED_ACCOUNT,
           { account: userObj,
             token: token.Create(userObj)
+          })
+      })
+      .catch(err => {
+        logger.Log(err.message || err, req)
+        exit(res, 400, err || 'error')
+      })
+    })
+
+  /**
+   * Delete a user account
+   */
+  app.delete(constants.paths.API_USER,
+    userMiddle.Delete,
+    prepareMiddle,
+    function (req, res) {
+
+      userDeleteLogic(req.body, app)
+      .then(() => {
+
+        // todo blacklist old token
+        // token.AddTokenToBlackList(req)
+
+        exit(res, 200,
+          constants.messages.SUCCESS_DELETED_ACCOUNT,
+          { account: null,
+            token: null
           })
       })
       .catch(err => {

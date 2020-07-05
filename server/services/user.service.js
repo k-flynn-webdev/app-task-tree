@@ -104,7 +104,6 @@ function Update({ id, name, email, role, password, verify, recover, login }) {
   let tmpSQLCommand = []
 
   function CreateSQLQuery() {
-    console.log(tmpSQLStart + tmpSQLCommand.join(JOIN_CHAR) + DB_WHERE)
     return tmpSQLStart + tmpSQLCommand.join(JOIN_CHAR) + DB_WHERE
   }
 

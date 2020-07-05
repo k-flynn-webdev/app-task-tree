@@ -189,11 +189,11 @@ exports.GetTasksByProject = GetTasksByProject
 /**
  * Deletes all task objects from the db via user id
  *
- * @param   {int}     project
+ * @param   {int}     user
  * @return  {array}   task object
  */
-function DeleteTasksByUser(project) {
-  return db.Query(DB_DELETE_TASKS_BY_USER, [project])
+function DeleteTasksByUser(user) {
+  return db.Query(DB_DELETE_TASKS_BY_USER, [user])
 }
 
 exports.DeleteTasksByUser = DeleteTasksByUser
