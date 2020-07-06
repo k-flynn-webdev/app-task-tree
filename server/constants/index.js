@@ -5,8 +5,8 @@ const API_USER = '/api/user'
 const API_USER_ANON = '/api/user/anon'
 const API_USER_LOGIN = '/api/user/login'
 const API_USER_LOGOUT = '/api/user/logout'
-const API_USER_VERIFY = '/api/user/verify'
-const API_USER_RESET = '/api/user/reset'
+const API_USER_VERIFY = (id=':verify') => `/api/user/verify/${id}`
+const API_USER_RESET = (id=':reset') => `/api/user/reset/${id}`
 
 const API_PROJECT_CREATE = '/api/project/create'
 const API_PROJECTS = '/api/projects'

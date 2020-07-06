@@ -8,9 +8,7 @@ const chaiHttp = require('chai-http')
 const chai = require('chai')
 chai.use(chaiHttp)
 
-function clearTable () {
-  return dbConnection.Query('TRUNCATE TABLE users')
-}
+
 
 function addRecover (id) {
   return userService.Update({id: id, recover: 'sfs3rwefsgdyr5e45tergvrgfdwewrt4efr' })
@@ -33,7 +31,6 @@ function clearVerify (id) {
 beforeAll(() => {
   dbConnection.Connect()
   return dbConnection.SelectDB(config.db.database)
-  .then(() => clearTable())
 })
 
 afterAll(() => {

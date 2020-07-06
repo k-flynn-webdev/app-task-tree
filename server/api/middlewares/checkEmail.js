@@ -16,6 +16,8 @@ function validEmail(input) {
     return (domainStop > 0 && domainStop < tmp[1].length - 1)
 }
 
+exports.validEmail = validEmail
+
 /**
  * Ensures email property to exist
  *

@@ -32,23 +32,20 @@ function Create(req, res, next) {
 exports.Create = Create
 
 /**
- * Ensure the incoming request has a verify query
+ * Ensure the incoming request has a verify param
  *
  * @param req   incoming request obj
  * @param res   outgoing response obj
  * @param next  the cb
  */
 function Verify(req, res, next) {
-  if (!has.hasAnItem(req.query))
-  {
-    exit (res, 400, 'Missing verify link.')
-    return false
-  }
-  if (!has.hasAnItem(req.query.verify)) {
+  console.log(req.params)
+  if (!has.hasAnItem(req.params) &&
+    !has.hasAnItem(req.params.verify)) {
     exit(res, 400, 'Missing verify link.')
     return false
   }
-  if (req.query.verify.length < VERIFY_LENGTH) {
+  if (req.params.verify.length < VERIFY_LENGTH) {
     exit(res, 400, 'Invalid verify link.')
     return false
   }
@@ -59,30 +56,75 @@ function Verify(req, res, next) {
 exports.Verify = Verify
 
 /**
- * Ensure the incoming request has a recovery query
+ * Ensure the incoming request has a reset param
  *
  * @param req   incoming request obj
  * @param res   outgoing response obj
  * @param next  the cb
  */
-function Recover(req, res, next) {
-  if (!has.hasAnItem(req.query)) {
-    exit(res, 400, 'Missing recover link.')
+function Reset(req, res, next) {
+  if (!has.hasAnItem(req.params)) {
+    exit(res, 400, 'Missing reset link.')
     return false
   }
-  if (!has.hasAnItem(req.query.recover)) {
-    exit(res, 400, 'Missing recover link.')
+  if (!has.hasAnItem(req.params.reset)) {
+    exit(res, 400, 'Missing reset link.')
     return false
   }
-  if (req.query.recover.length < RECOVER_LENGTH) {
-    exit(res, 400, 'Invalid recover link.')
-    return false
+
+  if (req.method === 'GET') {
+    if (!checkEmail.validEmail(req.params.reset)) {
+      exit(res, 400, 'Invalid email.')
+      return false
+    }
+  }
+
+  if (req.method === 'PATCH') {
+    if (req.params.reset.length < RECOVER_LENGTH) {
+      exit(res, 400, 'Invalid reset link.')
+      return false
+    }
+
+    // also must supply password!
+    if (!checkPassword.required(req, res)) return
+    if (!checkPassword.valid(req, res)) return
   }
 
   next()
 }
 
-exports.Recover = Recover
+exports.Reset = Reset
+
+/**
+ * Ensure the incoming request has a reset param
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @param next  the cb
+ */
+function ResetEmail(req, res, next) {
+  if (!has.hasAnItem(req.params)) {
+    exit(res, 400, 'Missing reset link.')
+    return false
+  }
+  if (!has.hasAnItem(req.params.reset)) {
+    exit(res, 400, 'Missing reset link.')
+    return false
+  }
+  if (req.params.reset.length < RECOVER_LENGTH) {
+    exit(res, 400, 'Invalid reset link.')
+    return false
+  }
+
+  // also must supply password!
+  if (!checkPassword.required(req, res)) return
+  if (!checkPassword.valid(req, res)) return
+
+
+  next()
+}
+
+exports.ResetEmail = ResetEmail
 
 /**
  * Ensure the incoming request has a email and password property
