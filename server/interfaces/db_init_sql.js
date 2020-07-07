@@ -119,12 +119,12 @@ function errorHandler(err) {
   if (err.code === 'PROTOCOL_CONNECTION_LOST') {
     logger.Log('MySQL connection lost. Reconnecting.')
     connection = Connect()
-    return SelectDB()
+    return SelectDB(config.db.database)
   } else if (err.code === 'ECONNREFUSED') {
     logger.Log('MySQL connection refused. Trying again in 3 seconds.')
     setTimeout(function () {
       connection = Connect()
-      return SelectDB()
+      return SelectDB(config.db.database)
     }, 3000)
   }
 }
