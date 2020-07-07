@@ -188,6 +188,46 @@ function Update(req, res, next) {
 exports.Update = Update
 
 /**
+ * Ensure the incoming request can be upgraded
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @param next  the cb
+ */
+function Upgrade(req, res, next) {
+  varCount = Object.keys(req.body).filter(item => item !== 'id').length
+  if (varCount < 1) {
+    exit(res, 400, 'No properties received.')
+    return false
+  }
+
+  let newBody = {}
+
+  if (!checkId.required(req, res)) return
+  newBody.id = req.body.id
+  if (!checkUser.HasParam(req, res)) return
+  if (req.params.user.toString() !== req.body.id.toString()) {
+    exit(res, 400, 'ID mismatch for user upgrade.')
+    return
+  }
+
+  if (!checkName.required(req, res)) return
+  if (!checkName.valid(req, res)) return
+  if (!checkEmail.required(req, res)) return
+  if (!checkEmail.valid(req, res)) return
+  if (!checkPassword.required(req, res)) return
+  if (!checkPassword.valid(req, res)) return
+
+  // ensure only the above items are allowed for an account update
+  delete req.body
+  req.body = newBody
+
+  next()
+}
+
+exports.Upgrade = Upgrade
+
+/**
  * Ensure the incoming request has a id property
  *
  * @param req   incoming request obj
