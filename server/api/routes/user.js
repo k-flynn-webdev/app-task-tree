@@ -15,7 +15,6 @@ const userLoginLogic = require('../../logic/user.login.js')
 const userVerifyLogic = require('../../logic/user.verify.js')
 const userResetEmailLogic = require('../../logic/user.reset.email.js')
 const userResetLogic = require('../../logic/user.reset.js')
-const userUpgradeLogic = require('../../logic/user.upgrade.js')
 
 
 module.exports = function (app) {
@@ -193,26 +192,6 @@ module.exports = function (app) {
       userResetLogic({
         reset: req.params.reset,
         password: req.body.password }, app)
-      .then(() => {
-        exit(res, 200,
-          constants.messages.SUCCESS_PASSWORD_RESET_ACCOUNT)
-      })
-      .catch(err => {
-        logger.Log(err.message || err, req)
-        exit(res, 400, err || 'error')
-      })
-    })
-
-  /**
-   * Upgrade a anon user account
-   *    final reset process
-   */
-  app.patch(constants.paths.API_USER_UPGRADE(),
-    userMiddle.Upgrade,
-    prepareMiddle,
-    function (req, res) {
-
-      userUpgradeLogic(req.body, app)
       .then(() => {
         exit(res, 200,
           constants.messages.SUCCESS_PASSWORD_RESET_ACCOUNT)

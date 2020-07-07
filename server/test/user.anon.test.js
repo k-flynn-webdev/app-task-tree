@@ -38,6 +38,7 @@ describe('User anon', () => {
       expect(res.body.data.account.role).toBeDefined()
       expect(typeof res.body.data.account.name === 'string').toBe(true)
       expect(typeof res.body.data.account.role === 'string').toBe(true)
+      expect(res.body.data.account.role).toBe(constants.roles.ANON)
       expect(res.body.data.token).toBeDefined()
       expect(typeof res.body.data.token === 'string').toBe(true)
       expect(res.body.message).toBeDefined()
@@ -50,9 +51,9 @@ describe('User anon', () => {
     let newUser = null
 
     return createAccount({
-      name: constants.vars.ANON,
-      email: constants.vars.ANON,
-      password: constants.vars.ANON })
+      name: constants.roles.ANON,
+      email: constants.roles.ANON,
+      password: constants.roles.ANON })
     .then(({ insertId }) => {
       newUser = { id: insertId }
       const fakeUser = 4000
@@ -78,9 +79,9 @@ describe('User anon', () => {
     let newUser = null
 
     return createAccount({
-      name: constants.vars.ANON,
-      email: constants.vars.ANON,
-      password: constants.vars.ANON })
+      name: constants.roles.ANON,
+      email: constants.roles.ANON,
+      password: constants.roles.ANON })
     .then(({ insertId }) => {
       newUser = { id: insertId }
       const fakeUser = 201
@@ -102,37 +103,73 @@ describe('User anon', () => {
     })
   })
 
-  it('Should upgrade a valid anon account', (done) => {
-    let newUser = null
+  it('Should not upgrade a pre-existing normal account', (done) => {
+    const userDetails = {
+      id: null,
+      name: 'newName111',
+      email: 'email@em123ail.com',
+      password: 'newPass123word1234'
+    }
 
     return createAccount({
-      name: constants.vars.ANON,
-      email: constants.vars.ANON,
-      password: constants.vars.ANON })
+      name: constants.roles.ANON,
+      email: constants.roles.ANON,
+      password: constants.roles.ANON,
+      role: constants.roles.USER })
     .then(({ insertId }) => {
-      newUser = { id: insertId }
+      userDetails.id = insertId
       return chai.request(config.ip + ':' + config.port)
-      .patch(constants.paths.API_USER_UPGRADE(newUser.id))
-      .send({
-        id: newUser.id,
-        name: 'newName',
-        email: 'email@email.com',
-        password: 'newPassword1234'})
+      .patch(constants.paths.API_USER_UPGRADE(userDetails.id))
+      .send(userDetails)
     })
     .then(res => {
-      console.log(res.body)
       expect(res).toBeDefined()
       expect(res.status).toBe(400)
       expect(res.body).toBeDefined()
       expect(res.body.message).toBeDefined()
-      expect(res.body.message).toEqual('ID mismatch for user upgrade.')
+      expect(res.body.message).toEqual(constants.errors.ACCOUNT_ALREADY_UPGRADED)
       done()
     })
   })
 
-  // it('Should not upgrade a pre-existing normal account', (done) => {
+  it('Should upgrade a valid anon account', (done) => {
+    const userDetails = {
+      id: null,
+      name: 'newName',
+      email: 'ema1il@em111ail.com',
+      password: 'ne11wPassword1234'
+    }
 
-
-
+    return createAccount({
+      name: constants.roles.ANON,
+      email: constants.roles.ANON,
+      password: constants.roles.ANON,
+      role: constants.roles.ANON })
+    .then(({ insertId }) => {
+      userDetails.id = insertId
+      return chai.request(config.ip + ':' + config.port)
+        .patch(constants.paths.API_USER_UPGRADE(userDetails.id))
+        .send(userDetails)
+    })
+    .then(res => {
+      expect(res).toBeDefined()
+      expect(res.status).toBe(201)
+      expect(res.body).toBeDefined()
+      expect(res.body.data).toBeDefined()
+      expect(res.body.data.account).toBeDefined()
+      expect(res.body.data.account.id).toBe(userDetails.id)
+      expect(res.body.data.account.name).toBe(userDetails.name)
+      expect(res.body.data.account.email).toBe(userDetails.email)
+      expect(res.body.data.account.role).toBeDefined()
+      expect(res.body.data.account.role).toBe(constants.roles.USER)
+      expect(res.body.data.token).toBeDefined()
+      expect(typeof res.body.data.token === 'string').toBe(true)
+      expect(res.body.data.token.length).toBeGreaterThan(10)
+      expect(res.body.message).toBeDefined()
+      expect(res.body.message).toEqual(constants.messages.SUCCESS_UPGRADED_ACCOUNT)
+      done()
+    })
   })
+
+})
 

@@ -15,9 +15,10 @@ const constants = require('../constants')
  */
 function userAnonCreate(input, app) {
   return user.Create({
-    name: constants.vars.ANON,
-    email: constants.vars.ANON,
-    password: constants.vars.ANON
+    name: constants.roles.ANON,
+    email: constants.roles.ANON,
+    password: constants.roles.ANON,
+    role: constants.roles.ANON
   })
   .then(({ insertId }) => user.GetUserByID(insertId))
   .then(userObj => mysqlVal(userObj))

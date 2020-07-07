@@ -40,6 +40,8 @@ const DELETED_TASK = 'DELETED-TASK'
 
 // GENERAL
 const ANON = 'anon'
+const USER = 'user'
+const ADMIN = 'admin'
 const ERROR = 'error'
 const SUCCESS = 'success'
 
@@ -49,6 +51,7 @@ const PASSWORD_INCORRECT = 'Incorrect password.'
 const ACCOUNT_MISSING = 'Account does not exist, please contact support.'
 const ACCOUNT_UNVERIFIED = 'Account not verified, please verify first.'
 const ACCOUNT_IN_RECOVERY = 'Account was recently put in recovery modes, please contact support.'
+const ACCOUNT_ALREADY_UPGRADED = 'Account has previously been upgraded, please contact support.'
 const VERIFY_LINK_MISSING = 'Verify link does not exist, please contact support.'
 const RECOVERY_LINK_MISSING = 'Recovery link does not exist, please contact support.'
 const TASK_NOT_FOUND = 'Task was not found.'
@@ -60,6 +63,7 @@ const SUCCESS_CREATED_ACCOUNT = 'Success your Account is created.'
 const SUCCESS_LOGIN_ACCOUNT = 'Success Account login.'
 const SUCCESS_LOGOUT_ACCOUNT = 'Success Account logout.'
 const SUCCESS_UPDATED_ACCOUNT = 'Success Account updated.'
+const SUCCESS_UPGRADED_ACCOUNT = 'Success Account upgraded.'
 const SUCCESS_DELETED_ACCOUNT = 'Success Account deleted.'
 const SUCCESS_VERIFIED_ACCOUNT = 'Success Account verified.'
 const SUCCESS_RESET_ACCOUNT = 'Success a reset email has been sent.'
@@ -77,8 +81,12 @@ const SUCCESS_FOUND_TASKS = 'Success Tasks found: '
 
 
 module.exports = {
-	vars: {
+	roles: {
 		ANON,
+		USER,
+		ADMIN,
+	},
+	vars: {
 		ERROR,
 		SUCCESS,
 	},
@@ -122,6 +130,7 @@ module.exports = {
 		SUCCESS_LOGIN_ACCOUNT,
 		SUCCESS_LOGOUT_ACCOUNT,
 		SUCCESS_UPDATED_ACCOUNT,
+		SUCCESS_UPGRADED_ACCOUNT,
 		SUCCESS_DELETED_ACCOUNT,
 		SUCCESS_VERIFIED_ACCOUNT,
 		SUCCESS_RESET_ACCOUNT,
@@ -140,6 +149,7 @@ module.exports = {
 		ACCOUNT_MISSING,
 		ACCOUNT_UNVERIFIED,
 		ACCOUNT_IN_RECOVERY,
+		ACCOUNT_ALREADY_UPGRADED,
 		VERIFY_LINK_MISSING,
 		RECOVERY_LINK_MISSING,
 		PASSWORD_INCORRECT,

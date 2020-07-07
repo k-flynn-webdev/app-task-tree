@@ -15,9 +15,11 @@ const constants = require('../constants')
  */
 function userUpgrade(input,  app) {
 
+  input.role = constants.roles.USER
+
   if (has.hasAnItem(input.email)) {
     // changing email so force a verify update
-    input.verify = token.Magic(userFound)
+    input.verify = token.Magic(input)
   }
 
   return user.GetUserByID(input.id)
@@ -28,9 +30,16 @@ function userUpgrade(input,  app) {
         message: constants.errors.ACCOUNT_MISSING
       }
     }
+
+    if (mysqlVal(usrFnd).role !== constants.roles.ANON) {
+      throw {
+        status: 400,
+        message: constants.errors.ACCOUNT_ALREADY_UPGRADED
+      }
+    }
   })
   .then(() => user.Update(input))
-  .then(({ insertId }) => user.GetUserByID(insertId))
+  .then(() => user.GetUserByID(input.id))
   .then(userObj => {
     const userObjTmp = mysqlVal(userObj)
 

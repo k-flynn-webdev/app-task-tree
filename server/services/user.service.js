@@ -63,7 +63,7 @@ function InitUsers() {
 function CheckUsers() {
   return GetAllUsers()
   .then((items) => {
-    const anonUsers = items.filter(item => item.name === constants.vars.ANON).length
+    const anonUsers = items.filter(item => item.name === constants.roles.ANON).length
     const normalUsers = items.length - anonUsers
     logger.Log( 'Users found')
     logger.Log( ` \t anon: \t ${anonUsers}`)
@@ -84,9 +84,9 @@ exports.Init = Init
  * @param   {object}  user data
  * @return  {object}  user object
  */
-function Create({ name, email, password }) {
+function Create({ name, email, password, role=constants.roles.USER }) {
   return CreatePassword(password)
-  .then((hash) => db.Query(DB_CREATE_USER, { name, email, password: hash }))
+  .then((hash) => db.Query(DB_CREATE_USER, { name, email, password: hash, role }))
 }
 
 exports.Create = Create

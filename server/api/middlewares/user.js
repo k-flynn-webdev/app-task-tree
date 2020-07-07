@@ -204,19 +204,22 @@ function Upgrade(req, res, next) {
   let newBody = {}
 
   if (!checkId.required(req, res)) return
-  newBody.id = req.body.id
   if (!checkUser.HasParam(req, res)) return
   if (req.params.user.toString() !== req.body.id.toString()) {
     exit(res, 400, 'ID mismatch for user upgrade.')
     return
   }
 
+  newBody.id = req.body.id
   if (!checkName.required(req, res)) return
   if (!checkName.valid(req, res)) return
+  newBody.name = req.body.name
   if (!checkEmail.required(req, res)) return
   if (!checkEmail.valid(req, res)) return
+  newBody.email = req.body.email
   if (!checkPassword.required(req, res)) return
   if (!checkPassword.valid(req, res)) return
+  newBody.password = req.body.password
 
   // ensure only the above items are allowed for an account update
   delete req.body
