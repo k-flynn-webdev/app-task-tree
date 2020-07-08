@@ -8,6 +8,11 @@ const token = require('../../services/token.service.js')
 const mysqlVal = require('../../helpers/MYSQL_value.js')
 const prepareMiddle = require('../middlewares/prepare.js')
 const constants = require('../../constants/index')
+// business
+const projectCreateLogic = require('../../logic/project.create.js')
+const projectUpdateLogic = require('../../logic/project.update.js')
+const projectDeleteLogic = require('../../logic/project.delete.js')
+
 
 // todo
 //    add passive token check, & if theres a user
@@ -18,94 +23,106 @@ module.exports = function (app) {
   /**
    * Create a project & return
    */
-  app.post(constants.paths.API_PROJECT_CREATE, projectMiddle.Create, prepareMiddle,
+  app.post(constants.paths.API_PROJECT_CREATE,
+    projectMiddle.Create,
+    prepareMiddle,
     function (req, res) {
     // todo check for user token and integrate
 
-    project.Create(req.body)
-    .then(({ insertId }) => project.GetProjectByID(insertId))
-    .then(newProject => mysqlVal(newProject))
+    projectCreateLogic(req.body, app)
     .then(projectObj => {
       logger.Log('Project created, id: ' + projectObj.id, req)
-        exit(res, 200,
+        exit(res, 201,
           constants.messages.SUCCESS_CREATED_PROJECT,
-          { project: project.SafeExport(projectObj) })
+          { project: projectObj })
     })
     .catch(err => {
       logger.Log(err.message || err, req)
-      exit(res, 401, 'error', err.message || err)
+      exit(res, 400, err || 'error')
     })
   })
 
   /**
    * Update a project by id
    */
-  app.patch(constants.paths.API_PROJECT, projectMiddle.Update, projectMiddle.HasParam,
-    prepareMiddle, function (req, res) {
+  app.patch(constants.paths.API_PROJECT(),
+    projectMiddle.Update,
+    projectMiddle.HasParam,
+    prepareMiddle,
+    function (req, res) {
 
       let updateData = Object.assign(
         { id: req.params.task }, req.body)
       // todo check for user token and integrate
 
-    project.Update(updateData)
-    .then(() => project.GetProjectByID(req.params.project))
+    projectUpdateLogic(updateData, app)
     .then(projectObj => {
-      let projectObjTmp = mysqlVal(projectObj)
-      logger.Log('Project updated, id: ' + req.params.project, req)
-      exit(res, 200,
+      logger.Log('Project updated, id: ' + projectObj.id, req)
+      exit(res, 202,
         constants.messages.SUCCESS_UPDATED_PROJECT,
-        { project: project.SafeExport(projectObjTmp) })
+        { project: projectObj })
     })
     .catch(err => {
       logger.Log(err.message || err, req)
-      exit(res, 401, 'error', err.message || err)
+      exit(res, 400, err || 'error')
     })
   })
 
   /**
    * Delete a project by id
    */
-  app.delete(constants.paths.API_PROJECT, projectMiddle.HasParam, prepareMiddle,
+  app.delete(constants.paths.API_PROJECT(),
+    projectMiddle.HasParam,
+    prepareMiddle,
     function (req, res) {
 
-      // todo check for user token and integrate
+      // todo this will need securing so
+      //  random peeps can't delete other items
+      //  check for user token and integrate
 
-      project.Delete(req.params.project)
+      projectDeleteLogic({ id: req.params.project }, app)
       .then(projectObj => {
-        logger.Log('Project deleted, id: ' + req.params.project, req)
-        exit(res, 200,
-          constants.messages.SUCCESS_DELETED_PROJECT,
-          { project: null })
+        logger.Log('Project deleted, id: ' + projectObj.id, req)
+        exit(res, 202,
+          constants.messages.SUCCESS_DELETED_PROJECT)
       })
       .catch(err => {
         logger.Log(err.message || err, req)
-        exit(res, 401, 'error', err.message || err)
+        exit(res, 400, err || 'error')
       })
     })
 
   /**
    * Get project by id
    */
-  app.get(constants.paths.API_PROJECT, projectMiddle.HasParam,
-    prepareMiddle, function (req, res) {
+  app.get(constants.paths.API_PROJECT(),
+    projectMiddle.HasParam,
+    prepareMiddle,
+    function (req, res) {
 
       project.GetProjectByID(req.params.project)
       .then(projectObj => {
-        let projectObjTmp = mysqlVal(projectObj)
+        if (!projectObj || projectObj.length < 1) {
+          throw { status: 404,
+            message: constants.errors.PROJECT_NOT_FOUND }
+        }
+
         exit(res, 200,
           constants.messages.SUCCESS,
-          { project: project.SafeExport(projectObjTmp) })
+          { project: project.SafeExport(mysqlVal(projectObj)) })
       })
       .catch(err => {
         logger.Log(err.message || err, req)
-        exit(res, 401, 'error', err.message || err)
+        exit(res, 400, err || 'error')
       })
     })
 
   /**
    * Get all projects by user id
    */
-  app.get(constants.paths.API_PROJECTS, userMiddle.HasQuery, prepareMiddle,
+  app.get(constants.paths.API_PROJECTS,
+    userMiddle.HasQuery,
+    prepareMiddle,
     function (req, res) {
 
       // todo check for user token and integrate
@@ -120,7 +137,7 @@ module.exports = function (app) {
       })
       .catch(err => {
         logger.Log(err.message || err, req)
-        exit(res, 401, 'error', err.message || err)
+        exit(res, 400, err || 'error')
       })
     })
 

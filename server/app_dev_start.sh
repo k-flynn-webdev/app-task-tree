@@ -6,4 +6,4 @@ echo $script_location
 cd $script_location
 pwd
 
-npm start
+npm run dev

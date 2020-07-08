@@ -33,8 +33,10 @@ exports.Create = Create
  * @param next  the cb
  */
 function Update(req, res, next) {
-  if (Object.keys(req.body).length < 1) {
-    return exit(res, 422, 'No properties received.')
+  varCount = Object.keys(req.body).filter(item => item !== 'id').length
+  if (varCount < 1) {
+    exit(res, 400, 'No properties received.')
+    return false
   }
 
   let newBody = {}

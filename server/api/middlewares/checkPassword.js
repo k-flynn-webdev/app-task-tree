@@ -23,7 +23,7 @@ function validPasswordLength(input) {
  */
 function required(req, res) {
   if (!has.hasAnItem(req.body.password)) {
-    exit(res, 422, missing('password'))
+    exit(res, 400, missing('password'))
     return false
   }
 
@@ -42,19 +42,19 @@ exports.required = required
 function valid(req, res) {
   if (has.hasAnItem(req.body.password)) {
     if (!validPasswordLength(req.body.password.trim())) {
-      exit(res, 422,
+      exit(res, 400,
         `The password must be at least ${TEXT_LENGTH} characters long.`)
       return false
     }
 
     if (!has.HasNumbers(req.body.password.trim())) {
-      exit(res, 422,
+      exit(res, 400,
         `The password must contain numbers.`)
       return false
     }
 
     if (!has.HasUpperCase(req.body.password.trim())) {
-      exit(res, 422,
+      exit(res, 400,
         `The password must contain Uppercase letters.`)
       return false
     }

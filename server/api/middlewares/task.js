@@ -36,8 +36,10 @@ exports.Create = Create
  * @param next  the cb
  */
 function Update(req, res, next) {
-  if (Object.keys(req.body).length < 1) {
-    return exit(res, 422, 'No properties received.')
+  varCount = Object.keys(req.body).filter(item => item !== 'id').length
+  if (varCount < 1) {
+    exit(res, 400, constants.errors.MISSING_PROPERTY)
+    return false
   }
 
   let newBody = {}
@@ -63,6 +65,11 @@ function Update(req, res, next) {
   }
 
   if (has.hasAnItem(req.body.isDone)) {
+    if (!(typeof req.body.isDone === "boolean")) {
+      exit(res, 400, 'The isDone property must be a boolean.')
+      return false
+    }
+
     newBody.isDone = req.body.isDone
   }
 
@@ -98,19 +105,25 @@ exports.Delete = Delete
  * @param next  the cb
  */
 function HasUserOrProject(req, res, next) {
-  let hasEither = (has.hasAnItem(req.query.user) || has.hasAnItem(req.query.project))
-  if (!hasEither) return exit(res, 422, missing('user or project'))
+  let hasEither = (has.hasAnItem(req.query.user) ||
+    has.hasAnItem(req.query.project))
+  if (!hasEither) {
+    exit(res, 400, missing('user or project'))
+    return false
+  }
 
 
   if (has.hasAnItem(req.query.user)) {
     if (!has.isANumber(req.query.user)) {
-      return exit(res, 422, 'The user must be valid.')
+      exit(res, 400, 'The user must be valid.')
+      return false
     }
   }
 
   if (has.hasAnItem(req.query.project)) {
     if (!has.isANumber(req.query.project)) {
-      return exit(res, 422, 'The project must be valid.')
+      exit(res, 400, 'The project must be valid.')
+      return false
     }
   }
 

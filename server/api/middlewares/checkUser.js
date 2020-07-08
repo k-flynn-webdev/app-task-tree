@@ -11,7 +11,7 @@ const exit = require('../../services/exit.js')
  */
 function required(req, res) {
   if (!has.hasAnItem(req.body.user)) {
-    exit(res, 422, missing('user'))
+    exit(res, 400, missing('user'))
     return false
   }
 
@@ -30,12 +30,12 @@ exports.required = required
 function valid(req, res) {
   if (has.hasAnItem(req.body.user)) {
     if (!has.isANumber(req.body.user)) {
-      exit(res, 422, 'The user must be valid.')
+      exit(res, 400, 'The user must be valid.')
       return false
     }
 
     if (req.body.user < 0) {
-      exit(res, 422, 'The user must be valid.')
+      exit(res, 400, 'The user must be valid.')
       return false
     }
   }
@@ -54,10 +54,16 @@ exports.valid = valid
  */
 function HasParam(req, res) {
   if (!has.hasAnItem(req.params.user)) {
+    exit(res, 400, 'Missing user parameter.')
     return false
   }
 
-  return has.isANumber(req.params.user)
+  if (!has.isANumber(req.params.user)) {
+    exit(res, 400, 'The user parameter must be valid.')
+    return false
+  }
+
+  return true
 }
 
 exports.HasParam = HasParam
@@ -71,10 +77,16 @@ exports.HasParam = HasParam
  */
 function HasQuery(req, res) {
   if (!has.hasAnItem(req.query.user)) {
+    exit(res, 400, 'Missing user parameter.')
     return false
   }
 
-  return has.isANumber(req.query.user)
+  if (!has.isANumber(req.query.user)) {
+    exit(res, 400, 'The user parameter must be valid.')
+    return false
+  }
+
+  return true
 }
 
 exports.HasQuery = HasQuery

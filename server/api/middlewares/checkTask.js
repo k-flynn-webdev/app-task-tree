@@ -11,7 +11,7 @@ const exit = require('../../services/exit.js')
  */
 function required(req, res) {
   if (!has.hasAnItem(req.body.task)) {
-    exit(res, 422, missing('task'))
+    exit(res, 400, missing('task'))
     return false
   }
 
@@ -30,12 +30,12 @@ exports.required = required
 function valid(req, res) {
   if (has.hasAnItem(req.body.task)) {
     if (!has.isANumber(req.body.task)) {
-      exit(res, 422, 'The task must be valid.')
+      exit(res, 400, 'The task must be valid.')
       return false
     }
 
     if (req.body.task < 0) {
-      exit(res, 422, 'The task must be valid.')
+      exit(res, 400, 'The task must be valid.')
       return false
     }
   }
@@ -54,10 +54,16 @@ exports.valid = valid
  */
 function HasParam(req, res) {
   if (!has.hasAnItem(req.params.task)) {
+    exit(res, 400, 'Missing task parameter.')
     return false
   }
 
-  return has.isANumber(req.params.task)
+  if (!has.isANumber(req.params.task)) {
+    exit(res, 400, 'The task parameter must be valid.')
+    return false
+  }
+
+  return true
 }
 
 exports.HasParam = HasParam

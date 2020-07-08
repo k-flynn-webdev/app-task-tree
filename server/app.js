@@ -10,7 +10,7 @@ const LoadAllModules = require('./loaders/loaders.js')
 const app = express()
 
 // Temp for devving
-if (process.env.NODE_ENV === 'development') {
+if (config.node_env === 'development') {
   app.use(express.static('public'))
 }
 
@@ -50,8 +50,10 @@ function Start() {
 
 }
 
+Start()
+
 module.exports = app // For testing
 
-return Start()
+
 
 

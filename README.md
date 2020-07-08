@@ -1,6 +1,6 @@
 # app-base-nodejs
 
-Taking a lot of inspiration from ['Bulletproof node.js project architecture'](https://softwareontheroad.com/ideal-nodejs-project-structure?utm_source=github&utm_medium=readme) by Sam Quinn.
+Taking a lot of inspiration from ['Bulletproof node.test.js project architecture'](https://softwareontheroad.com/ideal-nodejs-project-structure?utm_source=github&utm_medium=readme) by Sam Quinn.
 
 ## Goal:
 

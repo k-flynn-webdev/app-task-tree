@@ -1,24 +1,15 @@
 const fs = require('fs')
 const path = require('path')
 const morgan = require('morgan')
+const config = require('../config/config')
 
 let accessLogStream = null
-let testing = process.env.NODE_ENV === 'test'
-
-// morgan.token('id', function(req, res) {
-//   return req.id || '-'
-// })
-
 
 morgan.token('id', function getId (req) {
   return req.id
 })
 
 function Init(app) {
-
-  if (testing) {
-    return
-  }
 
   let tempDir = path.join(__dirname, '..', 'log')
 
@@ -29,13 +20,14 @@ function Init(app) {
   let morganType = null
 
   // Create a write stream (in append modes)
-  if (!testing) {
-    accessLogStream = fs.createWriteStream(path.join(tempDir, 'log'), { flags: 'a' })
+  if (config.node_env !== 'test') {
+    accessLogStream = fs.createWriteStream(path.join(tempDir, 'log'),
+      { flags: 'a' })
     morganType = ':date[iso] :id :method :url :status :res[content-length] :remote-addr :response-time ms'
-  }
 
-  app.use(morgan(morganType, { stream: accessLogStream }))
-  app.use(morgan(morganType))
+    app.use(morgan(morganType, { stream: accessLogStream }))
+    app.use(morgan(morganType))
+  }
 }
 
 exports.Init = Init
@@ -43,7 +35,7 @@ exports.Init = Init
 
 function Log(line, req = { id: '-' }) {
 
-  if (testing) {
+  if (config.node_env === 'test') {
     return
   }
 

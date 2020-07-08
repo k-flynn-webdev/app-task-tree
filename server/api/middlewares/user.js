@@ -32,19 +32,23 @@ function Create(req, res, next) {
 exports.Create = Create
 
 /**
- * Ensure the incoming request has a verify query
+ * Ensure the incoming request has a verify param
  *
  * @param req   incoming request obj
  * @param res   outgoing response obj
  * @param next  the cb
  */
 function Verify(req, res, next) {
-  if (!has.hasAnItem(req.query)) return exit(res, 422,
-    'Missing verify link.')
-  if (!has.hasAnItem(req.query.verify)) return exit(res, 422,
-    'Missing verify link.')
-  if (req.query.verify.length < VERIFY_LENGTH) return exit(res, 422,
-    'Invalid verify link.')
+  console.log(req.params)
+  if (!has.hasAnItem(req.params) &&
+    !has.hasAnItem(req.params.verify)) {
+    exit(res, 400, 'Missing verify link.')
+    return false
+  }
+  if (req.params.verify.length < VERIFY_LENGTH) {
+    exit(res, 400, 'Invalid verify link.')
+    return false
+  }
 
   next()
 }
@@ -52,24 +56,75 @@ function Verify(req, res, next) {
 exports.Verify = Verify
 
 /**
- * Ensure the incoming request has a recovery query
+ * Ensure the incoming request has a reset param
  *
  * @param req   incoming request obj
  * @param res   outgoing response obj
  * @param next  the cb
  */
-function Recover(req, res, next) {
-  if (!has.hasAnItem(req.query)) return exit(res, 422,
-    'Missing recover link.')
-  if (!has.hasAnItem(req.query.recover)) return exit(res, 422,
-    'Missing recover link.')
-  if (req.query.recover.length < RECOVER_LENGTH) return exit(res, 422,
-    'Invalid recover link.')
+function Reset(req, res, next) {
+  if (!has.hasAnItem(req.params)) {
+    exit(res, 400, 'Missing reset link.')
+    return false
+  }
+  if (!has.hasAnItem(req.params.reset)) {
+    exit(res, 400, 'Missing reset link.')
+    return false
+  }
+
+  if (req.method === 'GET') {
+    if (!checkEmail.validEmail(req.params.reset)) {
+      exit(res, 400, 'Invalid email.')
+      return false
+    }
+  }
+
+  if (req.method === 'PATCH') {
+    if (req.params.reset.length < RECOVER_LENGTH) {
+      exit(res, 400, 'Invalid reset link.')
+      return false
+    }
+
+    // also must supply password!
+    if (!checkPassword.required(req, res)) return
+    if (!checkPassword.valid(req, res)) return
+  }
 
   next()
 }
 
-exports.Recover = Recover
+exports.Reset = Reset
+
+/**
+ * Ensure the incoming request has a reset param
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @param next  the cb
+ */
+function ResetEmail(req, res, next) {
+  if (!has.hasAnItem(req.params)) {
+    exit(res, 400, 'Missing reset link.')
+    return false
+  }
+  if (!has.hasAnItem(req.params.reset)) {
+    exit(res, 400, 'Missing reset link.')
+    return false
+  }
+  if (req.params.reset.length < RECOVER_LENGTH) {
+    exit(res, 400, 'Invalid reset link.')
+    return false
+  }
+
+  // also must supply password!
+  if (!checkPassword.required(req, res)) return
+  if (!checkPassword.valid(req, res)) return
+
+
+  next()
+}
+
+exports.ResetEmail = ResetEmail
 
 /**
  * Ensure the incoming request has a email and password property
@@ -95,8 +150,10 @@ exports.Login = Login
  * @param next  the cb
  */
 function Update(req, res, next) {
-  if (Object.keys(req.body).length < 1) {
-    return exit(res, 422, 'No properties received.')
+  varCount = Object.keys(req.body).filter(item => item !== 'id').length
+  if (varCount < 1) {
+    exit(res, 400, 'No properties received.')
+    return false
   }
 
   let newBody = {}
@@ -120,6 +177,7 @@ function Update(req, res, next) {
     newBody.password = req.body.password
   }
 
+
   // ensure only the above items are allowed for an account update
   delete req.body
   req.body = newBody
@@ -130,19 +188,62 @@ function Update(req, res, next) {
 exports.Update = Update
 
 /**
- * Ensure the incoming request has a email property
+ * Ensure the incoming request can be upgraded
  *
  * @param req   incoming request obj
  * @param res   outgoing response obj
  * @param next  the cb
  */
-function Email(req, res, next) {
+function Upgrade(req, res, next) {
+  varCount = Object.keys(req.body).filter(item => item !== 'id').length
+  if (varCount < 1) {
+    exit(res, 400, 'No properties received.')
+    return false
+  }
+
+  let newBody = {}
+
+  if (!checkId.required(req, res)) return
+  if (!checkUser.HasParam(req, res)) return
+  if (req.params.user.toString() !== req.body.id.toString()) {
+    exit(res, 400, 'ID mismatch for user upgrade.')
+    return
+  }
+
+  newBody.id = req.body.id
+  if (!checkName.required(req, res)) return
+  if (!checkName.valid(req, res)) return
+  newBody.name = req.body.name
   if (!checkEmail.required(req, res)) return
+  if (!checkEmail.valid(req, res)) return
+  newBody.email = req.body.email
+  if (!checkPassword.required(req, res)) return
+  if (!checkPassword.valid(req, res)) return
+  newBody.password = req.body.password
+
+  // ensure only the above items are allowed for an account update
+  delete req.body
+  req.body = newBody
 
   next()
 }
 
-exports.Email = Email
+exports.Upgrade = Upgrade
+
+/**
+ * Ensure the incoming request has a id property
+ *
+ * @param req   incoming request obj
+ * @param res   outgoing response obj
+ * @param next  the cb
+ */
+function Delete(req, res, next) {
+  if (!checkId.required(req, res)) return
+
+  next()
+}
+
+exports.Delete = Delete
 
 /**
  * Ensure the incoming request has a user property

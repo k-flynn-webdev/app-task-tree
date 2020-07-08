@@ -23,7 +23,7 @@ function validNameText(input) {
  */
 function required(req, res) {
   if (!has.hasAnItem(req.body.name)) {
-    exit(res, 422, missing('name'))
+    exit(res, 400, missing('name'))
     return false
   }
 
@@ -42,7 +42,7 @@ exports.required = required
 function valid(req, res) {
   if (has.hasAnItem(req.body.name)) {
     if (!validNameText(req.body.name.trim())) {
-      exit(res, 422,
+      exit(res, 400,
         `The name must be at least ${TEXT_LENGTH} characters long.`)
       return false
     }
@@ -62,10 +62,16 @@ exports.valid = valid
  */
 function HasParam(req, res) {
   if (!has.hasAnItem(req.params.name)) {
+    exit(res, 400, 'Missing name parameter.')
     return false
   }
 
-  return validNameText(req.params.name.trim())
+  if (!validNameText(req.params.name.trim())) {
+    exit(res, 400, 'The name parameter must be valid.')
+    return false
+  }
+
+  return true
 }
 
 exports.HasParam = HasParam

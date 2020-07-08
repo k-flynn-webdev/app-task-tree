@@ -11,7 +11,7 @@ const exit = require('../../services/exit.js')
  */
 function required(req, res) {
   if (!has.hasAnItem(req.body.id)) {
-    exit(res, 422, missing('id'))
+    exit(res, 400, missing('id'))
     return false
   }
 
@@ -30,7 +30,7 @@ exports.required = required
 function valid(req, res) {
   if (has.hasAnItem(req.body.id)) {
     if (!has.isANumber(req.body.id)) {
-      exit(res, 422, 'The id must be valid.')
+      exit(res, 400, 'The id must be valid.')
       return false
     }
   }
@@ -49,10 +49,16 @@ exports.valid = valid
  */
 function HasParam(req, res) {
   if (!has.hasAnItem(req.params.id)) {
+    exit(res, 400, 'Missing id parameter.')
     return false
   }
 
-  return has.isANumber(req.params.id)
+  if (!has.isANumber(req.params.id)) {
+    exit(res, 400, 'The id parameter must be valid.')
+    return false
+  }
+
+  return true
 }
 
 exports.HasParam = HasParam
