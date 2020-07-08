@@ -18,8 +18,8 @@ const API_TASKS = '/api/tasks'
 const API_TASK = (id=':task') => `/api/task/${id}`
 
 // EVENTS
-const CREATE_ACCOUNT_ANON = 'CREATE-ACCOUNT-ANON'
 const CREATE_ACCOUNT = 'CREATE-ACCOUNT'
+const CREATE_ANON_ACCOUNT = 'CREATE-ANON-ACCOUNT'
 const LOGIN_ACCOUNT = 'LOGIN-ACCOUNT'
 const LOGOUT_ACCOUNT = 'LOGOUT-ACCOUNT'
 const VERIFY_ACCOUNT = 'VERIFY-ACCOUNT'
@@ -60,6 +60,7 @@ const MISSING_PROPERTY = 'Missing a property to update.'
 
 // MESSAGES
 const SUCCESS_CREATED_ACCOUNT = 'Success your Account is created.'
+const SUCCESS_CREATED_ANON_ACCOUNT = 'Success your Anon Account is created.'
 const SUCCESS_LOGIN_ACCOUNT = 'Success Account login.'
 const SUCCESS_LOGOUT_ACCOUNT = 'Success Account logout.'
 const SUCCESS_UPDATED_ACCOUNT = 'Success Account updated.'
@@ -107,7 +108,7 @@ module.exports = {
 	},
 	events: {
 		CREATE_ACCOUNT,
-		CREATE_ACCOUNT_ANON,
+		CREATE_ANON_ACCOUNT,
 		LOGIN_ACCOUNT,
 		LOGOUT_ACCOUNT,
 		VERIFY_ACCOUNT,
@@ -127,6 +128,7 @@ module.exports = {
 	messages: {
 		SUCCESS,
 		SUCCESS_CREATED_ACCOUNT,
+		SUCCESS_CREATED_ANON_ACCOUNT,
 		SUCCESS_LOGIN_ACCOUNT,
 		SUCCESS_LOGOUT_ACCOUNT,
 		SUCCESS_UPDATED_ACCOUNT,

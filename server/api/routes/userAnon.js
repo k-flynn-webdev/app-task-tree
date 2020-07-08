@@ -8,7 +8,7 @@ const mysqlVal = require('../../helpers/MYSQL_value.js')
 const prepareMiddle = require('../middlewares/prepare.js')
 const constants = require('../../constants/index')
 // business
-const userCreateLogic = require('../../logic/user.anon.create.js')
+const userAnonCreateLogic = require('../../logic/user.anon.create.js')
 const userUpgradeLogic = require('../../logic/user.upgrade.js')
 
 
@@ -24,13 +24,13 @@ module.exports = function (app) {
   app.post(constants.paths.API_USER_ANON,
     function (req, res) {
 
-      userCreateLogic(req.body, app)
+      userAnonCreateLogic(req.body, app)
       .then(userObj => {
 
-        logger.Log(constants.messages.SUCCESS_CREATED_ACCOUNT, req)
+        logger.Log(constants.messages.SUCCESS_CREATED_ANON_ACCOUNT, req)
 
         exit(res, 201,
-          constants.messages.SUCCESS_CREATED_ACCOUNT,
+          constants.messages.SUCCESS_CREATED_ANON_ACCOUNT,
           { account: userObj,
             token: ''
           })

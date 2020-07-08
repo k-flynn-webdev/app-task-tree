@@ -42,7 +42,7 @@ describe('User anon', () => {
       expect(res.body.data.token).toBeDefined()
       expect(typeof res.body.data.token === 'string').toBe(true)
       expect(res.body.message).toBeDefined()
-      expect(res.body.message).toEqual(constants.messages.SUCCESS_CREATED_ACCOUNT)
+      expect(res.body.message).toEqual(constants.messages.SUCCESS_CREATED_ANON_ACCOUNT)
       done()
     })
   })

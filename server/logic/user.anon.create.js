@@ -23,7 +23,7 @@ function userAnonCreate(input, app) {
   .then(({ insertId }) => user.GetUserByID(insertId))
   .then(userObj => mysqlVal(userObj))
   .then(userObj => {
-    app.emit(constants.events.CREATE_ACCOUNT_ANON, userObj)
+    app.emit(constants.events.CREATE_ANON_ACCOUNT, userObj)
 
     return user.SafeExport(userObj)
   })
