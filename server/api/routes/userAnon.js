@@ -14,7 +14,7 @@ const userUpgradeLogic = require('../../logic/user.upgrade.js')
 
 module.exports = function (app) {
 
-  /**F
+  /**
    * Create a anon user account and returns only the id
    *    this type of account can be upgraded in the future
    *    to a full account
