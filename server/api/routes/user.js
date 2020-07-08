@@ -30,6 +30,8 @@ module.exports = function (app) {
       userCreateLogic(req.body, app)
       .then(userObj => {
 
+        logger.Log(constants.messages.SUCCESS_CREATED_ACCOUNT, req)
+
         exit(res, 201,
           constants.messages.SUCCESS_CREATED_ACCOUNT,
           { account: userObj,
@@ -54,6 +56,7 @@ module.exports = function (app) {
       .then(userObj => {
 
         // todo blacklist old token
+        logger.Log(constants.messages.SUCCESS_UPDATED_ACCOUNT, req)
 
         exit(res, 200,
           constants.messages.SUCCESS_UPDATED_ACCOUNT,
@@ -79,6 +82,7 @@ module.exports = function (app) {
       .then(() => {
 
         // token.AddTokenToBlackList(req) // todo
+        logger.Log(constants.messages.SUCCESS_DELETED_ACCOUNT, req)
 
         exit(res, 200,
           constants.messages.SUCCESS_DELETED_ACCOUNT,
@@ -102,7 +106,8 @@ module.exports = function (app) {
 
     userLoginLogic(req.body, app)
     .then(userObj => {
-      console.log(userObj)
+
+      logger.Log(constants.messages.SUCCESS_LOGIN_ACCOUNT, req)
 
       exit(res, 200,
         constants.messages.SUCCESS_LOGIN_ACCOUNT,
@@ -126,6 +131,7 @@ module.exports = function (app) {
     .then(() => {
 
       // token.AddTokenToBlackList(req) // todo
+      logger.Log(constants.messages.LOGOUT_ACCOUNT, req)
 
       app.emit(constants.events.LOGOUT_ACCOUNT, req.body.token.id)
 
@@ -148,6 +154,9 @@ module.exports = function (app) {
 
       userVerifyLogic(req.params, app)
       .then(userFound => {
+
+        logger.Log(constants.messages.SUCCESS_VERIFIED_ACCOUNT, req)
+
         exit(res, 200,
           constants.messages.SUCCESS_VERIFIED_ACCOUNT,
           { account: userFound,
@@ -171,6 +180,9 @@ module.exports = function (app) {
 
       userResetEmailLogic({ email: req.params.reset }, app)
       .then(() => {
+
+        logger.Log(constants.messages.SUCCESS_RESET_ACCOUNT, req)
+
         exit(res, 200,
           constants.messages.SUCCESS_RESET_ACCOUNT)
       })
@@ -193,6 +205,9 @@ module.exports = function (app) {
         reset: req.params.reset,
         password: req.body.password }, app)
       .then(() => {
+
+        logger.Log(constants.messages.SUCCESS_PASSWORD_RESET_ACCOUNT, req)
+
         exit(res, 200,
           constants.messages.SUCCESS_PASSWORD_RESET_ACCOUNT)
       })

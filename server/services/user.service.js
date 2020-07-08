@@ -84,9 +84,9 @@ exports.Init = Init
  * @param   {object}  user data
  * @return  {object}  user object
  */
-function Create({ name, email, password, role=constants.roles.USER }) {
+function Create({ name, email, password, verify= null ,role=constants.roles.USER }) {
   return CreatePassword(password)
-  .then((hash) => db.Query(DB_CREATE_USER, { name, email, password: hash, role }))
+  .then((hash) => db.Query(DB_CREATE_USER, { name, email, password: hash, role, verify }))
 }
 
 exports.Create = Create

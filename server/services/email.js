@@ -1,5 +1,6 @@
 const logger = require('./logger.js')
 const constants = require('../constants/index')
+const config = require('../config/config')
 const mailConfig = require('../config/config').mail
 const mailgun = require('mailgun-js')({
   apiKey: mailConfig.api,
@@ -14,11 +15,14 @@ function Init(app) {
   if (!hasInit) {
     appTemp = app
 
-    if (mailConfig.active){
+    if (mailConfig.active &&
+      config.node_env !== 'test'){
       app.on(constants.events.CREATE_ACCOUNT, AccountCreate)
       app.on(constants.events.VERIFY_ACCOUNT, AccountVerify)
       app.on(constants.events.RESET_ACCOUNT, AccountReset)
       app.on(constants.events.UPDATED_ACCOUNT, AccountUpdate)
+
+      logger.Log('     ✅ Email service: true')
     }
 
     hasInit = true
@@ -36,7 +40,10 @@ const EmailSend = (emailData) => {
   mailgun.messages().send(emailData, (err, result) => {
 
     if (err) {
-      return logger.Log(err)
+      logger.Log('email err\n')
+      logger.Log(err.statusCode + '\n')
+      logger.Log(err)
+      return
     }
 
     logger.Log(result.id)
@@ -54,7 +61,7 @@ const AccountCreate = (user) => {
     from: mailConfig.strings.create.from,
     to: user.email,
     subject: mailConfig.strings.create.subject,
-    text: mailConfig.strings.create.msg(user.verify)})
+    text: mailConfig.strings.create.msg(user.verify, config.web.address, config.web.name)})
 }
 
 /**
@@ -67,7 +74,7 @@ const AccountVerify = (user) => {
     from: mailConfig.strings.verify.from,
     to: user.email,
     subject: mailConfig.strings.verify.subject,
-    text: mailConfig.strings.verify.msg(user.verify)})
+    text: mailConfig.strings.verify.msg(user.verify, config.web.address)})
 }
 
 /**
@@ -80,7 +87,7 @@ const AccountReset = (user) => {
     from: mailConfig.strings.reset.from,
     to: user.email,
     subject: mailConfig.strings.reset.subject,
-    text: mailConfig.strings.reset.msg(user.recover)})
+    text: mailConfig.strings.reset.msg(user.recover, config.web.address)})
 }
 
 /**
@@ -93,5 +100,5 @@ const AccountUpdate = (user) => {
     from: mailConfig.strings.update.from,
     to: user.email,
     subject: mailConfig.strings.update.subject,
-    text: mailConfig.strings.update.msg(user.verify)})
+    text: mailConfig.strings.update.msg(user.verify, config.web.address)})
 }

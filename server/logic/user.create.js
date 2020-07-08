@@ -22,31 +22,20 @@ function userCreate(input,  app) {
         message: constants.errors.EMAIL_IN_USE }
     }
 
-    return true
-  })
-  .then(() => {
     return user.Create({
       name: input.name,
       email: input.email,
-      password: input.password
+      password: input.password,
+      verify: token.Magic(input)
     })
   })
   .then(({ insertId }) => user.GetUserByID(insertId))
   .then(userObj => {
     const userObjTmp = mysqlVal(userObj)
 
-    return Promise.all( [
-      Promise.resolve(userObjTmp),
-      user.Update({
-        id: userObjTmp.id,
-        verify: token.Magic(userObjTmp)
-      })])
-  })
-  .then(([userObj, updateResult]) => {
+    app.emit(constants.events.CREATE_ACCOUNT, userObjTmp)
 
-    app.emit(constants.events.CREATE_ACCOUNT, userObj)
-
-    return user.SafeExport(userObj)
+    return user.SafeExport(userObjTmp)
   })
 }
 

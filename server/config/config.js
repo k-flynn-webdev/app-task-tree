@@ -25,6 +25,10 @@ if (!fs.existsSync(configPath)) {
 }
 
 module.exports = {
+  web: {
+    name: envs.parsed.WEB_NAME,
+    address: envs.parsed.WEB_ADDRESS
+  },
   port: parseInt(envs.parsed.PORT, 10),
   ip: envs.parsed.IP,
   version: appVersion,
@@ -56,3 +60,4 @@ module.exports = {
     strings: mailStrings
   }
 }
+

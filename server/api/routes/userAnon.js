@@ -26,6 +26,9 @@ module.exports = function (app) {
 
       userCreateLogic(req.body, app)
       .then(userObj => {
+
+        logger.Log(constants.messages.SUCCESS_CREATED_ACCOUNT, req)
+
         exit(res, 201,
           constants.messages.SUCCESS_CREATED_ACCOUNT,
           { account: userObj,
@@ -48,6 +51,9 @@ module.exports = function (app) {
 
       userUpgradeLogic(req.body, app)
       .then(userObj => {
+
+        logger.Log(constants.messages.SUCCESS_UPGRADED_ACCOUNT, req)
+
         exit(res, 201,
           constants.messages.SUCCESS_UPGRADED_ACCOUNT,
           { account: userObj,
