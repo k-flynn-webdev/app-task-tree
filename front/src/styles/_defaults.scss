@@ -149,6 +149,10 @@ body {
   min-width: 50%;
 }
 
+.max-half {
+  max-width: 50%;
+}
+
 .relative {
   position: relative;
 }
@@ -175,6 +179,18 @@ body {
 
 .no-pad {
   padding: 0;
+}
+
+.margin {
+  margin: $margin-default;
+}
+
+.m-1 {
+  margin: $unit-default;
+}
+
+.m-2 {
+  margin: $unit-default * 2;
 }
 
 .no-margin {
@@ -257,18 +273,6 @@ body {
 
 .display-inline-b {
   display: inline-block;
-}
-
-.margin {
-  margin: $margin-default;
-}
-
-.m-1 {
-  margin: $unit-default;
-}
-
-.m-2 {
-  margin: $unit-default * 2;
 }
 
 // for accessability screen reader text

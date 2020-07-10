@@ -1,0 +1,23 @@
+.user {
+  &__home {
+    position: absolute;
+    left: $unit-default;
+  }
+
+  &__card {
+    background-color: $color-mid;
+  }
+
+  &__form {
+    &__accept {
+      text-align: right;
+      margin-top: $margin-default;
+
+      &-btn {
+        color: $color-shadow;
+        background-color: $color-success;
+        padding: $padding-default * 0.5 $padding-default;
+      }
+    }
+  }
+}

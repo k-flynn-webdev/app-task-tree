@@ -21,6 +21,9 @@ label {
 
 input,
 button {
+  fill: $color-fore;
+  color: $color-fore;
+
   &:focus {
     outline-style: solid;
     outline-width: $border-size;
@@ -75,6 +78,7 @@ button {
   text-align: center;
   font-size: $font-size;
   vertical-align: middle;
+  border-radius: $border-radius;
   transition: $transition-default;
   padding: $padding-default * 0.1;
   margin: $margin-default * 0.25 $margin-default;
@@ -100,6 +104,46 @@ button {
       svg {
         fill: $value;
       }
+    }
+  }
+}
+
+.input-control {
+  label {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: row;
+
+    p,
+    button {
+      flex-grow: 0;
+      min-width: $unit-default * 5;
+    }
+
+    input {
+      flex-grow: 10;
+      max-height: $unit-default * 1.75;
+    }
+
+    @mixin small-input {
+      p,
+      input,
+      button {
+        flex-grow: 10;
+        margin: 0;
+        margin-bottom: $margin-default;
+      }
+    }
+
+    @include screen-xs {
+      @include small-input;
+    }
+    @include screen-sm {
+      @include small-input;
+    }
+    @include screen-md {
+      @include small-input;
     }
   }
 }

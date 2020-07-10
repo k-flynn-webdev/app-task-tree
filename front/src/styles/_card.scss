@@ -1,0 +1,22 @@
+
+.card {
+  margin: $unit-default auto;
+  padding: $unit-default * 0.5;
+  border-radius: $border-radius;
+  max-width: 95vw;
+  width: $unit-default * 40;
+  min-height: $unit-default * 5;
+
+  @include screen-md {
+    width: $unit-default * 25;
+  }
+  @include screen-lg {
+    width: $unit-default * 25;
+  }
+
+  @each $size, $value in $max-sizes {
+    &.#{$size} {
+      width: $value;
+    }
+  }
+}
