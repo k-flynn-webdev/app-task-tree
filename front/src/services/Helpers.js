@@ -46,9 +46,9 @@ const BRACKETS = ['(', ')']
 /**
  * Returns the progress from a project object
  *
- * @param done
- * @param total
- * @returns {string}  (x/y)
+ * @param tasksDone
+ * @param tasksTotal
+ * @returns {string}  eg (4/7)
  */
 const renderProgressNum = ({ tasksDone, tasksTotal }) => {
   return `${BRACKETS[0]}${tasksDone}/${tasksTotal}${BRACKETS[1]}`
@@ -57,9 +57,9 @@ const renderProgressNum = ({ tasksDone, tasksTotal }) => {
 /**
  * Render the progress from a project object
  *
- * @param done
- * @param total
- * @returns {string}  (77%)
+ * @param tasksDone
+ * @param tasksTotal
+ * @returns {string}  eg (77%)
  */
 const renderProgressPercent = ({ tasksDone, tasksTotal }) => {
   if (!tasksTotal || tasksTotal === 0) return '0%'

@@ -17,9 +17,9 @@ const routes = [
     component: () => import(/* webpackChunkName: "switch" */ '../views/Switch.vue')
   },
   {
-    path: '/user',
-    name: 'user',
-    component: () => import(/* webpackChunkName: "switch" */ '../views/User.vue')
+    path: '/user/create',
+    name: 'user.create',
+    component: () => import(/* webpackChunkName: "switch" */ '../views/UserCreate.vue')
   }
   // {
   //   path: '/',

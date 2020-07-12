@@ -55,6 +55,12 @@
         </div>
 
         <div class="user__form__accept">
+          <router-link
+            class="user__form__accept-login"
+            to="/user/login">
+            Login instead
+          </router-link>
+
           <button
             class="user__form__accept-btn"
             :class="{ 'DISABLED': !isValid }"

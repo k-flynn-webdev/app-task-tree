@@ -109,8 +109,12 @@ button {
 
   @each $status, $value in $all-status-border-colours {
     &.#{to-upper-case($status)} {
-      svg {
-        fill: $value;
+      @if $status == disabled {
+        opacity: $color-alpha;
+      } else {
+        svg {
+          fill: $value;
+        }
       }
     }
   }

@@ -8,12 +8,20 @@
     overflow: hidden;
     position: relative;
     background-color: $color-mid;
+
+    .status-bar {
+      z-index: 5;
+    }
   }
 
   &__form {
     &__accept {
       text-align: right;
       margin-top: $margin-default;
+
+      &-login {
+        float: left;
+      }
 
       &-btn {
         background-color: $color-success;
