@@ -76,12 +76,20 @@ input {
 
 button {
   text-align: center;
+  color: $color-shadow;
   font-size: $font-size;
   vertical-align: middle;
   border-radius: $border-radius;
   transition: $transition-default;
   padding: $padding-default * 0.1;
   margin: $margin-default * 0.25 $margin-default;
+
+  p,
+  span {
+    color: inherit;
+    font-weight: bolder;
+    min-width: $unit-default * 4;
+  }
 
   &:hover {
     transform: scale($hover-scale);

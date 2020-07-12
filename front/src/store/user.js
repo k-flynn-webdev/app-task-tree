@@ -37,6 +37,20 @@ export default {
   actions: {
     // todo user create / update / delete / login / logout etc
     /**
+     * Creates a user
+     *
+     * @param {object}    context
+     * @param {object}    input
+     * @returns {promise} anon user
+     */
+    create: function (context, input) {
+      return UserService.create(input)
+        .then(res => {
+          context.commit('user', res.data.data.account)
+          return res
+        })
+    },
+    /**
      * Creates anon user
      *
      * @param {object}    context
@@ -50,14 +64,14 @@ export default {
         })
     },
     /**
-     * Creates a user
+     * Upgrades a user (with ANON account id)
      *
      * @param {object}    context
      * @param {object}    input
      * @returns {promise} anon user
      */
-    create: function (context, input) {
-      return UserService.create(input)
+    createUpgrade: function (context, input) {
+      return UserService.createUpgrade(input)
         .then(res => {
           context.commit('user', res.data.data.account)
           return res

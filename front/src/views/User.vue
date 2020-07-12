@@ -7,7 +7,9 @@
 
     <br>
 
-    <Card class="user__card max-30">
+    <Card class="user__card max-30 WAITING">
+
+      <StatusBar />
 
       <div class="text-center ">
         <p class="upper text-bold display-inline-b">
@@ -52,7 +54,7 @@
             class="user__form__accept-btn"
             type="submit"
             @click.prevent="submitUser">
-            OK
+            <p>OK</p>
           </button>
 
         </div>
@@ -67,13 +69,15 @@
 // import helpers from '../services/Helpers'
 // import general from '../constants/general'
 import status from '../constants/status.js'
-// import StatusBar from './general/StatusBar'
+import StatusBar from '../components/general/StatusBar'
 import Card from '../components/general/Card'
+const ANON = 'anon'
 
 export default {
   name: 'User',
   components: {
-    Card
+    Card,
+    StatusBar
   },
   data () {
     return {
@@ -92,25 +96,43 @@ export default {
   },
   methods: {
     isValid: function () {
-      // todo
-      return true
+      if (this.form.name.length < 4) return false
+      if (this.form.email.length < 4) return false
+      if (this.form.email.indexOf('@') < 0) return false
+      if (this.form.email.indexOf('.') < 0) return false
+      return this.form.password.length >= 7
     },
-    submitUser: function () {
+    submit: function () {
       if (!this.isValid) return
       if (this.status !== status.CLEAR) return
 
       this.status = status.WAITING
-      // if local ANON user is detected, upgrade
-      // else create new user properly
-
-      const newUserTmp = this.form
-      return this.$store.dispatch('user/create', newUserTmp)
-        .then(res => {
-          res.isTimed = true
-          this.status = status.CLEAR
-          this.$store.commit('toasts/toastAdd', res)
-        })
+      if (this.user && this.user.name === ANON) {
+        return this.submitUserUpgrade()
+      } else {
+        return this.submitUser()
+      }
+    },
+    submitUser: function () {
+      return this.$store.dispatch('user/create', this.form)
+        .then(res => this.handleSuccess(res))
         .catch(err => this.handleError(err))
+    },
+    submitUserUpgrade: function () {
+      const newUser = {
+        id: this.user.id,
+        name: this.form.name,
+        email: this.form.email,
+        password: this.form.password
+      }
+      return this.$store.dispatch('user/createUpgrade', newUser)
+        .then(res => this.handleSuccess(res))
+        .catch(err => this.handleError(err))
+    },
+    handleSuccess: function (res) {
+      res.isTimed = true
+      this.status = status.CLEAR
+      this.$store.commit('toasts/toastAdd', res)
     },
     handleError: function (err) {
       this.status = status.ERROR

@@ -81,6 +81,11 @@ function createAnon () {
     .then(res => setUser(res))
 }
 
+function createUpgrade (input) {
+  return Http.post(`/api/user/upgrade/${input.id}`, input)
+    .then(res => setUser(res))
+}
+
 function login (input) {
   return Http.post('/api/user/login', input)
     .then(res => applyToken(res))
@@ -120,6 +125,7 @@ function verify (input) {
 const services = {
   create: create,
   createAnon: createAnon,
+  createUpgrade: createUpgrade,
   login: login,
   logout: logout,
   update: update,

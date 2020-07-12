@@ -5,6 +5,8 @@
   }
 
   &__card {
+    overflow: hidden;
+    position: relative;
     background-color: $color-mid;
   }
 
@@ -14,7 +16,6 @@
       margin-top: $margin-default;
 
       &-btn {
-        color: $color-shadow;
         background-color: $color-success;
         padding: $padding-default * 0.5 $padding-default;
       }
