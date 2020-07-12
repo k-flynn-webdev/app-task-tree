@@ -48,6 +48,20 @@ export default {
           context.commit('user', res.data.data.account)
           return res.data.data.account
         })
+    },
+    /**
+     * Creates a user
+     *
+     * @param {object}    context
+     * @param {object}    input
+     * @returns {promise} anon user
+     */
+    create: function (context, input) {
+      return UserService.create(input)
+        .then(res => {
+          context.commit('user', res.data.data.account)
+          return res
+        })
     }
     // for delayed/time consuming actions
   }

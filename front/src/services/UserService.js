@@ -76,8 +76,8 @@ function create (input) {
     .then(res => setUser(res))
 }
 
-function createAnon (input) {
-  return Http.post('/api/user/anon', input)
+function createAnon () {
+  return Http.post('/api/user/anon')
     .then(res => setUser(res))
 }
 
