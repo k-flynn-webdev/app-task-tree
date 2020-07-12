@@ -3,13 +3,11 @@
 
     <div class="toast__message__content ">
 
-      <p class="color-bg text-bold md"
-      :class="{ 'color-fore': !isError }">
+      <p class="text-bold md">
         {{ data.title }}
       </p>
 
-      <p class="color-bg text-bold"
-      :class="{ 'color-fore': !isError }">
+      <p class="color-bg text-bold">
         {{ data.message }}
       </p>
 
@@ -18,7 +16,7 @@
     <br>
 
     <button @click="closeToast">
-     OK
+      <p>OK</p>
     </button>
 
   </div>

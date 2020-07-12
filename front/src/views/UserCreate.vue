@@ -7,9 +7,9 @@
 
     <br>
 
-    <Card class="user__card max-30 WAITING">
+    <Card class="user__card max-30">
 
-      <StatusBar />
+      <StatusBar :class="status" />
 
       <div class="text-center ">
         <p class="upper text-bold display-inline-b">
@@ -17,14 +17,16 @@
         </p>
       </div>
 
-      <form class="user__form" @submit.prevent="submitUser">
+      <form class="user__form" @submit.prevent="submitForm">
         <div class="input-control">
           <label>
             <p>Name</p>
             <input required
                    v-model="form.name"
                    type="string"
-                   minlength="4" >
+                   minlength="4"
+                   @input="resetStatus"
+            >
           </label>
         </div>
 
@@ -35,6 +37,7 @@
               required
               v-model="form.email"
               type="email"
+              @input="resetStatus"
             >
           </label>
         </div>
@@ -45,15 +48,18 @@
             <input required
                    v-model="form.password"
                    type="password"
-                   minlength="7" >
+                   minlength="7"
+                   @input="resetStatus"
+            >
           </label>
         </div>
 
         <div class="user__form__accept">
           <button
             class="user__form__accept-btn"
+            :class="{ 'DISABLED': !isValid }"
             type="submit"
-            @click.prevent="submitUser">
+            @click.prevent="submitForm">
             <p>OK</p>
           </button>
 
@@ -66,15 +72,16 @@
 </template>
 
 <script>
-// import helpers from '../services/Helpers'
-// import general from '../constants/general'
+import helpers from '../services/Helpers'
+import general from '../constants/general'
 import status from '../constants/status.js'
 import StatusBar from '../components/general/StatusBar'
 import Card from '../components/general/Card'
+import Paths from '../constants/paths'
 const ANON = 'anon'
 
 export default {
-  name: 'User',
+  name: 'UserCreate',
   components: {
     Card,
     StatusBar
@@ -83,18 +90,13 @@ export default {
     return {
       status: status.CLEAR,
       form: {
-        name: null,
-        email: null,
-        password: null
+        name: '',
+        email: '',
+        password: ''
       }
     }
   },
   computed: {
-    user: function () {
-      return this.$store.getters['user/user']
-    }
-  },
-  methods: {
     isValid: function () {
       if (this.form.name.length < 4) return false
       if (this.form.email.length < 4) return false
@@ -102,7 +104,15 @@ export default {
       if (this.form.email.indexOf('.') < 0) return false
       return this.form.password.length >= 7
     },
-    submit: function () {
+    user: function () {
+      return this.$store.getters['user/user']
+    }
+  },
+  methods: {
+    resetStatus: function () {
+      this.status = status.CLEAR
+    },
+    submitForm: function () {
       if (!this.isValid) return
       if (this.status !== status.CLEAR) return
 
@@ -131,8 +141,14 @@ export default {
     },
     handleSuccess: function (res) {
       res.isTimed = true
-      this.status = status.CLEAR
+      res.isError = false
+      this.status = status.SUCCESS
       this.$store.commit('toasts/toastAdd', res)
+
+      helpers.timeDelay(() => {
+        this.status = status.CLEAR
+        this.$router.push({ name: Paths.HOME })
+      }, general.DELAY_SUCCESS)
     },
     handleError: function (err) {
       this.status = status.ERROR
