@@ -1,5 +1,5 @@
 <template>
-  <div class="status bar " :class="statusUpdate"></div>
+  <div class="status-bar " :class="statusUpdate"></div>
 </template>
 
 <script>
