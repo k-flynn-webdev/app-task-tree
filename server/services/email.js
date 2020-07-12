@@ -15,15 +15,17 @@ function Init(app) {
   if (!hasInit) {
     appTemp = app
 
-    if (mailConfig.active &&
+    if (mailConfig.active === true &&
       config.node_env !== 'test'){
       app.on(constants.events.CREATE_ACCOUNT, AccountCreate)
       app.on(constants.events.VERIFY_ACCOUNT, AccountVerify)
       app.on(constants.events.RESET_ACCOUNT, AccountReset)
       app.on(constants.events.UPDATED_ACCOUNT, AccountUpdate)
-
       logger.Log('     ✅ Email service: true')
+    } else {
+      logger.Log('     ✅ Email service: false')
     }
+
 
     hasInit = true
   }
