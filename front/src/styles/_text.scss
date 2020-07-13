@@ -63,6 +63,20 @@ button {
   font-family: 'Open Sans', sans-serif;
 }
 
+small,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+text,
+span,
+.text {
+  margin: 0 $margin-default;
+}
+
 .break-word {
   word-break: break-word;
 }
@@ -73,6 +87,7 @@ small {
   font-weight: lighter;
 }
 
+a,
 p,
 span {
   font-size: $font-size;

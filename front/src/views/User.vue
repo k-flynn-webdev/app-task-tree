@@ -95,6 +95,8 @@
 
     </Card>
 
+    <UserLogout/>
+
   </div>
 </template>
 
@@ -102,15 +104,17 @@
 import helpers from '../services/Helpers'
 import general from '../constants/general'
 import status from '../constants/status.js'
-import StatusBar from '../components/general/StatusBar'
 import Card from '../components/general/Card'
+import UserLogout from '../components/UserLogout'
+import StatusBar from '../components/general/StatusBar'
 const ANON = 'anon'
 
 export default {
   name: 'User',
   components: {
     Card,
-    StatusBar
+    StatusBar,
+    UserLogout
   },
   data () {
     return {

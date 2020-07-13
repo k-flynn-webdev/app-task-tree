@@ -1,11 +1,17 @@
-
 .card {
-  margin: $unit-default auto;
-  padding: $unit-default * 0.5;
+  overflow: hidden;
+  position: relative;
+  background-color: $color-mid;
   border-radius: $border-radius;
+}
+
+.card,
+.container {
   max-width: 95vw;
   width: $unit-default * 40;
   min-height: $unit-default * 5;
+  margin: $unit-default auto;
+  padding: $unit-default * 0.5;
 
   @include screen-md {
     width: $unit-default * 25;

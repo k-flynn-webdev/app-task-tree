@@ -5,15 +5,6 @@
   }
 
   &__card {
-    overflow: hidden;
-    position: relative;
-    background-color: $color-mid;
-
-    p,
-    a {
-      margin: 0 $margin-default;
-    }
-
     .status-bar {
       z-index: 5;
     }
