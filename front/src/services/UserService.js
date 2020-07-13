@@ -7,13 +7,14 @@ const USER_PAYLOAD = 'user_payload'
 function setUser (res) {
   if (res.data &&
     res.data.data &&
-    res.data.data.account) {
+    res.data.data.account &&
+    res.data.data.account.id) {
     localStorage.setItem(USER_PAYLOAD,
       JSON.stringify(res.data.data.account))
     return res
   }
 
-  localStorage.setItem(USER_PAYLOAD, '')
+  localStorage.removeItem(USER_PAYLOAD)
   return res
 }
 
@@ -41,7 +42,7 @@ function applyToken (res) {
     return res
   }
 
-  localStorage.setItem(USER_TOKEN, null)
+  localStorage.removeItem(USER_TOKEN)
   removeAuth()
   return res
 }
