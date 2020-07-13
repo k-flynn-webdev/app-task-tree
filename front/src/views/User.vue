@@ -125,15 +125,27 @@ export default {
     }
   },
   computed: {
-    isValid: function () {
-      if (this.form.name.length < 4) return false
-      if (this.form.email.length < 4) return false
-      if (this.form.email.indexOf('@') < 0) return false
-      if (this.form.email.indexOf('.') < 0) return false
-      return this.form.password.length >= 7
-    },
     user: function () {
       return this.$store.getters['user/user']
+    },
+    isValid: function () {
+      if (this.user && this.user.name === ANON) return false
+      if (this.status !== status.CLEAR) return false
+      return (this.isValidName || this.isValidEmail || this.isValidPassword)
+    },
+    isValidName: function () {
+      return (this.form.name.length > 4 &&
+        this.form.name !== this.user.name)
+    },
+    isValidEmail: function () {
+      if (this.form.email.indexOf('@') < 0) return false
+      if (this.form.email.indexOf('.') < 0) return false
+      return (this.form.email.length > 4 &&
+        this.form.email !== this.user.email)
+    },
+    isValidPassword: function () {
+      return (this.form.password.length > 7 &&
+        this.form.password !== this.user.password)
     }
   },
   mounted () {
@@ -154,33 +166,26 @@ export default {
       this.status = status.CLEAR
     },
     submitUserUpgrade: function () {
-      if (!this.isValid) return
       if (this.status !== status.CLEAR) return
-      if (this.user && this.user.name === ANON) return
+      if (!this.isValid) return
 
       this.status = status.WAITING
 
       const newUser = {
-        id: this.user.id,
-        name: this.form.name,
-        email: this.form.email,
-        password: this.form.password
+        id: this.user.id
       }
 
-      if (this.form.name.length > 1 &&
-        this.form.name !== this.user.name) {
+      if (this.isValidName) {
         newUser.name = this.form.name
       }
-      if (this.form.email.length > 1 &&
-        this.form.email !== this.user.email) {
+      if (this.isValidEmail) {
         newUser.email = this.form.email
       }
-      if (this.form.password.length > 1 &&
-        this.form.password !== this.user.password) {
+      if (this.isValidPassword) {
         newUser.password = this.form.password
       }
 
-      return this.$store.dispatch('user/createUpgrade', newUser)
+      return this.$store.dispatch('user/update', newUser)
         .then(res => this.handleSuccess(res))
         .catch(err => this.handleError(err))
     },

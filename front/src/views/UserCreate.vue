@@ -113,6 +113,7 @@ export default {
       if (this.form.email.length < 4) return false
       if (this.form.email.indexOf('@') < 0) return false
       if (this.form.email.indexOf('.') < 0) return false
+      if (this.status !== status.CLEAR) return false
       return this.form.password.length >= 7
     },
     user: function () {
@@ -128,7 +129,7 @@ export default {
       if (this.status !== status.CLEAR) return
 
       this.status = status.WAITING
-      if (this.user && this.user.name === ANON) {
+      if (this.user && this.user.email === ANON) {
         return this.submitUserUpgrade()
       } else {
         return this.submitUser()

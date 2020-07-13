@@ -93,7 +93,7 @@ function login (input) {
 }
 
 function logout () {
-  return Http.post('/api/user/logout')
+  return Http.get('/api/user/logout')
     .then(res => applyToken(res))
     .then(res => setUser(res))
 }

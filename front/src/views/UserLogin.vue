@@ -77,7 +77,6 @@ import status from '../constants/status.js'
 import StatusBar from '../components/general/StatusBar'
 import Card from '../components/general/Card'
 import Paths from '../constants/paths'
-const ANON = 'anon'
 
 export default {
   name: 'UserLogin',
@@ -99,6 +98,7 @@ export default {
       if (this.form.email.length < 4) return false
       if (this.form.email.indexOf('@') < 0) return false
       if (this.form.email.indexOf('.') < 0) return false
+      if (this.status !== status.CLEAR) return false
       return this.form.password.length >= 7
     },
     user: function () {
@@ -112,7 +112,6 @@ export default {
     submitLogin: function () {
       if (!this.isValid) return
       if (this.status !== status.CLEAR) return
-      if (this.user && this.user.name === ANON) return
 
       this.status = status.WAITING
       return this.$store.dispatch('user/login', this.form)
