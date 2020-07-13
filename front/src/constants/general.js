@@ -7,7 +7,7 @@ const DELAY_ERROR = 6000
 const DEFAULT_PROJECT = (user = -1) => {
   return {
     id: -1,
-    name: 'Project',
+    name: 'New Project',
     user: user,
     tasksDone: 0,
     tasksTotal: 0,
@@ -18,7 +18,7 @@ const DEFAULT_PROJECT = (user = -1) => {
 
 const DEFAULT_PROJECT_NO_ID = (user = -1) => {
   return {
-    name: 'Project',
+    name: 'New Project',
     user: user,
     tasksDone: 0,
     tasksTotal: 0,
@@ -30,7 +30,7 @@ const DEFAULT_PROJECT_NO_ID = (user = -1) => {
 const DEFAULT_TASK = (user = -1) => {
   return {
     id: -1,
-    text: 'Task',
+    text: 'New Task',
     project: -1,
     user: user,
     isDone: false

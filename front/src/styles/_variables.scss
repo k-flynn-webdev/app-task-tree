@@ -60,8 +60,8 @@ $hover-scale: 1.25;
 $transition-default: 0.33s;
 
 $color-alpha: 0.3;
+$color-grey: rgb(118, 130, 130);
 $color-bg: rgb(33, 62, 69);
-//$color-bg-alt: rgb(80, 107, 115);
 $color-shadow: rgb(54, 56, 46);
 //$color-mid: rgb(88, 110, 99);
 $color-mid: rgb(80, 107, 115);
@@ -95,8 +95,8 @@ $all-status-colours: (
 );
 
 $all-colours: (
+  grey: $color-grey,
   bg: $color-bg,
-  //bg-alt: $color-bg-alt,
   shadow: $color-shadow,
   mid: $color-mid,
   success: $color-success,

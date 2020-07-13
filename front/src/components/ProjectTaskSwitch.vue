@@ -2,15 +2,15 @@
   <div class="task__project__header__controls__switch">
 
     <button class="task__project__header__controls__switch-projects"
-            :class="{ 'ACTIVE': isProjects}"
+            :class="{ 'ACTIVE': isProjects, 'DISABLED': !isEnabled }"
             @click="showProjects">
-      projects
+      <span>projects</span>
     </button>
 
     <button class="task__project__header__controls__switch-tasks"
-            :class="{ 'ACTIVE': isTasks}"
+            :class="{ 'ACTIVE': isTasks, 'DISABLED': !isEnabled }"
             @click="showTasks">
-      tasks
+      <span>tasks</span>
     </button>
 
   </div>
@@ -25,6 +25,10 @@ export default {
     value: {
       type: String,
       default: modes.CLEAR
+    },
+    isEnabled: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {

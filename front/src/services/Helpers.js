@@ -11,6 +11,11 @@ const timeDelay = (action, delay) => {
   }, delay)
 }
 
+const HasNumbers = (input) => {
+  const strip = input.toString().replace(/\D/g, '')
+  return (strip.length > 0)
+}
+
 const renderDate = (input) => {
   if (!input) return 'No date'
   const dateObj = new Date(input)
@@ -70,6 +75,7 @@ const renderProgressPercent = ({ tasksDone, tasksTotal }) => {
 
 const helpers = {
   timeDelay,
+  HasNumbers,
   renderDate: renderDate,
   renderTime: renderTime,
   renderDateTime: renderDateTime,

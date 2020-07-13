@@ -10,12 +10,12 @@
     <div class="task__project__header__controls">
 
       <div class="flex-row">
-        <ProjectTaskSwitch v-model="mode" />
+        <ProjectTaskSwitch v-model="mode" :is-enabled="validUser" />
 
-        <UserInfoMini />
+        <UserInfoMini :is-enabled="validUser" />
       </div>
 
-      <InputBar :mode="mode" />
+      <InputBar :mode="mode" :is-enabled="validUser" />
 
     </div>
 
@@ -55,6 +55,12 @@ export default {
     }
   },
   computed: {
+    user: function () {
+      return this.$store.getters['user/user']
+    },
+    validUser: function () {
+      return !(this.user.id === null || this.user.id < 0)
+    },
     isProjects: function () {
       return this.mode === modes.PROJECTS
     },
