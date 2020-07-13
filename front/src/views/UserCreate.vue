@@ -60,16 +60,16 @@
 
       </div>
 
-      <template slot="footer">
+      <template slot="footer" class="user__form__footer">
         <router-link
-          class="user__form__accept-login"
+          class="text-bold color-fore"
           to="/user/login">
           Login
         </router-link>
 
         <button
           :tabindex="!isValid ? -1: 0"
-          class="user__form__accept-btn"
+          class="user__form__footer__ok-btn"
           :class="{ 'DISABLED': !isValid }"
           type="submit"
           @click.prevent="submitForm">

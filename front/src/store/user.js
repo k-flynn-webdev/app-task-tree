@@ -107,6 +107,20 @@ export default {
           context.commit('user', res.data.data.account)
           return res
         })
+    },
+    /**
+     * Updates a user details
+     *
+     * @param {object}    context
+     * @param {object}    input
+     * @returns {promise} anon user
+     */
+    update: function (context, input) {
+      return UserService.update(input)
+        .then(res => {
+          context.commit('user', res.data.data.account)
+          return res
+        })
     }
     // for delayed/time consuming actions
   }

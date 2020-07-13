@@ -48,15 +48,15 @@
 
       </div>
 
-      <template slot="footer">
+      <template slot="footer" class="user__form__footer">
         <router-link
-          class="user__form__accept-create"
+          class="text-bold color-fore"
           to="/user/create">
           Create
         </router-link>
 
         <button
-          class="user__form__accept-btn"
+          class="user__form__footer__ok-btn"
           :tabindex="!isValid ? -1: 0"
           :class="{ 'DISABLED': !isValid }"
           type="submit"

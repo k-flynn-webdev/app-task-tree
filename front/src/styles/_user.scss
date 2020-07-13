@@ -20,16 +20,32 @@
   }
 
   &__form {
-    &__accept {
+    label {
+      min-height: $unit-default * 2.33;
+    }
+
+    &-detail {
+      margin-left: $margin-default;
+      padding-left: $margin-default;
+    }
+
+    &__footer {
       &-login,
       &-create {
         color: $color-fore;
         font-weight: bolder;
       }
 
-      &-btn {
-        margin-left: auto;
+      &__edit-btn {
+        margin-left: $margin-default;
+      }
 
+      &__ok-btn {
+        margin-left: auto;
+      }
+
+      &__ok-btn,
+      &__edit-btn {
         &:focus {
           background-color: $color-select;
         }
