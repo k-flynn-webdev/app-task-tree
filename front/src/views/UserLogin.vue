@@ -15,23 +15,11 @@
 
         <div class="text-center ">
           <p class="upper text-bold display-inline-b">
-            Create
+            Login
           </p>
         </div>
 
-        <form class="user__form" @submit.prevent="submitForm">
-          <div class="input-control">
-            <label>
-              <p>Name</p>
-              <input required
-                     v-model="form.name"
-                     type="string"
-                     minlength="4"
-                     @input="resetStatus"
-              >
-            </label>
-          </div>
-
+        <form class="user__form" @submit.prevent="submitLogin">
           <div class="input-control">
             <label>
               <p>Email</p>
@@ -62,17 +50,17 @@
 
       <template slot="footer">
         <router-link
-          class="user__form__accept-login"
-          to="/user/login">
-          Login
+          class="user__form__accept-create"
+          to="/user/create">
+          Create
         </router-link>
 
         <button
-          :tabindex="!isValid ? -1: 0"
           class="user__form__accept-btn"
+          :tabindex="!isValid ? -1: 0"
           :class="{ 'DISABLED': !isValid }"
           type="submit"
-          @click.prevent="submitForm">
+          @click.prevent="submitLogin">
           <p>OK</p>
         </button>
       </template>
@@ -92,7 +80,7 @@ import Paths from '../constants/paths'
 const ANON = 'anon'
 
 export default {
-  name: 'UserCreate',
+  name: 'UserLogin',
   components: {
     Card,
     StatusBar
@@ -101,7 +89,6 @@ export default {
     return {
       status: status.CLEAR,
       form: {
-        name: '',
         email: '',
         password: ''
       }
@@ -109,7 +96,6 @@ export default {
   },
   computed: {
     isValid: function () {
-      if (this.form.name.length < 4) return false
       if (this.form.email.length < 4) return false
       if (this.form.email.indexOf('@') < 0) return false
       if (this.form.email.indexOf('.') < 0) return false
@@ -123,38 +109,18 @@ export default {
     resetStatus: function () {
       this.status = status.CLEAR
     },
-    submitForm: function () {
+    submitLogin: function () {
       if (!this.isValid) return
       if (this.status !== status.CLEAR) return
+      if (this.user && this.user.name === ANON) return
 
       this.status = status.WAITING
-      if (this.user && this.user.name === ANON) {
-        return this.submitUserUpgrade()
-      } else {
-        return this.submitUser()
-      }
-    },
-    submitUser: function () {
-      return this.$store.dispatch('user/create', this.form)
+      return this.$store.dispatch('user/login', this.form)
         .then(res => this.handleSuccess(res))
         .catch(err => this.handleError(err))
     },
-    submitUserUpgrade: function () {
-      const newUser = {
-        id: this.user.id,
-        name: this.form.name,
-        email: this.form.email,
-        password: this.form.password
-      }
-      return this.$store.dispatch('user/createUpgrade', newUser)
-        .then(res => this.handleSuccess(res))
-        .catch(err => this.handleError(err))
-    },
-    handleSuccess: function (res) {
-      res.isTimed = true
-      res.isError = false
+    handleSuccess: function () {
       this.status = status.SUCCESS
-      this.$store.commit('toasts/toastAdd', res)
 
       helpers.timeDelay(() => {
         this.status = status.CLEAR

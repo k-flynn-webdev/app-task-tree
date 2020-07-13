@@ -15,11 +15,11 @@
 
         <div class="text-center ">
           <p class="upper text-bold display-inline-b">
-            Create
+            User
           </p>
         </div>
 
-        <form class="user__form" @submit.prevent="submitForm">
+        <form class="user__form" @submit.prevent="submitUserUpgrade">
           <div class="input-control">
             <label>
               <p>Name</p>
@@ -56,23 +56,29 @@
             </label>
           </div>
 
+          <div class="input-control">
+            <label>
+              <p>Role</p>
+              <input required
+                     v-model="form.password"
+                     type="password"
+                     minlength="7"
+                     @input="resetStatus"
+              >
+            </label>
+          </div>
+
         </form>
 
       </div>
 
-      <template slot="footer">
-        <router-link
-          class="user__form__accept-login"
-          to="/user/login">
-          Login
-        </router-link>
-
+      <template slot="footer" class="user__form__accept">
         <button
-          :tabindex="!isValid ? -1: 0"
           class="user__form__accept-btn"
+          :tabindex="!isValid ? -1: 0"
           :class="{ 'DISABLED': !isValid }"
           type="submit"
-          @click.prevent="submitForm">
+          @click.prevent="submitUserUpgrade">
           <p>OK</p>
         </button>
       </template>
@@ -92,7 +98,7 @@ import Paths from '../constants/paths'
 const ANON = 'anon'
 
 export default {
-  name: 'UserCreate',
+  name: 'User',
   components: {
     Card,
     StatusBar
@@ -123,23 +129,13 @@ export default {
     resetStatus: function () {
       this.status = status.CLEAR
     },
-    submitForm: function () {
+    submitUserUpgrade: function () {
       if (!this.isValid) return
       if (this.status !== status.CLEAR) return
+      if (this.user && this.user.name === ANON) return
 
       this.status = status.WAITING
-      if (this.user && this.user.name === ANON) {
-        return this.submitUserUpgrade()
-      } else {
-        return this.submitUser()
-      }
-    },
-    submitUser: function () {
-      return this.$store.dispatch('user/create', this.form)
-        .then(res => this.handleSuccess(res))
-        .catch(err => this.handleError(err))
-    },
-    submitUserUpgrade: function () {
+
       const newUser = {
         id: this.user.id,
         name: this.form.name,

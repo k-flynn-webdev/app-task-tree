@@ -14,12 +14,22 @@ const routes = [
   {
     path: '/switch',
     name: 'switch',
-    component: () => import(/* webpackChunkName: "switch" */ '../views/Switch.vue')
+    component: () => import(/* webpackChunkName: "Switch" */ '../views/Switch.vue')
+  },
+  {
+    path: '/user',
+    name: Paths.USER,
+    component: () => import(/* webpackChunkName: "User" */ '../views/User.vue')
   },
   {
     path: '/user/create',
-    name: 'user.create',
-    component: () => import(/* webpackChunkName: "switch" */ '../views/UserCreate.vue')
+    name: Paths.USER_CREATE,
+    component: () => import(/* webpackChunkName: "UserCreate" */ '../views/UserCreate.vue')
+  },
+  {
+    path: '/user/login',
+    name: Paths.USER_LOGIN,
+    component: () => import(/* webpackChunkName: "UserLogin" */ '../views/UserLogin.vue')
   }
   // {
   //   path: '/',

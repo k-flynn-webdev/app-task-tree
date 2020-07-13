@@ -2,6 +2,8 @@ const HOME = 'home'
 const TASK = 'task'
 const USER = 'user'
 const USER_CREATE = 'user.create'
+const USER_LOGIN = 'user.login'
+const USER_LOGOUT = 'user.logout'
 
 // export const TASK_GET = ''
 //
@@ -19,6 +21,8 @@ export default {
   HOME,
   USER,
   USER_CREATE,
+  USER_LOGIN,
+  USER_LOGOUT,
   TASK
 //   USER_CREATE: USER_CREATE,
 //   USER_LOGIN: USER_LOGIN,

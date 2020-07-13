@@ -9,6 +9,11 @@
     position: relative;
     background-color: $color-mid;
 
+    p,
+    a {
+      margin: 0 $margin-default;
+    }
+
     .status-bar {
       z-index: 5;
     }
@@ -16,14 +21,19 @@
 
   &__form {
     &__accept {
-      text-align: right;
-      margin-top: $margin-default;
-
-      &-login {
-        float: left;
+      &-login,
+      &-create {
+        color: $color-fore;
+        font-weight: bolder;
       }
 
       &-btn {
+        margin-left: auto;
+
+        &:focus {
+          background-color: $color-select;
+        }
+
         background-color: $color-success;
         padding: $padding-default * 0.5 $padding-default;
       }

@@ -1,5 +1,14 @@
 import UserService from '../services/UserService.js'
 
+function defaultUserObj () {
+  return {
+    id: -1,
+    name: '',
+    email: '',
+    role: ''
+  }
+}
+
 function defaultUser () {
   const userLocal = UserService.getUser()
   if (userLocal !== undefined) return userLocal
@@ -10,12 +19,7 @@ function defaultUser () {
   //  upgrade it's a seamless transfer of
   //  projects/tasks to the new user id..
 
-  return {
-    id: -1,
-    name: '',
-    email: '',
-    role: 'user'
-  }
+  return defaultUserObj()
 }
 
 export default {
@@ -36,6 +40,33 @@ export default {
   },
   actions: {
     // todo user create / update / delete / login / logout etc
+    /**
+     * Login a user
+     *
+     * @param {object}    context
+     * @param {object}    input
+     * @returns {promise} user
+     */
+    login: function (context, input) {
+      return UserService.login(input)
+        .then(res => {
+          context.commit('user', res.data.data.account)
+          return res
+        })
+    },
+    /**
+     * Logout a user
+     *
+     * @param {object}    context
+     * @returns {promise} user
+     */
+    logout: function (context) {
+      return UserService.logout()
+        .then(res => {
+          context.commit('user', defaultUserObj())
+          return res
+        })
+    },
     /**
      * Creates a user
      *
