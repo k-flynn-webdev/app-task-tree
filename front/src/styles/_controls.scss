@@ -1,3 +1,13 @@
+a {
+  &:focus {
+    color: $color-select;
+
+    p {
+      color: $color-select;
+    }
+  }
+}
+
 label {
   input[type="checkbox"] {
     opacity: 0;
@@ -83,6 +93,9 @@ button {
   transition: $transition-default;
   padding: $padding-default * 0.1;
   margin: $margin-default * 0.25 $margin-default;
+  border-style: solid;
+  border-color: transparent;
+  border-spacing: $border-size;
 
   p,
   span {
@@ -98,7 +111,9 @@ button {
   outline-offset: $border-size * 0.5;
 
   &:focus {
-    outline-width: $border-size * 1.5;
+    outline: none;
+    border-color: $color-fore;
+    //outline-width: $border-size * 1.5;
   }
 
   @each $size, $value in $all-font-sizes {

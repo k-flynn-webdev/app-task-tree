@@ -5,6 +5,10 @@
       <slot></slot>
     </div>
 
+    <div class="card__footer flex-row flex-between">
+      <slot name="footer"></slot>
+    </div>
+
   </div>
 </template>
 

@@ -14,6 +14,10 @@
     width: $unit-default * 25;
   }
 
+  &__footer {
+    margin-top: $margin-default;
+  }
+
   @each $size, $value in $max-sizes {
     &.#{$size} {
       width: $value;
