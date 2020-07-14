@@ -2,19 +2,10 @@
   <div
     id="app"
     class="task"
-    :class="{ 'max-screen-size': hasToast }">
+    :class="{ 'show-toast': hasToast, 'show-settings': displaySettings }">
 
     <ToastHolder />
-
-<!--    <h1 class="task__header">-->
-<!--      Mini-task-->
-<!--    </h1>-->
-
-<!--    <div id="nav">-->
-<!--      <router-link to="/">Home</router-link> |-->
-<!--      <router-link to="/about">About</router-link> |-->
-<!--      <router-link to="/task">Task</router-link>-->
-<!--    </div>-->
+    <AppSettings v-model="displaySettings" />
 
     <router-view />
 
@@ -28,11 +19,18 @@
 
 <script>
 import ToastHolder from './components/general/ToastHolder'
+import AppSettings from './components/AppSettings'
 
 export default {
   name: 'App',
   components: {
+    AppSettings,
     ToastHolder
+  },
+  data () {
+    return {
+      displaySettings: false
+    }
   },
   computed: {
     hasToast: function () {

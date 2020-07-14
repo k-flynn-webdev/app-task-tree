@@ -1,3 +1,7 @@
+body {
+  overflow-x: hidden;
+}
+
 #app {
   margin: $margin-default;
 
@@ -15,6 +19,56 @@
 }
 
 .task {
+  position: relative;
+
+  .settings {
+    &__btn {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      z-index: 5;
+      margin: 0;
+      padding: 0;
+
+      .is-close {}
+    }
+
+    &__holder {
+      color: $color-bg;
+      background-color: $color-fore;
+      padding: $margin-default;
+      border-radius: $border-radius;
+      position: absolute;
+      z-index: 4;
+      top: 0;
+      right: 0;
+      max-width: $unit-default * 15;
+      min-width: $unit-default * 15;
+      min-height: $unit-default * 5;
+
+      @mixin screen-float {
+        position: relative;
+        top: unset;
+        right: unset;
+        margin: $margin-default $margin-default * 0.2;
+        min-width: unset;
+        max-width: unset;
+      }
+
+      @include screen-xs {
+        @include screen-float;
+      }
+
+      @include screen-sm {
+        @include screen-float;
+      }
+
+      @include screen-md {
+        @include screen-float;
+      }
+    }
+  }
+
   .intro-text {
     p,
     ul,
@@ -58,10 +112,10 @@
     }
   }
 
-  &.max-screen-size {
+  &.show-toast {
     overflow: hidden;
-    max-width: 97vw;
-    max-height: 97vh;
+    max-width: 99vw;
+    max-height: 99vh;
   }
 
   .hint {
