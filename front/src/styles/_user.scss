@@ -21,6 +21,8 @@
     }
 
     &__footer {
+      margin-bottom: $margin-default;
+
       &-login,
       &-create {
         color: $color-fore;

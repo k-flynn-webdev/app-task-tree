@@ -11,26 +11,27 @@
 
     </transition-group>
 
-    <div v-if="project.id < 0"
-         class="text-center">
-      <p class="hint"> First you need to create a project to add tasks to </p>
-    </div>
-
-    <div v-if="project.id >= 0 && tasks.length < 1"
-         class="text-center">
-      <p class="hint"> Add a new task </p>
-    </div>
+    <Card v-if="tasks.length < 1" class="text-center">
+      <p v-if="project.id >= 0"
+         class="hint"> Add a new task
+      </p>
+      <p v-else class="hint">
+        First you need to create a project to add tasks to
+      </p>
+    </Card>
 
   </div>
 </template>
 
 <script>
 import status from '../constants/status.js'
+import Card from '../components/general/Card'
 import TaskItem from '../components/TaskItem'
 
 export default {
   name: 'TasksList',
   components: {
+    Card,
     TaskItem
   },
   computed: {

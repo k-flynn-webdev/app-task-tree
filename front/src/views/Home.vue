@@ -19,25 +19,54 @@
 
     </div>
 
-    <ProjectsList v-if="isProjects" @showTasks="showTasks" />
+    <Card v-if="!validUser" class="max-30 intro-text">
+      <p class="intro-text__title"> Welcome to MiniTask </p>
+      <p class="intro-text__desc"> A simple fast and easy shareable todo list. </p>
+      <p class="intro-text__desc-2"> To get started, choose an account option from below. </p>
 
-    <TasksList v-if="isTasks" />
+      <div class="flex-row flex-between intro-text__buttons">
+        <router-link
+          class="text-bold color-fore"
+          to="/user/login">
+          Login
+        </router-link>
+        <router-link
+          class="text-bold color-fore"
+          to="/user/create">
+          Create
+        </router-link>
+        <button class="intro-text__anon"
+                @click="createAnonUser">
+          Try
+        </button>
+      </div>
+
+    </Card>
+
+    <div v-else>
+      <ProjectsList v-if="isProjects" @showTasks="showTasks" />
+
+      <TasksList v-if="isTasks" />
+
+    </div>
 
   </div>
 </template>
 
 <script>
 import modes from '../constants/modes'
+import Card from '../components/general/Card'
 import InputBar from '../components/InputBar'
 import UserInfoMini from '../components/UserInfoMini'
+import TasksList from '../components/TasksList'
 import ProjectsList from '../components/ProjectsList'
 import ProjectInfoName from '../components/ProjectInfoName'
 import ProjectTaskSwitch from '../components/ProjectTaskSwitch'
-import TasksList from '../components/TasksList'
 
 export default {
   name: 'Home',
   components: {
+    Card,
     InputBar,
     UserInfoMini,
     ProjectsList,
@@ -71,6 +100,23 @@ export default {
   methods: {
     showTasks: function () {
       this.mode = modes.TASKS
+    },
+    createAnonUser: function () {
+      const userTmp = this.$store.getters['user/user']
+      let initPromise = Promise.resolve(userTmp)
+
+      if (userTmp && userTmp.id < 0) {
+        initPromise = this.$store.dispatch('user/createAnon')
+      }
+
+      return initPromise
+        .then(user => {
+          return this.$store.dispatch('projects/getProjectsByUserId',
+            { user: user.id })
+        })
+        .catch(err => {
+          this.$store.commit('toasts/toastAdd', err)
+        })
     }
   }
 }

@@ -11,20 +11,12 @@ new Vue({
   store,
   render: h => h(App),
   created () {
-    // const userTmp = this.$store.getters['user/user']
-    // let initPromise = Promise.resolve(userTmp)
+    const userFound = this.$store.getters['user/user']
+    if (userFound.id < 0) return
 
-    // if (userTmp && userTmp.id < 0) {
-    //   initPromise = this.$store.dispatch('user/createAnon')
-    // }
-    //
-    // return initPromise
-    //   .then(user => {
-    //     return this.$store.dispatch('projects/getProjectsByUserId',
-    //       { user: user.id })
-    //   })
-    //   .catch(err => {
-    //     this.$store.commit('toasts/toastAdd', err)
-    //   })
+    return this.$store.dispatch('projects/getProjectsByUserId',
+      { user: userFound.id })
+      .then(() => {})
+      .catch(err => this.$store.commit('toasts/toastAdd', err))
   }
 }).$mount('#app')

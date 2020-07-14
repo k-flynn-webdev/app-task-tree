@@ -15,6 +15,36 @@
 }
 
 .task {
+  .intro-text {
+    p {
+      word-break: break-word;
+      margin-bottom: $margin-default;
+    }
+
+    button {
+      background-color: $color-success;
+    }
+
+    &__title {
+      text-align: center;
+      font-size: $font-size-md;
+    }
+
+    &__buttons {
+      margin-top: $margin-default * 1.6;
+
+      button {
+        min-width: $unit-default * 3.5;
+      }
+
+      a,
+      button {
+        margin: $margin-default;
+        margin-bottom: 0;
+      }
+    }
+  }
+
   &.max-screen-size {
     overflow: hidden;
     max-width: 97vw;
@@ -22,7 +52,7 @@
   }
 
   .hint {
-    margin: $margin-default * 2 $margin-default;
+    margin: $margin-default;
   }
 
   &__header,
