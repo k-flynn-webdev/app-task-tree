@@ -21,8 +21,8 @@
 
     <Card v-if="!validUser" class="max-30 intro-text">
       <p class="intro-text__title"> Welcome to MiniTask </p>
-      <p class="intro-text__desc"> A simple fast and easy shareable todo list. </p>
-      <p class="intro-text__desc-2"> To get started, choose an account option from below. </p>
+      <p class="intro-text__desc1"> A simple, fast, easy and shareable todo list. </p>
+      <p class="intro-text__desc2"> To get started, choose a account option from below. </p>
 
       <div class="flex-row flex-between intro-text__buttons">
         <router-link
@@ -40,6 +40,18 @@
           Try
         </button>
       </div>
+
+    </Card>
+
+    <Card v-if="!validUser" class="max-30 intro-text">
+      <p class="intro-text__title"> Features: </p>
+
+      <ul>
+        <li> No need for an account </li>
+        <li> A quick overview of progress </li>
+        <li> Share projects with others </li>
+        <li> Works on Mobile and Desktop </li>
+      </ul>
 
     </Card>
 

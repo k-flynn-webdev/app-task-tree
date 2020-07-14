@@ -16,18 +16,31 @@
 
 .task {
   .intro-text {
-    p {
+    p,
+    ul,
+    ol {
       word-break: break-word;
-      margin-bottom: $margin-default;
     }
 
     button {
       background-color: $color-success;
     }
 
+    ul,
+    ol {
+      list-style: disc outside;
+      margin-left: $margin-default;
+      padding-left: $margin-default;
+    }
+
+    li {
+      margin-bottom: $margin-default * 0.5;
+    }
+
     &__title {
       text-align: center;
       font-size: $font-size-md;
+      margin-bottom: $margin-default;
     }
 
     &__buttons {
