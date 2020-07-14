@@ -5,7 +5,7 @@
       <slot></slot>
     </div>
 
-    <div class="card__footer flex-row flex-between">
+    <div v-if="hasFooterSlot" class="card__footer flex-row flex-between">
       <slot name="footer"></slot>
     </div>
 
@@ -14,6 +14,11 @@
 
 <script>
 export default {
-  name: 'Card'
+  name: 'Card',
+  computed: {
+    hasFooterSlot: function () {
+      return !!this.$slots.footer
+    }
+  }
 }
 </script>
