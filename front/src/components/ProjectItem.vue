@@ -22,6 +22,7 @@ import helpers from '../services/Helpers'
 import general from '../constants/general'
 import status from '../constants/status.js'
 import RowItem from './general/RowItem'
+import Paths from '../constants/paths'
 
 export default {
   name: 'ProjectItem',
@@ -50,7 +51,13 @@ export default {
       this.$store.commit('projects/projectCurrent', this.data)
     },
     onShowTasks: function () {
-      this.$emit('show-tasks')
+      // this.$emit('show-tasks')
+      this.$router.push({
+        name: Paths.PROJECT_TASKS,
+        params: {
+          project: this.data.id
+        }
+      })
     },
     /**
      * Consume confirm event of row component
