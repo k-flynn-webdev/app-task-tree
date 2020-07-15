@@ -9,22 +9,17 @@
 
 // todo in future add pagination data obj here ..
 
-function Exit(res, status, message, data= {}, notify) {
+function Exit(res, status, message, data, notify ) {
 
-  if (process.env.NODE_ENV === 'test')
-   return ({
-    status: status,
-    message: message,
-    data: data,
-    notify: notify
-  })
+  let tmpMsg = {
+    status: message.status || status,
+    message: message.message || message
+  }
 
-  return res.status(status).json({
-    status: status,
-    message: message,
-    data: data,
-    notify: notify
-  })
+  if (tmpMsg.status < 400) tmpMsg.data = data
+  if (notify) tmpMsg.notify = notify
+
+  return res.status(tmpMsg.status).json(tmpMsg)
 }
 
 module.exports = Exit

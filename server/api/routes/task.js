@@ -7,6 +7,12 @@ const token = require('../../services/token.service.js')
 const mysqlVal = require('../../helpers/MYSQL_value.js')
 const prepareMiddle = require('../middlewares/prepare.js')
 const constants = require('../../constants/index')
+// business
+const taskCreateLogic = require('../../logic/task.create.js')
+const taskUpdateLogic = require('../../logic/task.update.js')
+const taskDeleteLogic = require('../../logic/task.delete.js')
+
+
 
 // todo
 //    add passive token check, & if theres a user
@@ -17,112 +23,106 @@ module.exports = function (app) {
   /**
    * Create a task & return
    */
-  app.post(constants.paths.API_TASK_CREATE, taskMiddle.Create, prepareMiddle,
+  app.post(constants.paths.API_TASK_CREATE,
+    taskMiddle.Create,
+    prepareMiddle,
     function (req, res) {
     // todo check for user token and integrate
 
-    task.Create(req.body)
-    .then(({ insertId }) => task.GetTaskByID(insertId))
-    .then(newTask => mysqlVal(newTask))
-    .then(taskObj => {
-      app.emit(constants.events.UPDATE_PROGRESS_PROJECT,
-        { project: taskObj.project })
-
-      logger.Log('Task created, id: ' + taskObj.id, req)
-      exit(res, 200,
-        constants.messages.SUCCESS_CREATED_TASK,
-          { task: task.SafeExport(taskObj) })
-    })
-    .catch(err => {
-      logger.Log(err.message || err, req)
-      exit(res, 401, 'error', err.message || err)
-    })
+      taskCreateLogic(req.body, app)
+      .then(taskObj => {
+        logger.Log('Task created, id: ' + taskObj.id, req)
+        exit(res, 201,
+          constants.messages.SUCCESS_CREATED_TASK,
+            { task: taskObj })
+      })
+      .catch(err => {
+        logger.Log(err.message || err, req)
+        exit(res, 400, err || 'error')
+      })
   })
 
   /**
    * Update a task by id
    */
-  app.patch(constants.paths.API_TASK, taskMiddle.Update, taskMiddle.HasParam,
-    prepareMiddle, function (req, res) {
+  app.patch(constants.paths.API_TASK(),
+    taskMiddle.HasParam,
+    taskMiddle.Update,
+    prepareMiddle,
+    function (req, res) {
 
       let updateData = Object.assign(
       { id: req.params.task }, req.body)
     // todo check for user token and integrate
 
-    task.Update(updateData)
-    .then(() => task.GetTaskByID(req.body.id))
-      // todo if setting isDone (true|false) we need to update project isDone progress count!!
+    taskUpdateLogic(updateData, app)
     .then(taskObj => {
-      let taskObjTmp = mysqlVal(taskObj)
-
-      if (has.hasAnItem(req.body.isDone)) {
-        app.emit(constants.events.UPDATE_PROGRESS_PROJECT,
-          { project: taskObjTmp.project })
-      }
-
-      logger.Log('Task updated, id: ' + taskObjTmp.id, req)
-      exit(res, 200,
+      logger.Log('Task updated, id: ' + taskObj.id, req)
+      exit(res, 202,
         constants.messages.SUCCESS_UPDATED_TASK,
-        { task: task.SafeExport(taskObjTmp) })
+        { task: taskObj })
     })
     .catch(err => {
       logger.Log(err.message || err, req)
-      exit(res, 401, 'error', err.message || err)
+      exit(res, 400, err || 'error')
     })
   })
 
   /**
    * Delete a task by id
    */
-  app.delete(constants.paths.API_TASK, taskMiddle.HasParam,
-    prepareMiddle, function (req, res) {
+  app.delete(constants.paths.API_TASK(),
+    taskMiddle.HasParam,
+    prepareMiddle,
+    function (req, res) {
 
       // todo this will need securing so
       //  random peeps can't delete other items
       //  check for user token and integrate
-      let taskObjTmp = null
 
-      task.GetTaskByID(req.params.task)
+      taskDeleteLogic({ id: req.params.task }, app)
       .then(taskObj => {
-        taskObjTmp = mysqlVal(taskObj)
-        return task.Delete(req.params.task)
-      })
-      .then(() => {
-        app.emit(constants.events.UPDATE_PROGRESS_PROJECT,
-          { project: taskObjTmp.project })
-
-        logger.Log('Task deleted, id: ' + req.params.task, req)
-        exit(res, 200,
+        logger.Log('Task deleted, id: ' + taskObj.id, req)
+        exit(res, 202,
           constants.messages.SUCCESS_DELETED_TASK)
       })
       .catch(err => {
         logger.Log(err.message || err, req)
-        exit(res, 401, 'error', err.message || err)
+        exit(res, 400, err || 'error')
       })
     })
 
   /**
    * Get task by id query
    */
-  app.get(constants.paths.API_TASK, taskMiddle.HasParam, prepareMiddle,
+  app.get(constants.paths.API_TASK(),
+    taskMiddle.HasParam,
+    prepareMiddle,
     function (req, res) {
 
       task.GetTaskByID(req.params.task)
       .then(taskObj => {
+        if (!taskObj || taskObj.length < 1) {
+          return exit(res, 404,
+            constants.errors.TASK_NOT_FOUND)
+        }
+
         exit(res, 200,
           constants.messages.SUCCESS,
           { task: task.SafeExport(mysqlVal(taskObj)) })
       })
       .catch(err => {
         logger.Log(err.message || err, req)
-        exit(res, 401, 'error', err.message || err)
+        exit(res, 400, err || 'error')
       })
     })
 
   /**
    * Get all tasks by user/project id query
    */
-  app.get(constants.paths.API_TASKS, taskMiddle.HasUserOrProject, prepareMiddle,
+  app.get(constants.paths.API_TASKS,
+    taskMiddle.HasUserOrProject,
+    prepareMiddle,
     function (req, res) {
 
       // todo check for user token and integrate
@@ -149,7 +149,7 @@ module.exports = function (app) {
       })
       .catch(err => {
         logger.Log(err.message || err, req)
-        exit(res, 401, 'error', err.message || err)
+        exit(res, 400, err || 'error')
       })
     })
 

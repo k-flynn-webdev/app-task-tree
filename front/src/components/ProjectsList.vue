@@ -13,20 +13,24 @@
 
     </transition-group>
 
-    <div v-if="projects.length < 1"
-      class="text-center">
-      <p class="hint"> Start by creating a new project to add tasks to </p>
-    </div>
+    <Card v-if="projects.length < 1"
+          class="text-center">
+      <p class="hint">
+        Start by creating a new project to add tasks to
+      </p>
+    </Card>
 
   </div>
 </template>
 
 <script>
+import Card from '../components/general/Card'
 import ProjectItem from '../components/ProjectItem'
 
 export default {
   name: 'ProjectsList',
   components: {
+    Card,
     ProjectItem
   },
   computed: {

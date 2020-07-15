@@ -4,12 +4,12 @@
     <form class="relative" @submit.prevent="submitInput">
 
       <StatusBar :status="status" />
-      <input type="text"
-             required
+      <input required
+             type="text"
+             minlength="4"
              ref="itemInput"
              v-model="input"
-             minlength="4"
-             :class="[ status, isDisabled? 'DISABLED': '' ]"
+             :class="[ status, isDisabled? 'DISABLED': '', isEnabled? '': 'DISABLED' ]"
              :placeholder="placeHolder"
              @input="resetStatus">
 
@@ -44,6 +44,10 @@ export default {
     mode: {
       type: String,
       default: status.CLEAR
+    },
+    isEnabled: {
+      type: Boolean,
+      default: true
     }
   },
   data () {

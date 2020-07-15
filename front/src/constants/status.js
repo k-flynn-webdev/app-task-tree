@@ -5,6 +5,9 @@ const DISABLED = 'DISABLED'
 const ERROR = 'ERROR'
 const OPEN = 'OPEN'
 const CLOSE = 'CLOSE'
+const ANON = 'anon'
+const USER = 'user'
+const ADMIN = 'admin'
 const COMPLETE = 'COMPLETE'
 const SELECT = 'SELECT'
 const RESET = 'RESET'
@@ -25,6 +28,9 @@ export default {
   SELECT,
   COMPLETE,
   VALUE,
+  ANON,
+  USER,
+  ADMIN,
   INPUT,
   EDIT,
   CLICK

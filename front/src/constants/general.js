@@ -4,10 +4,19 @@ const DELAY_BLIP = 33
 const DELAY_SUCCESS = 900
 const DELAY_ERROR = 6000
 
+const DEFAULT_USER = () => {
+  return {
+    id: -1,
+    name: '',
+    email: '',
+    role: ''
+  }
+}
+
 const DEFAULT_PROJECT = (user = -1) => {
   return {
     id: -1,
-    name: 'Project',
+    name: 'New Project',
     user: user,
     tasksDone: 0,
     tasksTotal: 0,
@@ -18,7 +27,7 @@ const DEFAULT_PROJECT = (user = -1) => {
 
 const DEFAULT_PROJECT_NO_ID = (user = -1) => {
   return {
-    name: 'Project',
+    name: 'New Project',
     user: user,
     tasksDone: 0,
     tasksTotal: 0,
@@ -30,7 +39,7 @@ const DEFAULT_PROJECT_NO_ID = (user = -1) => {
 const DEFAULT_TASK = (user = -1) => {
   return {
     id: -1,
-    text: 'Task',
+    text: 'New Task',
     project: -1,
     user: user,
     isDone: false
@@ -45,5 +54,6 @@ export default {
   DELAY_ERROR,
   DEFAULT_PROJECT,
   DEFAULT_PROJECT_NO_ID,
-  DEFAULT_TASK
+  DEFAULT_TASK,
+  DEFAULT_USER
 }

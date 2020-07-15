@@ -1,6 +1,15 @@
 const HOME = 'home'
+const TASKS = 'tasks'
 const TASK = 'task'
+const PROJECTS = 'projects'
+const PROJECT = 'project'
+
+const PROJECT_TASKS = 'project.tasks'
+
 const USER = 'user'
+const USER_CREATE = 'user.create'
+const USER_LOGIN = 'user.login'
+const USER_LOGOUT = 'user.logout'
 
 // export const TASK_GET = ''
 //
@@ -17,7 +26,14 @@ const USER = 'user'
 export default {
   HOME,
   USER,
-  TASK
+  USER_CREATE,
+  USER_LOGIN,
+  USER_LOGOUT,
+  TASK,
+  TASKS,
+  PROJECT,
+  PROJECTS,
+  PROJECT_TASKS
 //   USER_CREATE: USER_CREATE,
 //   USER_LOGIN: USER_LOGIN,
 //   USER_PANEL: USER_PANEL,

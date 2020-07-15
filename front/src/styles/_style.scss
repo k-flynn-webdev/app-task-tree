@@ -1,3 +1,7 @@
+body {
+  overflow-x: hidden;
+}
+
 #app {
   margin: $margin-default;
 
@@ -15,14 +19,156 @@
 }
 
 .task {
-  &.max-screen-size {
+  position: relative;
+
+  .settings {
+    position: relative;
+
+    &__btn {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      z-index: 5;
+      margin: 0;
+      padding: 0;
+
+      &.is-close:focus {
+        border-color: transparent;
+        outline: none;
+      }
+    }
+
+    &__fullscreen-click {
+      position: fixed;
+      top: -2em;
+      left: -2em;
+      right: -2em;
+      bottom: -2em;
+      z-index: 3;
+      pointer-events: all;
+    }
+
+    &__holder {
+      color: $color-bg;
+      background-color: $color-fore;
+      padding: $margin-default;
+      border-radius: $border-radius;
+      position: absolute;
+      z-index: 4;
+      top: 0;
+      right: 0;
+      max-width: $unit-default * 15;
+      min-width: $unit-default * 15;
+
+      @mixin screen-float {
+        position: relative;
+        top: unset;
+        right: unset;
+        margin: 0;
+        margin-top: $margin-default;
+        margin-bottom: $margin-default * 2;
+        min-width: unset;
+        max-width: unset;
+      }
+
+      @include screen-xs {
+        @include screen-float;
+      }
+
+      @include screen-sm {
+        @include screen-float;
+      }
+
+      @include screen-md {
+        @include screen-float;
+      }
+
+      ul {
+        margin-right: $unit-default * 2;
+      }
+
+      .button {
+        cursor: pointer;
+      }
+
+      a,
+      p,
+      li,
+      .button {
+        display: block;
+        margin: 0;
+        padding: $margin-default * 0.33 0;
+        margin-bottom: $margin-default * 0.5;
+        color: $color-bg;
+        font-weight: bolder;
+        text-decoration: none;
+      }
+
+      li {
+        border-bottom: solid $border-size rgba($color-bg, $color-alpha);
+      }
+
+      ul {
+        a,
+        p,
+        button {
+          margin-left: $margin-default;
+        }
+      }
+    }
+  }
+
+  .intro-text {
+    p,
+    ul,
+    ol {
+      word-break: break-word;
+    }
+
+    button {
+      background-color: $color-success;
+    }
+
+    ul,
+    ol {
+      list-style: disc outside;
+      margin-left: $margin-default;
+      padding-left: $margin-default;
+    }
+
+    li {
+      margin-bottom: $margin-default * 0.5;
+    }
+
+    &__title {
+      text-align: center;
+      font-size: $font-size-md;
+      margin-bottom: $margin-default;
+    }
+
+    &__buttons {
+      margin-top: $margin-default * 1.6;
+
+      button {
+        min-width: $unit-default * 3.5;
+      }
+
+      a,
+      button {
+        margin: $margin-default;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &.show-toast {
     overflow: hidden;
-    max-width: 97vw;
-    max-height: 97vh;
+    max-width: 99vw;
+    max-height: 99vh;
   }
 
   .hint {
-    margin: $margin-default * 2 $margin-default;
+    margin: $margin-default;
   }
 
   &__header,

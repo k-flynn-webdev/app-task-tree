@@ -9,12 +9,14 @@ const exit = require('../../services/exit.js')
  * @returns   {boolean}
  */
 function validEmail(input) {
-  let emailTmp = input.trim()
-  let tmp = emailTmp.split('@')
-  if (emailTmp.length < 5 || tmp.length < 2) return false
-  let domainStop = tmp[1].indexOf('.')
-  return (domainStop > 0 && domainStop < tmp[1].length - 1)
+    let emailTmp = input.trim()
+    let tmp = emailTmp.split('@')
+    if (emailTmp.length < 5 || tmp.length < 2) return false
+    let domainStop = tmp[1].indexOf('.')
+    return (domainStop > 0 && domainStop < tmp[1].length - 1)
 }
+
+exports.validEmail = validEmail
 
 /**
  * Ensures email property to exist
@@ -25,7 +27,7 @@ function validEmail(input) {
  */
 function required(req, res) {
   if (!has.hasAnItem(req.body.email)) {
-    exit(res, 422, missing('email'))
+    exit(res, 400, missing('email'))
     return false
   }
 
@@ -43,8 +45,8 @@ exports.required = required
  */
 function valid(req, res) {
   if (has.hasAnItem(req.body.email)) {
-    if (validEmail(req.body.email)) {
-      exit(res, 422, 'The email must be valid.')
+    if (!validEmail(req.body.email)) {
+      exit(res, 400, 'The email must be valid.')
       return false
     }
   }
@@ -63,10 +65,16 @@ exports.valid = valid
  */
 function HasParam(req, res) {
   if (!has.hasAnItem(req.params.email)) {
+    exit(res, 400, 'Missing email parameter.')
     return false
   }
 
-  return validEmail(req.params.email)
+  if (!validEmail(req.params.email)) {
+    exit(res, 400, 'The email parameter must be valid.')
+    return false
+  }
+
+  return true
 }
 
 exports.HasParam = HasParam

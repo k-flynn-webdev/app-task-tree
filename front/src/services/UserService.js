@@ -7,13 +7,14 @@ const USER_PAYLOAD = 'user_payload'
 function setUser (res) {
   if (res.data &&
     res.data.data &&
-    res.data.data.account) {
+    res.data.data.account &&
+    res.data.data.account.id) {
     localStorage.setItem(USER_PAYLOAD,
       JSON.stringify(res.data.data.account))
     return res
   }
 
-  localStorage.setItem(USER_PAYLOAD, '')
+  localStorage.removeItem(USER_PAYLOAD)
   return res
 }
 
@@ -41,7 +42,7 @@ function applyToken (res) {
     return res
   }
 
-  localStorage.setItem(USER_TOKEN, null)
+  localStorage.removeItem(USER_TOKEN)
   removeAuth()
   return res
 }
@@ -76,8 +77,13 @@ function create (input) {
     .then(res => setUser(res))
 }
 
-function createAnon (input) {
-  return Http.post('/api/user/anon', input)
+function createAnon () {
+  return Http.post('/api/user/anon')
+    .then(res => setUser(res))
+}
+
+function createUpgrade (input) {
+  return Http.post(`/api/user/upgrade/${input.id}`, input)
     .then(res => setUser(res))
 }
 
@@ -88,7 +94,7 @@ function login (input) {
 }
 
 function logout () {
-  return Http.post('/api/user/logout')
+  return Http.get('/api/user/logout')
     .then(res => applyToken(res))
     .then(res => setUser(res))
 }
@@ -120,6 +126,7 @@ function verify (input) {
 const services = {
   create: create,
   createAnon: createAnon,
+  createUpgrade: createUpgrade,
   login: login,
   logout: logout,
   update: update,

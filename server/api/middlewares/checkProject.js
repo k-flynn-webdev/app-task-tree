@@ -11,7 +11,7 @@ const exit = require('../../services/exit.js')
  */
 function required(req, res) {
   if (!has.hasAnItem(req.body.project)) {
-    exit(res, 422, missing('project'))
+    exit(res, 400, missing('project'))
     return false
   }
 
@@ -30,12 +30,12 @@ exports.required = required
 function valid(req, res) {
   if (has.hasAnItem(req.body.project)) {
     if (!has.isANumber(req.body.project)) {
-      exit(res, 422, 'The project must be valid.')
+      exit(res, 400, 'The project must be valid.')
       return false
     }
 
     if (req.body.project < 0) {
-      exit(res, 422, 'The project must be valid.')
+      exit(res, 400, 'The project must be valid.')
       return false
     }
   }
@@ -54,10 +54,16 @@ exports.valid = valid
  */
 function HasParam(req, res) {
   if (!has.hasAnItem(req.params.project)) {
+    exit(res, 400, 'Missing project parameter.')
     return false
   }
 
-  return has.isANumber(req.params.project)
+  if (!has.isANumber(req.params.project)) {
+    exit(res, 400, 'The project parameter must be valid.')
+    return false
+  }
+
+  return true
 }
 
 exports.HasParam = HasParam

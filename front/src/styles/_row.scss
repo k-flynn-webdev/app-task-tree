@@ -32,6 +32,12 @@
         border-radius: $border-radius;
 
         &__content {
+          p,
+          span,
+          small {
+            margin-left: 0;
+          }
+
           display: flex;
           align-items: flex-start;
           flex-direction: row;
@@ -53,7 +59,6 @@
           &-progress {
             align-self: center;
             word-break: keep-all;
-            margin-right: $margin-default;
 
             @include screen-xs {
               display: none;
@@ -70,7 +75,7 @@
               display: none;
               text-align: right;
               word-break: keep-all;
-              margin-left: $margin-default;
+              margin-right: 0;
             }
 
             &-md {

@@ -7,7 +7,9 @@ const constants = require('../constants/index')
 
 function Init(app) {
   app.on(constants.events.UPDATE_PROGRESS_PROJECT,
-    UpdateProjectProgress)
+    UpdateProject)
+
+  return UpdateProject
 }
 
 module.exports = Init
@@ -18,23 +20,21 @@ module.exports = Init
  *
  * @param id
  */
-function UpdateProjectProgress ({ project }) {
+function UpdateProject ({ project }) {
   return tasks.GetTasksByProject(project)
   .then(allTasks => {
-      const projectUpdate = {
+      const prjUpd = {
         id: project,
         tasksTotal: allTasks.length,
         tasksDone: allTasks.filter(item => item.isDone === 1).length,
         isDone: false
       }
 
-      if (projectUpdate.tasksDone === projectUpdate.tasksTotal) {
-        if (projectUpdate.tasksTotal > 0){
-          projectUpdate.isDone = true
-        }
-      }
+    if (prjUpd.tasksTotal > 0){
+      prjUpd.isDone = (prjUpd.tasksDone === prjUpd.tasksTotal)
+    }
 
-     return projects.Update(projectUpdate)
+     return projects.Update(prjUpd)
   })
   .catch(err => {
     logger.Log(err)

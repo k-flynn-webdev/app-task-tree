@@ -23,7 +23,7 @@ function validTaskText(input) {
  */
 function required(req, res) {
   if (!has.hasAnItem(req.body.text)) {
-    exit(res, 422, missing('text'))
+    exit(res, 400, missing('text'))
     return false
   }
 
@@ -42,7 +42,7 @@ exports.required = required
 function valid(req, res) {
   if (has.hasAnItem(req.body.text)) {
     if (!validTaskText(req.body.text.trim())) {
-      exit(res, 422,
+      exit(res, 400,
         `The task text must be at least ${TEXT_LENGTH} characters long.`)
       return false
     }

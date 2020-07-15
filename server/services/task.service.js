@@ -12,6 +12,8 @@ const DB_READY_TASKS = 'db-ready-tasks'
 const DB_SHOW_TASKS = 'SELECT * FROM tasks ORDER BY updated DESC'
 const DB_CREATE_TASK = 'INSERT INTO tasks SET ?'
 const DB_DELETE_TASK_BY_ID = 'DELETE FROM tasks WHERE id = ?'
+const DB_DELETE_TASKS_BY_USER = 'DELETE FROM tasks WHERE user = ?'
+const DB_DELETE_TASKS_BY_PROJECT = 'DELETE FROM tasks WHERE project = ?'
 const DB_GET_TASK_BY_ID = 'SELECT * FROM tasks WHERE id = ?'
 const DB_GET_TASK_BY_USER = 'SELECT * FROM tasks WHERE user = ? ORDER BY updated DESC'
 const DB_GET_TASK_BY_PROJECT = 'SELECT * FROM tasks WHERE project = ? ORDER BY updated DESC'
@@ -38,6 +40,21 @@ const DB_CREATE_TASKS_TABLE = 'CREATE TABLE tasks ' +
   'isDone bool default FALSE, ' +
   'doneDate DATETIME) ' +
   'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci'
+
+ALL_QUERIES = {
+  DB_SHOW_TASKS,
+  DB_CREATE_TASK,
+  DB_DELETE_TASK_BY_ID,
+  DB_DELETE_TASKS_BY_USER,
+  DB_DELETE_TASKS_BY_PROJECT,
+  DB_GET_TASK_BY_ID,
+  DB_GET_TASK_BY_USER,
+  DB_GET_TASK_BY_PROJECT,
+  DB_GET_TASK_BY_IS_DONE,
+  DB_GET_TASK_BY_IS_DONE_DATE
+}
+
+exports.ALL_QUERIES = ALL_QUERIES
 
 function InitTasks() {
   return db.InitTable(DB_TASKS, DB_CREATE_TASKS_TABLE, DB_READY_TASKS)
@@ -76,7 +93,6 @@ exports.Create = Create
  * @return  {object}  task object
  */
 function Update({ id, text, project, user, isDone }) {
-
   const JOIN_CHAR = ','
   let tmpSQLVars = []
   let tmpSQLStart = 'UPDATE ' + DB_TASKS + DB_SET
@@ -169,6 +185,30 @@ function GetTasksByProject(project) {
 }
 
 exports.GetTasksByProject = GetTasksByProject
+
+/**
+ * Deletes all task objects from the db via user id
+ *
+ * @param   {int}     user
+ * @return  {array}   task object
+ */
+function DeleteTasksByUser(user) {
+  return db.Query(DB_DELETE_TASKS_BY_USER, [user])
+}
+
+exports.DeleteTasksByUser = DeleteTasksByUser
+
+/**
+ * Deletes all task objects from the db via project id
+ *
+ * @param   {int}     project
+ * @return  {array}   task object
+ */
+function DeleteTasksByProject(project) {
+  return db.Query(DB_DELETE_TASKS_BY_PROJECT, [project])
+}
+
+exports.DeleteTasksByProject = DeleteTasksByProject
 
 /**
  * Returns all task objects from the db if found via user

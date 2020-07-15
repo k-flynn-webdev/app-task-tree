@@ -11,7 +11,7 @@ const ERROR = 'error'
 const DB_USERS = 'users'
 const DB_READY = 'db-ready'
 const DB_READY_USERS = 'db-ready-users'
-const DB_SHOW_USERS = 'SELECT * FROM users'
+const DB_SHOW_USERS = 'SELECT * FROM users ORDER BY created DESC'
 const DB_CREATE_USER = 'INSERT INTO users SET ?'
 const DB_GET_USER_BY_ID = 'SELECT * FROM users WHERE id = ?'
 const DB_DELETE_USER_BY_ID = 'DELETE FROM users WHERE id = ?'
@@ -43,14 +43,27 @@ const DB_CREATE_USERS_TABLE = 'CREATE TABLE users ' +
   'recover VARCHAR(50) null) ' +
   'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci'
 
+ALL_QUERIES = {
+  DB_READY_USERS,
+  DB_SHOW_USERS,
+  DB_CREATE_USER,
+  DB_GET_USER_BY_ID,
+  DB_DELETE_USER_BY_ID,
+  DB_GET_USER_BY_EMAIL,
+  DB_GET_USER_BY_VERIFY,
+  DB_GET_USER_BY_RECOVER
+}
+
+exports.ALL_QUERIES = ALL_QUERIES
+
 function InitUsers() {
   return db.InitTable(DB_USERS, DB_CREATE_USERS_TABLE, DB_READY_USERS)
 }
 
 function CheckUsers() {
-  return GetAllUser()
+  return GetAllUsers()
   .then((items) => {
-    const anonUsers = items.filter(item => item.name === constants.vars.ANON).length
+    const anonUsers = items.filter(item => item.name === constants.roles.ANON).length
     const normalUsers = items.length - anonUsers
     logger.Log( 'Users found')
     logger.Log( ` \t anon: \t ${anonUsers}`)
@@ -71,9 +84,9 @@ exports.Init = Init
  * @param   {object}  user data
  * @return  {object}  user object
  */
-function Create({ name, email, password }) {
+function Create({ name, email, password, verify= null ,role=constants.roles.USER }) {
   return CreatePassword(password)
-  .then((hash) => db.Query(DB_CREATE_USER, { name, email, password: hash }))
+  .then((hash) => db.Query(DB_CREATE_USER, { name, email, password: hash, role, verify }))
 }
 
 exports.Create = Create
@@ -94,42 +107,50 @@ function Update({ id, name, email, role, password, verify, recover, login }) {
     return tmpSQLStart + tmpSQLCommand.join(JOIN_CHAR) + DB_WHERE
   }
 
-  if (login) {
+  if (has.hasAnItem(login)) {
     tmpSQLCommand.push(DB_SET_LOGIN)
     tmpSQLVars.push(new Date())
     tmpSQLVars.push(id)
     return db.Query(CreateSQLQuery(), tmpSQLVars)
   }
 
-  if (name) {
+  if (has.hasAnItem(name)) {
     tmpSQLCommand.push(DB_SET_NAME)
     tmpSQLVars.push(name.trim())
   }
 
-  if (email) {
+  if (has.hasAnItem(email)) {
     tmpSQLCommand.push(DB_SET_EMAIL)
     tmpSQLVars.push(email)
   }
 
-  if (role) {
+  if (has.hasAnItem(role)) {
     tmpSQLCommand.push(DB_SET_ROLE)
     tmpSQLVars.push(role)
   }
 
-  if (verify) {
+  if (has.hasAnItem(verify)) {
     tmpSQLCommand.push(DB_SET_VERIFY)
-    tmpSQLVars.push(verify.trim())
+    if (!verify) {
+      tmpSQLVars.push(undefined)
+    } else {
+      tmpSQLVars.push(verify.trim())
+    }
   }
 
-  if (recover) {
+  if (has.hasAnItem(recover)) {
     tmpSQLCommand.push(DB_SET_RECOVER)
-    tmpSQLVars.push(recover.trim())
+    if (!recover) {
+      tmpSQLVars.push(undefined)
+    } else {
+      tmpSQLVars.push(recover.trim())
+    }
   }
 
   tmpSQLCommand.push(DB_SET_UPDATED)
   tmpSQLVars.push(new Date())
 
-  if (!password) {
+  if (!has.hasAnItem(password)) {
     tmpSQLVars.push(id)
     return db.Query(CreateSQLQuery(), tmpSQLVars)
   } else {
@@ -158,16 +179,15 @@ function Delete(id) {
 exports.Delete = Delete
 
 /**
- * Returns a jsonweb token object from a user object
+ * Returns all users from the db
  *
- * @param   {object}  user  user data
- * @return  {string}  token string
+ * @return  {Array}  all users found
  */
-function GetAllUser() {
+function GetAllUsers() {
   return db.Query(DB_SHOW_USERS)
 }
 
-exports.GetAllUser = GetAllUser
+// exports.GetAllUsers = GetAllUsers
 
 /**
  * Returns a user object from the db if found via id int
@@ -243,12 +263,12 @@ function ComparePassword(input, dbHash) {
   return bcrypt.compare(config.secure.hash + input, dbHash)
   .then(passwordTest => {
     if (!passwordTest) {
-      throw new Error(constants.errors.PASSWORD_INCORRECT)
+      throw { status: 403,
+        message: constants.errors.PASSWORD_INCORRECT }
     }
 
     return Promise.resolve(true)
   })
-  .catch(err => Promise.reject(err))
 }
 
 exports.ComparePassword = ComparePassword
@@ -285,7 +305,8 @@ function SafeExport(userData, meta = false) {
       login: userData.login,
       created: userData.created,
       updated: userData.updated,
-      verified: userData.verify.length < 1
+      verified: userData.verify.length < 1 &&
+        userData.recover.length
     }
   }
 

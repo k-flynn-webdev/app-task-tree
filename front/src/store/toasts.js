@@ -2,14 +2,25 @@ import Vue from 'vue'
 
 let msgId = -1
 let timerObj = null
-const defaultToastTime = 10
+const defaultToastTime = 4
 const timerDelay = 1000
 
+/**
+ * Create a toast to alert the user
+ *    options:
+ *      isTimed: true     will add a delayed self close,
+ *                        otherwise requires uer interaction
+ *      isError: true     will add error visual class
+ *
+ * @param input
+ */
 function createToast (input) {
   msgId += 1
   const title = input.title ? input.title : ''
-  const message = input.response && input.response && input.response.data
-    ? input.response.data.message : input.message
+  const messageAlt = input.data && input.data.message
+    ? input.data.message : input.message
+  const message = input.response && input.response.data
+    ? input.response.data.message : messageAlt
 
   let isError = true
   if (input.isError !== undefined) {

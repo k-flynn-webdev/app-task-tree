@@ -9,10 +9,11 @@ const DB_USE = 'USE '
 const DB_READY = 'db-ready'
 const DB_SHOW = 'SHOW DATABASES'
 const DB_CREATE = 'CREATE DATABASE '
-const DB_POST_SETTINGS = ' CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci '
 const DB_SHOW_TABLES = 'SHOW TABLES'
+const DB_POST_SETTINGS = ' CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci '
 
 let appTemp = null
+let connection = null
 
 function Init(app) {
   appTemp = app
@@ -25,7 +26,7 @@ function Init(app) {
     }
   })
  .then(() => {
-    return SelectDB()
+    return SelectDB(config.db.database)
  })
 }
 
@@ -46,7 +47,9 @@ function Query(search, params) {
 exports.Query = Query
 
 function Close() {
+  if (!connection) return
   connection.end()
+  logger.Log('db closed')
 }
 
 exports.Close = Close
@@ -77,7 +80,7 @@ exports.InitTable = InitTable
 
 function Connect() {
 
-  let connection = mysql.createConnection({
+  connection = mysql.createConnection({
     host: config.db.url,
     port: config.db.port,
     user: config.db.user,
@@ -90,6 +93,7 @@ function Connect() {
       logger.Log('Error connecting ' + err)
       errorHandler(err)
     }
+    logger.Log('db connected')
   })
 
   connection.on(ERROR, errorHandler)
@@ -107,19 +111,20 @@ function Connect() {
   return connection
 }
 
-let connection = null
+exports.Connect = Connect
+
 
 function errorHandler(err) {
   logger.Log('MySQL error ' + err)
   if (err.code === 'PROTOCOL_CONNECTION_LOST') {
     logger.Log('MySQL connection lost. Reconnecting.')
     connection = Connect()
-    return SelectDB()
+    return SelectDB(config.db.database)
   } else if (err.code === 'ECONNREFUSED') {
     logger.Log('MySQL connection refused. Trying again in 3 seconds.')
     setTimeout(function () {
       connection = Connect()
-      return SelectDB()
+      return SelectDB(config.db.database)
     }, 3000)
   }
 }
@@ -128,11 +133,15 @@ function CreateDB() {
   return Query(DB_CREATE + config.db.database + DB_POST_SETTINGS)
 }
 
-function SelectDB() {
-  return Query(DB_USE + config.db.database)
+function SelectDB(db) {
+  return Query(DB_USE + db)
   .then(() => logger.Log('	✅ DB connected : ' + config.db.database))
-  .then(() => appTemp.emit(DB_READY))
+  .then(() => {
+    if (appTemp) { appTemp.emit(DB_READY) }
+  })
 }
+
+exports.SelectDB = SelectDB
 
 function FindDB(dbExists) {
   dbExists = false
