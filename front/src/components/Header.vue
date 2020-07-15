@@ -3,7 +3,7 @@
 
     <div class="task__project__header">
 
-      <ProjectInfoName />
+      <ProjectInfoName :mode="mode" />
 
     </div>
 

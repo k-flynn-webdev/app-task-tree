@@ -1,8 +1,11 @@
 const HOME = 'home'
 const TASKS = 'tasks'
-const TASK = 'task/:task'
+const TASK = 'task'
 const PROJECTS = 'projects'
-const PROJECT = 'project/:project'
+const PROJECT = 'project'
+
+const PROJECT_TASKS = 'project.tasks'
+
 const USER = 'user'
 const USER_CREATE = 'user.create'
 const USER_LOGIN = 'user.login'
@@ -29,7 +32,8 @@ export default {
   TASK,
   TASKS,
   PROJECT,
-  PROJECTS
+  PROJECTS,
+  PROJECT_TASKS
 //   USER_CREATE: USER_CREATE,
 //   USER_LOGIN: USER_LOGIN,
 //   USER_PANEL: USER_PANEL,

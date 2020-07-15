@@ -56,7 +56,9 @@ export default {
     getTasksOfProject: function () {
       return this.$store.dispatch('tasks/getTasksByUserOrProject',
         { project: this.project.id })
-        .then(res => {
+        .then(() => {
+          const currentProj = this.$store.getters['projects/findProject'](this.project.id)
+          this.$store.commit('projects/projectCurrent', currentProj)
         })
         .catch(err => this.handleError(err))
     },

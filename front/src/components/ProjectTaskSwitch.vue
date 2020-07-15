@@ -18,6 +18,7 @@
 
 <script>
 import modes from '../constants/modes'
+import Paths from '../constants/paths'
 
 export default {
   name: 'ProjectTaskSwitch',
@@ -47,13 +48,18 @@ export default {
       if (this.isTasks) return
 
       this.$router.push({
-
+        name: Paths.PROJECT_TASKS,
+        params: {
+          project: this.project.id
+        }
       })
-
-      // this.$emit('input', modes.TASKS)
     },
     showProjects: function () {
-      // this.$emit('input', modes.PROJECTS)
+      if (this.isProjects) return
+
+      this.$router.push({
+        name: Paths.PROJECTS
+      })
     }
   }
 }

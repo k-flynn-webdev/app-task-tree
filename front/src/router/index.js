@@ -31,17 +31,17 @@ const routes = [
       }
     ]
   },
+  // todo route for project info only (not its tasks) / future
   {
-    path: '/project',
+    path: '/project/:project',
     component: Home,
-    props: { mode: modes.PROJECTS },
+    props: { mode: modes.TASKS },
     children: [
       {
-        path: ':project',
-        name: 'project',
+        path: '',
+        name: Paths.PROJECT_TASKS,
         props: (route) => ({
           project: {
-            mode: modes.TASKS,
             id: Number(route.params.project)
           }
         }),
