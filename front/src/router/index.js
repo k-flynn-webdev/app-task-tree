@@ -1,15 +1,53 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import modes from '../constants/modes'
 import Paths from '../constants/paths.js'
+import Tasks from '../components/TasksList'
+import Landing from '../components/Landing'
+import Projects from '../components/ProjectsList'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: Paths.HOME,
-    component: Home
+    component: Home,
+    props: { mode: modes.CLEAR },
+    children: [
+      { path: '', name: Paths.HOME, component: Landing }
+    ]
+  },
+  {
+    path: '/projects',
+    component: Home,
+    props: { mode: modes.PROJECTS },
+    children: [
+      {
+        path: '',
+        name: Paths.PROJECTS,
+        props: {},
+        component: Projects
+      }
+    ]
+  },
+  {
+    path: '/project',
+    component: Home,
+    props: { mode: modes.PROJECTS },
+    children: [
+      {
+        path: ':project',
+        name: 'project',
+        props: (route) => ({
+          project: {
+            mode: modes.TASKS,
+            id: Number(route.params.project)
+          }
+        }),
+        component: Tasks
+      }
+    ]
   },
   {
     path: '/switch',
@@ -31,14 +69,6 @@ const routes = [
     name: Paths.USER_LOGIN,
     component: () => import(/* webpackChunkName: "UserLogin" */ '../views/UserLogin.vue')
   }
-  // {
-  //   path: '/',
-  //   name: Paths.HOME,
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "task" */ '../views/Task.vue')
-  // }
 
   // todo 404 page here
 ]

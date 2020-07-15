@@ -1,13 +1,5 @@
 import UserService from '../services/UserService.js'
-
-function defaultUserObj () {
-  return {
-    id: -1,
-    name: '',
-    email: '',
-    role: ''
-  }
-}
+import general from '../constants/general'
 
 function defaultUser () {
   const userLocal = UserService.getUser()
@@ -19,7 +11,7 @@ function defaultUser () {
   //  upgrade it's a seamless transfer of
   //  projects/tasks to the new user id..
 
-  return defaultUserObj()
+  return general.DEFAULT_USER()
 }
 
 export default {
@@ -64,7 +56,7 @@ export default {
     logout: function (context) {
       return UserService.logout()
         .then(res => {
-          context.commit('user', defaultUserObj())
+          context.commit('user', general.DEFAULT_USER())
           return res
         })
     },

@@ -22,7 +22,7 @@ import modes from '../constants/modes'
 export default {
   name: 'ProjectTaskSwitch',
   props: {
-    value: {
+    mode: {
       type: String,
       default: modes.CLEAR
     },
@@ -33,18 +33,27 @@ export default {
   },
   computed: {
     isTasks: function () {
-      return this.value === modes.TASKS
+      return this.mode === modes.TASKS
     },
     isProjects: function () {
-      return this.value === modes.PROJECTS
+      return this.mode === modes.PROJECTS
+    },
+    project: function () {
+      return this.$store.getters['projects/current']
     }
   },
   methods: {
     showTasks: function () {
-      this.$emit('input', modes.TASKS)
+      if (this.isTasks) return
+
+      this.$router.push({
+
+      })
+
+      // this.$emit('input', modes.TASKS)
     },
     showProjects: function () {
-      this.$emit('input', modes.PROJECTS)
+      // this.$emit('input', modes.PROJECTS)
     }
   }
 }

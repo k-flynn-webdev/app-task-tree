@@ -24,13 +24,13 @@ export default {
      */
     projects: (state) => state.projects,
     /**
-     * Returns a function to get a project by ID
+     * Returns a function to find a Project by ID
      *
      * @param {object}      state
      * @param {string}      id
      * @returns {function}
      */
-    project: (state) => (id) => {
+    findProject: (state) => (id) => {
       return state.projects.find(item => item.id === id)
     }
   },

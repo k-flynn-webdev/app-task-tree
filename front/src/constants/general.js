@@ -4,6 +4,15 @@ const DELAY_BLIP = 33
 const DELAY_SUCCESS = 900
 const DELAY_ERROR = 6000
 
+const DEFAULT_USER = () => {
+  return {
+    id: -1,
+    name: '',
+    email: '',
+    role: ''
+  }
+}
+
 const DEFAULT_PROJECT = (user = -1) => {
   return {
     id: -1,
@@ -45,5 +54,6 @@ export default {
   DELAY_ERROR,
   DEFAULT_PROJECT,
   DEFAULT_PROJECT_NO_ID,
-  DEFAULT_TASK
+  DEFAULT_TASK,
+  DEFAULT_USER
 }

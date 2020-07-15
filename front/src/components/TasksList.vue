@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import general from '../constants/general'
 import status from '../constants/status.js'
 import Card from '../components/general/Card'
 import TaskItem from '../components/TaskItem'
@@ -34,10 +35,13 @@ export default {
     Card,
     TaskItem
   },
+  props: {
+    project: {
+      type: Object,
+      default: general.DEFAULT_PROJECT()
+    }
+  },
   computed: {
-    project: function () {
-      return this.$store.getters['projects/current']
-    },
     task: function () {
       return this.$store.getters['tasks/current']
     },
