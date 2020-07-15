@@ -17,6 +17,15 @@ $all-unit-sizes: (
   xl: $unit-xl
 );
 
+$all-container-sizes: (
+  xs: $unit-xs,
+  sm: $unit-sm,
+  md: $unit-md,
+  lg: $unit-lg,
+  xl: $unit-xl,
+  xxl: $unit-xl
+);
+
 $font-size: $unit-default;
 $font-size-xs: $unit-default * $unit-xs;
 $font-size-sm: $unit-default * $unit-sm;
@@ -135,7 +144,9 @@ $max-sizes: (
   max-45: 45em,
   max-50: 50em,
   max-55: 55em,
-  max-60: 60em
+  max-60: 60em,
+  max-65: 65em,
+  max-70: 70em
 );
 
 $screen-xs: 320px;
@@ -143,19 +154,20 @@ $screen-sm: 375px;
 $screen-md: 425px;
 $screen-lg: 768px;
 $screen-xl: 1024px;
-//$screen-xxl: 1400px;
+$screen-xxl: 1400px;
 
 $all-screen-sizes: (
   xs: $screen-xs,
-  sm: $screen-sm,
-  md: $screen-md,
-  lg: $screen-lg,
-  xl: $screen-xl,
-  //xxl: $screen-xxl,
+  sm: $screen-xs,
+  md: $screen-sm,
+  lg: $screen-md,
+  xl: $screen-lg,
+  xxl: $screen-xl,
+  xxxl: $screen-xxl
 );
 
 @mixin screen-xs {
-  @media (max-width: $screen-xs - 1) { @content }
+  @media (min-width: 100px) and (max-width: $screen-xs - 1) { @content }
 }
 
 @mixin screen-sm {
@@ -175,5 +187,8 @@ $all-screen-sizes: (
 }
 
 @mixin screen-xxl {
-  @media (min-width: $screen-xl) and (max-width: 3000px) { @content }
+  @media (min-width: $screen-xl) and (max-width: $screen-xxl - 1) { @content }
+}
+@mixin screen-xxxl {
+  @media (min-width: $screen-xxl) and (max-width: 3000px) { @content }
 }
