@@ -1,7 +1,9 @@
 .user {
+  padding-top: $margin-default * 2;
+
   &__home {
-    position: absolute;
-    left: $unit-default;
+    margin: 0;
+    padding: 0;
   }
 
   &__card {
