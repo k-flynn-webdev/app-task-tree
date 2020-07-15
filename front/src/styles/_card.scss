@@ -1,22 +1,28 @@
-.card {
-  overflow: hidden;
-  position: relative;
-  background-color: $color-mid;
-  border-radius: $border-radius;
-}
 
 .card,
 .container {
-  max-width: 95vw;
-  min-height: $unit-default * 2;
-  margin: $unit-default auto;
+  margin: $unit-default * 1.5 auto;
   padding: $unit-default * 0.5;
+  min-height: $unit-default * 2;
+  max-width: map-get($all-screen-sizes, xs);
 
+  @include screen-sm {
+    max-width: map-get($all-screen-sizes, sm);
+  }
   @include screen-md {
-    max-width: $unit-default * 25;
+    max-width: map-get($all-screen-sizes, md);
   }
   @include screen-lg {
-    max-width: $unit-default * 25;
+    max-width: map-get($all-screen-sizes, lg);
+  }
+  @include screen-xl {
+    max-width: map-get($all-screen-sizes, xl);
+  }
+  @include screen-xxl {
+    max-width: map-get($all-screen-sizes, xxl);
+  }
+  @include screen-xxxl {
+    max-width: map-get($all-screen-sizes, xxxl);
   }
 
   &__footer {
@@ -27,5 +33,16 @@
     &.#{$size} {
       max-width: $value;
     }
+  }
+}
+
+.card {
+  overflow: hidden;
+  position: relative;
+  background-color: $color-mid;
+  border-radius: $border-radius;
+
+  &:first-of-type {
+    margin-top: $margin-default;
   }
 }

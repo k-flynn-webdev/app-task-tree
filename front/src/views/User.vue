@@ -1,118 +1,146 @@
 <template>
-  <div class="user relative">
 
-    <router-link to="/" title="go to home" class="user__home">
-      <p class="upper text-bold">Home</p>
+  <div>
+
+    <router-link to="/" title="go to home"
+                 class="user__home text-bold fill-fore">
+      <icBack class="md" />
     </router-link>
 
-    <br>
+    <div class="user relative">
 
-    <Card class="user__card max-30">
+      <Card class="user__card max-30">
 
-      <div slot="default">
+        <div slot="default">
 
-        <StatusBar :class="status" />
+          <StatusBar :class="status" />
 
-        <div class="text-center ">
-          <p class="upper text-bold display-inline-b">
-            User
-          </p>
+          <div class="text-center ">
+            <p class="upper text-bold display-inline-b">
+              User
+            </p>
+          </div>
+
+          <form class="user__form" @submit.prevent="submitUserUpgrade">
+            <div class="input-control">
+              <label>
+                <p>Name</p>
+                <p v-if="!isEdit" class="user__form-detail"> {{ form.name }} </p>
+                <input v-else
+                  required
+                  v-model="form.name"
+                  type="text"
+                  minlength="4"
+                  @input="resetStatus"
+                >
+              </label>
+            </div>
+
+            <div class="input-control">
+              <label>
+                <p>Email</p>
+                <p v-if="!isEdit" class="user__form-detail"> {{ form.email }} </p>
+                <input
+                  v-else
+                  required
+                  v-model="form.email"
+                  type="email"
+                  @input="resetStatus"
+                >
+              </label>
+            </div>
+
+            <div class="input-control">
+              <label>
+                <p>Password</p>
+                <p v-if="!isEdit" class="user__form-detail"> xxxxx </p>
+                <input
+                  v-else
+                  required
+                  v-model="form.password"
+                  type="password"
+                  minlength="7"
+                  @input="resetStatus"
+                >
+              </label>
+            </div>
+
+            <div class="input-control">
+              <label>
+                <p>Role</p>
+                <p class="user__form-detail"> {{ form.role }} </p>
+              </label>
+            </div>
+
+          </form>
+
         </div>
 
-        <form class="user__form" @submit.prevent="submitUserUpgrade">
-          <div class="input-control">
-            <label>
-              <p>Name</p>
-              <p v-if="!isEdit" class="user__form-detail"> {{ form.name }} </p>
-              <input v-else
-                required
-                v-model="form.name"
-                type="text"
-                minlength="4"
-                @input="resetStatus"
-              >
-            </label>
-          </div>
+        <template slot="footer" class="user__form__footer">
+          <button
+            type="button"
+            :class="{ 'DISABLED': isAnon }"
+            class="user__form__footer__edit-btn"
+            @click.prevent="toggleEdit">
+            <p v-if="!isEdit">Edit</p>
+            <p v-else>Cancel</p>
+          </button>
 
-          <div class="input-control">
-            <label>
-              <p>Email</p>
-              <p v-if="!isEdit" class="user__form-detail"> {{ form.email }} </p>
-              <input
-                v-else
-                required
-                v-model="form.email"
-                type="email"
-                @input="resetStatus"
-              >
-            </label>
-          </div>
+          <button
+            type="submit"
+            class="user__form__footer__ok-btn"
+            :tabindex="!isValid ? -1: 0"
+            :class="{ 'DISABLED': !isValid }"
+            @click.prevent="submitUserUpgrade">
+            <p>OK</p>
+          </button>
+        </template>
 
-          <div class="input-control">
-            <label>
-              <p>Password</p>
-              <p v-if="!isEdit" class="user__form-detail"> xxxxx </p>
-              <input
-                v-else
-                required
-                v-model="form.password"
-                type="password"
-                minlength="7"
-                @input="resetStatus"
-              >
-            </label>
-          </div>
+      </Card>
 
-          <div class="input-control">
-            <label>
-              <p>Role</p>
-              <p class="user__form-detail"> {{ form.role }} </p>
-            </label>
-          </div>
+      <UserLogout/>
 
-        </form>
+      <div class="container max-30">
+
+        <p v-if="isAnon" class="word-break">
+          Your account is a Anonymous and tied only to this device,
+          but it can be upgraded to a User account which can be logged in any time from any device.
+          <router-link
+            class="color-success"
+            to="/user/create">
+            Upgrade
+          </router-link>
+        </p>
+
+        <p v-if="isUser" class="word-break">
+          Your account is a User account.
+        </p>
+
+        <p v-if="isAdmin" class="word-break">
+          Your account is a Admin account.
+        </p>
 
       </div>
 
-      <template slot="footer" class="user__form__footer">
-        <button
-          type="button"
-          class="user__form__footer__edit-btn"
-          @click.prevent="toggleEdit">
-          <p v-if="!isEdit">Edit</p>
-          <p v-else>Cancel</p>
-        </button>
-
-        <button
-          type="submit"
-          class="user__form__footer__ok-btn"
-          :tabindex="!isValid ? -1: 0"
-          :class="{ 'DISABLED': !isValid }"
-          @click.prevent="submitUserUpgrade">
-          <p>OK</p>
-        </button>
-      </template>
-
-    </Card>
-
-    <UserLogout/>
-
+    </div>
   </div>
+
 </template>
 
 <script>
 import helpers from '../services/Helpers'
 import general from '../constants/general'
 import status from '../constants/status.js'
+import icBack from '../assets/icons/ic_left'
 import Card from '../components/general/Card'
 import UserLogout from '../components/UserLogout'
 import StatusBar from '../components/general/StatusBar'
-const ANON = 'anon'
 
 export default {
   name: 'User',
   components: {
     Card,
+    icBack,
     StatusBar,
     UserLogout
   },
@@ -132,8 +160,20 @@ export default {
     user: function () {
       return this.$store.getters['user/user']
     },
+    isLoggedIn: function () {
+      return this.$store.getters['user/isLoggedIn']
+    },
+    isAnon: function () {
+      return this.user.role === status.ANON
+    },
+    isUser: function () {
+      return this.user.role === status.USER
+    },
+    isAdmin: function () {
+      return this.user.role === status.ADMIN
+    },
     isValid: function () {
-      if (this.user && this.user.name === ANON) return false
+      if (!this.isLoggedIn) return false
       if (this.status !== status.CLEAR) return false
       return (this.isValidName || this.isValidEmail || this.isValidPassword)
     },

@@ -1,5 +1,6 @@
 import UserService from '../services/UserService.js'
 import general from '../constants/general'
+import status from '../constants/status'
 
 function defaultUser () {
   const userLocal = UserService.getUser()
@@ -21,7 +22,16 @@ export default {
   },
   getters: {
     user: (state) => state.user,
-    isLoggedIn: (state) => state.user.email.length > 4
+    /**
+     * Returns if the User is currently logged in
+     *
+     * @param state
+     * @returns {boolean}
+     */
+    isLoggedIn: (state) => {
+      return (state.user.email !== status.ANON &&
+      state.user.email.length > 4)
+    }
   },
   mutations: {
     user: function (state, input) {
