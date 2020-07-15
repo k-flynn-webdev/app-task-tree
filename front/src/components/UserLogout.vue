@@ -1,5 +1,5 @@
 <template>
-  <div v-if="userValid" class="container max-30">
+  <div v-if="isLoggedIn" class="container max-30">
     <button class="bg-warning color-fore" @click="logout">
       Logout
     </button>
@@ -13,16 +13,11 @@ import helpers from '../services/Helpers'
 import Paths from '../constants/paths'
 import general from '../constants/general'
 
-// const ANON = 'anon'
-
 export default {
   name: 'UserLogout',
   computed: {
-    userValid: function () {
-      const userEmail = this.$store.getters['user/user'].email
-      return (userEmail &&
-      // userEmail !== ANON &&
-      userEmail.length > 3)
+    isLoggedIn: function () {
+      return this.$store.getters['user/isLoggedIn']
     }
   },
   methods: {

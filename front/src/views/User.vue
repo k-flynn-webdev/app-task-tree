@@ -97,6 +97,32 @@
 
     <UserLogout/>
 
+    <div class="container max-30">
+
+      <p v-if="isAnon" class="word-break">
+        Your account is a Anonymous and tied only to this device,
+        but it can be upgraded to a User account which can be logged in any time from any device.
+        <router-link
+          class="color-success"
+          to="/user/create">
+          Upgrade
+        </router-link>
+      </p>
+
+      <p v-if="isUser" class="word-break">
+        Your account is a User account.
+      </p>
+
+      <p v-if="isAdmin" class="word-break">
+        Your account is a Admin account.
+      </p>
+
+    </div>
+
+    <!--      <p v-if="isUser" class="hint">-->
+    <!--        Your account is a User account, all features are available.-->
+    <!--      </p>-->
+
   </div>
 </template>
 
@@ -107,7 +133,6 @@ import status from '../constants/status.js'
 import Card from '../components/general/Card'
 import UserLogout from '../components/UserLogout'
 import StatusBar from '../components/general/StatusBar'
-const ANON = 'anon'
 
 export default {
   name: 'User',
@@ -132,8 +157,20 @@ export default {
     user: function () {
       return this.$store.getters['user/user']
     },
+    isLoggedIn: function () {
+      return this.$store.getters['user/isLoggedIn']
+    },
+    isAnon: function () {
+      return this.user.role === status.ANON
+    },
+    isUser: function () {
+      return this.user.role === status.USER
+    },
+    isAdmin: function () {
+      return this.user.role === status.ADMIN
+    },
     isValid: function () {
-      if (this.user && this.user.name === ANON) return false
+      if (!this.isLoggedIn) return false
       if (this.status !== status.CLEAR) return false
       return (this.isValidName || this.isValidEmail || this.isValidPassword)
     },
