@@ -11,6 +11,8 @@ const app = express()
 
 // Temp for devving
 if (config.node_env === 'development') {
+  const history = require('connect-history-api-fallback')
+  app.use(history())
   app.use(express.static('public'))
 }
 
