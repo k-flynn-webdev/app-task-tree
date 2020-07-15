@@ -71,7 +71,21 @@
       @include overflow-text-hide;
 
       margin-right: $margin-default;
-      max-width: $unit-default * 5;
+      max-width: $unit-default * 15;
+
+      $small-name: $unit-default * 2.5;
+      @include screen-xs {
+        max-width: $small-name;
+      }
+      @include screen-sm {
+        max-width: $small-name;
+      }
+      @include screen-md {
+        max-width: $small-name;
+      }
+      @include screen-lg {
+        max-width: $unit-default * 5;
+      }
     }
 
     &-icon {

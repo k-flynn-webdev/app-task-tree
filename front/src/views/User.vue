@@ -79,7 +79,7 @@
         <template slot="footer" class="user__form__footer">
           <button
             type="button"
-            :class="{ 'DISABLED': isAnon }"
+            :class="{ 'DISABLED': !allowEdit }"
             class="user__form__footer__edit-btn"
             @click.prevent="toggleEdit">
             <p v-if="!isEdit">Edit</p>
@@ -162,6 +162,9 @@ export default {
     },
     isLoggedIn: function () {
       return this.$store.getters['user/isLoggedIn']
+    },
+    allowEdit: function () {
+      return (this.isUser || this.isAdmin)
     },
     isAnon: function () {
       return this.user.role === status.ANON
