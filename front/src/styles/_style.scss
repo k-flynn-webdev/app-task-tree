@@ -38,6 +38,16 @@ body {
       }
     }
 
+    &__fullscreen-click {
+      position: fixed;
+      top: -2em;
+      left: -2em;
+      right: -2em;
+      bottom: -2em;
+      z-index: 3;
+      pointer-events: all;
+    }
+
     &__holder {
       color: $color-bg;
       background-color: $color-fore;

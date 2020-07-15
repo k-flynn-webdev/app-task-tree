@@ -4,20 +4,24 @@
 
     <button class="settings__btn"
             :class="{ 'is-close': value }"
-            @click="Toggle">
+            @click="toggle">
       <icOptions v-if="!value" class="icon-90" />
       <icClose v-else class="icon-90 fill-bg" />
     </button>
 
+    <div v-if="value"
+         class="settings__fullscreen-click"
+         @click="toggle"></div>
+
     <div v-if="value" class="settings__holder">
      <ul>
-       <li v-if="!isLoggedIn">
+       <li v-if="!isLoggedIn" @click="toggle">
          <router-link
            to="/user/create">
            Create
          </router-link>
        </li>
-       <li v-if="!isLoggedIn">
+       <li v-if="!isLoggedIn" @click="toggle">
          <router-link
            to="/user/login">
            Login
@@ -60,7 +64,7 @@ export default {
     }
   },
   methods: {
-    Toggle: function () {
+    toggle: function () {
       this.$emit('input', !this.value)
     },
     logout: function () {
@@ -70,6 +74,7 @@ export default {
     },
     handleSuccess: function () {
       helpers.timeDelay(() => {
+        this.toggle()
         this.$router.push({ name: Paths.HOME })
       }, general.DELAY_SUCCESS)
     },
