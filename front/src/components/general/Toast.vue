@@ -3,11 +3,11 @@
 
     <div class="toast__message__content ">
 
-      <p class="text-bold md">
+      <p class="text-bold md word-break color-bg">
         {{ data.title }}
       </p>
 
-      <p class="color-bg text-bold">
+      <p class="text-bold word-break color-bg">
         {{ data.message }}
       </p>
 
@@ -16,7 +16,7 @@
     <br>
 
     <button @click="closeToast">
-      <p>OK</p>
+      <p class="color-fore">OK</p>
     </button>
 
   </div>

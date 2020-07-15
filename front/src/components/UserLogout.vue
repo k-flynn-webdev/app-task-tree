@@ -13,7 +13,7 @@ import helpers from '../services/Helpers'
 import Paths from '../constants/paths'
 import general from '../constants/general'
 
-const ANON = 'anon'
+// const ANON = 'anon'
 
 export default {
   name: 'UserLogout',
@@ -21,8 +21,8 @@ export default {
     userValid: function () {
       const userEmail = this.$store.getters['user/user'].email
       return (userEmail &&
-      userEmail !== ANON &&
-      userEmail.length > 4)
+      // userEmail !== ANON &&
+      userEmail.length > 3)
     }
   },
   methods: {

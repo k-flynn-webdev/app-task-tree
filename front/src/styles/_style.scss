@@ -22,6 +22,8 @@ body {
   position: relative;
 
   .settings {
+    position: relative;
+
     &__btn {
       position: absolute;
       top: 2px;
@@ -30,7 +32,10 @@ body {
       margin: 0;
       padding: 0;
 
-      .is-close {}
+      &.is-close:focus {
+        border-color: transparent;
+        outline: none;
+      }
     }
 
     &__holder {
@@ -46,11 +51,39 @@ body {
       min-width: $unit-default * 15;
       min-height: $unit-default * 5;
 
+      ul {
+        margin-right: $unit-default * 2;
+      }
+
+      .button {
+        cursor: pointer;
+      }
+
+      a,
+      p,
+      li,
+      .button {
+        display: block;
+        margin: 0;
+        padding: 0;
+        padding-bottom: $margin-default * 0.5;
+        margin-bottom: $margin-default * 0.5;
+        color: $color-bg;
+        font-weight: bolder;
+        text-decoration: none;
+      }
+
+      li {
+        border-bottom: solid $border-size rgba($color-bg, $color-alpha);
+      }
+
       @mixin screen-float {
         position: relative;
         top: unset;
         right: unset;
-        margin: $margin-default $margin-default * 0.2;
+        margin: 0;
+        margin-top: $margin-default;
+        margin-bottom: $margin-default * 2;
         min-width: unset;
         max-width: unset;
       }

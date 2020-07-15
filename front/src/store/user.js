@@ -28,7 +28,8 @@ export default {
     user: defaultUser()
   },
   getters: {
-    user: (state) => state.user
+    user: (state) => state.user,
+    isLoggedIn: (state) => state.user.email.length > 4
   },
   mutations: {
     user: function (state, input) {
