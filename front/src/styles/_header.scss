@@ -95,7 +95,7 @@
         margin: $margin-default 0;
         padding: $padding-default;
         text-transform: uppercase;
-        color: $color-bg;
+        color: rgba($color-fore, $color-alpha);
         background-color: $color-mid;
         border-radius: $border-radius;
         border: $border-size solid $color-bg;
@@ -105,6 +105,7 @@
           z-index: 1;
           outline: none;
           transform: scaleY(1.1);
+          color: $color-bg;
           background-color: $color-success;
           border: $border-size solid $color-success;
         }
