@@ -1,4 +1,5 @@
 import UserService from '../services/UserService.js'
+import general from '../constants/general'
 
 function defaultUser () {
   const userLocal = UserService.getUser()
@@ -10,12 +11,7 @@ function defaultUser () {
   //  upgrade it's a seamless transfer of
   //  projects/tasks to the new user id..
 
-  return {
-    id: -1,
-    name: '',
-    email: '',
-    role: 'user'
-  }
+  return general.DEFAULT_USER()
 }
 
 export default {
@@ -24,7 +20,8 @@ export default {
     user: defaultUser()
   },
   getters: {
-    user: (state) => state.user
+    user: (state) => state.user,
+    isLoggedIn: (state) => state.user.email.length > 4
   },
   mutations: {
     user: function (state, input) {
@@ -37,6 +34,47 @@ export default {
   actions: {
     // todo user create / update / delete / login / logout etc
     /**
+     * Login a user
+     *
+     * @param {object}    context
+     * @param {object}    input
+     * @returns {promise} user
+     */
+    login: function (context, input) {
+      return UserService.login(input)
+        .then(res => {
+          context.commit('user', res.data.data.account)
+          return res
+        })
+    },
+    /**
+     * Logout a user
+     *
+     * @param {object}    context
+     * @returns {promise} user
+     */
+    logout: function (context) {
+      return UserService.logout()
+        .then(res => {
+          context.commit('user', general.DEFAULT_USER())
+          return res
+        })
+    },
+    /**
+     * Creates a user
+     *
+     * @param {object}    context
+     * @param {object}    input
+     * @returns {promise} anon user
+     */
+    create: function (context, input) {
+      return UserService.create(input)
+        .then(res => {
+          context.commit('user', res.data.data.account)
+          return res
+        })
+    },
+    /**
      * Creates anon user
      *
      * @param {object}    context
@@ -47,6 +85,34 @@ export default {
         .then(res => {
           context.commit('user', res.data.data.account)
           return res.data.data.account
+        })
+    },
+    /**
+     * Upgrades a user (with ANON account id)
+     *
+     * @param {object}    context
+     * @param {object}    input
+     * @returns {promise} anon user
+     */
+    createUpgrade: function (context, input) {
+      return UserService.createUpgrade(input)
+        .then(res => {
+          context.commit('user', res.data.data.account)
+          return res
+        })
+    },
+    /**
+     * Updates a user details
+     *
+     * @param {object}    context
+     * @param {object}    input
+     * @returns {promise} anon user
+     */
+    update: function (context, input) {
+      return UserService.update(input)
+        .then(res => {
+          context.commit('user', res.data.data.account)
+          return res
         })
     }
     // for delayed/time consuming actions

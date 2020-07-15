@@ -1,11 +1,20 @@
+.show-settings {
+  .task__project__header__info {
+    margin-right: 0;
+  }
+}
+
 .task__project__header {
   max-width: 100%;
+
   &__info {
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-right: $unit-default * 2.66;
 
     &-name {
+      margin-left: 0;
       font-size: $font-size-lg;
       @include overflow-text-hide;
 
@@ -52,6 +61,11 @@
 
   &__user {
     margin-left: auto;
+    text-decoration: none;
+
+    &.DISABLED {
+      pointer-events: none;
+    }
 
     &-name {
       @include overflow-text-hide;
@@ -61,8 +75,13 @@
     }
 
     &-icon {
+      fill: $color-fore;
       margin: $margin-default 0;
       width: $unit-default * 2;
+
+      &.DISABLED {
+        fill: $color-grey;
+      }
     }
   }
 
@@ -76,21 +95,29 @@
         margin: $margin-default 0;
         padding: $padding-default;
         text-transform: uppercase;
+        color: rgba($color-fore, $color-alpha);
         background-color: $color-mid;
         border-radius: $border-radius;
         border: $border-size solid $color-bg;
         transition: $transition-default * 0.5;
-        color: rgba($color-fore, $color-alpha);
-        -webkit-text-fill-color: rgba($color-fore, $color-alpha);
 
         &.ACTIVE {
           z-index: 1;
           outline: none;
           transform: scaleY(1.1);
+          color: $color-bg;
           background-color: $color-success;
-          color: rgba($color-shadow, $color-alpha);
           border: $border-size solid $color-success;
-          -webkit-text-fill-color: rgba($color-shadow, 1);
+        }
+
+        &.DISABLED {
+          opacity: 1;
+          color: $color-bg;
+
+          p,
+          span {
+            opacity: $color-alpha;
+          }
         }
       }
 

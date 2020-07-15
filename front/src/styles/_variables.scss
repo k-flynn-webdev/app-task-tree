@@ -60,10 +60,11 @@ $hover-scale: 1.25;
 $transition-default: 0.33s;
 
 $color-alpha: 0.3;
+$color-grey: rgb(118, 130, 130);
 $color-bg: rgb(33, 62, 69);
-$color-bg-alt: rgb(38, 64, 59);
 $color-shadow: rgb(54, 56, 46);
-$color-mid: rgb(88, 110, 99);
+//$color-mid: rgb(88, 110, 99);
+$color-mid: rgb(80, 107, 115);
 $color-waiting: rgb(189, 173, 99);
 $color-success: rgb(154, 212, 125);
 $color-error: rgb(212, 151, 125);
@@ -80,6 +81,7 @@ $color-status-error: rgb(226, 73, 73);
 $all-status-border-colours: (
   disabled: $color-status-disabled,
   waiting: $color-waiting,
+  warning: $color-waiting,
   success: $color-success,
   error: $color-error
 );
@@ -93,8 +95,8 @@ $all-status-colours: (
 );
 
 $all-colours: (
+  grey: $color-grey,
   bg: $color-bg,
-  bg-alt: $color-bg-alt,
   shadow: $color-shadow,
   mid: $color-mid,
   success: $color-success,
@@ -121,6 +123,19 @@ $all-icon-nums: (
   icon-70: 70%,
   icon-80: 80%,
   icon-90: 90%
+);
+
+$max-sizes: (
+  max-15: 15em,
+  max-20: 20em,
+  max-25: 25em,
+  max-30: 30em,
+  max-35: 35em,
+  max-40: 40em,
+  max-45: 45em,
+  max-50: 50em,
+  max-55: 55em,
+  max-60: 60em
 );
 
 $screen-xs: 320px;

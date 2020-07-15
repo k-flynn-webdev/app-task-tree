@@ -11,32 +11,37 @@
 
     </transition-group>
 
-    <div v-if="project.id < 0"
-         class="text-center">
-      <p class="hint"> First you need to create a project to add tasks to </p>
-    </div>
-
-    <div v-if="project.id >= 0 && tasks.length < 1"
-         class="text-center">
-      <p class="hint"> Add a new task </p>
-    </div>
+    <Card v-if="tasks.length < 1" class="text-center">
+      <p v-if="project.id >= 0"
+         class="hint"> Add a new task
+      </p>
+      <p v-else class="hint">
+        First you need to create a project to add tasks to
+      </p>
+    </Card>
 
   </div>
 </template>
 
 <script>
+import general from '../constants/general'
 import status from '../constants/status.js'
+import Card from '../components/general/Card'
 import TaskItem from '../components/TaskItem'
 
 export default {
   name: 'TasksList',
   components: {
+    Card,
     TaskItem
   },
+  props: {
+    project: {
+      type: Object,
+      default: general.DEFAULT_PROJECT()
+    }
+  },
   computed: {
-    project: function () {
-      return this.$store.getters['projects/current']
-    },
     task: function () {
       return this.$store.getters['tasks/current']
     },
@@ -51,7 +56,9 @@ export default {
     getTasksOfProject: function () {
       return this.$store.dispatch('tasks/getTasksByUserOrProject',
         { project: this.project.id })
-        .then(res => {
+        .then(() => {
+          const currentProj = this.$store.getters['projects/findProject'](this.project.id)
+          this.$store.commit('projects/projectCurrent', currentProj)
         })
         .catch(err => this.handleError(err))
     },

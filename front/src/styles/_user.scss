@@ -1,0 +1,51 @@
+.user {
+  &__home {
+    position: absolute;
+    left: $unit-default;
+  }
+
+  &__card {
+    .status-bar {
+      z-index: 5;
+    }
+  }
+
+  &__form {
+    label {
+      min-height: $unit-default * 2.33;
+    }
+
+    &-detail {
+      margin-left: $margin-default;
+      padding-left: $margin-default;
+    }
+
+    &__footer {
+      margin-bottom: $margin-default;
+
+      &-login,
+      &-create {
+        color: $color-fore;
+        font-weight: bolder;
+      }
+
+      &__edit-btn {
+        margin-left: $margin-default;
+      }
+
+      &__ok-btn {
+        margin-left: auto;
+      }
+
+      &__ok-btn,
+      &__edit-btn {
+        &:focus {
+          background-color: $color-select;
+        }
+
+        background-color: $color-success;
+        padding: $padding-default * 0.5 $padding-default;
+      }
+    }
+  }
+}

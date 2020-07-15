@@ -1,0 +1,24 @@
+<template>
+  <div class="card">
+
+    <div class="card__content">
+      <slot></slot>
+    </div>
+
+    <div v-if="hasFooterSlot" class="card__footer flex-row flex-between">
+      <slot name="footer"></slot>
+    </div>
+
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Card',
+  computed: {
+    hasFooterSlot: function () {
+      return !!this.$slots.footer
+    }
+  }
+}
+</script>

@@ -11,6 +11,11 @@ const timeDelay = (action, delay) => {
   }, delay)
 }
 
+const HasNumbers = (input) => {
+  const strip = input.toString().replace(/\D/g, '')
+  return (strip.length > 0)
+}
+
 const renderDate = (input) => {
   if (!input) return 'No date'
   const dateObj = new Date(input)
@@ -46,9 +51,9 @@ const BRACKETS = ['(', ')']
 /**
  * Returns the progress from a project object
  *
- * @param done
- * @param total
- * @returns {string}  (x/y)
+ * @param tasksDone
+ * @param tasksTotal
+ * @returns {string}  eg (4/7)
  */
 const renderProgressNum = ({ tasksDone, tasksTotal }) => {
   return `${BRACKETS[0]}${tasksDone}/${tasksTotal}${BRACKETS[1]}`
@@ -57,9 +62,9 @@ const renderProgressNum = ({ tasksDone, tasksTotal }) => {
 /**
  * Render the progress from a project object
  *
- * @param done
- * @param total
- * @returns {string}  (77%)
+ * @param tasksDone
+ * @param tasksTotal
+ * @returns {string}  eg (77%)
  */
 const renderProgressPercent = ({ tasksDone, tasksTotal }) => {
   if (!tasksTotal || tasksTotal === 0) return '0%'
@@ -70,6 +75,7 @@ const renderProgressPercent = ({ tasksDone, tasksTotal }) => {
 
 const helpers = {
   timeDelay,
+  HasNumbers,
   renderDate: renderDate,
   renderTime: renderTime,
   renderDateTime: renderDateTime,

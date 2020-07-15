@@ -131,7 +131,7 @@ module.exports = function (app) {
     .then(() => {
 
       // token.AddTokenToBlackList(req) // todo
-      logger.Log(constants.messages.LOGOUT_ACCOUNT, req)
+      logger.Log(constants.messages.SUCCESS_LOGOUT_ACCOUNT, req)
 
       app.emit(constants.events.LOGOUT_ACCOUNT, req.body.token.id)
 

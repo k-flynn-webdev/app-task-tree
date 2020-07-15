@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import modes from '../constants/modes'
 import helpers from '../services/Helpers'
 
 export default {
@@ -21,11 +22,19 @@ export default {
       showTotals: true
     }
   },
+  props: {
+    mode: {
+      type: String,
+      default: modes.CLEAR
+    }
+  },
   computed: {
     project: function () {
+      if (this.mode === modes.CLEAR) return { name: 'MiniTask ..' }
       return this.$store.getters['projects/current']
     },
     progress: function () {
+      if (this.mode === modes.CLEAR) return
       if (!this.showTotals) {
         return helpers.renderProgressPercent(this.project)
       }

@@ -24,13 +24,13 @@ export default {
      */
     projects: (state) => state.projects,
     /**
-     * Returns a function to get a project by ID
+     * Returns a function to find a Project by ID
      *
      * @param {object}      state
      * @param {string}      id
      * @returns {function}
      */
-    project: (state) => (id) => {
+    findProject: (state) => (id) => {
       return state.projects.find(item => item.id === id)
     }
   },
@@ -175,7 +175,8 @@ export default {
         .then(res => {
           if (res.data.data.projects.length < 1) return
           context.commit('projectSet', res.data.data.projects)
-          return context.commit('projectCurrent', context.getters.projects[0])
+          context.commit('projectCurrent', res.data.data.projects[0])
+          return res
         })
     }
     // for delayed/time consuming actions

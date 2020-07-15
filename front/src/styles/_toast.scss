@@ -29,12 +29,13 @@
     text-align: center;
     margin: $margin-default;
     padding: $padding-default;
-    background-color: $color-mid;
+    background-color: $color-success;
     min-height: $unit-default * 5;
     min-width: $unit-default * 10;
     border-radius: $border-radius;
 
     &.ERROR {
+      color: $color-bg;
       background-color: $color-waiting;
     }
 
@@ -45,7 +46,7 @@
     button {
       margin: $margin-default;
       padding: $padding-default;
-      border-radius: $border-radius * 2;
+      border-radius: $border-radius;
       background-color: $color-bg;
     }
 

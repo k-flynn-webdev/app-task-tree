@@ -2,15 +2,15 @@
   <div class="task__project__header__controls__switch">
 
     <button class="task__project__header__controls__switch-projects"
-            :class="{ 'ACTIVE': isProjects}"
+            :class="{ 'ACTIVE': isProjects, 'DISABLED': !isEnabled }"
             @click="showProjects">
-      projects
+      <span>projects</span>
     </button>
 
     <button class="task__project__header__controls__switch-tasks"
-            :class="{ 'ACTIVE': isTasks}"
+            :class="{ 'ACTIVE': isTasks, 'DISABLED': !isEnabled }"
             @click="showTasks">
-      tasks
+      <span>tasks</span>
     </button>
 
   </div>
@@ -18,29 +18,48 @@
 
 <script>
 import modes from '../constants/modes'
+import Paths from '../constants/paths'
 
 export default {
   name: 'ProjectTaskSwitch',
   props: {
-    value: {
+    mode: {
       type: String,
       default: modes.CLEAR
+    },
+    isEnabled: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
     isTasks: function () {
-      return this.value === modes.TASKS
+      return this.mode === modes.TASKS
     },
     isProjects: function () {
-      return this.value === modes.PROJECTS
+      return this.mode === modes.PROJECTS
+    },
+    project: function () {
+      return this.$store.getters['projects/current']
     }
   },
   methods: {
     showTasks: function () {
-      this.$emit('input', modes.TASKS)
+      if (this.isTasks) return
+
+      this.$router.push({
+        name: Paths.PROJECT_TASKS,
+        params: {
+          project: this.project.id
+        }
+      })
     },
     showProjects: function () {
-      this.$emit('input', modes.PROJECTS)
+      if (this.isProjects) return
+
+      this.$router.push({
+        name: Paths.PROJECTS
+      })
     }
   }
 }
