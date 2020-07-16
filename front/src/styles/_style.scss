@@ -50,6 +50,7 @@ body {
 
     &__holder {
       color: $color-bg;
+      -webkit-text-fill-color: $color-bg;
       background-color: $color-fore;
       padding: $margin-default;
       border-radius: $border-radius;
@@ -100,6 +101,7 @@ body {
         padding: $margin-default * 0.33 0;
         margin-bottom: $margin-default * 0.5;
         color: $color-bg;
+        -webkit-text-fill-color: $color-bg;
         font-weight: bolder;
         text-decoration: none;
       }

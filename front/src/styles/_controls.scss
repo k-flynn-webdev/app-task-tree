@@ -1,9 +1,11 @@
 a {
   &:focus {
     color: $color-select;
+    -webkit-text-fill-color: $color-select;
 
     p {
       color: $color-select;
+      -webkit-text-fill-color: $color-select;
     }
   }
 }
@@ -33,6 +35,7 @@ input,
 button {
   fill: $color-fore;
   color: $color-fore;
+  -webkit-text-fill-color: $color-fore;
 
   &:focus {
     outline-style: solid;
@@ -87,6 +90,7 @@ input {
 button {
   text-align: center;
   color: $color-shadow;
+  -webkit-text-fill-color: $color-shadow;
   font-size: $font-size;
   vertical-align: middle;
   border-radius: $border-radius;
@@ -100,6 +104,7 @@ button {
   p,
   span {
     color: inherit;
+    -webkit-text-fill-color: inherit;
     font-weight: bolder;
     min-width: $unit-default * 4;
   }

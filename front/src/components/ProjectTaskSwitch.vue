@@ -4,13 +4,13 @@
     <button class="task__project__header__controls__switch-projects"
             :class="{ 'ACTIVE': isProjects, 'DISABLED': !isEnabled }"
             @click="showProjects">
-      <span>projects</span>
+      projects
     </button>
 
     <button class="task__project__header__controls__switch-tasks"
             :class="{ 'ACTIVE': isTasks, 'DISABLED': !isEnabled }"
             @click="showTasks">
-      <span>tasks</span>
+      tasks
     </button>
 
   </div>

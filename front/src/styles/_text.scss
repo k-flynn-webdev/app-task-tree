@@ -50,6 +50,7 @@ h3,
 h4,
 h5,
 h6,
+li,
 text,
 span,
 div,
@@ -58,7 +59,6 @@ input,
 button {
   word-break: break-all;
   font-size: $font-size;
-  color: $color-fore;
   line-height: $unit-default;
   font-family: 'Open Sans', sans-serif;
 }
@@ -72,9 +72,14 @@ h3,
 h4,
 h5,
 h6,
+li,
 text,
 span,
-.text {
+.text,
+button,
+input {
+  color: $color-fore;
+  -webkit-text-fill-color: $color-fore;
   margin: 0 $margin-default;
 }
 
