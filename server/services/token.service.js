@@ -100,6 +100,8 @@ function Create({ id, name, email, role }) {
 exports.Create = Create
 
 /**
+ * Returns cleaned up token (removes bearer string)
+ *
  * @return {string}
  */
 function TokenCleanUp(token) {
@@ -159,7 +161,7 @@ function TokenDecode(token, req, res, next) {
 
   if (!decoded) {
     let err = new Error('Token issued appears broken')
-    logger.Log(err)
+    logger.Log(err, req)
     return next(err)
   }
 
@@ -173,7 +175,7 @@ function TokenVerify(token, req, res, next) {
   jwt.verify(token, config.token.secret, function (error, decoded) {
 
     if (error) {
-      logger.Log(error)
+      logger.Log(error, req)
       if (error.message === 'jwt expired') {
         // todo send user to relogin!
         return exit(res, 401, error.name || error, 'Please relogin.')
@@ -272,7 +274,7 @@ function AddTokenToBlackList(req) {
     return Promise.resolve('User logged out successfully.')
   })
   .catch(err => {
-    logger.Log(err)
+    logger.Log(err, req)
     return Promise.reject(err)
   })
 }

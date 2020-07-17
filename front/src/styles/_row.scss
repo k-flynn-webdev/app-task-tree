@@ -59,6 +59,7 @@
           &-progress {
             align-self: center;
             word-break: keep-all;
+            min-width: $unit-default * 2.4;
 
             @include screen-xs {
               display: none;
