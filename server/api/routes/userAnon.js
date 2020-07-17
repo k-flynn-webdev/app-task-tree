@@ -32,7 +32,7 @@ module.exports = function (app) {
         exit(res, 201,
           constants.messages.SUCCESS_CREATED_ANON_ACCOUNT,
           { account: userObj,
-            token: ''
+            token: token.Create(userObj)
           })
       })
       .catch(err => {

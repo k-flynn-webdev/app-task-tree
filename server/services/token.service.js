@@ -162,7 +162,7 @@ function TokenDecode(token, req, res, next) {
   if (!decoded) {
     let err = new Error('Token issued appears broken')
     logger.Log(err, req)
-    return next(err)
+    return exit(res, 401, err || 'Please relogin.')
   }
 
   decoded.logout = true

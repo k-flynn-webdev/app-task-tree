@@ -56,6 +56,7 @@ module.exports = function (app) {
       .then(userObj => {
 
         // todo blacklist old token
+
         logger.Log(constants.messages.SUCCESS_UPDATED_ACCOUNT, req)
 
         exit(res, 200,
@@ -90,6 +91,7 @@ module.exports = function (app) {
             token: null
           })
       })
+      // .then(() => token.AddTokenToBlackList(req))
       .catch(err => {
         logger.Log(err.message || err, req)
         exit(res, 400, err || 'error')
@@ -128,9 +130,9 @@ module.exports = function (app) {
     function (req, res) {
 
     user.GetUserByID(req.body.token.id)
+    .then(() => token.AddTokenToBlackList(req))
     .then(() => {
 
-      // token.AddTokenToBlackList(req) // todo
       logger.Log(constants.messages.SUCCESS_LOGOUT_ACCOUNT, req)
 
       app.emit(constants.events.LOGOUT_ACCOUNT, req.body.token.id)
