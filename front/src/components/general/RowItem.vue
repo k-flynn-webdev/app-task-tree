@@ -143,7 +143,7 @@ export default {
   computed: {
     progress: function () {
       if (!this.data.tasksTotal) return null
-      return helpers.renderProgressNum(this.data)
+      return helpers.renderProgressPercent(this.data)
     },
     textOrName: function () {
       return this.data.name || this.data.text

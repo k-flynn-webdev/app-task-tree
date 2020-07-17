@@ -46,7 +46,8 @@ const renderDateTime = (input) => {
   return renderDate(input) + ' ' + renderTime(input)
 }
 
-const BRACKETS = ['(', ')']
+// const BRACKETS = ['(', ')']
+const BRACKETS = ['', '']
 
 /**
  * Returns the progress from a project object
