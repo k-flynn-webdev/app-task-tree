@@ -26,6 +26,7 @@ module.exports = function (app) {
    */
   app.get(constants.paths.API_USER,
     token.Required,
+    prepareMiddle,
     function (req, res) {
 
       const allDetails = [
@@ -82,16 +83,16 @@ module.exports = function (app) {
    * Update a user account
    */
   app.patch(constants.paths.API_USER,
-    token.Required,
     userMiddle.Update,
+    token.Required,
     prepareMiddle,
     function (req, res) {
 
       userUpdateLogic(req.body, app)
       .then(userObj => {
-
-        // todo blacklist old token
-
+        return Promise.all([userObj, token.AddTokenToBlackList(req)])
+      })
+      .then(([userObj, tokenAdded]) => {
         logger.Log(constants.messages.SUCCESS_UPDATED_ACCOUNT, req)
 
         exit(res, 200,
@@ -118,8 +119,6 @@ module.exports = function (app) {
       userDeleteLogic(req.body, app)
         .then(() => token.AddTokenToBlackList(req))
         .then(() => {
-
-        // token.AddTokenToBlackList(req) // todo
         logger.Log(constants.messages.SUCCESS_DELETED_ACCOUNT, req)
 
         exit(res, 200,

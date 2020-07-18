@@ -158,8 +158,8 @@ function Update(req, res, next) {
 
   let newBody = {}
 
-  if (!checkId.required(req, res)) return
-  newBody.id = req.body.id
+  // if (!checkId.required(req, res)) return
+  // newBody.id = req.body.id
 
   if (!checkName.valid(req, res)) return
   if (!checkEmail.valid(req, res)) return
@@ -230,7 +230,7 @@ exports.Upgrade = Upgrade
  * @param next  the cb
  */
 function Delete(req, res, next) {
-  if (!checkId.required(req, res)) return
+  // if (!checkId.required(req, res)) return
 
   next()
 }
