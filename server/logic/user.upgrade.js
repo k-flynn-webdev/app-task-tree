@@ -15,19 +15,20 @@ const constants = require('../constants')
  */
 function userUpgrade(input,  app) {
 
-  input.role = constants.roles.USER
-
   if (has.hasAnItem(input.email)) {
     // changing email so force a verify update
     input.verify = token.Magic(input)
   }
 
-  if (input.token.id.toString() !== input.id) {
+  if (!has.hasAnItem(input.token.id)) {
     return Promise.reject({
       status: 401,
-      message: 'ID mismatch'
+      message: 'Missing token ID'
     })
   }
+
+  input.id = input.token.id
+  input.role = constants.roles.USER
 
   return user.GetUserByID(input.id)
   .then(usrFnd => {

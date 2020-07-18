@@ -44,7 +44,7 @@ module.exports = function (app) {
   /**
    * Upgrade a anon user account
    */
-  app.patch(constants.paths.API_USER_UPGRADE(),
+  app.patch(constants.paths.API_USER_UPGRADE,
     userMiddle.Upgrade,
     token.Required,
     prepareMiddle,
@@ -52,7 +52,9 @@ module.exports = function (app) {
 
       userUpgradeLogic(req.body, app)
       .then(userObj => {
-
+        return Promise.all([userObj, token.AddTokenToBlackList(req)])
+      })
+      .then(([userObj, tokenAdded]) => {
         logger.Log(constants.messages.SUCCESS_UPGRADED_ACCOUNT, req)
 
         exit(res, 201,

@@ -203,16 +203,6 @@ function Upgrade(req, res, next) {
 
   let newBody = {}
 
-  if (!checkId.required(req, res)) return
-  if (!checkUser.HasParam(req, res)) return
-  if (req.params.user.toString() !== req.body.id.toString()) {
-    exit(res, 400, 'ID mismatch for user upgrade.')
-    return
-  }
-
-  newBody.params = req.body.params
-
-  newBody.id = req.body.id
   if (!checkName.required(req, res)) return
   if (!checkName.valid(req, res)) return
   newBody.name = req.body.name

@@ -83,7 +83,7 @@ function createAnon () {
 }
 
 function createUpgrade (input) {
-  return Http.patch(`/api/user/upgrade/${input.id}`, input)
+  return Http.patch('/api/user/upgrade', input)
     .then(res => applyToken(res))
     .then(res => setUser(res))
 }

@@ -47,34 +47,34 @@ afterAll(() => {
 const temp_user = { name: 'sd1232fsfs1', email: 'sfsdf@sdfs1231f.com', password: 'sdff123123AA23111fsdf' };
 
 
-describe('User', () => {
+describe.skip('User', () => {
 
-  // it('Login a user account', (done) => {
-  //   return createAccount(temp_user)
-  //   .then(() => {
-  //     return chai.request(config.ip + ':' + config.port)
-  //     .post(constants.paths.API_USER_LOGIN)
-  //     .send(temp_user)
-  //   })
-  //   .then(res => {
-  //     expect(res).toBeDefined()
-  //     expect(res.status).toBe(200)
-  //     expect(res.body).toBeDefined()
-  //     expect(res.body.data).toBeDefined()
-  //     expect(res.body.data.account).toBeDefined()
-  //     expect(res.body.data.account.id).toBeDefined()
-  //     expect(res.body.data.account.email).toBeDefined()
-  //     expect(res.body.data.account.name).toBeDefined()
-  //     expect(res.body.data.token).toBeDefined()
-  //     expect(res.body.message).toBeDefined()
-  //     expect(res.body.message).toEqual(constants.messages.SUCCESS_LOGIN_ACCOUNT)
-  //     done()
-  //
-  //     newUser = res.body.data.account
-  //     tokenHeader = res.body.data.token
-  //   })
-  // })
-  //
+  it('Login a user account', (done) => {
+    return createAccount(temp_user)
+    .then(() => {
+      return chai.request(config.ip + ':' + config.port)
+      .post(constants.paths.API_USER_LOGIN)
+      .send(temp_user)
+    })
+    .then(res => {
+      expect(res).toBeDefined()
+      expect(res.status).toBe(200)
+      expect(res.body).toBeDefined()
+      expect(res.body.data).toBeDefined()
+      expect(res.body.data.account).toBeDefined()
+      expect(res.body.data.account.id).toBeDefined()
+      expect(res.body.data.account.email).toBeDefined()
+      expect(res.body.data.account.name).toBeDefined()
+      expect(res.body.data.token).toBeDefined()
+      expect(res.body.message).toBeDefined()
+      expect(res.body.message).toEqual(constants.messages.SUCCESS_LOGIN_ACCOUNT)
+      done()
+
+      newUser = res.body.data.account
+      tokenHeader = res.body.data.token
+    })
+  })
+
   // let newUser = null
   // let tokenHeader = null
   //

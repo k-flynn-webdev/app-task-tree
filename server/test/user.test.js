@@ -40,39 +40,39 @@ afterAll(() => {
 const temp_user = { name: 'sdfsfs', email: 'sfsdf@sdfsf.com', password: 'sdffAA11fsdf' };
 
 
-describe('User', () => {
+describe.skip('User', () => {
 
-  // it('An empty object should fail to create a user account', (done) => {
-  //   chai.request(config.ip + ':' + config.port)
-  //   .post(constants.paths.API_USER)
-  //   .send({})
-  //   .end(function(err, res){
-  //     expect(res).toBeDefined()
-  //     expect(res.status).toBe(400)
-  //     expect(res.body).toBeDefined()
-  //     expect(res.body.message).toBeDefined()
-  //     expect(res.body.message).toEqual('Missing name field.')
-  //     done()
-  //   })
-  // })
-  //
-  // it('A missing name should fail to create a user account', (done) => {
-  //   chai.request(config.ip + ':' + config.port)
-  //   .post(constants.paths.API_USER)
-  //   .send({
-  //     email: temp_user.email,
-  //     password: temp_user.password
-  //   })
-  //   .end(function(err, res){
-  //     expect(res).toBeDefined()
-  //     expect(res.status).toBe(400)
-  //     expect(res.body).toBeDefined()
-  //     expect(res.body.message).toBeDefined()
-  //     expect(res.body.message).toEqual('Missing name field.')
-  //     done()
-  //   })
-  // })
-  //
+  it('An empty object should fail to create a user account', (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .post(constants.paths.API_USER)
+    .send({})
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(400)
+      expect(res.body).toBeDefined()
+      expect(res.body.message).toBeDefined()
+      expect(res.body.message).toEqual('Missing name field.')
+      done()
+    })
+  })
+
+  it('A missing name should fail to create a user account', (done) => {
+    chai.request(config.ip + ':' + config.port)
+    .post(constants.paths.API_USER)
+    .send({
+      email: temp_user.email,
+      password: temp_user.password
+    })
+    .end(function(err, res){
+      expect(res).toBeDefined()
+      expect(res.status).toBe(400)
+      expect(res.body).toBeDefined()
+      expect(res.body.message).toBeDefined()
+      expect(res.body.message).toEqual('Missing name field.')
+      done()
+    })
+  })
+
   // it('A invalid name should fail to create a user account', (done) => {
   //   chai.request(config.ip + ':' + config.port)
   //   .post(constants.paths.API_USER)
