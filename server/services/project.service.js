@@ -226,7 +226,7 @@ exports.DeleteProjectsByUser = DeleteProjectsByUser
  * @return  {array}   project object
  */
 function GetProjectsByIsDone(user, isDone) {
-  return db.Query(DB_GET_PROJECTS_BY_IS_DONE, [user, isDone])
+  return db.Query(DB_GET_PROJECTS_BY_IS_DONE, [user, isDone === true? 1: 0])
 }
 
 exports.GetProjectsByIsDone = GetProjectsByIsDone
