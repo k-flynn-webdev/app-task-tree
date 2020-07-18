@@ -22,6 +22,13 @@ function userUpgrade(input,  app) {
     input.verify = token.Magic(input)
   }
 
+  if (input.token.id.toString() !== input.id) {
+    return Promise.reject({
+      status: 401,
+      message: 'ID mismatch'
+    })
+  }
+
   return user.GetUserByID(input.id)
   .then(usrFnd => {
     if (!has.hasAnItem(usrFnd)) {

@@ -46,6 +46,7 @@ module.exports = function (app) {
    */
   app.patch(constants.paths.API_USER_UPGRADE(),
     userMiddle.Upgrade,
+    token.Required,
     prepareMiddle,
     function (req, res) {
 

@@ -210,6 +210,8 @@ function Upgrade(req, res, next) {
     return
   }
 
+  newBody.params = req.body.params
+
   newBody.id = req.body.id
   if (!checkName.required(req, res)) return
   if (!checkName.valid(req, res)) return

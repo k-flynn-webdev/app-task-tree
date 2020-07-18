@@ -3,6 +3,8 @@ const exit = require('../../services/exit.js')
 const logger = require('../../services/logger.js')
 const userMiddle = require('../middlewares/user.js')
 const user = require('../../services/user.service.js')
+const tasks = require('../../services/task.service.js')
+const projects = require('../../services/project.service.js')
 const token = require('../../services/token.service.js')
 const mysqlVal = require('../../helpers/MYSQL_value.js')
 const prepareMiddle = require('../middlewares/prepare.js')
@@ -18,6 +20,38 @@ const userResetLogic = require('../../logic/user.reset.js')
 
 
 module.exports = function (app) {
+
+  /**
+   * Get a user accounts details
+   */
+  app.get(constants.paths.API_USER,
+    token.Required,
+    function (req, res) {
+
+      const allDetails = [
+        user.GetUserByID(req.body.token.id),
+        tasks.GetTasksByUser(req.body.token.id),
+        tasks.GetTasksByIsDone(req.body.token.id, true),
+        projects.GetProjectsByUser(req.body.token.id),
+        projects.GetProjectsByIsDone(req.body.token.id, true)]
+
+      return Promise.all(allDetails)
+      .then(([userObj, taskItems, tasksDone, projectItems, projectsDone]) => {
+
+        exit(res, 200,
+          constants.messages.SUCCESS,
+          { account: user.SafeExport(mysqlVal(userObj), true),
+            tasks: taskItems.length,
+            tasksDone: tasksDone.length,
+            projects: projectItems.length,
+            projectsDone: projectsDone.length
+          })
+      })
+      .catch(err => {
+        logger.Log(err.message || err, req)
+        exit(res, 400, err || 'error')
+      })
+    })
 
   /**
    * Create a user account & return a token key
@@ -48,6 +82,7 @@ module.exports = function (app) {
    * Update a user account
    */
   app.patch(constants.paths.API_USER,
+    token.Required,
     userMiddle.Update,
     prepareMiddle,
     function (req, res) {
@@ -75,12 +110,14 @@ module.exports = function (app) {
    * Delete a user account
    */
   app.delete(constants.paths.API_USER,
+    token.Required,
     userMiddle.Delete,
     prepareMiddle,
     function (req, res) {
 
       userDeleteLogic(req.body, app)
-      .then(() => {
+        .then(() => token.AddTokenToBlackList(req))
+        .then(() => {
 
         // token.AddTokenToBlackList(req) // todo
         logger.Log(constants.messages.SUCCESS_DELETED_ACCOUNT, req)
@@ -91,7 +128,6 @@ module.exports = function (app) {
             token: null
           })
       })
-      // .then(() => token.AddTokenToBlackList(req))
       .catch(err => {
         logger.Log(err.message || err, req)
         exit(res, 400, err || 'error')

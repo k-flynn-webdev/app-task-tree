@@ -268,6 +268,7 @@ describe('User', () => {
   })
 
   // todo test for anon upgrade
+  // todo test for user /me route
   // todo test for escaping/script hacking
 
 })
