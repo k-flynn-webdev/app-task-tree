@@ -12,8 +12,14 @@ const app = express()
 // Temp for devving
 if (config.node_env === 'development') {
   const history = require('connect-history-api-fallback')
-  // app.use(history())
-  // todo this messes up api.get route for user logout // fix!!
+  app.use(history({
+    rewrites: [{
+        from: /^\/api\/.*$/,
+        to: function(context) {
+          return context.parsedUrl.pathname;
+        }
+      }]
+  }))
   app.use(express.static('public'))
 }
 
