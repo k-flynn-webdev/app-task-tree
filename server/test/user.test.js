@@ -42,238 +42,238 @@ const temp_user = { name: 'sdfsfs', email: 'sfsdf@sdfsf.com', password: 'sdffAA1
 
 describe('User', () => {
 
-  it('An empty object should fail to create a user account', (done) => {
-    chai.request(config.ip + ':' + config.port)
-    .post(constants.paths.API_USER)
-    .send({})
-    .end(function(err, res){
-      expect(res).toBeDefined()
-      expect(res.status).toBe(400)
-      expect(res.body).toBeDefined()
-      expect(res.body.message).toBeDefined()
-      expect(res.body.message).toEqual('Missing name field.')
-      done()
-    })
-  })
-
-  it('A missing name should fail to create a user account', (done) => {
-    chai.request(config.ip + ':' + config.port)
-    .post(constants.paths.API_USER)
-    .send({
-      email: temp_user.email,
-      password: temp_user.password
-    })
-    .end(function(err, res){
-      expect(res).toBeDefined()
-      expect(res.status).toBe(400)
-      expect(res.body).toBeDefined()
-      expect(res.body.message).toBeDefined()
-      expect(res.body.message).toEqual('Missing name field.')
-      done()
-    })
-  })
-
-  it('A invalid name should fail to create a user account', (done) => {
-    chai.request(config.ip + ':' + config.port)
-    .post(constants.paths.API_USER)
-    .send({
-      name: 'bla',
-      email: temp_user.email,
-      password: temp_user.password
-    })
-    .end(function(err, res){
-      expect(res).toBeDefined()
-      expect(res.status).toBe(400)
-      expect(res.body).toBeDefined()
-      expect(res.body.message).toBeDefined()
-      expect(res.body.message).toEqual('The name must be at least 4 characters long.')
-      done()
-    })
-  })
-
-  it('A missing email should fail to create a user account', (done) => {
-    chai.request(config.ip + ':' + config.port)
-    .post(constants.paths.API_USER)
-    .send({
-      name: temp_user.name,
-      password: temp_user.password
-    })
-    .end(function(err, res){
-      expect(res).toBeDefined()
-      expect(res.status).toBe(400)
-      expect(res.body).toBeDefined()
-      expect(res.body.message).toBeDefined()
-      expect(res.body.message).toEqual('Missing email field.')
-      done()
-    })
-  })
-
-  it('A invalid email should fail to create a user account', (done) => {
-    chai.request(config.ip + ':' + config.port)
-    .post(constants.paths.API_USER)
-    .send({
-      email: 'sdsdf',
-      name: temp_user.name,
-      password: temp_user.password
-    })
-    .end(function(err, res){
-      expect(res).toBeDefined()
-      expect(res.status).toBe(400)
-      expect(res.body).toBeDefined()
-      expect(res.body.message).toBeDefined()
-      expect(res.body.message).toEqual('The email must be valid.')
-      done()
-    })
-  })
-
-  it('A invalid email should fail to create a user account #2', (done) => {
-    chai.request(config.ip + ':' + config.port)
-    .post(constants.paths.API_USER)
-    .send({
-      email: 'a@aa',
-      name: temp_user.name,
-      password: temp_user.password
-    })
-    .end(function(err, res){
-      expect(res).toBeDefined()
-      expect(res.status).toBe(400)
-      expect(res.body).toBeDefined()
-      expect(res.body.message).toBeDefined()
-      expect(res.body.message).toEqual('The email must be valid.')
-      done()
-    })
-  })
-
-  it('A missing password should fail to create a user account', (done) => {
-    chai.request(config.ip + ':' + config.port)
-    .post(constants.paths.API_USER)
-    .send({
-      name: temp_user.name,
-      email: temp_user.email
-    })
-    .end(function(err, res){
-      expect(res).toBeDefined()
-      expect(res.status).toBe(400)
-      expect(res.body).toBeDefined()
-      expect(res.body.message).toBeDefined()
-      expect(res.body.message).toEqual('Missing password field.')
-      done()
-    })
-  })
-
-  it('A invalid password should fail to create a user account', (done) => {
-    chai.request(config.ip + ':' + config.port)
-    .post(constants.paths.API_USER)
-    .send({
-      name: temp_user.name,
-      email: temp_user.email,
-      password: 'aaaaa'
-    })
-    .end(function(err, res){
-      expect(res).toBeDefined()
-      expect(res.status).toBe(400)
-      expect(res.body).toBeDefined()
-      expect(res.body.message).toBeDefined()
-      expect(res.body.message).toEqual('The password must be at least 8 characters long.')
-      done()
-    })
-  })
-
-  it('A invalid password should fail to create a user account #2', (done) => {
-    chai.request(config.ip + ':' + config.port)
-    .post(constants.paths.API_USER)
-    .send({
-      name: temp_user.name,
-      email: temp_user.email,
-      password: 'aaaaaaaaaaaaaa'
-    })
-    .end(function(err, res){
-      expect(res).toBeDefined()
-      expect(res.status).toBe(400)
-      expect(res.body).toBeDefined()
-      expect(res.body.message).toBeDefined()
-      expect(res.body.message).toEqual('The password must contain numbers.')
-      done()
-    })
-  })
-
-  it('A invalid password should fail to create a user account #3', (done) => {
-    chai.request(config.ip + ':' + config.port)
-    .post(constants.paths.API_USER)
-    .send({
-      name: temp_user.name,
-      email: temp_user.email,
-      password: 'aaaaaaaaaaaaaa11232'
-    })
-    .end(function(err, res){
-      expect(res).toBeDefined()
-      expect(res.status).toBe(400)
-      expect(res.body).toBeDefined()
-      expect(res.body.message).toBeDefined()
-      expect(res.body.message).toEqual('The password must contain Uppercase letters.')
-      done()
-    })
-  })
-
-  let userCreated = null
-  let userToken = null
-
-  it('Should create a user account', (done) => {
-    chai.request(config.ip + ':' + config.port)
-    .post(constants.paths.API_USER)
-    .send({
-      name: temp_user.name,
-      email: temp_user.email,
-      password: temp_user.password
-    })
-    .then(res => {
-      userCreated = res.body.data.account
-      userToken = res.body.data.token
-      expect(res).toBeDefined()
-      expect(res.status).toBe(201)
-      expect(res.body).toBeDefined()
-      expect(res.body.data).toBeDefined()
-      expect(res.body.data.account).toBeDefined()
-      expect(res.body.data.account.id).toBeGreaterThan(0)
-      expect(res.body.data.account.email).toBeDefined()
-      expect(res.body.data.account.name).toBeDefined()
-      expect(res.body.data.account.role).toBeDefined()
-      expect(typeof res.body.data.account.name === 'string').toBe(true)
-      expect(typeof res.body.data.account.role === 'string').toBe(true)
-      expect(res.body.data.account.role).toBe(constants.roles.USER)
-      expect(res.body.data.token).toBeDefined()
-      expect(typeof res.body.data.token === 'string').toBe(true)
-      expect(res.body.data.token.length).toBeGreaterThan(10)
-      expect(res.body.message).toBeDefined()
-      expect(res.body.message).toEqual(constants.messages.SUCCESS_CREATED_ACCOUNT)
-
-      // todo make sure a email is sent to begin verify process
-
-      return dbConnection.Query(userServiceQueries.DB_GET_USER_BY_ID, [userCreated.id])
-    })
-    .then(([userFound]) => {
-      expect(userFound.verify.length).toBeGreaterThan(10)
-      done()
-    })
-  })
-
-  it('An already used email should fail to create a user account', (done) => {
-    chai.request(config.ip + ':' + config.port)
-    .post(constants.paths.API_USER)
-    .send({
-      name: temp_user.name,
-      email: temp_user.email,
-      password: temp_user.password
-    })
-    .end(function(err, res){
-      expect(res).toBeDefined()
-      expect(res.status).toBe(401)
-      expect(res.body).toBeDefined()
-      expect(res.body.message).toBeDefined()
-      expect(res.body.message).toEqual(constants.errors.EMAIL_IN_USE)
-      done()
-    })
-  })
+  // it('An empty object should fail to create a user account', (done) => {
+  //   chai.request(config.ip + ':' + config.port)
+  //   .post(constants.paths.API_USER)
+  //   .send({})
+  //   .end(function(err, res){
+  //     expect(res).toBeDefined()
+  //     expect(res.status).toBe(400)
+  //     expect(res.body).toBeDefined()
+  //     expect(res.body.message).toBeDefined()
+  //     expect(res.body.message).toEqual('Missing name field.')
+  //     done()
+  //   })
+  // })
+  //
+  // it('A missing name should fail to create a user account', (done) => {
+  //   chai.request(config.ip + ':' + config.port)
+  //   .post(constants.paths.API_USER)
+  //   .send({
+  //     email: temp_user.email,
+  //     password: temp_user.password
+  //   })
+  //   .end(function(err, res){
+  //     expect(res).toBeDefined()
+  //     expect(res.status).toBe(400)
+  //     expect(res.body).toBeDefined()
+  //     expect(res.body.message).toBeDefined()
+  //     expect(res.body.message).toEqual('Missing name field.')
+  //     done()
+  //   })
+  // })
+  //
+  // it('A invalid name should fail to create a user account', (done) => {
+  //   chai.request(config.ip + ':' + config.port)
+  //   .post(constants.paths.API_USER)
+  //   .send({
+  //     name: 'bla',
+  //     email: temp_user.email,
+  //     password: temp_user.password
+  //   })
+  //   .end(function(err, res){
+  //     expect(res).toBeDefined()
+  //     expect(res.status).toBe(400)
+  //     expect(res.body).toBeDefined()
+  //     expect(res.body.message).toBeDefined()
+  //     expect(res.body.message).toEqual('The name must be at least 4 characters long.')
+  //     done()
+  //   })
+  // })
+  //
+  // it('A missing email should fail to create a user account', (done) => {
+  //   chai.request(config.ip + ':' + config.port)
+  //   .post(constants.paths.API_USER)
+  //   .send({
+  //     name: temp_user.name,
+  //     password: temp_user.password
+  //   })
+  //   .end(function(err, res){
+  //     expect(res).toBeDefined()
+  //     expect(res.status).toBe(400)
+  //     expect(res.body).toBeDefined()
+  //     expect(res.body.message).toBeDefined()
+  //     expect(res.body.message).toEqual('Missing email field.')
+  //     done()
+  //   })
+  // })
+  //
+  // it('A invalid email should fail to create a user account', (done) => {
+  //   chai.request(config.ip + ':' + config.port)
+  //   .post(constants.paths.API_USER)
+  //   .send({
+  //     email: 'sdsdf',
+  //     name: temp_user.name,
+  //     password: temp_user.password
+  //   })
+  //   .end(function(err, res){
+  //     expect(res).toBeDefined()
+  //     expect(res.status).toBe(400)
+  //     expect(res.body).toBeDefined()
+  //     expect(res.body.message).toBeDefined()
+  //     expect(res.body.message).toEqual('The email must be valid.')
+  //     done()
+  //   })
+  // })
+  //
+  // it('A invalid email should fail to create a user account #2', (done) => {
+  //   chai.request(config.ip + ':' + config.port)
+  //   .post(constants.paths.API_USER)
+  //   .send({
+  //     email: 'a@aa',
+  //     name: temp_user.name,
+  //     password: temp_user.password
+  //   })
+  //   .end(function(err, res){
+  //     expect(res).toBeDefined()
+  //     expect(res.status).toBe(400)
+  //     expect(res.body).toBeDefined()
+  //     expect(res.body.message).toBeDefined()
+  //     expect(res.body.message).toEqual('The email must be valid.')
+  //     done()
+  //   })
+  // })
+  //
+  // it('A missing password should fail to create a user account', (done) => {
+  //   chai.request(config.ip + ':' + config.port)
+  //   .post(constants.paths.API_USER)
+  //   .send({
+  //     name: temp_user.name,
+  //     email: temp_user.email
+  //   })
+  //   .end(function(err, res){
+  //     expect(res).toBeDefined()
+  //     expect(res.status).toBe(400)
+  //     expect(res.body).toBeDefined()
+  //     expect(res.body.message).toBeDefined()
+  //     expect(res.body.message).toEqual('Missing password field.')
+  //     done()
+  //   })
+  // })
+  //
+  // it('A invalid password should fail to create a user account', (done) => {
+  //   chai.request(config.ip + ':' + config.port)
+  //   .post(constants.paths.API_USER)
+  //   .send({
+  //     name: temp_user.name,
+  //     email: temp_user.email,
+  //     password: 'aaaaa'
+  //   })
+  //   .end(function(err, res){
+  //     expect(res).toBeDefined()
+  //     expect(res.status).toBe(400)
+  //     expect(res.body).toBeDefined()
+  //     expect(res.body.message).toBeDefined()
+  //     expect(res.body.message).toEqual('The password must be at least 8 characters long.')
+  //     done()
+  //   })
+  // })
+  //
+  // it('A invalid password should fail to create a user account #2', (done) => {
+  //   chai.request(config.ip + ':' + config.port)
+  //   .post(constants.paths.API_USER)
+  //   .send({
+  //     name: temp_user.name,
+  //     email: temp_user.email,
+  //     password: 'aaaaaaaaaaaaaa'
+  //   })
+  //   .end(function(err, res){
+  //     expect(res).toBeDefined()
+  //     expect(res.status).toBe(400)
+  //     expect(res.body).toBeDefined()
+  //     expect(res.body.message).toBeDefined()
+  //     expect(res.body.message).toEqual('The password must contain numbers.')
+  //     done()
+  //   })
+  // })
+  //
+  // it('A invalid password should fail to create a user account #3', (done) => {
+  //   chai.request(config.ip + ':' + config.port)
+  //   .post(constants.paths.API_USER)
+  //   .send({
+  //     name: temp_user.name,
+  //     email: temp_user.email,
+  //     password: 'aaaaaaaaaaaaaa11232'
+  //   })
+  //   .end(function(err, res){
+  //     expect(res).toBeDefined()
+  //     expect(res.status).toBe(400)
+  //     expect(res.body).toBeDefined()
+  //     expect(res.body.message).toBeDefined()
+  //     expect(res.body.message).toEqual('The password must contain Uppercase letters.')
+  //     done()
+  //   })
+  // })
+  //
+  // let userCreated = null
+  // let userToken = null
+  //
+  // it('Should create a user account', (done) => {
+  //   chai.request(config.ip + ':' + config.port)
+  //   .post(constants.paths.API_USER)
+  //   .send({
+  //     name: temp_user.name,
+  //     email: temp_user.email,
+  //     password: temp_user.password
+  //   })
+  //   .then(res => {
+  //     userCreated = res.body.data.account
+  //     userToken = res.body.data.token
+  //     expect(res).toBeDefined()
+  //     expect(res.status).toBe(201)
+  //     expect(res.body).toBeDefined()
+  //     expect(res.body.data).toBeDefined()
+  //     expect(res.body.data.account).toBeDefined()
+  //     expect(res.body.data.account.id).toBeGreaterThan(0)
+  //     expect(res.body.data.account.email).toBeDefined()
+  //     expect(res.body.data.account.name).toBeDefined()
+  //     expect(res.body.data.account.role).toBeDefined()
+  //     expect(typeof res.body.data.account.name === 'string').toBe(true)
+  //     expect(typeof res.body.data.account.role === 'string').toBe(true)
+  //     expect(res.body.data.account.role).toBe(constants.roles.USER)
+  //     expect(res.body.data.token).toBeDefined()
+  //     expect(typeof res.body.data.token === 'string').toBe(true)
+  //     expect(res.body.data.token.length).toBeGreaterThan(10)
+  //     expect(res.body.message).toBeDefined()
+  //     expect(res.body.message).toEqual(constants.messages.SUCCESS_CREATED_ACCOUNT)
+  //
+  //     // todo make sure a email is sent to begin verify process
+  //
+  //     return dbConnection.Query(userServiceQueries.DB_GET_USER_BY_ID, [userCreated.id])
+  //   })
+  //   .then(([userFound]) => {
+  //     expect(userFound.verify.length).toBeGreaterThan(10)
+  //     done()
+  //   })
+  // })
+  //
+  // it('An already used email should fail to create a user account', (done) => {
+  //   chai.request(config.ip + ':' + config.port)
+  //   .post(constants.paths.API_USER)
+  //   .send({
+  //     name: temp_user.name,
+  //     email: temp_user.email,
+  //     password: temp_user.password
+  //   })
+  //   .end(function(err, res){
+  //     expect(res).toBeDefined()
+  //     expect(res.status).toBe(401)
+  //     expect(res.body).toBeDefined()
+  //     expect(res.body.message).toBeDefined()
+  //     expect(res.body.message).toEqual(constants.errors.EMAIL_IN_USE)
+  //     done()
+  //   })
+  // })
 
   // it('Should not be able to update a account without any properties', (done) => {
   //   chai.request(config.ip + ':' + config.port)

@@ -15,9 +15,7 @@ if (config.node_env === 'development') {
   app.use(history({
     rewrites: [{
         from: /^\/api\/.*$/,
-        to: function(context) {
-          return context.parsedUrl.pathname;
-        }
+        to: function(context) { return context.parsedUrl.pathname }
       }]
   }))
   app.use(express.static('public'))
