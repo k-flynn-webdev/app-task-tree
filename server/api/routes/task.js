@@ -28,7 +28,6 @@ module.exports = function (app) {
     token.Required,
     prepareMiddle,
     function (req, res) {
-    // todo check for user token and integrate
 
       taskCreateLogic(req.body, app)
       .then(taskObj => {
@@ -53,11 +52,9 @@ module.exports = function (app) {
     prepareMiddle,
     function (req, res) {
 
-      let updateData = Object.assign(
-      { id: req.params.task }, req.body)
-    // todo check for user token and integrate
+    req.body.id = req.params.task
 
-    taskUpdateLogic(updateData, app)
+    taskUpdateLogic(req.body, app)
     .then(taskObj => {
       logger.Log('Task updated, id: ' + taskObj.id, req)
       exit(res, 202,
@@ -79,11 +76,9 @@ module.exports = function (app) {
     prepareMiddle,
     function (req, res) {
 
-      // todo this will need securing so
-      //  random peeps can't delete other items
-      //  check for user token and integrate
+      req.body.id = req.params.task
 
-      taskDeleteLogic({ id: req.params.task }, app)
+      taskDeleteLogic(req.body, app)
       .then(taskObj => {
         logger.Log('Task deleted, id: ' + taskObj.id, req)
         exit(res, 202,
@@ -104,7 +99,9 @@ module.exports = function (app) {
     prepareMiddle,
     function (req, res) {
 
-      task.GetTaskByID(req.params.task)
+      req.body.id = req.params.task
+
+      task.GetTaskByID(req.body.id)
       .then(taskObj => {
         if (!taskObj || taskObj.length < 1) {
           return exit(res, 404,
@@ -130,15 +127,14 @@ module.exports = function (app) {
     prepareMiddle,
     function (req, res) {
 
-      // todo check for user token and integrate
-      // todo implement pagination or search by date ..
+    // todo implement pagination or search by date ..
 
       let promiseValue = -1
       let promiseTask = null
 
       if (has.hasAnItem(req.query.user)){
         promiseTask = task.GetTasksByUser
-        promiseValue = req.query.user
+        promiseValue = req.body.token.id
       }
       if (has.hasAnItem(req.query.project)){
         promiseTask = task.GetTasksByProject

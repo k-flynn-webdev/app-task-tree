@@ -14,10 +14,6 @@ const projectUpdateLogic = require('../../logic/project.update.js')
 const projectDeleteLogic = require('../../logic/project.delete.js')
 
 
-// todo
-//    add passive token check, & if theres a user
-//    id on a project double check they match
-
 module.exports = function (app) {
 
   /**
@@ -28,7 +24,6 @@ module.exports = function (app) {
     token.Required,
     prepareMiddle,
     function (req, res) {
-    // todo check for user token and integrate
 
     projectCreateLogic(req.body, app)
     .then(projectObj => {
@@ -49,14 +44,13 @@ module.exports = function (app) {
   app.patch(constants.paths.API_PROJECT(),
     projectMiddle.Update,
     projectMiddle.HasParam,
+    token.Required,
     prepareMiddle,
     function (req, res) {
 
-      let updateData = Object.assign(
-        { id: req.params.task }, req.body)
-      // todo check for user token and integrate
+    req.body.id = req.params.project
 
-    projectUpdateLogic(updateData, app)
+    projectUpdateLogic(req.body, app)
     .then(projectObj => {
       logger.Log('Project updated, id: ' + projectObj.id, req)
       exit(res, 202,
@@ -74,14 +68,13 @@ module.exports = function (app) {
    */
   app.delete(constants.paths.API_PROJECT(),
     projectMiddle.HasParam,
+    token.Required,
     prepareMiddle,
     function (req, res) {
 
-      // todo this will need securing so
-      //  random peeps can't delete other items
-      //  check for user token and integrate
+      req.body.id = req.params.project
 
-      projectDeleteLogic({ id: req.params.project }, app)
+      projectDeleteLogic(req.body, app)
       .then(projectObj => {
         logger.Log('Project deleted, id: ' + projectObj.id, req)
         exit(res, 202,
@@ -98,6 +91,7 @@ module.exports = function (app) {
    */
   app.get(constants.paths.API_PROJECT(),
     projectMiddle.HasParam,
+    token.Required,
     prepareMiddle,
     function (req, res) {
 
@@ -123,13 +117,13 @@ module.exports = function (app) {
    */
   app.get(constants.paths.API_PROJECTS,
     userMiddle.HasQuery,
+    token.Required,
     prepareMiddle,
     function (req, res) {
 
-      // todo check for user token and integrate
       // todo implement pagination or search by date ..
 
-      project.GetProjectsByUser(req.query.user)
+      project.GetProjectsByUser(req.body.token.id)
       .then(projectObjs => {
         const allSafeProjects = projectObjs.map(item => project.SafeExport(item))
         exit(res, 200,
