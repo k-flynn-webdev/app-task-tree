@@ -15,6 +15,49 @@ const userUpgradeLogic = require('../../logic/user.upgrade.js')
 module.exports = function (app) {
 
   /**
+   * Return a anon token to continue using the api
+   *
+   *    @params { user }
+   *    @query { created }
+   *    @return { id }
+   */
+  app.get(constants.paths.API_USER_ANON + '/:user',
+    userMiddle.HasParam,
+    prepareMiddle,
+    function (req, res) {
+
+      user.GetUserByID(Number(req.params.user))
+      .then(userObj => {
+        const userFound = mysqlVal(userObj)
+
+        if (!has.hasAnItem(userObj) ||
+          userFound.role !== constants.roles.ANON ||
+          !has.hasAnItem(req.query.created)) {
+          throw {
+            status: 404,
+            message: constants.errors.ACCOUNT_MISSING
+          }
+        }
+
+        if (req.query.created.toString() !==
+          new Date(userFound.created).toISOString()) {
+          throw {
+            status: 404,
+            message: constants.errors.ACCOUNT_MISSING
+          }
+        }
+
+        exit(res, 200,
+          constants.messages.SUCCESS,
+          { token: token.Create(userFound) })
+      })
+      .catch(err => {
+        logger.Log(err.message || err, req)
+        exit(res, 400, err || 'error')
+      })
+    })
+
+  /**
    * Create a anon user account and returns only the id
    *    this type of account can be upgraded in the future
    *    to a full account

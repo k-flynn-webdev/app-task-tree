@@ -42,7 +42,36 @@ export default {
     }
   },
   actions: {
-    // todo user create / update / delete / login / logout etc
+    // todo user  /  / delete /  /  etc
+    /**
+     * Get latest user account data
+     *
+     * @param {object}    context
+     * @returns {promise} user
+     */
+    get: function (context) {
+      return UserService.get()
+        .then(res => {
+          context.commit('user', res.data.data.account)
+          return res
+        })
+    },
+    /**
+     * Get a anon user token
+     *
+     * @param {object}    context
+     * @returns {promise} user
+     */
+    getAnonToken: function (context) {
+      const userDetails = {
+        id: context.state.user.id,
+        created: context.state.user.meta.created
+      }
+      return UserService.getAnonApiToken(userDetails)
+        .then(res => {
+          return res
+        })
+    },
     /**
      * Login a user
      *

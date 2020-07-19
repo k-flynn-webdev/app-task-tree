@@ -48,7 +48,6 @@ module.exports = function (app) {
             tasksDone: tasksDone.length,
             projects: projectItems.length,
             projectsDone: projectsDone.length
-            // token: token.Create(userObj)
           })
       })
       .catch(err => {

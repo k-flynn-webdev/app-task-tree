@@ -65,11 +65,21 @@ function removeAuth () {
   axios.defaults.headers.common.authorization = null
 }
 
+/**
+ * Returns user account details
+ */
 function get () {
-  // return Http.get('/api/user')
-  return Http.get('/api/user/8')
-    .then(res => applyToken(res))
+  return Http.get('/api/user')
     .then(res => setUser(res))
+}
+
+/**
+ * Returns Anon user token
+ */
+function getAnonApiToken (input) {
+  return Http.get(`/api/user/anon/${input.id}`,
+    { params: { created: input.created } })
+    .then(res => applyToken(res))
 }
 
 function create (input) {
@@ -135,6 +145,7 @@ const services = {
   update,
   verify,
   get,
+  getAnonApiToken,
   getUser,
   resetStart,
   resetComplete
