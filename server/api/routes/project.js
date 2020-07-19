@@ -25,6 +25,7 @@ module.exports = function (app) {
    */
   app.post(constants.paths.API_PROJECT_CREATE,
     projectMiddle.Create,
+    token.Required,
     prepareMiddle,
     function (req, res) {
     // todo check for user token and integrate

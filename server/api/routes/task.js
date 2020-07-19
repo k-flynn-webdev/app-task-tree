@@ -25,6 +25,7 @@ module.exports = function (app) {
    */
   app.post(constants.paths.API_TASK_CREATE,
     taskMiddle.Create,
+    token.Required,
     prepareMiddle,
     function (req, res) {
     // todo check for user token and integrate
@@ -48,6 +49,7 @@ module.exports = function (app) {
   app.patch(constants.paths.API_TASK(),
     taskMiddle.HasParam,
     taskMiddle.Update,
+    token.Required,
     prepareMiddle,
     function (req, res) {
 
@@ -73,6 +75,7 @@ module.exports = function (app) {
    */
   app.delete(constants.paths.API_TASK(),
     taskMiddle.HasParam,
+    token.Required,
     prepareMiddle,
     function (req, res) {
 
@@ -97,6 +100,7 @@ module.exports = function (app) {
    */
   app.get(constants.paths.API_TASK(),
     taskMiddle.HasParam,
+    token.Required,
     prepareMiddle,
     function (req, res) {
 
@@ -122,6 +126,7 @@ module.exports = function (app) {
    */
   app.get(constants.paths.API_TASKS,
     taskMiddle.HasUserOrProject,
+    token.Required,
     prepareMiddle,
     function (req, res) {
 

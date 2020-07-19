@@ -58,8 +58,8 @@ describe('User', () => {
     let userMeToken = 'fyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODIsIm5hbWUiOiJkc3NzZnNkZmRzZiIsImVtYWlsIjoic2RzZGZzZGZkQGRhZGFkZDEuY29tIiwicm9sZSI6InVzZXIiLCJ0aW1lIjoxNTk1MTExMTY3NTA2LCJpYXQiOjE1OTUxMTExNjcsImV4cCI6MTU5NTcxNTk2N30.7uBu0MP6yCy3XoCe5YrKFeMo0sMDl9OMGoS-pSCGBhs'
 
     return chai.request(config.ip + ':' + config.port)
-      .get(constants.paths.API_USER)
-      .set({ "Authorization": `Bearer ${userMeToken}` })
+    .get(constants.paths.API_USER)
+    .set('Authorization', `Bearer ${userMeToken}`)
     .then(res => {
       expect(res).toBeDefined()
       expect(res.status).toBe(401)
@@ -83,7 +83,7 @@ describe('User', () => {
     .then(() => {
       return chai.request(config.ip + ':' + config.port)
       .get(constants.paths.API_USER)
-      .set({ "Authorization": `Bearer ${userMeToken}` })
+      .set('Authorization', `Bearer ${userMeToken}`)
     })
     .then(res => {
       expect(res).toBeDefined()
@@ -142,7 +142,7 @@ describe('User', () => {
   it('Logout a user account', (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_USER_LOGOUT)
-    .set({ "Authorization": `Bearer ${tokenHeader}` })
+    .set('Authorization', `Bearer ${tokenHeader}`)
     .then(res => {
       expect(res).toBeDefined()
       expect(res.status).toBe(200)
