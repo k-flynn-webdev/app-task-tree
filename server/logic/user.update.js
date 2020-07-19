@@ -14,6 +14,9 @@ const constants = require('../constants')
  * @returns {object}  userObj promise
  */
 function userUpdate(input,  app) {
+
+  input.id = input.token.id
+
   return user.GetUserByID(input.id)
   .then(usrFnd => {
     const userFound = mysqlVal(usrFnd)

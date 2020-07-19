@@ -14,6 +14,9 @@ const constants = require('../constants')
  * @returns {object}  projectObj promise
  */
 function projectUpdate(input, app) {
+
+  input.user = input.token.id
+
   return project.GetProjectByID(input.id)
     .then(prjFnd => {
       let projectObj = mysqlVal(prjFnd)

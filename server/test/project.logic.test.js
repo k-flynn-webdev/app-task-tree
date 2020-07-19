@@ -2,6 +2,8 @@
 const dbConnection = require('../interfaces/db_init_sql')
 const projectServiceQueries = require('../services/project.service').ALL_QUERIES
 const taskServiceQueries = require('../services/task.service').ALL_QUERIES
+const token = require('../services/token.service')
+const user = require('../services/user.service')
 const constants = require('../constants/index')
 const config = require('../config/config.js')
 const chaiHttp = require('chai-http')
@@ -13,18 +15,18 @@ let projectObj = null
 let projectUser = 333
 let projectName = 'This is a test project created by a test project.logic'
 
-/**
- * Used to mock express app
- *
- * @constructor
- */
-function appFake () {
-  this.on = () => {}
-  this.emit = () => {}
-
-  return this
-}
-const mockApp = appFake()
+// /**
+//  * Used to mock express app
+//  *
+//  * @constructor
+//  */
+// function appFake () {
+//   this.on = () => {}
+//   this.emit = () => {}
+//
+//   return this
+// }
+// const mockApp = new appFake()
 
 function clearTable () {
   return dbConnection.Query('TRUNCATE TABLE projects')
@@ -49,6 +51,7 @@ function createTask (id) {
   return new Promise((resolve, reject) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_TASK_CREATE)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       user: projectUser,
       project: id,
@@ -70,6 +73,7 @@ function updateTask (id, isDone) {
   return new Promise((resolve, reject) => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_TASK(id))
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       id: id,
       isDone: isDone })
@@ -84,6 +88,7 @@ function deleteTask (id) {
   return new Promise((resolve, reject) => {
     chai.request(config.ip + ':' + config.port)
     .delete(constants.paths.API_TASK(id))
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       id: id
     })
@@ -98,6 +103,7 @@ function getProjectById (id) {
   return new Promise((resolve, reject) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_PROJECT(id))
+    .set('Authorization', `Bearer ${userToken}`)
     .then(tmpObj => {
       return tmpObj.body.data.project
     })
@@ -109,6 +115,7 @@ function deleteProjectById (id) {
   return new Promise((resolve, reject) => {
     chai.request(config.ip + ':' + config.port)
     .delete(constants.paths.API_PROJECT(id))
+    .set('Authorization', `Bearer ${userToken}`)
     .then(tmpObj => {
       return tmpObj.body
     })
@@ -120,12 +127,25 @@ beforeAll( () => {
   dbConnection.Connect()
   return dbConnection.SelectDB(config.db.database)
   .then(() => clearTable())
+  .then(() => {
+    userToken = createUserToken()
+  })
 })
 
 afterAll(() => {
   dbConnection.Close()
 })
 
+userDetails = {
+  id: 201,
+  name: 'testName',
+  email: 'test@email.com',
+  password: 'ANON1234',
+  role: constants.roles.ANON }
+
+const createUserToken = () => {
+  return token.Create(userDetails)
+}
 
 describe('Projects logic', () => {
   beforeEach(() => {})

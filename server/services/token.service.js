@@ -162,7 +162,7 @@ function TokenDecode(token, req, res, next) {
   if (!decoded) {
     let err = new Error('Token issued appears broken')
     logger.Log(err, req)
-    return next(err)
+    return exit(res, 401, err || 'Please relogin.')
   }
 
   decoded.logout = true
@@ -264,13 +264,14 @@ function AddTokenToBlackList(req) {
   let exists = tokensBlackListed.filter(item => item === token)
 
   if (exists.length > 0) {
-    return Promise.reject('Token already exists.')
+    logger.Log('Token already exists in blacklist.', req)
+    return Promise.resolve('User logged out successfully.')
   }
 
   return db.Query(DB_CREATE_TOKEN, { token })
   .then((result) => {
     tokensBlackListed.push(token)
-    logger.Log('New token added to blacklist.')
+    logger.Log('New token added to blacklist.', req)
     return Promise.resolve('User logged out successfully.')
   })
   .catch(err => {

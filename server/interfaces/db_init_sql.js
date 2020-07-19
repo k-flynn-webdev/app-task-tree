@@ -36,6 +36,9 @@ function Query(search, params) {
   return new Promise((resolve, reject) => {
     connection.query(search, params, (err, res) => {
       if (err) {
+        if (config.node_env === 'development') {
+          console.log(err)
+        }
         return reject(err)
       }
 

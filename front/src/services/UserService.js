@@ -65,10 +65,21 @@ function removeAuth () {
   axios.defaults.headers.common.authorization = null
 }
 
+/**
+ * Returns user account details
+ */
 function get () {
   return Http.get('/api/user')
-    .then(res => applyToken(res))
     .then(res => setUser(res))
+}
+
+/**
+ * Returns Anon user token
+ */
+function getAnonApiToken (input) {
+  return Http.get(`/api/user/anon/${input.id}`,
+    { params: { created: input.created } })
+    .then(res => applyToken(res))
 }
 
 function create (input) {
@@ -79,11 +90,12 @@ function create (input) {
 
 function createAnon () {
   return Http.post('/api/user/anon')
+    .then(res => applyToken(res))
     .then(res => setUser(res))
 }
 
 function createUpgrade (input) {
-  return Http.patch(`/api/user/upgrade/${input.id}`, input)
+  return Http.patch('/api/user/upgrade', input)
     .then(res => applyToken(res))
     .then(res => setUser(res))
 }
@@ -125,17 +137,18 @@ function verify (input) {
 }
 
 const services = {
-  create: create,
-  createAnon: createAnon,
-  createUpgrade: createUpgrade,
-  login: login,
-  logout: logout,
-  update: update,
-  verify: verify,
-  get: get,
-  getUser: getUser,
-  resetStart: resetStart,
-  resetComplete: resetComplete
+  create,
+  createAnon,
+  createUpgrade,
+  login,
+  logout,
+  update,
+  verify,
+  get,
+  getAnonApiToken,
+  getUser,
+  resetStart,
+  resetComplete
 }
 
 export default services

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from './store'
 import router from './router'
+import status from './constants/status'
 import './styles/index.scss'
 
 Vue.config.productionTip = false
@@ -14,9 +15,18 @@ new Vue({
     const userFound = this.$store.getters['user/user']
     if (userFound.id < 0) return
 
-    return this.$store.dispatch('projects/getProjectsByUserId',
-      { user: userFound.id })
-      .then(() => {})
+    let getUserAnonToken = Promise.resolve()
+    if (userFound.role === status.ANON) {
+      getUserAnonToken = this.$store.dispatch('user/getAnonToken')
+    }
+
+    // get latest data of user
+    return getUserAnonToken
+      .then(() => this.$store.dispatch('user/get'))
+      .then(() => {
+        this.$store.dispatch('projects/getProjectsByUserId',
+          { user: userFound.id })
+      })
       .catch(err => this.$store.commit('toasts/toastAdd', err))
   }
 }).$mount('#app')

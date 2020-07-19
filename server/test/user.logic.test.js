@@ -1,6 +1,7 @@
 //Require the dev-dependencies
 const userServiceQueries = require('../services/user.service').ALL_QUERIES
 const userService = require('../services/user.service')
+const token = require('../services/token.service')
 const dbConnection = require('../interfaces/db_init_sql')
 const constants = require('../constants/index')
 const config = require('../config/config.js')
@@ -33,11 +34,15 @@ function clearVerify (id) {
 function clearTable () {
   return dbConnection.Query('TRUNCATE TABLE users')
 }
+function clearTokens () {
+  return dbConnection.Query('TRUNCATE TABLE tokens')
+}
 
 beforeAll(() => {
   dbConnection.Connect()
   return dbConnection.SelectDB(config.db.database)
   .then(() => clearTable())
+  .then(() => clearTokens())
 })
 
 afterAll(() => {
@@ -48,6 +53,63 @@ const temp_user = { name: 'sd1232fsfs1', email: 'sfsdf@sdfs1231f.com', password:
 
 
 describe('User', () => {
+
+  it('Should not return user account details of invalid token', (done) => {
+    let userMeToken = 'fyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODIsIm5hbWUiOiJkc3NzZnNkZmRzZiIsImVtYWlsIjoic2RzZGZzZGZkQGRhZGFkZDEuY29tIiwicm9sZSI6InVzZXIiLCJ0aW1lIjoxNTk1MTExMTY3NTA2LCJpYXQiOjE1OTUxMTExNjcsImV4cCI6MTU5NTcxNTk2N30.7uBu0MP6yCy3XoCe5YrKFeMo0sMDl9OMGoS-pSCGBhs'
+
+    return chai.request(config.ip + ':' + config.port)
+    .get(constants.paths.API_USER)
+    .set('Authorization', `Bearer ${userMeToken}`)
+    .then(res => {
+      expect(res).toBeDefined()
+      expect(res.status).toBe(401)
+      expect(res.body).toBeDefined()
+      expect(res.body.message).toBeDefined()
+      expect(res.body.message).toEqual('JsonWebTokenError')
+      done()
+    })
+  })
+
+  it('Should return user account details', (done) => {
+    let userMeAccount = null
+    let userMeToken = null
+
+    return createAccount(temp_user)
+    .then(({ insertId }) => userService.GetUserByID(insertId))
+    .then(([userObj]) => {
+      userMeAccount = userObj
+      userMeToken = token.Create(userObj)
+    })
+    .then(() => {
+      return chai.request(config.ip + ':' + config.port)
+      .get(constants.paths.API_USER)
+      .set('Authorization', `Bearer ${userMeToken}`)
+    })
+    .then(res => {
+      console.log(res.body)
+      expect(res).toBeDefined()
+      expect(res.status).toBe(200)
+      expect(res.body).toBeDefined()
+      expect(res.body.data).toBeDefined()
+      expect(res.body.data.account).toBeDefined()
+      expect(res.body.data.account.id).toBeDefined()
+      expect(res.body.data.account.email).toBeDefined()
+      expect(res.body.data.account.name).toBeDefined()
+      expect(res.body.data.account.role).toBeDefined()
+      expect(res.body.data.account.meta).toBeDefined()
+      expect(res.body.data.account.meta.created).toBeDefined()
+      expect(res.body.data.account.meta.login).toBeDefined()
+      expect(res.body.data.account.meta.updated).toBeDefined()
+      expect(res.body.data.account.meta.verified).toBeDefined()
+      expect(res.body.data.tasks).toBeDefined()
+      expect(res.body.data.tasksDone).toBeDefined()
+      expect(res.body.data.projects).toBeDefined()
+      expect(res.body.data.projectsDone).toBeDefined()
+      expect(res.body.message).toBeDefined()
+      expect(res.body.message).toEqual(constants.messages.SUCCESS)
+      done()
+    })
+  })
 
   it('Login a user account', (done) => {
     return createAccount(temp_user)
@@ -68,10 +130,10 @@ describe('User', () => {
       expect(res.body.data.token).toBeDefined()
       expect(res.body.message).toBeDefined()
       expect(res.body.message).toEqual(constants.messages.SUCCESS_LOGIN_ACCOUNT)
-      done()
 
       newUser = res.body.data.account
       tokenHeader = res.body.data.token
+      done()
     })
   })
 
@@ -81,8 +143,7 @@ describe('User', () => {
   it('Logout a user account', (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_USER_LOGOUT)
-    .set({ "Authorization": `Bearer ${tokenHeader}` })
-    .send(temp_user)
+    .set('Authorization', `Bearer ${tokenHeader}`)
     .then(res => {
       expect(res).toBeDefined()
       expect(res.status).toBe(200)
@@ -267,7 +328,6 @@ describe('User', () => {
     })
   })
 
-  // todo test for anon upgrade
   // todo test for escaping/script hacking
 
 })
