@@ -67,7 +67,6 @@ function removeAuth () {
 
 function get () {
   return Http.get('/api/user')
-    .then(res => applyToken(res))
     .then(res => setUser(res))
 }
 
@@ -79,6 +78,7 @@ function create (input) {
 
 function createAnon () {
   return Http.post('/api/user/anon')
+    .then(res => applyToken(res))
     .then(res => setUser(res))
 }
 
