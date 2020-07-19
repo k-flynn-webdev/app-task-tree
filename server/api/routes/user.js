@@ -29,12 +29,14 @@ module.exports = function (app) {
     prepareMiddle,
     function (req, res) {
 
+      const userId = req.body.token.id
+
       const allDetails = [
-        user.GetUserByID(req.body.token.id),
-        tasks.GetTasksByUser(req.body.token.id),
-        tasks.GetTasksByIsDone(req.body.token.id, true),
-        projects.GetProjectsByUser(req.body.token.id),
-        projects.GetProjectsByIsDone(req.body.token.id, true)]
+        user.GetUserByID(userId),
+        tasks.GetTasksByUser(userId),
+        tasks.GetTasksByIsDone(userId, true),
+        projects.GetProjectsByUser(userId),
+        projects.GetProjectsByIsDone(userId, true)]
 
       return Promise.all(allDetails)
       .then(([userObj, taskItems, tasksDone, projectItems, projectsDone]) => {
@@ -46,6 +48,7 @@ module.exports = function (app) {
             tasksDone: tasksDone.length,
             projects: projectItems.length,
             projectsDone: projectsDone.length
+            // token: token.Create(userObj)
           })
       })
       .catch(err => {

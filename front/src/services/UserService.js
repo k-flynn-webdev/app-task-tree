@@ -66,7 +66,9 @@ function removeAuth () {
 }
 
 function get () {
-  return Http.get('/api/user')
+  // return Http.get('/api/user')
+  return Http.get('/api/user/8')
+    .then(res => applyToken(res))
     .then(res => setUser(res))
 }
 
@@ -125,17 +127,17 @@ function verify (input) {
 }
 
 const services = {
-  create: create,
-  createAnon: createAnon,
-  createUpgrade: createUpgrade,
-  login: login,
-  logout: logout,
-  update: update,
-  verify: verify,
-  get: get,
-  getUser: getUser,
-  resetStart: resetStart,
-  resetComplete: resetComplete
+  create,
+  createAnon,
+  createUpgrade,
+  login,
+  logout,
+  update,
+  verify,
+  get,
+  getUser,
+  resetStart,
+  resetComplete
 }
 
 export default services

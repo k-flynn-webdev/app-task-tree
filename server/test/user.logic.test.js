@@ -86,6 +86,7 @@ describe('User', () => {
       .set('Authorization', `Bearer ${userMeToken}`)
     })
     .then(res => {
+      console.log(res.body)
       expect(res).toBeDefined()
       expect(res.status).toBe(200)
       expect(res.body).toBeDefined()
