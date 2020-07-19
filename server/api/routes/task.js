@@ -13,11 +13,6 @@ const taskUpdateLogic = require('../../logic/task.update.js')
 const taskDeleteLogic = require('../../logic/task.delete.js')
 
 
-
-// todo
-//    add passive token check, & if theres a user
-//    id on a task double check they match
-
 module.exports = function (app) {
 
   /**
