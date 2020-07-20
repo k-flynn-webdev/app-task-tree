@@ -11,7 +11,8 @@
   transition: background-color 0.6s, right 0.6s, height 1s;
 
   &.top {
-    top: $margin-default * -2.2;
+    bottom: unset;
+    top: $margin-default * -2;
     left: $margin-default * -1.5;
   }
 
@@ -22,30 +23,35 @@
       height: $unit-default * 0.7;
       transition: right 0.6s;
 
+      $smallSize: $unit-default * 0.85;
       @include screen-xs {
-        height: $unit-default;
+        height: $smallSize;
       }
       @include screen-sm {
-        height: $unit-default;
+        height: $smallSize;
       }
       @include screen-md {
-        height: $unit-default * 0.85;
+        height: $smallSize;
+      }
+      @include screen-lg {
+        height: $smallSize;
       }
 
       &.top {
         right: $margin-default * -1.5;
+        $smallSize: $unit-default * 0.5;
 
         @include screen-xs {
-          top: $margin-default * -1.5;
+          top: 0;
+          height: $smallSize;
         }
         @include screen-sm {
-          top: $margin-default * -1.5;
+          top: 0;
+          height: $smallSize;
         }
         @include screen-md {
-          top: $margin-default * -1.5;
-        }
-        @include screen-lg {
-          top: $margin-default * -1.75;
+          top: -5px;
+          height: $smallSize;
         }
       }
     }
@@ -56,9 +62,24 @@
   }
 
   &.COMPLETE {
+    height: 0;
     left: $offPos;
     right: $offPos;
-    height: 0;
     bottom: $offPos;
+
+    &.top {
+      top: $margin-default * -2.2;
+      bottom: unset;
+
+      @include screen-xs {
+        top: 0;
+      }
+      @include screen-sm {
+        top: 0;
+      }
+      @include screen-md {
+        top: -5px;
+      }
+    }
   }
 }
