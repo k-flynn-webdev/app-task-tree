@@ -48,10 +48,12 @@ export default {
   },
   mounted () {
     if (!this.ready) return
+    if (this.mode === modes.CLEAR) return
     return this.setProjectName()
   },
   methods: {
     setProjectName: function () {
+      if (!this.project) return
       const projectStore = this.$store.getters['projects/current']
       if (projectStore.id !== this.project) {
         const projectFound =
