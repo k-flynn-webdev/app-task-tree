@@ -31,7 +31,7 @@ export default {
      * @returns {function}
      */
     findProject: (state) => (id) => {
-      return state.projects.find(item => item.id === id)
+      return state.projects.find(project => project.id === id)
     }
   },
   mutations: {
@@ -175,7 +175,8 @@ export default {
         .then(res => {
           if (res.data.data.projects.length < 1) return
           context.commit('projectSet', res.data.data.projects)
-          context.commit('projectCurrent', res.data.data.projects[0])
+          // context.commit('projectCurrent', res.data.data.projects[0])
+          // console.log('inside created app')
           return res
         })
     }

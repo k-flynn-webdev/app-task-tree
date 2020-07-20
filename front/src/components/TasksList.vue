@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import general from '../constants/general'
 import status from '../constants/status.js'
 import Card from '../components/general/Card'
 import TaskItem from '../components/TaskItem'
@@ -37,11 +36,14 @@ export default {
   },
   props: {
     project: {
-      type: Object,
-      default: general.DEFAULT_PROJECT()
+      type: Number,
+      default: -1
     }
   },
   computed: {
+    ready: function () {
+      return this.$store.getters.ready
+    },
     task: function () {
       return this.$store.getters['tasks/current']
     },
@@ -49,17 +51,21 @@ export default {
       return this.$store.getters['tasks/tasks']
     }
   },
+  watch: {
+    ready: function (input) {
+      if (input) this.getTasksOfProject()
+    }
+  },
   mounted () {
+    if (!this.ready) return
     return this.getTasksOfProject()
   },
   methods: {
     getTasksOfProject: function () {
+      this.$store.commit('status', status.WAITING)
       return this.$store.dispatch('tasks/getTasksByUserOrProject',
-        { project: this.project.id })
-        .then(() => {
-          const currentProj = this.$store.getters['projects/findProject'](this.project.id)
-          this.$store.commit('projects/projectCurrent', currentProj)
-        })
+        { project: this.project })
+        .then(() => this.$store.commit('status', status.SUCCESS))
         .catch(err => this.handleError(err))
     },
     handleError: function (err) {

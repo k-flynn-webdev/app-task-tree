@@ -35,15 +35,16 @@ const routes = [
   {
     path: '/project/:project',
     component: Home,
-    props: { mode: modes.TASKS },
+    props: (route) => ({
+      mode: modes.TASKS,
+      project: Number(route.params.project)
+    }),
     children: [
       {
         path: '',
         name: Paths.PROJECT_TASKS,
         props: (route) => ({
-          project: {
-            id: Number(route.params.project)
-          }
+          project: Number(route.params.project)
         }),
         component: Tasks
       }
