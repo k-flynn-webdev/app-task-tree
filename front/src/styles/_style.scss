@@ -127,12 +127,6 @@ body {
   }
 
   .intro-text {
-    p,
-    ul,
-    ol {
-      word-break: break-word;
-    }
-
     button {
       background-color: $color-success;
     }

@@ -13,9 +13,11 @@
 
         <StatusBar :class="status" />
 
-        <p class="title">
-          Login
-        </p>
+        <div class="text-center ">
+          <p class="upper text-bold display-inline-b">
+            Login
+          </p>
+        </div>
 
         <form class="user__form" @submit.prevent="submitLogin">
           <div class="input-control">
@@ -66,11 +68,25 @@
     </Card>
 
     <div class="container max-30">
-      <router-link
-        class="color-success"
-        to="/user/reset">
-        Lost password?
-      </router-link>
+
+      <p v-if="isAnon" class="word-break">
+        Your account is a Anonymous and tied only to this device,
+        but it can be upgraded to a User account which can be logged in any time from any device.
+        <router-link
+          class="color-success"
+          to="/user/create">
+          Upgrade
+        </router-link>
+      </p>
+
+      <p v-if="isUser" class="word-break">
+        Your account is a User account.
+      </p>
+
+      <p v-if="isAdmin" class="word-break">
+        Your account is a Admin account.
+      </p>
+
     </div>
 
   </div>

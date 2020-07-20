@@ -42,6 +42,14 @@
   text-decoration-line: underline;
 }
 
+.title {
+  text-align: center;
+  font-weight: bolder;
+  font-size: $font-size-md;
+  text-transform: uppercase;
+  margin-bottom: $margin-default;
+}
+
 small,
 p,
 h1,
@@ -57,7 +65,7 @@ div,
 .text,
 input,
 button {
-  word-break: break-all;
+  word-break: break-word;
   font-size: $font-size;
   line-height: $unit-default;
   font-family: 'Open Sans', sans-serif;
@@ -81,6 +89,10 @@ input {
   color: $color-fore;
   -webkit-text-fill-color: $color-fore;
   margin: 0 $margin-default;
+}
+
+.break-all {
+  word-break: break-all;
 }
 
 .word-break {

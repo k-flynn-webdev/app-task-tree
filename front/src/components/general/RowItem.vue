@@ -27,7 +27,7 @@
             {{ progress }}
           </small>
 
-          <p class="row__item__line__mid__content-data word-break">
+          <p class="row__item__line__mid__content-data">
             {{ textOrName }}
           </p>
 

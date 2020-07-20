@@ -13,11 +13,9 @@
 
         <StatusBar :class="status" />
 
-        <div class="text-center ">
-          <p class="upper text-bold display-inline-b">
-            Create
-          </p>
-        </div>
+        <p class="title">
+          Create
+        </p>
 
         <form class="user__form" @submit.prevent="submitForm">
           <div class="input-control">
