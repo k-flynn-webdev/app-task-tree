@@ -266,7 +266,7 @@ function ComparePassword(input, dbHash) {
   .then(passwordTest => {
     if (!passwordTest) {
       throw { status: 403,
-        message: constants.errors.PASSWORD_INCORRECT }
+        message: constants.errors.ACCOUNT_GENERIC_LOGIN_ERROR }
     }
 
     return Promise.resolve(true)
