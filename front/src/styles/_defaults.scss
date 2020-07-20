@@ -377,9 +377,11 @@ body {
 }
 
 .list-anim-enter {
-  transform: translateY($unit-default * -1);
+  transform: translateX($unit-default * -3);
+  //transform: translateY($unit-default * -1);
 }
 
 .list-anim-leave-to {
-  transform: translateY($unit-default);
+  transform: translateX($unit-default * 3);
+  //transform: translateY($unit-default);
 }
