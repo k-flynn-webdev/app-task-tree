@@ -69,6 +69,22 @@ const routes = [
     path: '/user/login',
     name: Paths.USER_LOGIN,
     component: () => import(/* webpackChunkName: "UserLogin" */ '../views/UserLogin.vue')
+  },
+  {
+    path: '/user/reset',
+    props: (route) => ({
+      verify: ''
+    }),
+    name: Paths.USER_RESET,
+    component: () => import(/* webpackChunkName: "UserLogin" */ '../views/UserReset.vue')
+  },
+  {
+    path: '/user/reset/:verify',
+    props: (route) => ({
+      verify: route.params.verify
+    }),
+    name: Paths.USER_RESET_PASSWORD,
+    component: () => import(/* webpackChunkName: "UserLogin" */ '../views/UserReset.vue')
   }
 
   // todo 404 page here

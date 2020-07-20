@@ -13,13 +13,12 @@
 
         <StatusBar :class="status" />
 
-        <div class="text-center ">
-          <p class="upper text-bold display-inline-b">
-            Login
-          </p>
-        </div>
+        <p class="title">
+          Password Reset
+        </p>
 
-        <form class="user__form" @submit.prevent="submitLogin">
+        <form v-if="showEmail" class="user__form"
+              @submit.prevent="submitResetStart">
           <div class="input-control">
             <label>
               <p>Email</p>
@@ -32,6 +31,10 @@
             </label>
           </div>
 
+        </form>
+
+        <form v-if="showPassword" class="user__form"
+              @submit.prevent="submitResetComplete">
           <div class="input-control">
             <label>
               <p>Password</p>
@@ -39,55 +42,37 @@
                      v-model="form.password"
                      type="password"
                      minlength="7"
-                     @input="resetStatus"
-              >
+                     @input="resetStatus">
             </label>
           </div>
-
         </form>
 
       </div>
 
       <template slot="footer" class="user__form__footer">
-        <router-link
-          class="text-bold color-fore"
-          to="/user/create">
-          Create
-        </router-link>
-
         <button
+          v-if="showEmail"
           class="user__form__footer__ok-btn"
-          :tabindex="!isValid ? -1: 0"
-          :class="{ 'DISABLED': !isValid }"
+          :tabindex="!validEmail ? -1: 0"
+          :class="{ 'DISABLED': !validEmail }"
           type="submit"
-          @click.prevent="submitLogin">
+          @click.prevent="submitResetStart">
           <p>OK</p>
         </button>
+
+        <button
+          v-if="showPassword"
+          class="user__form__footer__ok-btn"
+          :tabindex="!validPassword ? -1: 0"
+          :class="{ 'DISABLED': !validPassword }"
+          type="submit"
+          @click.prevent="submitResetComplete">
+          <p>OK</p>
+        </button>
+
       </template>
 
     </Card>
-
-    <div class="container max-30">
-
-      <p v-if="isAnon" class="word-break">
-        Your account is a Anonymous and tied only to this device,
-        but it can be upgraded to a User account which can be logged in any time from any device.
-        <router-link
-          class="color-success"
-          to="/user/create">
-          Upgrade
-        </router-link>
-      </p>
-
-      <p v-if="isUser" class="word-break">
-        Your account is a User account.
-      </p>
-
-      <p v-if="isAdmin" class="word-break">
-        Your account is a Admin account.
-      </p>
-
-    </div>
 
   </div>
 </template>
@@ -101,7 +86,7 @@ import Card from '../components/general/Card'
 import Paths from '../constants/paths'
 
 export default {
-  name: 'UserLogin',
+  name: 'UserReset',
   components: {
     Card,
     StatusBar
@@ -115,13 +100,29 @@ export default {
       }
     }
   },
+  props: {
+    verify: {
+      type: String,
+      default: ''
+    }
+  },
   computed: {
-    isValid: function () {
-      if (this.form.email.length < 4) return false
+    showEmail: function () {
+      return !this.verify
+    },
+    showPassword: function () {
+      return this.verify
+    },
+    validPassword: function () {
+      return this.form.password.length > 6
+    },
+    validEmail: function () {
       if (this.form.email.indexOf('@') < 0) return false
       if (this.form.email.indexOf('.') < 0) return false
-      if (this.status !== status.CLEAR) return false
-      return this.form.password.length >= 7
+      return this.form.email.length > 4
+    },
+    isValid: function () {
+      return (this.status === status.CLEAR)
     },
     user: function () {
       return this.$store.getters['user/user']
@@ -131,12 +132,26 @@ export default {
     resetStatus: function () {
       this.status = status.CLEAR
     },
-    submitLogin: function () {
+    submitResetStart: function () {
+      if (!this.validEmail) return
       if (!this.isValid) return
-      if (this.status !== status.CLEAR) return
 
       this.status = status.WAITING
-      return this.$store.dispatch('user/login', this.form)
+      return this.$store.dispatch('user/resetStart',
+        { email: this.form.email })
+        .then(res => this.handleSuccess(res))
+        .catch(err => this.handleError(err))
+    },
+    submitResetComplete: function () {
+      if (!this.validPassword) return
+      if (!this.isValid) return
+
+      this.status = status.WAITING
+      return this.$store.dispatch('user/resetComplete',
+        {
+          verify: this.verify,
+          password: this.form.pasword
+        })
         .then(res => this.handleSuccess(res))
         .catch(err => this.handleError(err))
     },

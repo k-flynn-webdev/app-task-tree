@@ -119,7 +119,7 @@ function update (input) {
 }
 
 function resetStart (input) {
-  return Http.post('/api/user/reset', input)
+  return Http.get(`/api/user/reset/${input.email}`)
     .then(res => applyToken(res))
     .then(res => setUser(res))
 }

@@ -153,6 +153,32 @@ export default {
           context.commit('user', res.data.data.account)
           return res
         })
+    },
+    /**
+     * Begin user password reset process
+     *
+     * @param {object}    context
+     * @param {object}    input
+     * @returns {promise} anon user
+     */
+    resetStart: function (context, input) {
+      return UserService.resetStart(input)
+        .then(res => {
+          return res
+        })
+    },
+    /**
+     * Begin user password reset process
+     *
+     * @param {object}    context
+     * @param {object}    input
+     * @returns {promise} anon user
+     */
+    resetComplete: function (context, input) {
+      return UserService.resetComplete(input)
+        .then(res => {
+          return res
+        })
     }
     // for delayed/time consuming actions
   }
