@@ -35,8 +35,10 @@ new Vue({
           { user: userFound.id })
       })
       .then(() => {
-        this.$store.commit('status', status.SUCCESS)
-        this.$store.commit('ready', true)
+        helpers.timeDelay(() => {
+          this.$store.commit('status', status.SUCCESS)
+          this.$store.commit('ready', true)
+        }, general.DELAY_BLIP)
       })
       .catch(err => this.$store.commit('toasts/toastAdd', err))
   }

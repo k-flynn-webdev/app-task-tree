@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import Header from '../components/Header'
 import modes from '../constants/modes'
+import Header from '../components/Header'
 
 export default {
   name: 'Home',
@@ -24,9 +24,16 @@ export default {
     mode: {
       type: String,
       default: modes.CLEAR
+    },
+    project: {
+      type: Number,
+      default: -1
     }
   },
   computed: {
+    ready: function () {
+      return this.$store.getters.ready
+    },
     user: function () {
       return this.$store.getters['user/user']
     },
@@ -34,7 +41,25 @@ export default {
       return !(this.user.id === null || this.user.id < 0)
     }
   },
+  watch: {
+    ready: function (input) {
+      if (input) this.setProjectName()
+    }
+  },
+  mounted () {
+    if (!this.ready) return
+    return this.setProjectName()
+  },
   methods: {
+    setProjectName: function () {
+      const projectStore = this.$store.getters['projects/current']
+      if (projectStore.id !== this.project) {
+        const projectFound =
+          this.$store.getters['projects/findProject'](this.project)
+        if (projectFound.id < 0) return
+        this.$store.commit('projects/projectCurrent', projectFound)
+      }
+    }
   }
 }
 </script>

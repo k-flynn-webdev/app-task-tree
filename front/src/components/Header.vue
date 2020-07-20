@@ -51,25 +51,6 @@ export default {
       type: Boolean,
       default: false
     }
-  },
-  // data () {
-  //   return {
-  //     mode: modes.PROJECTS // todo this will be injected by route
-  //   }
-  // },
-  computed: {
-    // user: function () {
-    //   return this.$store.getters['user/user']
-    // },
-    // validUser: function () {
-    //   return !(this.user.id === null || this.user.id < 0)
-    // },
-    // isProjects: function () {
-    //   return this.mode === modes.PROJECTS
-    // },
-    // isTasks: function () {
-    //   return this.mode === modes.TASKS
-    // }
   }
 }
 </script>
