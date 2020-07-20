@@ -74,6 +74,28 @@
 
           </form>
 
+          <div v-if="user.meta" class="user__meta">
+            <br>
+            <div v-if="user.meta.created" class="input-control">
+              <label>
+                <p class="sm">Created</p>
+                <p class="user__form-detail sm"> {{ renderDateTime(user.meta.created) }} </p>
+              </label>
+            </div>
+            <div v-if="user.meta.updated" class="input-control">
+              <label>
+                <p class="sm">Updated</p>
+                <p class="user__form-detail sm"> {{ renderDateTime(user.meta.updated) }} </p>
+              </label>
+            </div>
+            <div v-if="user.meta.login" class="input-control">
+              <label>
+                <p class="sm">Login</p>
+                <p class="user__form-detail sm"> {{ renderDateTime(user.meta.login) }} </p>
+              </label>
+            </div>
+          </div>
+
         </div>
 
         <template slot="footer" class="user__form__footer">
@@ -199,6 +221,9 @@ export default {
     this.resetForm()
   },
   methods: {
+    renderDateTime: function (input) {
+      return helpers.renderDateTime(input)
+    },
     toggleEdit: function () {
       this.isEdit = !this.isEdit
       this.resetForm()

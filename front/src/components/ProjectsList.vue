@@ -1,5 +1,5 @@
 <template>
-  <div class="task__project__projects-list no-overflow">
+  <div class="task__project__projects-list relative no-overflow">
 
      <transition-group name="list-anim" tag="ul">
 
