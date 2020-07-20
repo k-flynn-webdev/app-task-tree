@@ -1,6 +1,7 @@
 <template>
   <router-link to="/user"
     class="task__project__header__user"
+    :tabindex="[ isEnabled? 0: -1 ]"
     :class="{ 'DISABLED': !isEnabled }"
     title="go to user">
 

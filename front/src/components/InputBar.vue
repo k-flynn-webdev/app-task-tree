@@ -9,7 +9,8 @@
              minlength="4"
              ref="itemInput"
              v-model="input"
-             :class="[ status, isDisabled? 'DISABLED': '', isEnabled? '': 'DISABLED' ]"
+             :tabindex="[ allowInput? 0: -1 ]"
+             :class="[ status, allowInput? '': 'DISABLED' ]"
              :placeholder="placeHolder"
              @input="resetStatus">
 
@@ -18,7 +19,8 @@
     <button aria-label="submit"
             title="submit"
             class="no-margin-x text-right"
-            :class="[ status, !isValid? 'DISABLED' : '' ]"
+            :tabindex="[ allowInput? 0: -1 ]"
+            :class="[ status, !isValid? 'DISABLED' : '', allowInput? '': 'DISABLED' ]"
             @click="submitInput">
       <icTick alt="submit" class="md" />
     </button>
@@ -58,6 +60,9 @@ export default {
     }
   },
   computed: {
+    allowInput: function () {
+      return (!this.isDisabled && this.isEnabled)
+    },
     isValid: function () {
       return this.input.length >= 4
     },
@@ -106,6 +111,7 @@ export default {
     },
     submitInput: function () {
       if (!this.isValid) return
+      if (!this.allowInput) return
       if (this.status !== status.CLEAR) return
 
       this.status = status.WAITING
