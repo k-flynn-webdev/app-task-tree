@@ -42,6 +42,9 @@ export default {
     }
   },
   computed: {
+    ready: function () {
+      return this.$store.getters.ready
+    },
     task: function () {
       return this.$store.getters['tasks/current']
     },
@@ -49,18 +52,29 @@ export default {
       return this.$store.getters['tasks/tasks']
     }
   },
+  watch: {
+    ready: function (input) {
+      if (input) this.getTasksOfProject()
+    }
+  },
   mounted () {
+    if (!this.ready) return
     return this.getTasksOfProject()
   },
   methods: {
     getTasksOfProject: function () {
       return this.$store.dispatch('tasks/getTasksByUserOrProject',
         { project: this.project.id })
-        .then(() => {
-          const currentProj = this.$store.getters['projects/findProject'](this.project.id)
-          this.$store.commit('projects/projectCurrent', currentProj)
-        })
+        .then(() => this.setProjectName())
         .catch(err => this.handleError(err))
+    },
+    setProjectName: function () {
+      const projectStore = this.$store.getters['projects/current']
+      if (projectStore.id !== this.project.id) {
+        const projectFound =
+          this.$store.getters['projects/findProject'](this.project.id)
+        this.$store.commit('projects/projectCurrent', projectFound)
+      }
     },
     handleError: function (err) {
       this.status = status.ERROR

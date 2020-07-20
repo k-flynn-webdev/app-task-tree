@@ -6,6 +6,7 @@
 
     <ToastHolder />
     <AppSettings v-model="displaySettings" />
+    <StatusBar class="top" :status="appStatus" />
 
     <router-view />
 
@@ -20,12 +21,14 @@
 <script>
 import ToastHolder from './components/general/ToastHolder'
 import AppSettings from './components/AppSettings'
+import StatusBar from './components/general/StatusBar'
 
 export default {
   name: 'App',
   components: {
     AppSettings,
-    ToastHolder
+    ToastHolder,
+    StatusBar
   },
   data () {
     return {
@@ -35,6 +38,9 @@ export default {
   computed: {
     hasToast: function () {
       return this.$store.getters['toasts/toasts'].length > 0
+    },
+    appStatus: function () {
+      return this.$store.getters.status
     }
   }
 }

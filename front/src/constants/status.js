@@ -2,6 +2,8 @@ const CLEAR = ''
 const WAITING = 'WAITING'
 const SUCCESS = 'SUCCESS'
 const DISABLED = 'DISABLED'
+const NOT_READY = 'NOT_READY'
+const READY = 'READY'
 const ERROR = 'ERROR'
 const OPEN = 'OPEN'
 const CLOSE = 'CLOSE'
@@ -17,6 +19,8 @@ const EDIT = 'EDIT'
 const CLICK = 'CLICK'
 
 export default {
+  READY,
+  NOT_READY,
   RESET,
   CLEAR,
   WAITING,
