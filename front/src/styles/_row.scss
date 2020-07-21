@@ -147,6 +147,10 @@
       }
 
       &.COMPLETE & {
+        &__mid {
+          border-top-left-radius: 0;
+        }
+
         @include show-md-down {
           &__mid-bg::after {
             border-color: rgba($color-shadow, $color-alpha * 2.25);
