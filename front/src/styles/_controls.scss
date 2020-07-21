@@ -8,6 +8,11 @@ a {
       -webkit-text-fill-color: $color-select;
     }
   }
+
+  &.DISABLED {
+    opacity: $color-alpha;
+    pointer-events: none;
+  }
 }
 
 label {

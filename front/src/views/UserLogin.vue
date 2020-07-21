@@ -68,6 +68,7 @@
     <div class="container max-30">
       <router-link
         class="color-success"
+        :class="{ 'DISABLED': !showResetLink }"
         to="/user/reset">
         Lost password?
       </router-link>
@@ -109,6 +110,9 @@ export default {
     },
     user: function () {
       return this.$store.getters['user/user']
+    },
+    showResetLink: function () {
+      return this.user.email !== status.ANON
     }
   },
   methods: {
