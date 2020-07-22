@@ -21,7 +21,7 @@ export default {
      * @param state
      * @returns {Array}
      */
-    tasks: (state) => state.tasks,
+    tasks: (state) => state.tasks, // todo: future freeze arrays of large size
     /**
      * Returns a function to get a task by ID
      *
