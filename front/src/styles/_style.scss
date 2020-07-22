@@ -200,6 +200,7 @@ body {
 
         &,
         & > * {
+          margin: 0;
           font-weight: bolder;
           color: $color-mid;
           -webkit-text-fill-color: $color-mid;
