@@ -195,8 +195,12 @@ body {
 
       &-version {
         position: absolute;
-        bottom: 0;
+        top: $unit-default * -1;
         right: $margin-default;
+
+        @include lg-up {
+          top: 50%;
+        }
       }
     }
   }

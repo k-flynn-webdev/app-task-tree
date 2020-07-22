@@ -21,7 +21,8 @@
         </a>
 
         <small class="task__footer__content-version">
-          ver {{ version }}
+          <span class="hide-md-down">ver</span>
+          {{ version }}
         </small>
       </div>
 
