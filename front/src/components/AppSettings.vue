@@ -16,23 +16,67 @@
 
     <div v-if="value" class="settings__holder">
      <ul>
+
+       <li class="label">User</li>
+
        <li v-if="!isLoggedIn" @click="toggle">
          <router-link
            to="/user/create">
            Create
          </router-link>
        </li>
+
        <li v-if="!isLoggedIn" @click="toggle">
          <router-link
            to="/user/login">
            Login
          </router-link>
        </li>
+
        <li v-if="isLoggedIn">
-         <div class="button" @click="logout">
+         <button class="button"
+                 title="Logout"
+                 @click="logout">
            Logout
-         </div>
+         </button>
        </li>
+
+       <li class="label">Projects</li>
+
+       <li>
+         <label class="show-label clickable">
+
+           <span class="color-bg text-bold">Show Done</span>
+
+           <input type="checkbox"
+                  :value="userOptions.projects.showDone"
+                  @click="toggleProjectsShowDone">
+
+           <div class="display-inline-b align-middle">
+             <icDone :class="[userOptions.projects.showDone?'fill-bg':'fill-mid alpha']"/>
+           </div>
+
+         </label>
+       </li>
+
+       <li class="label">Tasks</li>
+
+       <li>
+         <label class="show-label clickable">
+
+           <span class="color-bg text-bold">Show Done</span>
+
+           <input type="checkbox"
+                  :value="userOptions.tasks.showDone"
+                  @click="toggleTasksShowDone">
+
+           <div class="display-inline-b align-middle">
+             <icDone :class="[userOptions.tasks.showDone?'fill-bg':'fill-mid alpha']"/>
+           </div>
+
+         </label>
+       </li>
+
      </ul>
     </div>
   </div>
@@ -44,12 +88,14 @@ import Paths from '../constants/paths'
 import status from '../constants/status'
 import helpers from '../services/Helpers'
 import general from '../constants/general'
+import icDone from '../assets/icons/ic_tick'
 import icClose from '../assets/icons/ic_cross'
 import icOptions from '../assets/icons/ic_option'
 
 export default {
   name: 'AppSettings',
   components: {
+    icDone,
     icClose,
     icOptions
   },
@@ -60,11 +106,24 @@ export default {
     }
   },
   computed: {
+    userOptions: function () {
+      return this.$store.getters['user/options']
+      // return (this.$route.name === Paths.PROJECT_TASKS ||
+      //   this.$route.name === Paths.PROJECTS)
+    },
     isLoggedIn: function () {
       return this.$store.getters['user/isLoggedIn']
     }
   },
   methods: {
+    toggleProjectsShowDone: function () {
+      const newOption = { projects: { showDone: !this.userOptions.projects.showDone } }
+      this.$store.commit('user/options', newOption)
+    },
+    toggleTasksShowDone: function () {
+      const newOption = { tasks: { showDone: !this.userOptions.tasks.showDone } }
+      this.$store.commit('user/options', newOption)
+    },
     toggle: function () {
       this.$emit('input', !this.value)
     },

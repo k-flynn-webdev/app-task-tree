@@ -32,6 +32,12 @@ label {
   span {
     display: none;
   }
+
+  &.show-label {
+    span {
+      display: inline-block;
+    }
+  }
 }
 
 // INPUTS && CONTROLS TO BE SEPARATED //

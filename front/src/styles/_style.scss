@@ -114,6 +114,10 @@ body {
           padding-bottom: 0;
           border-bottom: unset;
         }
+
+        &.label {
+          border-bottom: unset;
+        }
       }
 
       ul {
