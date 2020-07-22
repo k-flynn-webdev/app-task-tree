@@ -63,12 +63,12 @@ const routes = [
   {
     path: '/user/create',
     name: Paths.USER_CREATE,
-    component: () => import(/* webpackChunkName: "UserCreate" */ '../views/UserCreate.vue')
+    component: () => import(/* webpackChunkName: "User" */ '../views/UserCreate.vue')
   },
   {
     path: '/user/login',
     name: Paths.USER_LOGIN,
-    component: () => import(/* webpackChunkName: "UserLogin" */ '../views/UserLogin.vue')
+    component: () => import(/* webpackChunkName: "User" */ '../views/UserLogin.vue')
   },
   {
     path: '/user/reset',
@@ -76,7 +76,7 @@ const routes = [
       verify: ''
     }),
     name: Paths.USER_RESET,
-    component: () => import(/* webpackChunkName: "UserLogin" */ '../views/UserReset.vue')
+    component: () => import(/* webpackChunkName: "User" */ '../views/UserReset.vue')
   },
   {
     path: '/user/reset/:verify',
@@ -84,7 +84,7 @@ const routes = [
       verify: route.params.verify
     }),
     name: Paths.USER_RESET_PASSWORD,
-    component: () => import(/* webpackChunkName: "UserLogin" */ '../views/UserReset.vue')
+    component: () => import(/* webpackChunkName: "User" */ '../views/UserReset.vue')
   }
 
   // todo 404 page here
