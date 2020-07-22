@@ -333,20 +333,30 @@ body {
 }
 
 .anim-show-fast {
-  animation-name: anim_show;
+  animation-name: anim_fade;
   @extend .fade;
   @include delay_anims(20, 1, 0.03, 0);
+}
+
+@keyframes anim_fade {
+  0% {
+    opacity: 0.3;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes anim_show {
   0% {
     opacity: 0.3;
-    //transform: translateY(-2.5rem) scale(0.3);
+    transform: translateY(-2.5rem) scale(0.3);
   }
 
   100% {
     opacity: 1;
-    //transform: translateY(0) scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 

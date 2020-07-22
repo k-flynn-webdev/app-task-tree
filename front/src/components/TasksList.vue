@@ -61,9 +61,7 @@ export default {
   },
   methods: {
     getTasksOfProject: function () {
-      if (this.taskProject === this.project) {
-        return
-      }
+      if (this.taskProject === this.project) return
 
       // clear previous tasks
       this.$store.commit('status', status.WAITING)
