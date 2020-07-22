@@ -1,15 +1,11 @@
 <template>
   <div class="task__project__tasks-list relative no-overflow">
 
-     <transition-group name="list-anim" tag="ul">
-
       <TaskItem
         v-for="item in tasks"
         :key="item.id"
         :data="item"
       />
-
-    </transition-group>
 
     <Card v-if="tasks.length < 1" class="text-center">
       <p v-if="project.id >= 0"

@@ -1,6 +1,8 @@
 <template>
 
-  <li class="row__item">
+  <li
+    class="row__item"
+    :class="{ 'anim-show-fast': isLoading }">
 
     <div class="row__item__line"
         :class="{
@@ -141,6 +143,9 @@ export default {
     }
   },
   computed: {
+    isLoading: function () {
+      return this.$store.getters.status !== status.CLEAR
+    },
     progress: function () {
       if (!this.data.tasksTotal) return null
       return helpers.renderProgressPercent(this.data)

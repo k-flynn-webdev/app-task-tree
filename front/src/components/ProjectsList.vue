@@ -1,8 +1,6 @@
 <template>
   <div class="task__project__projects-list relative no-overflow">
 
-     <transition-group name="list-anim" tag="ul">
-
       <ProjectItem
         v-for="item in projects"
         :key="item.id"
@@ -10,8 +8,6 @@
         :selected="project.id === item.id"
         @show-tasks="showTasks"
       />
-
-    </transition-group>
 
     <Card v-if="projects.length < 1"
           class="text-center">

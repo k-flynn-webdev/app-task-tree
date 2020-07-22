@@ -12,6 +12,8 @@
     padding: 0;
     width: 100%;
     list-style: none;
+    opacity: 1;
+    transition: opacity $transition-default;
 
     &__line {
       display: flex;

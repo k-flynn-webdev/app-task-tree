@@ -318,70 +318,80 @@ body {
   }
 }
 
-.anim-show {
+.fade {
   animation-delay: 0s;
-  animation-name: anim_show;
   animation-fill-mode: both;
   animation-duration: $transition-default * 0.5;
   animation-direction: normal;
   animation-timing-function: ease-out;
+}
 
-  @include delay_anims(10, 1, 0.15, 0);
+.anim-show {
+  animation-name: anim_show;
+  @extend .fade;
+  @include delay_anims(20, 1, 0.15, 0);
+}
+
+.anim-show-fast {
+  animation-name: anim_show;
+  @extend .fade;
+  @include delay_anims(20, 1, 0.03, 0);
 }
 
 @keyframes anim_show {
   0% {
-    opacity: 0.1;
-    transform: translateY(-2.5rem) scale(0.3);
+    opacity: 0.3;
+    //transform: translateY(-2.5rem) scale(0.3);
   }
 
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    //transform: translateY(0) scale(1);
   }
 }
 
-// vuejs transition anims
-.list-item {
-  width: 100%;
-  //transition: all $transition-default * 2 ease-out;
-}
-
-/* base */
-.list-anim {
-  backface-visibility: hidden;
-  z-index: 1;
-}
-
-/* moving */
-.list-anim-move {
-  transition: all $transition-default ease-in-out 100ms;
-}
-
-/* appearing */
-.list-anim-enter-active {
-  transition: all $transition-default ease-out;
-}
-
-/* disappearing */
-.list-anim-leave-active {
-  transition: all $transition-default ease-in;
-  position: absolute;
-  z-index: 0;
-}
-
-/* appear at / disappear to */
-.list-anim-enter,
-.list-anim-leave-to {
-  opacity: 0;
-}
-
-.list-anim-enter {
-  transform: translateX($unit-default * -3);
-  //transform: translateY($unit-default * -1);
-}
-
-.list-anim-leave-to {
-  transform: translateX($unit-default * 3);
-  //transform: translateY($unit-default);
-}
+//
+//// vuejs transition anims
+//.list-item {
+//  width: 100%;
+//  //transition: all $transition-default * 2 ease-out;
+//}
+//
+///* base */
+//.list-anim {
+//  backface-visibility: hidden;
+//  z-index: 1;
+//}
+//
+///* moving */
+//.list-anim-move {
+//  //transition: all $transition-default ease-in-out 100ms;
+//}
+//
+///* appearing */
+//.list-anim-enter-active {
+//  //transition: all $transition-default ease-out;
+//}
+//
+///* disappearing */
+//.list-anim-leave-active {
+//  transition: all $transition-default ease-in;
+//  //position: absolute;
+//  z-index: 0;
+//}
+//
+///* appear at / disappear to */
+//.list-anim-enter,
+//.list-anim-leave-to {
+//  opacity: 0;
+//}
+//
+//.list-anim-enter {
+//  //transform: translateX($unit-default * -3);
+//  //transform: translateY($unit-default * -1);
+//}
+//
+//.list-anim-leave-to {
+//  //transform: translateX($unit-default * 3);
+//  //transform: translateY($unit-default);
+//}
