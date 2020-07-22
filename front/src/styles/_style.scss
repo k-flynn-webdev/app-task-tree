@@ -198,6 +198,13 @@ body {
         top: $unit-default * -1;
         right: $margin-default;
 
+        &,
+        & > * {
+          font-weight: bolder;
+          color: $color-mid;
+          -webkit-text-fill-color: $color-mid;
+        }
+
         @include lg-up {
           top: 50%;
         }

@@ -20,10 +20,10 @@
           k-flynn-webdev
         </a>
 
-        <small class="task__footer__content-version">
-          <span class="hide-md-down">ver</span>
-          {{ version }}
-        </small>
+        <div class="task__footer__content-version">
+          <small class="hide-md-down">alpha</small>
+          <small>{{ version }}</small>
+        </div>
       </div>
 
     </div>
