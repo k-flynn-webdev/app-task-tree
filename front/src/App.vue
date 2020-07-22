@@ -10,10 +10,7 @@
 
     <router-view />
 
-    <div class="task__footer">
-      <p>footer</p>
-<!--      <router-link to="/switch">Switch</router-link>-->
-    </div>
+    <Footer />
 
   </div>
 </template>
@@ -22,13 +19,15 @@
 import ToastHolder from './components/general/ToastHolder'
 import AppSettings from './components/AppSettings'
 import StatusBar from './components/general/StatusBar'
+import Footer from './components/general/Footer'
 
 export default {
   name: 'App',
   components: {
     AppSettings,
     ToastHolder,
-    StatusBar
+    StatusBar,
+    Footer
   },
   data () {
     return {
