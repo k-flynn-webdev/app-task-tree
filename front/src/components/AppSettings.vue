@@ -3,6 +3,7 @@
   <div class="settings">
 
     <button class="settings__btn"
+            title="settings"
             :class="{ 'is-close': value }"
             @click="toggle">
       <icOptions v-if="!value" class="icon-90" />
