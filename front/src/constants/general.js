@@ -46,6 +46,15 @@ const DEFAULT_TASK = (user = -1) => {
   }
 }
 
+const DEFAULT_TOTALS = () => {
+  return {
+    tasks: 0,
+    tasksDone: 0,
+    projects: 0,
+    projectsDone: 0
+  }
+}
+
 export default {
   DELAY,
   DELAY_BLIP,
@@ -55,5 +64,6 @@ export default {
   DEFAULT_PROJECT,
   DEFAULT_PROJECT_NO_ID,
   DEFAULT_TASK,
-  DEFAULT_USER
+  DEFAULT_USER,
+  DEFAULT_TOTALS
 }

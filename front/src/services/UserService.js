@@ -66,9 +66,9 @@ function removeAuth () {
 }
 
 /**
- * Returns user account details
+ * Returns all user meta data
  */
-function get () {
+function getMeta () {
   return Http.get('/api/user')
     .then(res => setUser(res))
 }
@@ -144,7 +144,7 @@ const services = {
   logout,
   update,
   verify,
-  get,
+  getMeta,
   getAnonApiToken,
   getUser,
   resetStart,

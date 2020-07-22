@@ -18,10 +18,12 @@ function defaultUser () {
 export default {
   namespaced: true,
   state: {
-    user: defaultUser()
+    user: defaultUser(),
+    totals: general.DEFAULT_TOTALS()
   },
   getters: {
     user: (state) => state.user,
+    totals: (state) => state.totals,
     /**
      * Returns if the User is currently logged in
      *
@@ -39,6 +41,12 @@ export default {
       state.user.name = input.name
       state.user.email = input.email
       state.user.role = input.role
+    },
+    totals: function (state, input) {
+      state.totals.tasks = input.tasks
+      state.totals.tasksDone = input.tasksDone
+      state.totals.projects = input.projects
+      state.totals.projectsDone = input.projectsDone
     }
   },
   actions: {
@@ -50,8 +58,9 @@ export default {
      * @returns {promise} user
      */
     get: function (context) {
-      return UserService.get()
+      return UserService.getMeta()
         .then(res => {
+          context.commit('totals', res.data.data)
           context.commit('user', res.data.data.account)
           return res
         })
