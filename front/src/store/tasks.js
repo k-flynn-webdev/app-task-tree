@@ -5,7 +5,8 @@ export default {
   namespaced: true,
   state: {
     tasks: [],
-    current: {}
+    current: {},
+    taskProject: -1
   },
   getters: {
     /**
@@ -15,6 +16,7 @@ export default {
      * @returns {object}
      */
     current: (state) => state.current,
+    taskProject: (state) => state.taskProject,
     /**
      * Returns all tasks
      *
@@ -43,6 +45,10 @@ export default {
      */
     taskCurrent: (state, input) => {
       Vue.set(state, 'current', input)
+    },
+
+    taskProject: (state, input) => {
+      state.taskProject = input
     },
     /**
      * Add a new task to the store
@@ -145,9 +151,13 @@ export default {
      * @returns {promise} all tasks
      */
     getTasksByUserOrProject: function (context, input) {
+      // context.commit('taskSet', [])
       return TaskService.all(input)
         .then(res => {
           context.commit('taskSet', res.data.data.tasks)
+          if (res.data.data.tasks) {
+            context.commit('taskProject', res.data.data.tasks[0].project)
+          }
           return res.data.data.tasks
         })
     }

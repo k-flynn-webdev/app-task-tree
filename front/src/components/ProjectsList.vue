@@ -6,7 +6,6 @@
         :key="item.id"
         :data="item"
         :selected="project.id === item.id"
-        @show-tasks="showTasks"
       />
 
     <Card v-if="projects.length < 1"
@@ -35,11 +34,6 @@ export default {
     },
     projects: function () {
       return this.$store.getters['projects/projects']
-    }
-  },
-  methods: {
-    showTasks: function () {
-      this.$emit('showTasks')
     }
   }
 }

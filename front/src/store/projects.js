@@ -171,12 +171,12 @@ export default {
      * @returns {promise} all tasks
      */
     getProjectsByUserId: function (context, input) {
+      context.commit('projectSet', [])
       return ProjectService.all(input)
         .then(res => {
           if (res.data.data.projects.length < 1) return
           context.commit('projectSet', res.data.data.projects)
           // context.commit('projectCurrent', res.data.data.projects[0])
-          // console.log('inside created app')
           return res
         })
     }

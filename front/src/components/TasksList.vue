@@ -40,6 +40,9 @@ export default {
     ready: function () {
       return this.$store.getters.ready
     },
+    taskProject: function () {
+      return this.$store.getters['tasks/taskProject']
+    },
     task: function () {
       return this.$store.getters['tasks/current']
     },
@@ -58,7 +61,14 @@ export default {
   },
   methods: {
     getTasksOfProject: function () {
+      if (this.taskProject === this.project) {
+        return
+      }
+
+      // clear previous tasks
       this.$store.commit('status', status.WAITING)
+      this.$store.commit('tasks/taskSet', [])
+
       return this.$store.dispatch('tasks/getTasksByUserOrProject',
         { project: this.project })
         .then(() => this.$store.commit('status', status.SUCCESS))
