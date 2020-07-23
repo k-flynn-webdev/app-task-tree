@@ -60,7 +60,8 @@ export default {
     ready: function (input) {
       if (input) this.getTasksOfProject()
     },
-    'userOptions.showDone': function () {
+    'userOptions.showDone': function (input, oldValue) {
+      if (input === oldValue) return
       return this.getTasksOfProject(false)
     }
   },
@@ -80,10 +81,7 @@ export default {
       const params = {
         project: this.project
       }
-
-      if (!this.userOptions.showDone) {
-        params.showDone = false
-      }
+      if (!this.userOptions.showDone) params.showDone = false
 
       return this.$store.dispatch('tasks/getTasksByUserOrProject', params)
         .then(() => this.$store.commit('status', status.SUCCESS))
