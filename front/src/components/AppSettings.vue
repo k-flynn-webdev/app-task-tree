@@ -108,8 +108,6 @@ export default {
   computed: {
     userOptions: function () {
       return this.$store.getters['user/options']
-      // return (this.$route.name === Paths.PROJECT_TASKS ||
-      //   this.$route.name === Paths.PROJECTS)
     },
     isLoggedIn: function () {
       return this.$store.getters['user/isLoggedIn']

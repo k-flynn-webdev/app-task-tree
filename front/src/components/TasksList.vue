@@ -37,6 +37,9 @@ export default {
     }
   },
   computed: {
+    userOptions: function () {
+      return this.$store.getters['user/options'].tasks
+    },
     ready: function () {
       return this.$store.getters.ready
     },
@@ -47,6 +50,9 @@ export default {
       return this.$store.getters['tasks/current']
     },
     tasks: function () {
+      if (!this.userOptions.showDone) {
+        return this.$store.getters['tasks/tasksNotDone']
+      }
       return this.$store.getters['tasks/tasks']
     }
   },

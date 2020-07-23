@@ -23,6 +23,8 @@ export default {
      * @returns {Array}
      */
     projects: (state) => state.projects,
+    projectsDone: (state) => state.projects.filter(item => item.isDone),
+    projectsNotDone: (state) => state.projects.filter(item => !item.isDone),
     /**
      * Returns a function to find a Project by ID
      *

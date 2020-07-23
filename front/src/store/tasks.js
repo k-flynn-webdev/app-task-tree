@@ -17,6 +17,8 @@ export default {
      */
     current: (state) => state.current,
     taskProject: (state) => state.taskProject,
+    tasksDone: (state) => state.tasks.filter(item => item.isDone),
+    tasksNotDone: (state) => state.tasks.filter(item => !item.isDone),
     /**
      * Returns all tasks
      *

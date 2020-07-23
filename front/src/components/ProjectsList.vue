@@ -29,10 +29,16 @@ export default {
     ProjectItem
   },
   computed: {
+    userOptions: function () {
+      return this.$store.getters['user/options'].projects
+    },
     project: function () {
       return this.$store.getters['projects/current']
     },
     projects: function () {
+      if (!this.userOptions.showDone) {
+        return this.$store.getters['projects/projectsNotDone']
+      }
       return this.$store.getters['projects/projects']
     }
   }
