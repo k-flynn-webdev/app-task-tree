@@ -6,7 +6,8 @@ export default {
   namespaced: true,
   state: {
     projects: [],
-    current: general.DEFAULT_PROJECT()
+    current: general.DEFAULT_PROJECT(),
+    history: general.DEFAULT_PROJECT_HISTORY()
   },
   getters: {
     /**
@@ -16,6 +17,7 @@ export default {
      * @returns {object}
      */
     current: (state) => state.current,
+    projectHistory: (state) => state.history,
     /**
      * Returns all projects
      *
@@ -37,6 +39,14 @@ export default {
     }
   },
   mutations: {
+    projectHistory: (state, input) => {
+      if (input.user !== undefined) {
+        state.history.user = input.user
+      }
+      if (input.showDone !== undefined) {
+        state.history.showDone = input.showDone
+      }
+    },
     /**
      * Sets current project selected
      *
@@ -109,8 +119,8 @@ export default {
     create: function (context, input) {
       return ProjectService.create(input)
         .then(res => {
-          context.commit('projectCurrent', res.data.data.project)
           context.commit('projectAdd', res.data.data.project)
+          context.commit('projectCurrent', res.data.data.project)
           return res.data.data.project
         })
     },
@@ -173,14 +183,14 @@ export default {
      * @returns {promise} all tasks
      */
     getProjectsByUserId: function (context, input) {
-      const inputData = input[0]
-      const resetArray = input[1]
-
-      if (resetArray) context.commit('projectSet', [])
-      return ProjectService.all(inputData)
+      return ProjectService.all(input)
         .then(res => {
-          if (res.data.data.projects.length < 1) return
-          context.commit('projectSet', res.data.data.projects)
+          if (res.data.data.projects.length > 0) {
+            context.commit('projectHistory', {
+              user: res.data.data.projects[0].user
+            })
+            context.commit('projectSet', res.data.data.projects)
+          }
           return res
         })
     }

@@ -24,6 +24,20 @@ const DEFAULT_USER_OPTIONS = () => {
   }
 }
 
+const DEFAULT_TASK_HISTORY = () => {
+  return {
+    project: -1,
+    showDone: false
+  }
+}
+
+const DEFAULT_PROJECT_HISTORY = () => {
+  return {
+    user: -1,
+    showDone: false
+  }
+}
+
 const DEFAULT_PROJECT = (user = -1) => {
   return {
     id: -1,
@@ -77,5 +91,7 @@ export default {
   DEFAULT_TASK,
   DEFAULT_USER,
   DEFAULT_USER_OPTIONS,
-  DEFAULT_TOTALS
+  DEFAULT_TOTALS,
+  DEFAULT_TASK_HISTORY,
+  DEFAULT_PROJECT_HISTORY
 }

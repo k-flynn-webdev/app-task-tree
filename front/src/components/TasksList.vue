@@ -37,51 +37,51 @@ export default {
     }
   },
   computed: {
-    userOptions: function () {
-      return this.$store.getters['user/options'].tasks
-    },
     ready: function () {
       return this.$store.getters.ready
     },
-    taskProject: function () {
-      return this.$store.getters['tasks/taskProject']
-    },
-    task: function () {
-      return this.$store.getters['tasks/current']
+    userOptions: function () {
+      return this.$store.getters['user/options'].tasks
     },
     tasks: function () {
       if (!this.userOptions.showDone) {
         return this.$store.getters['tasks/tasksNotDone']
       }
       return this.$store.getters['tasks/tasks']
+    },
+    taskHistory: function () {
+      return this.$store.getters['tasks/taskHistory']
     }
   },
   watch: {
     ready: function (input) {
-      if (input) this.getTasksOfProject()
+      if (input) this.getTasks()
     },
     'userOptions.showDone': function (input, oldValue) {
       if (input === oldValue) return
-      return this.getTasksOfProject(false)
+      return this.getTasks()
     }
   },
   mounted () {
     if (!this.ready) return
-    return this.getTasksOfProject()
+    return this.getTasks()
   },
   methods: {
-    getTasksOfProject: function (resetArray = true) {
+    getTasks: function (resetArray = false) {
       if (this.project < 0) return
-      if (this.taskProject === this.project && resetArray) return
+      if (this.taskHistory.project === this.project &&
+        this.userOptions.showDone === this.taskHistory.showDone) {
+        return
+      }
 
       this.$store.commit('status', status.WAITING)
+      this.$store.commit('tasks/taskHistory',
+        { showDone: this.userOptions.showDone })
       if (resetArray) {
         this.$store.commit('tasks/taskSet', [])
       }
 
-      const params = {
-        project: this.project
-      }
+      const params = { project: this.project }
       if (!this.userOptions.showDone) params.showDone = false
 
       return this.$store.dispatch('tasks/getTasksByUserOrProject', params)
