@@ -9,18 +9,18 @@ function defaultUser () {
   return general.DEFAULT_USER()
 }
 
+function defaultOptions () {
+  const userLocal = UserService.getOptions()
+  if (userLocal !== undefined) return userLocal
+
+  return general.DEFAULT_USER_OPTIONS()
+}
+
 export default {
   namespaced: true,
   state: {
     user: defaultUser(),
-    options: {
-      tasks: {
-        showDone: true
-      },
-      projects: {
-        showDone: true
-      }
-    },
+    options: defaultOptions(),
     totals: general.DEFAULT_TOTALS()
   },
   getters: {
@@ -51,6 +51,10 @@ export default {
       }
       if (input.projects && input.projects.showDone !== undefined) {
         state.options.projects.showDone = input.projects.showDone
+      }
+
+      if (input) {
+        UserService.setOptions(state.options)
       }
     },
     totals: function (state, input) {

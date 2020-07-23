@@ -73,8 +73,15 @@ export default {
       this.$store.commit('status', status.WAITING)
       this.$store.commit('tasks/taskSet', [])
 
-      return this.$store.dispatch('tasks/getTasksByUserOrProject',
-        { project: this.project })
+      const params = {
+        project: this.project
+      }
+
+      if (!this.userOptions.showDone) {
+        params.showDone = false
+      }
+
+      return this.$store.dispatch('tasks/getTasksByUserOrProject', params)
         .then(() => this.$store.commit('status', status.SUCCESS))
         .catch(err => this.handleError(err))
     },

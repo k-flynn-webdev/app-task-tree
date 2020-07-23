@@ -13,6 +13,17 @@ const DEFAULT_USER = () => {
   }
 }
 
+const DEFAULT_USER_OPTIONS = () => {
+  return {
+    tasks: {
+      showDone: true
+    },
+    projects: {
+      showDone: true
+    }
+  }
+}
+
 const DEFAULT_PROJECT = (user = -1) => {
   return {
     id: -1,
@@ -65,5 +76,6 @@ export default {
   DEFAULT_PROJECT_NO_ID,
   DEFAULT_TASK,
   DEFAULT_USER,
+  DEFAULT_USER_OPTIONS,
   DEFAULT_TOTALS
 }
