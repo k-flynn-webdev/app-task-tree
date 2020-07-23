@@ -3,6 +3,16 @@ import Http from './HttpService.js'
 
 const USER_TOKEN = 'user_token'
 const USER_PAYLOAD = 'user_payload'
+const USER_OPTIONS = 'user_options'
+
+function getUser () {
+  const local = localStorage.getItem(USER_PAYLOAD)
+  if (local === undefined || local === 'undefined' || local === null) {
+    return
+  }
+
+  return JSON.parse(local)
+}
 
 function setUser (res) {
   if (res.data &&
@@ -18,13 +28,22 @@ function setUser (res) {
   return res
 }
 
-function getUser () {
-  const local = localStorage.getItem(USER_PAYLOAD)
+function getOptions () {
+  const local = localStorage.getItem(USER_OPTIONS)
   if (local === undefined || local === 'undefined' || local === null) {
     return
   }
 
   return JSON.parse(local)
+}
+
+function setOptions (input) {
+  if (input) {
+    localStorage.setItem(USER_OPTIONS, JSON.stringify(input))
+    return
+  }
+
+  localStorage.removeItem(USER_OPTIONS)
 }
 
 function onMount () {
@@ -148,7 +167,9 @@ const services = {
   getAnonApiToken,
   getUser,
   resetStart,
-  resetComplete
+  resetComplete,
+  getOptions,
+  setOptions
 }
 
 export default services

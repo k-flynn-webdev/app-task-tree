@@ -6,24 +6,27 @@ function defaultUser () {
   const userLocal = UserService.getUser()
   if (userLocal !== undefined) return userLocal
 
-  // todo
-  //  we need the Anom user id to be specific to
-  //  THIS users PC so when they
-  //  upgrade it's a seamless transfer of
-  //  projects/tasks to the new user id..
-
   return general.DEFAULT_USER()
+}
+
+function defaultOptions () {
+  const userLocal = UserService.getOptions()
+  if (userLocal !== undefined) return userLocal
+
+  return general.DEFAULT_USER_OPTIONS()
 }
 
 export default {
   namespaced: true,
   state: {
     user: defaultUser(),
+    options: defaultOptions(),
     totals: general.DEFAULT_TOTALS()
   },
   getters: {
     user: (state) => state.user,
     totals: (state) => state.totals,
+    options: (state) => state.options,
     /**
      * Returns if the User is currently logged in
      *
@@ -41,6 +44,18 @@ export default {
       state.user.name = input.name
       state.user.email = input.email
       state.user.role = input.role
+    },
+    options: function (state, input) {
+      if (input.tasks && input.tasks.showDone !== undefined) {
+        state.options.tasks.showDone = input.tasks.showDone
+      }
+      if (input.projects && input.projects.showDone !== undefined) {
+        state.options.projects.showDone = input.projects.showDone
+      }
+
+      if (input) {
+        UserService.setOptions(state.options)
+      }
     },
     totals: function (state, input) {
       state.totals.tasks = input.tasks

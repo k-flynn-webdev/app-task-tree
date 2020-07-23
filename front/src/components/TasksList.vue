@@ -37,6 +37,9 @@ export default {
     }
   },
   computed: {
+    userOptions: function () {
+      return this.$store.getters['user/options'].tasks
+    },
     ready: function () {
       return this.$store.getters.ready
     },
@@ -47,12 +50,18 @@ export default {
       return this.$store.getters['tasks/current']
     },
     tasks: function () {
+      if (!this.userOptions.showDone) {
+        return this.$store.getters['tasks/tasksNotDone']
+      }
       return this.$store.getters['tasks/tasks']
     }
   },
   watch: {
     ready: function (input) {
       if (input) this.getTasksOfProject()
+    },
+    'userOptions.showDone': function () {
+      return this.getTasksOfProject(false)
     }
   },
   mounted () {
@@ -60,15 +69,23 @@ export default {
     return this.getTasksOfProject()
   },
   methods: {
-    getTasksOfProject: function () {
-      if (this.taskProject === this.project) return
+    getTasksOfProject: function (resetArray = true) {
+      if (this.taskProject === this.project && resetArray) return
 
-      // clear previous tasks
       this.$store.commit('status', status.WAITING)
-      this.$store.commit('tasks/taskSet', [])
+      if (resetArray) {
+        this.$store.commit('tasks/taskSet', [])
+      }
 
-      return this.$store.dispatch('tasks/getTasksByUserOrProject',
-        { project: this.project })
+      const params = {
+        project: this.project
+      }
+
+      if (!this.userOptions.showDone) {
+        params.showDone = false
+      }
+
+      return this.$store.dispatch('tasks/getTasksByUserOrProject', params)
         .then(() => this.$store.commit('status', status.SUCCESS))
         .catch(err => this.handleError(err))
     },

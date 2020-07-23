@@ -17,6 +17,8 @@ new Vue({
     const userFound = this.$store.getters['user/user']
     if (userFound.id < 0) return
 
+    const userOptions = this.$store.getters['user/options'].projects
+
     this.$store.commit('status', status.CLEAR)
     helpers.timeDelay(() => {
       this.$store.commit('status', status.WAITING)
@@ -31,8 +33,10 @@ new Vue({
     return getUserAnonToken
       .then(() => this.$store.dispatch('user/get'))
       .then(() => {
+        const params = { user: userFound.id }
+        if (!userOptions.showDone) params.showDone = false
         this.$store.dispatch('projects/getProjectsByUserId',
-          { user: userFound.id })
+          [params, true])
       })
       .then(() => {
         helpers.timeDelay(() => {
