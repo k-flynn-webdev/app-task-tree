@@ -68,7 +68,7 @@ export default {
     return this.getProjects()
   },
   methods: {
-    getProjects: function (resetArray = false) {
+    getProjects: function () {
       if (this.user.id < 0) return
       if (this.projectHistory.user === this.user.id &&
         this.userOptions.showDone === this.projectHistory.showDone) {
@@ -78,7 +78,7 @@ export default {
       this.$store.commit('status', status.WAITING)
       this.$store.commit('projects/projectHistory',
         { showDone: this.userOptions.showDone })
-      if (resetArray) {
+      if (this.projectHistory.user !== this.user.id) {
         this.$store.commit('projects/projectSet', [])
       }
 

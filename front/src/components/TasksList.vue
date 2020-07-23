@@ -67,7 +67,7 @@ export default {
     return this.getTasks()
   },
   methods: {
-    getTasks: function (resetArray = false) {
+    getTasks: function () {
       if (this.project < 0) return
       if (this.taskHistory.project === this.project &&
         this.userOptions.showDone === this.taskHistory.showDone) {
@@ -77,7 +77,7 @@ export default {
       this.$store.commit('status', status.WAITING)
       this.$store.commit('tasks/taskHistory',
         { showDone: this.userOptions.showDone })
-      if (resetArray) {
+      if (this.taskHistory.project !== this.project) {
         this.$store.commit('tasks/taskSet', [])
       }
 
