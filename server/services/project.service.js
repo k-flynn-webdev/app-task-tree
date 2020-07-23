@@ -15,6 +15,7 @@ const DB_DELETE_PROJECT_BY_ID = 'DELETE FROM projects WHERE id = ?'
 const DB_DELETE_PROJECTS_BY_USER = 'SELECT * FROM projects WHERE user = ?'
 const DB_GET_PROJECT_BY_ID = 'SELECT * FROM projects WHERE id = ?'
 const DB_GET_PROJECT_BY_USER = 'SELECT * FROM projects WHERE user = ? ORDER BY updated DESC'
+const DB_GET_PROJECT_BY_USER_DONE = 'SELECT * FROM projects WHERE user = ? AND isDone = ? ORDER BY updated DESC'
 const DB_GET_PROJECT_BY_NAME = 'SELECT * FROM projects WHERE name = ? ORDER BY updated DESC'
 const DB_GET_PROJECTS_BY_IS_DONE = 'SELECT * FROM projects WHERE user = ? AND isDone = ? ORDER BY updated DESC'
 const DB_GET_PROJECTS_BY_IS_DONE_DATE = 'SELECT * FROM projects WHERE doneDate = ? ORDER BY doneDate DESC'
@@ -198,9 +199,13 @@ exports.GetProjectByName = GetProjectByName
  * Returns all project objects from the db if found via user
  *
  * @param   {int}     user      user id
+ * @param   {int}     showDone  return based on state of project
  * @return  {array}   project object
  */
-function GetProjectsByUser(user) {
+function GetProjectsByUser(user, showDone= null) {
+  if (has.hasAnItem(showDone)) {
+    return db.Query(DB_GET_PROJECT_BY_USER_DONE, [user, showDone])
+  }
   return db.Query(DB_GET_PROJECT_BY_USER, [user])
 }
 

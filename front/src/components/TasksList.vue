@@ -59,6 +59,9 @@ export default {
   watch: {
     ready: function (input) {
       if (input) this.getTasksOfProject()
+    },
+    'userOptions.showDone': function () {
+      return this.getTasksOfProject(false)
     }
   },
   mounted () {
@@ -66,12 +69,13 @@ export default {
     return this.getTasksOfProject()
   },
   methods: {
-    getTasksOfProject: function () {
-      if (this.taskProject === this.project) return
+    getTasksOfProject: function (resetArray = true) {
+      if (this.taskProject === this.project && resetArray) return
 
-      // clear previous tasks
       this.$store.commit('status', status.WAITING)
-      this.$store.commit('tasks/taskSet', [])
+      if (resetArray) {
+        this.$store.commit('tasks/taskSet', [])
+      }
 
       const params = {
         project: this.project

@@ -130,13 +130,19 @@ module.exports = function (app) {
       if (has.hasAnItem(req.query.user)){
         promiseTask = task.GetTasksByUser
         promiseValue = req.body.token.id
+        // todo
       }
       if (has.hasAnItem(req.query.project)){
         promiseTask = task.GetTasksByProject
         promiseValue = req.query.project
       }
 
-      return promiseTask(promiseValue)
+      let showDone = null
+      if (has.hasAnItem(req.query.showDone)) {
+        showDone = req.query.showDone.indexOf('true') >= 0 ? 1: 0
+      }
+
+      return promiseTask(promiseValue, showDone)
       .then(taskObjs => {
         const allSafeTasks = taskObjs.map(item => task.SafeExport(item))
         exit(res, 200,

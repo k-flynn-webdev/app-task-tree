@@ -35,7 +35,8 @@ new Vue({
       .then(() => {
         const params = { user: userFound.id }
         if (!userOptions.showDone) params.showDone = false
-        this.$store.dispatch('projects/getProjectsByUserId', params)
+        this.$store.dispatch('projects/getProjectsByUserId',
+          [params, true])
       })
       .then(() => {
         helpers.timeDelay(() => {

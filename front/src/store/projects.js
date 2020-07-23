@@ -173,12 +173,14 @@ export default {
      * @returns {promise} all tasks
      */
     getProjectsByUserId: function (context, input) {
-      context.commit('projectSet', [])
-      return ProjectService.all(input)
+      const inputData = input[0]
+      const resetArray = input[1]
+
+      if (resetArray) context.commit('projectSet', [])
+      return ProjectService.all(inputData)
         .then(res => {
           if (res.data.data.projects.length < 1) return
           context.commit('projectSet', res.data.data.projects)
-          // context.commit('projectCurrent', res.data.data.projects[0])
           return res
         })
     }
