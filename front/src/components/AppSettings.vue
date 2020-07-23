@@ -2,12 +2,11 @@
 
   <div class="settings">
 
-    <button class="settings__btn"
+    <button v-if="!value"
+            class="settings__btn"
             title="settings"
-            :class="{ 'is-close': value }"
             @click="toggle">
-      <icOptions v-if="!value" class="icon-90" />
-      <icClose v-else class="icon-90 fill-bg" />
+      <icOptions class="icon-90" />
     </button>
 
     <div v-if="value"
@@ -15,6 +14,13 @@
          @click="toggle"></div>
 
     <div v-if="value" class="settings__holder">
+
+      <button class="settings__btn is-close"
+              title="settings"
+              @click="toggle">
+        <icClose class="icon-90 fill-bg" />
+      </button>
+
      <ul>
 
        <li class="label">User</li>

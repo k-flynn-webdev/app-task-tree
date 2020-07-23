@@ -35,11 +35,11 @@ export default {
     }
   },
   computed: {
-    hasToast: function () {
-      return this.$store.getters['toasts/toasts'].length > 0
-    },
     appStatus: function () {
       return this.$store.getters.status
+    },
+    hasToast: function () {
+      return this.$store.getters['toasts/toasts'].length > 0
     }
   }
 }

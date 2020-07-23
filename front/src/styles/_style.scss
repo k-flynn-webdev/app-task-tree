@@ -18,6 +18,12 @@ body {
   }
 }
 
+.show-settings {
+  .task__project__header__info {
+    margin-right: 0;
+  }
+}
+
 .task {
   position: relative;
 
@@ -63,13 +69,12 @@ body {
 
       @mixin screen-float {
         position: relative;
-        top: unset;
+        top: $margin-default;
         right: unset;
-        margin: 0;
-        margin-top: $margin-default;
-        margin-bottom: $margin-default * 2;
         min-width: unset;
         max-width: unset;
+        margin: 0;
+        margin-bottom: $margin-default * 2;
       }
 
       @include screen-xs {
@@ -99,7 +104,6 @@ body {
         display: block;
         margin: 0;
         padding: $margin-default * 0.33 0;
-        margin-bottom: $margin-default * 0.9;
         color: $color-bg;
         -webkit-text-fill-color: $color-bg;
         font-weight: bolder;
@@ -107,15 +111,18 @@ body {
       }
 
       li {
-        border-bottom: solid $border-size rgba($color-bg, $color-alpha);
+        padding-bottom: $margin-default;
+        margin-bottom: $margin-default;
+        border-bottom: solid $border-size rgba($color-bg, 0.1);
 
         &:last-of-type {
-          margin-bottom: 0;
           padding-bottom: 0;
           border-bottom: unset;
         }
 
         &.label {
+          margin: 0;
+          opacity: 0.7;
           border-bottom: unset;
         }
       }
