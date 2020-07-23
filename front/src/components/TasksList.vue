@@ -71,6 +71,7 @@ export default {
   },
   methods: {
     getTasksOfProject: function (resetArray = true) {
+      if (this.project < 0) return
       if (this.taskProject === this.project && resetArray) return
 
       this.$store.commit('status', status.WAITING)
