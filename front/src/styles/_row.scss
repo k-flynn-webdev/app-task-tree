@@ -12,6 +12,8 @@
     padding: 0;
     width: 100%;
     list-style: none;
+    opacity: 1;
+    transition: opacity $transition-default;
 
     &__line {
       display: flex;
@@ -59,6 +61,7 @@
           &-progress {
             align-self: center;
             word-break: keep-all;
+            min-width: $unit-default * 2.4;
 
             @include screen-xs {
               display: none;
@@ -146,6 +149,10 @@
       }
 
       &.COMPLETE & {
+        &__mid {
+          border-top-left-radius: 0;
+        }
+
         @include show-md-down {
           &__mid-bg::after {
             border-color: rgba($color-shadow, $color-alpha * 2.25);

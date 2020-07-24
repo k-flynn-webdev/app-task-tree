@@ -13,11 +13,9 @@
 
         <StatusBar :class="status" />
 
-        <div class="text-center ">
-          <p class="upper text-bold display-inline-b">
-            Login
-          </p>
-        </div>
+        <p class="title">
+          Login
+        </p>
 
         <form class="user__form" @submit.prevent="submitLogin">
           <div class="input-control">
@@ -67,6 +65,15 @@
 
     </Card>
 
+    <div class="container max-30">
+      <router-link
+        class="color-success"
+        :class="{ 'DISABLED': !showResetLink }"
+        to="/user/reset">
+        Lost password?
+      </router-link>
+    </div>
+
   </div>
 </template>
 
@@ -103,6 +110,9 @@ export default {
     },
     user: function () {
       return this.$store.getters['user/user']
+    },
+    showResetLink: function () {
+      return this.user.email !== status.ANON
     }
   },
   methods: {

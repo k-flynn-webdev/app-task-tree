@@ -2,6 +2,8 @@
 const dbConnection = require('../interfaces/db_init_sql')
 const projectServiceQueries = require('../services/project.service').ALL_QUERIES
 const taskServiceQueries = require('../services/task.service').ALL_QUERIES
+const token = require('../services/token.service')
+const user = require('../services/user.service')
 const constants = require('../constants/index')
 const config = require('../config/config.js')
 const chaiHttp = require('chai-http')
@@ -33,18 +35,35 @@ beforeAll(() => {
   return dbConnection.SelectDB(config.db.database)
   .then(() => clearTable())
   .then(() => createProject())
+  .then(() => {
+    userToken = createUserToken()
+  })
 })
 
 afterAll(() => {
   dbConnection.Close()
 })
 
+userDetails = {
+  id: 201,
+  name: 'testName',
+  email: 'test@email.com',
+  password: 'ANON1234',
+  role: constants.roles.ANON }
+
+const createUserToken = () => {
+  return token.Create(userDetails)
+}
+
+let userToken = null
+
+
 describe('Tasks', () => {
 
   test('Should not create a new task with a empty object', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_TASK_CREATE)
-    .send({})
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(400)
@@ -58,6 +77,7 @@ describe('Tasks', () => {
   test('Should not create a new task without a user id', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_TASK_CREATE)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       project: taskProject,
       text: taskText })
@@ -74,6 +94,7 @@ describe('Tasks', () => {
   test('Should not create a new task with a invalid user', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_TASK_CREATE)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       user: -1,
       project: taskProject,
@@ -91,6 +112,7 @@ describe('Tasks', () => {
   test('Should not create a new task with a invalid user #2', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_TASK_CREATE)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       user: '13a',
       project: taskProject,
@@ -108,6 +130,7 @@ describe('Tasks', () => {
   test('Should not create a new task without the text', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_TASK_CREATE)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       project: taskProject,
       user: taskUser })
@@ -124,6 +147,7 @@ describe('Tasks', () => {
   test('Should not create a new task without a project id', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_TASK_CREATE)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       text: taskText,
       user: taskUser })
@@ -140,6 +164,7 @@ describe('Tasks', () => {
   test('Should not create a new task with a invalid project', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_TASK_CREATE)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       user: taskUser,
       project: -1,
@@ -157,6 +182,7 @@ describe('Tasks', () => {
   test('Should not create a new task with a invalid project #2', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_TASK_CREATE)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       user: taskUser,
       project: 'a2j',
@@ -174,6 +200,7 @@ describe('Tasks', () => {
   test('Should not create a new task with a small text property', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_TASK_CREATE)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       user: taskUser,
       project: taskProject,
@@ -191,6 +218,7 @@ describe('Tasks', () => {
   test('Should create a new task with valid properties', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_TASK_CREATE)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       user: taskUser,
       project: taskProject,
@@ -224,6 +252,7 @@ describe('Tasks', () => {
   test("Should not return a task that doesn't exist", (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_TASK(2357))
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(404)
@@ -235,6 +264,7 @@ describe('Tasks', () => {
   test("Should not return a task that's invalid", (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_TASK('dfs24'))
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(400)
@@ -246,6 +276,7 @@ describe('Tasks', () => {
   test('Should return a task that exists', (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_TASK(taskObj.id))
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(200)
@@ -262,6 +293,7 @@ describe('Tasks', () => {
   test("Should not update a task that doesn't exist", (done) => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_TASK(2357))
+    .set('Authorization', `Bearer ${userToken}`)
     .send({ id: 2357, text: 'updated text' })
     .end(function(err, res){
       expect(res).toBeDefined()
@@ -274,6 +306,7 @@ describe('Tasks', () => {
   test('Should not update task text with invalid text', (done) => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_TASK(taskObj.id))
+    .set('Authorization', `Bearer ${userToken}`)
     .send({ id: taskObj.id, text: 'err' })
     .end(function(err, res){
       expect(res).toBeDefined()
@@ -286,6 +319,7 @@ describe('Tasks', () => {
   test('Should not update task isDone with an invalid value', (done) => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_TASK(taskObj.id))
+    .set('Authorization', `Bearer ${userToken}`)
     .send({ id: taskObj.id, isDone: 'err' })
     .end(function(err, res){
       expect(res).toBeDefined()
@@ -300,6 +334,7 @@ describe('Tasks', () => {
   test('Should update task text', (done) => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_TASK(taskObj.id))
+    .set('Authorization', `Bearer ${userToken}`)
     .send({ id: taskObj.id, text: updatedText })
     .end(function(err, res){
       expect(res).toBeDefined()
@@ -317,6 +352,7 @@ describe('Tasks', () => {
   test('Should complete a task', (done) => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_TASK(taskObj.id))
+    .set('Authorization', `Bearer ${userToken}`)
     .send({ id: taskObj.id, isDone: true })
     .end(function(err, res){
       expect(res).toBeDefined()
@@ -332,6 +368,7 @@ describe('Tasks', () => {
   test('Should un-complete the same task', (done) => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_TASK(taskObj.id))
+    .set('Authorization', `Bearer ${userToken}`)
     .send({ id: taskObj.id, isDone: false })
     .end(function(err, res){
       expect(res).toBeDefined()
@@ -347,6 +384,7 @@ describe('Tasks', () => {
   test('Should not return results from a invalid user id', (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_TASKS + '?user=' + 'sd3fs')
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(400)
@@ -358,6 +396,7 @@ describe('Tasks', () => {
   test('Should return an array of tasks related to user', (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_TASKS + '?user=' + taskUser)
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(200)
@@ -370,6 +409,7 @@ describe('Tasks', () => {
   test('Should return an array of tasks related to project', (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_TASKS + '?project=' + taskProject)
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(200)
@@ -382,6 +422,7 @@ describe('Tasks', () => {
   test("Should not delete a task that doesn't exist", (done) => {
     chai.request(config.ip + ':' + config.port)
     .delete(constants.paths.API_TASK(2357))
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(404)
@@ -393,6 +434,7 @@ describe('Tasks', () => {
   test('Should delete the task', (done) => {
     chai.request(config.ip + ':' + config.port)
     .delete(constants.paths.API_TASK(taskObj.id))
+    .set('Authorization', `Bearer ${userToken}`)
     .send({ id: taskObj.id })
     .end(function(err, res){
       expect(res).toBeDefined()
@@ -405,6 +447,7 @@ describe('Tasks', () => {
   test('A task should not return after being deleted', (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_TASK(taskObj.id))
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(404)
@@ -416,6 +459,7 @@ describe('Tasks', () => {
   test('If no tasks found relating to a project an empty array should return', (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_TASKS + '?project=' + taskProject)
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(200)
@@ -428,6 +472,7 @@ describe('Tasks', () => {
   test('If no tasks found relating to a user an empty array should return', (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_TASKS + '?user=' + taskUser)
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(200)

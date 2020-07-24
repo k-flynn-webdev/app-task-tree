@@ -13,6 +13,31 @@ const DEFAULT_USER = () => {
   }
 }
 
+const DEFAULT_USER_OPTIONS = () => {
+  return {
+    tasks: {
+      showDone: true
+    },
+    projects: {
+      showDone: true
+    }
+  }
+}
+
+const DEFAULT_TASK_HISTORY = () => {
+  return {
+    project: -1,
+    showDone: false
+  }
+}
+
+const DEFAULT_PROJECT_HISTORY = () => {
+  return {
+    user: -1,
+    showDone: false
+  }
+}
+
 const DEFAULT_PROJECT = (user = -1) => {
   return {
     id: -1,
@@ -46,6 +71,15 @@ const DEFAULT_TASK = (user = -1) => {
   }
 }
 
+const DEFAULT_TOTALS = () => {
+  return {
+    tasks: 0,
+    tasksDone: 0,
+    projects: 0,
+    projectsDone: 0
+  }
+}
+
 export default {
   DELAY,
   DELAY_BLIP,
@@ -55,5 +89,9 @@ export default {
   DEFAULT_PROJECT,
   DEFAULT_PROJECT_NO_ID,
   DEFAULT_TASK,
-  DEFAULT_USER
+  DEFAULT_USER,
+  DEFAULT_USER_OPTIONS,
+  DEFAULT_TOTALS,
+  DEFAULT_TASK_HISTORY,
+  DEFAULT_PROJECT_HISTORY
 }

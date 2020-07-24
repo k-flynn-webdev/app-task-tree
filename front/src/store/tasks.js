@@ -1,27 +1,24 @@
 import Vue from 'vue'
 import TaskService from '../services/TaskService.js'
+import general from '../constants/general'
 
 export default {
   namespaced: true,
   state: {
     tasks: [],
-    current: {}
+    history: general.DEFAULT_TASK_HISTORY()
   },
   getters: {
-    /**
-     * Returns current task
-     *
-     * @param state
-     * @returns {object}
-     */
-    current: (state) => state.current,
+    taskHistory: (state) => state.history,
+    tasksDone: (state) => state.tasks.filter(item => item.isDone),
+    tasksNotDone: (state) => state.tasks.filter(item => !item.isDone),
     /**
      * Returns all tasks
      *
      * @param state
      * @returns {Array}
      */
-    tasks: (state) => state.tasks,
+    tasks: (state) => state.tasks, // todo: future freeze arrays of large size
     /**
      * Returns a function to get a task by ID
      *
@@ -34,15 +31,13 @@ export default {
     }
   },
   mutations: {
-    /**
-     * Sets current task selected
-     *
-     * @param           state
-     * @param {object}  input   task object
-     * @returns {object}
-     */
-    taskCurrent: (state, input) => {
-      Vue.set(state, 'current', input)
+    taskHistory: (state, input) => {
+      if (input.project !== undefined) {
+        state.history.project = input.project
+      }
+      if (input.showDone !== undefined) {
+        state.history.showDone = input.showDone
+      }
     },
     /**
      * Add a new task to the store
@@ -107,7 +102,6 @@ export default {
     create: function (context, input) {
       return TaskService.create(input)
         .then(res => {
-          context.commit('taskCurrent', res.data.data.task)
           return context.commit('taskAdd', res.data.data.task)
         })
     },
@@ -148,6 +142,11 @@ export default {
       return TaskService.all(input)
         .then(res => {
           context.commit('taskSet', res.data.data.tasks)
+          if (res.data.data.tasks) {
+            context.commit('taskHistory', {
+              project: res.data.data.tasks[0].project
+            })
+          }
           return res.data.data.tasks
         })
     }

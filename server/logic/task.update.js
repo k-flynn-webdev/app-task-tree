@@ -14,6 +14,9 @@ const constants = require('../constants')
  * @returns {object}  taskObj promise
  */
 function taskUpdate(input, app) {
+
+  input.user = input.token.id
+
   return task.GetTaskByID(input.id)
     .then(tskFnd => {
       let taskObj = mysqlVal(tskFnd)

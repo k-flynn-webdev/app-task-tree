@@ -7,7 +7,7 @@ const API_USER_LOGIN = '/api/user/login'
 const API_USER_LOGOUT = '/api/user/logout'
 const API_USER_RESET = (id=':reset') => `/api/user/reset/${id}`
 const API_USER_VERIFY = (id=':verify') => `/api/user/verify/${id}`
-const API_USER_UPGRADE = (id=':user') => `/api/user/upgrade/${id}`
+const API_USER_UPGRADE = '/api/user/upgrade'
 
 const API_PROJECT_CREATE = '/api/project/create'
 const API_PROJECTS = '/api/projects'
@@ -47,7 +47,7 @@ const SUCCESS = 'success'
 
 // ERRORS
 const EMAIL_IN_USE = 'Email already in use.'
-const PASSWORD_INCORRECT = 'Incorrect password.'
+const ACCOUNT_GENERIC_LOGIN_ERROR = 'Invalid Email or Password, please try again.'
 const ACCOUNT_MISSING = 'Account does not exist, please contact support.'
 const ACCOUNT_UNVERIFIED = 'Account not verified, please verify first.'
 const ACCOUNT_IN_RECOVERY = 'Account was recently put in recovery modes, please contact support.'
@@ -148,13 +148,13 @@ module.exports = {
 	},
 	errors: {
 		EMAIL_IN_USE,
+		ACCOUNT_GENERIC_LOGIN_ERROR,
 		ACCOUNT_MISSING,
 		ACCOUNT_UNVERIFIED,
 		ACCOUNT_IN_RECOVERY,
 		ACCOUNT_ALREADY_UPGRADED,
 		VERIFY_LINK_MISSING,
 		RECOVERY_LINK_MISSING,
-		PASSWORD_INCORRECT,
 		TASK_NOT_FOUND,
 		PROJECT_NOT_FOUND,
 		MISSING_PROPERTY

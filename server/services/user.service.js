@@ -43,6 +43,8 @@ const DB_CREATE_USERS_TABLE = 'CREATE TABLE users ' +
   'recover VARCHAR(50) null) ' +
   'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci'
 
+// todo: future optimisation by indexing certain columns for quicker searches
+
 ALL_QUERIES = {
   DB_READY_USERS,
   DB_SHOW_USERS,
@@ -264,7 +266,7 @@ function ComparePassword(input, dbHash) {
   .then(passwordTest => {
     if (!passwordTest) {
       throw { status: 403,
-        message: constants.errors.PASSWORD_INCORRECT }
+        message: constants.errors.ACCOUNT_GENERIC_LOGIN_ERROR }
     }
 
     return Promise.resolve(true)
@@ -301,12 +303,16 @@ function SafeExport(userData, meta = false) {
   }
 
   if (meta) {
+
+    hasRecover = (userData.recover && userData.recover.length > 0)
+    hasVerify = (userData.verify && userData.verify.length > 0)
+
     freshUser.meta = {
       login: userData.login,
       created: userData.created,
       updated: userData.updated,
-      verified: userData.verify.length < 1 &&
-        userData.recover.length
+      verified: ( userData.role !== constants.roles.ANON
+        && !hasRecover && !hasVerify)
     }
   }
 

@@ -100,6 +100,8 @@ function Create({ id, name, email, role }) {
 exports.Create = Create
 
 /**
+ * Returns cleaned up token (removes bearer string)
+ *
  * @return {string}
  */
 function TokenCleanUp(token) {
@@ -159,8 +161,8 @@ function TokenDecode(token, req, res, next) {
 
   if (!decoded) {
     let err = new Error('Token issued appears broken')
-    logger.Log(err)
-    return next(err)
+    logger.Log(err, req)
+    return exit(res, 401, err || 'Please relogin.')
   }
 
   decoded.logout = true
@@ -173,7 +175,7 @@ function TokenVerify(token, req, res, next) {
   jwt.verify(token, config.token.secret, function (error, decoded) {
 
     if (error) {
-      logger.Log(error)
+      logger.Log(error, req)
       if (error.message === 'jwt expired') {
         // todo send user to relogin!
         return exit(res, 401, error.name || error, 'Please relogin.')
@@ -262,17 +264,18 @@ function AddTokenToBlackList(req) {
   let exists = tokensBlackListed.filter(item => item === token)
 
   if (exists.length > 0) {
-    return Promise.reject('Token already exists.')
+    logger.Log('Token already exists in blacklist.', req)
+    return Promise.resolve('User logged out successfully.')
   }
 
   return db.Query(DB_CREATE_TOKEN, { token })
   .then((result) => {
     tokensBlackListed.push(token)
-    logger.Log('New token added to blacklist.')
+    logger.Log('New token added to blacklist.', req)
     return Promise.resolve('User logged out successfully.')
   })
   .catch(err => {
-    logger.Log(err)
+    logger.Log(err, req)
     return Promise.reject(err)
   })
 }

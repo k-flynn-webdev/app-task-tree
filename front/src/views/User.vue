@@ -25,7 +25,9 @@
             <div class="input-control">
               <label>
                 <p>Name</p>
-                <p v-if="!isEdit" class="user__form-detail"> {{ form.name }} </p>
+                <p v-if="!isEdit" class="user__form-detail">
+                  {{ form.name }}
+                </p>
                 <input v-else
                   required
                   v-model="form.name"
@@ -39,7 +41,9 @@
             <div class="input-control">
               <label>
                 <p>Email</p>
-                <p v-if="!isEdit" class="user__form-detail"> {{ form.email }} </p>
+                <p v-if="!isEdit" class="user__form-detail">
+                  {{ form.email }}
+                </p>
                 <input
                   v-else
                   required
@@ -53,7 +57,9 @@
             <div class="input-control">
               <label>
                 <p>Password</p>
-                <p v-if="!isEdit" class="user__form-detail"> xxxxx </p>
+                <p v-if="!isEdit" class="user__form-detail">
+                  xxxxx
+                </p>
                 <input
                   v-else
                   required
@@ -68,18 +74,70 @@
             <div class="input-control">
               <label>
                 <p>Role</p>
-                <p class="user__form-detail"> {{ form.role }} </p>
+                <p class="user__form-detail">
+                  {{ form.role }}
+                </p>
               </label>
             </div>
 
           </form>
+
+          <div v-if="user.meta" class="user__meta">
+
+            <br>
+
+            <div v-if="user.meta.created" class="input-control">
+              <label>
+                <p class="sm">Created</p>
+                <p class="user__form-detail sm">
+                  {{ renderDateTime(user.meta.created) }}
+                </p>
+              </label>
+            </div>
+            <div v-if="user.meta.updated" class="input-control">
+              <label>
+                <p class="sm">Updated</p>
+                <p class="user__form-detail sm">
+                  {{ renderDateTime(user.meta.updated) }}
+                </p>
+              </label>
+            </div>
+            <div v-if="user.meta.login" class="input-control">
+              <label>
+                <p class="sm">Login</p>
+                <p class="user__form-detail sm">
+                  {{ renderDateTime(user.meta.login) }}
+                </p>
+              </label>
+            </div>
+          </div>
+
+          <br>
+
+          <div class="input-control">
+            <label>
+              <p class="sm">Tasks</p>
+              <p class="user__form-detail sm">
+                {{ totals.tasksDone }}  /  {{ totals.tasks }}
+              </p>
+            </label>
+          </div>
+
+          <div class="input-control">
+            <label>
+              <p class="sm">Projects</p>
+              <p class="user__form-detail sm">
+                {{ totals.projectsDone }}  /  {{ totals.projects }}
+              </p>
+            </label>
+          </div>
 
         </div>
 
         <template slot="footer" class="user__form__footer">
           <button
             type="button"
-            :class="{ 'DISABLED': isAnon }"
+            :class="{ 'DISABLED': !allowEdit }"
             class="user__form__footer__edit-btn"
             @click.prevent="toggleEdit">
             <p v-if="!isEdit">Edit</p>
@@ -160,8 +218,14 @@ export default {
     user: function () {
       return this.$store.getters['user/user']
     },
+    totals: function () {
+      return this.$store.getters['user/totals']
+    },
     isLoggedIn: function () {
       return this.$store.getters['user/isLoggedIn']
+    },
+    allowEdit: function () {
+      return (this.isUser || this.isAdmin)
     },
     isAnon: function () {
       return this.user.role === status.ANON
@@ -196,6 +260,9 @@ export default {
     this.resetForm()
   },
   methods: {
+    renderDateTime: function (input) {
+      return helpers.renderDateTime(input)
+    },
     toggleEdit: function () {
       this.isEdit = !this.isEdit
       this.resetForm()

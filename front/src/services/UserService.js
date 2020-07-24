@@ -3,6 +3,16 @@ import Http from './HttpService.js'
 
 const USER_TOKEN = 'user_token'
 const USER_PAYLOAD = 'user_payload'
+const USER_OPTIONS = 'user_options'
+
+function getUser () {
+  const local = localStorage.getItem(USER_PAYLOAD)
+  if (local === undefined || local === 'undefined' || local === null) {
+    return
+  }
+
+  return JSON.parse(local)
+}
 
 function setUser (res) {
   if (res.data &&
@@ -18,13 +28,22 @@ function setUser (res) {
   return res
 }
 
-function getUser () {
-  const local = localStorage.getItem(USER_PAYLOAD)
+function getOptions () {
+  const local = localStorage.getItem(USER_OPTIONS)
   if (local === undefined || local === 'undefined' || local === null) {
     return
   }
 
   return JSON.parse(local)
+}
+
+function setOptions (input) {
+  if (input) {
+    localStorage.setItem(USER_OPTIONS, JSON.stringify(input))
+    return
+  }
+
+  localStorage.removeItem(USER_OPTIONS)
 }
 
 function onMount () {
@@ -65,10 +84,21 @@ function removeAuth () {
   axios.defaults.headers.common.authorization = null
 }
 
-function get () {
+/**
+ * Returns all user meta data
+ */
+function getMeta () {
   return Http.get('/api/user')
-    .then(res => applyToken(res))
     .then(res => setUser(res))
+}
+
+/**
+ * Returns Anon user token
+ */
+function getAnonApiToken (input) {
+  return Http.get(`/api/user/anon/${input.id}`,
+    { params: { created: input.created } })
+    .then(res => applyToken(res))
 }
 
 function create (input) {
@@ -79,11 +109,13 @@ function create (input) {
 
 function createAnon () {
   return Http.post('/api/user/anon')
+    .then(res => applyToken(res))
     .then(res => setUser(res))
 }
 
 function createUpgrade (input) {
-  return Http.post(`/api/user/upgrade/${input.id}`, input)
+  return Http.patch('/api/user/upgrade', input)
+    .then(res => applyToken(res))
     .then(res => setUser(res))
 }
 
@@ -106,7 +138,7 @@ function update (input) {
 }
 
 function resetStart (input) {
-  return Http.post('/api/user/reset', input)
+  return Http.get(`/api/user/reset/${input.email}`)
     .then(res => applyToken(res))
     .then(res => setUser(res))
 }
@@ -124,17 +156,20 @@ function verify (input) {
 }
 
 const services = {
-  create: create,
-  createAnon: createAnon,
-  createUpgrade: createUpgrade,
-  login: login,
-  logout: logout,
-  update: update,
-  verify: verify,
-  get: get,
-  getUser: getUser,
-  resetStart: resetStart,
-  resetComplete: resetComplete
+  create,
+  createAnon,
+  createUpgrade,
+  login,
+  logout,
+  update,
+  verify,
+  getMeta,
+  getAnonApiToken,
+  getUser,
+  resetStart,
+  resetComplete,
+  getOptions,
+  setOptions
 }
 
 export default services

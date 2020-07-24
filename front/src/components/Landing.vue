@@ -18,6 +18,7 @@
             Create
           </router-link>
           <button
+            v-if="showTry"
             class="intro-text__anon"
             @click="createAnonUser">
             Try
@@ -44,12 +45,20 @@
 </template>
 
 <script>
+import Paths from '../constants/paths'
+import helpers from '../services/Helpers'
+import general from '../constants/general'
 import Card from '../components/general/Card'
 
 export default {
   name: 'Landing',
   components: {
     Card
+  },
+  computed: {
+    showTry: function () {
+      return this.$store.getters['user/user'].id < 0
+    }
   },
   methods: {
     createAnonUser: function () {
@@ -61,9 +70,10 @@ export default {
       }
 
       return initPromise
-        .then(user => {
-          return this.$store.dispatch('projects/getProjectsByUserId',
-            { user: user.id })
+        .then(() => {
+          helpers.timeDelay(() => {
+            this.$router.push({ name: Paths.PROJECTS })
+          }, general.DELAY_SUCCESS)
         })
         .catch(err => {
           this.$store.commit('toasts/toastAdd', err)

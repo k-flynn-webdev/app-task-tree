@@ -14,6 +14,9 @@ const has = require('../helpers/has.js')
  * @returns {object}  userObj promise
  */
 function userDelete(input,  app) {
+
+  input.id = input.token.id
+
   return user.GetUserByID(input.id)
   .then(usrFnd => {
     const userFound = mysqlVal(usrFnd)

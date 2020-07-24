@@ -2,6 +2,8 @@
 const dbConnection = require('../interfaces/db_init_sql')
 const projectServiceQueries = require('../services/project.service').ALL_QUERIES
 const taskServiceQueries = require('../services/task.service').ALL_QUERIES
+const token = require('../services/token.service')
+const user = require('../services/user.service')
 const constants = require('../constants/index')
 const config = require('../config/config.js')
 const chaiHttp = require('chai-http')
@@ -16,17 +18,32 @@ let projectName = 'This is a test project created by a project.test'
 beforeAll(() => {
   dbConnection.Connect()
   return dbConnection.SelectDB(config.db.database)
+  .then(() => {
+    userToken = createUserToken()
+  })
 })
 
 afterAll(() => {
   dbConnection.Close()
 })
 
+userDetails = {
+  id: 201,
+  name: 'testName',
+  email: 'test@email.com',
+  password: 'ANON1234',
+  role: constants.roles.ANON }
+
+const createUserToken = () => {
+  return token.Create(userDetails)
+}
+
 describe('Projects', () => {
 
   test('Should not create a new project with a empty object', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_PROJECT_CREATE)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({})
     .end(function(err, res){
       expect(res).toBeDefined()
@@ -41,6 +58,7 @@ describe('Projects', () => {
   test('Should not create a new project without a user id', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_PROJECT_CREATE)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       name: projectName })
     .end(function(err, res){
@@ -56,6 +74,7 @@ describe('Projects', () => {
   test('Should not create a new project with a invalid user', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_PROJECT_CREATE)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       user: -1,
       name: projectName })
@@ -72,6 +91,7 @@ describe('Projects', () => {
   test('Should not create a new project with a invalid user #2', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_PROJECT_CREATE)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       user: 'ds23',
       name: projectName })
@@ -88,6 +108,7 @@ describe('Projects', () => {
   test('Should not create a new project with a missing name', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_PROJECT_CREATE)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       user: projectUser })
     .end(function(err, res){
@@ -103,6 +124,7 @@ describe('Projects', () => {
   test('Should not create a new project with a small name property', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_PROJECT_CREATE)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       user: projectUser,
       name: 'sam' })
@@ -119,6 +141,7 @@ describe('Projects', () => {
   test('Should create a new project', (done) => {
     chai.request(config.ip + ':' + config.port)
     .post(constants.paths.API_PROJECT_CREATE)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       user: projectUser,
       name: projectName })
@@ -153,6 +176,7 @@ describe('Projects', () => {
   test("Should not return a project that's invalid", (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_PROJECT('sdf35rs'))
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(400)
@@ -164,6 +188,7 @@ describe('Projects', () => {
   test("Should not return a project that does not exist", (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_PROJECT(23432423))
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(404)
@@ -175,6 +200,7 @@ describe('Projects', () => {
   test('Should return the correct project', (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_PROJECT(projectObj.id))
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(200)
@@ -191,6 +217,7 @@ describe('Projects', () => {
   test("Should not update a project that doesn't exist", (done) => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_PROJECT(2357))
+    .set('Authorization', `Bearer ${userToken}`)
     .send({ id: 2357, name: 'dsfdsdsf' })
     .end(function(err, res){
       expect(res).toBeDefined()
@@ -203,6 +230,7 @@ describe('Projects', () => {
   test('Should not update project name with invalid name', (done) => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_PROJECT(projectObj.id))
+    .set('Authorization', `Bearer ${userToken}`)
     .send({ id: projectObj.id, name: 'err' })
     .end(function(err, res){
       expect(res).toBeDefined()
@@ -217,6 +245,7 @@ describe('Projects', () => {
   test('Should update project name', (done) => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_PROJECT(projectObj.id))
+    .set('Authorization', `Bearer ${userToken}`)
     .send({ id: projectObj.id, name: updatedName })
     .end(function(err, res){
       expect(res).toBeDefined()
@@ -233,6 +262,7 @@ describe('Projects', () => {
   test('Should not return an array of projects with a user that does not exist', (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_PROJECTS + '?user=' + 23131)
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(200)
@@ -245,6 +275,7 @@ describe('Projects', () => {
   test('Should not return an array of projects with a user that is invalid', (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_PROJECTS + '?user=' + 'ad3e')
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(400)
@@ -256,6 +287,7 @@ describe('Projects', () => {
   test('Should return an array of projects related to user', (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_PROJECTS + '?user=' + projectUser)
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(200)
@@ -268,6 +300,7 @@ describe('Projects', () => {
   test("Should not delete a project that doesn't exist", (done) => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_PROJECT(2357))
+    .set('Authorization', `Bearer ${userToken}`)
     .send({ id: 2357, name: 'dsfdsdsf' })
     .end(function(err, res){
       expect(res).toBeDefined()
@@ -280,6 +313,7 @@ describe('Projects', () => {
   test('Should delete the project', (done) => {
     chai.request(config.ip + ':' + config.port)
     .delete(constants.paths.API_PROJECT(projectObj.id))
+    .set('Authorization', `Bearer ${userToken}`)
     .send({ id: projectObj.id })
     .end(function(err, res){
       expect(res).toBeDefined()
@@ -292,6 +326,7 @@ describe('Projects', () => {
   test('A project should not return after being deleted', (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_PROJECT(projectObj.id))
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(404)
@@ -303,6 +338,7 @@ describe('Projects', () => {
   test('If no projects found relating to a user an empty array should return', (done) => {
     chai.request(config.ip + ':' + config.port)
     .get(constants.paths.API_PROJECTS + '?user=' + projectUser)
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(200)

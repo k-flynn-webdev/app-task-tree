@@ -18,6 +18,12 @@ body {
   }
 }
 
+.show-settings {
+  .task__project__header__info {
+    margin-right: 0;
+  }
+}
+
 .task {
   position: relative;
 
@@ -26,8 +32,8 @@ body {
 
     &__btn {
       position: absolute;
-      top: 2px;
-      right: 2px;
+      top: 7px;
+      right: 5px;
       z-index: 5;
       margin: 0;
       padding: 0;
@@ -50,6 +56,7 @@ body {
 
     &__holder {
       color: $color-bg;
+      -webkit-text-fill-color: $color-bg;
       background-color: $color-fore;
       padding: $margin-default;
       border-radius: $border-radius;
@@ -62,13 +69,12 @@ body {
 
       @mixin screen-float {
         position: relative;
-        top: unset;
+        top: $margin-default;
         right: unset;
-        margin: 0;
-        margin-top: $margin-default;
-        margin-bottom: $margin-default * 2;
         min-width: unset;
         max-width: unset;
+        margin: 0;
+        margin-bottom: $margin-default * 2;
       }
 
       @include screen-xs {
@@ -98,14 +104,27 @@ body {
         display: block;
         margin: 0;
         padding: $margin-default * 0.33 0;
-        margin-bottom: $margin-default * 0.5;
         color: $color-bg;
+        -webkit-text-fill-color: $color-bg;
         font-weight: bolder;
         text-decoration: none;
       }
 
       li {
-        border-bottom: solid $border-size rgba($color-bg, $color-alpha);
+        padding-bottom: $margin-default;
+        margin-bottom: $margin-default;
+        border-bottom: solid $border-size rgba($color-bg, 0.1);
+
+        &:last-of-type {
+          padding-bottom: 0;
+          border-bottom: unset;
+        }
+
+        &.label {
+          margin: 0;
+          opacity: 0.7;
+          border-bottom: unset;
+        }
       }
 
       ul {
@@ -119,12 +138,6 @@ body {
   }
 
   .intro-text {
-    p,
-    ul,
-    ol {
-      word-break: break-word;
-    }
-
     button {
       background-color: $color-success;
     }
@@ -178,6 +191,36 @@ body {
   }
 
   &__footer {
+    color: $color-fore;
+    -webkit-text-fill-color: $color-fore;
     padding-top: $unit-default * 5;
+
+    &__content {
+      position: relative;
+
+      & > * {
+        margin: 0;
+        color: $color-fore;
+        fill: $color-fore;
+      }
+
+      &-version {
+        position: absolute;
+        top: $unit-default * -1;
+        right: $margin-default;
+
+        &,
+        & > * {
+          margin: 0;
+          font-weight: bolder;
+          color: $color-mid;
+          -webkit-text-fill-color: $color-mid;
+        }
+
+        @include lg-up {
+          top: 50%;
+        }
+      }
+    }
   }
 }

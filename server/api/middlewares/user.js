@@ -158,8 +158,8 @@ function Update(req, res, next) {
 
   let newBody = {}
 
-  if (!checkId.required(req, res)) return
-  newBody.id = req.body.id
+  // if (!checkId.required(req, res)) return
+  // newBody.id = req.body.id
 
   if (!checkName.valid(req, res)) return
   if (!checkEmail.valid(req, res)) return
@@ -203,14 +203,6 @@ function Upgrade(req, res, next) {
 
   let newBody = {}
 
-  if (!checkId.required(req, res)) return
-  if (!checkUser.HasParam(req, res)) return
-  if (req.params.user.toString() !== req.body.id.toString()) {
-    exit(res, 400, 'ID mismatch for user upgrade.')
-    return
-  }
-
-  newBody.id = req.body.id
   if (!checkName.required(req, res)) return
   if (!checkName.valid(req, res)) return
   newBody.name = req.body.name
@@ -238,7 +230,7 @@ exports.Upgrade = Upgrade
  * @param next  the cb
  */
 function Delete(req, res, next) {
-  if (!checkId.required(req, res)) return
+  // if (!checkId.required(req, res)) return
 
   next()
 }

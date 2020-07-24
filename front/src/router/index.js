@@ -35,15 +35,16 @@ const routes = [
   {
     path: '/project/:project',
     component: Home,
-    props: { mode: modes.TASKS },
+    props: (route) => ({
+      mode: modes.TASKS,
+      project: Number(route.params.project)
+    }),
     children: [
       {
         path: '',
         name: Paths.PROJECT_TASKS,
         props: (route) => ({
-          project: {
-            id: Number(route.params.project)
-          }
+          project: Number(route.params.project)
         }),
         component: Tasks
       }
@@ -62,12 +63,28 @@ const routes = [
   {
     path: '/user/create',
     name: Paths.USER_CREATE,
-    component: () => import(/* webpackChunkName: "UserCreate" */ '../views/UserCreate.vue')
+    component: () => import(/* webpackChunkName: "User" */ '../views/UserCreate.vue')
   },
   {
     path: '/user/login',
     name: Paths.USER_LOGIN,
-    component: () => import(/* webpackChunkName: "UserLogin" */ '../views/UserLogin.vue')
+    component: () => import(/* webpackChunkName: "User" */ '../views/UserLogin.vue')
+  },
+  {
+    path: '/user/reset',
+    props: (route) => ({
+      verify: ''
+    }),
+    name: Paths.USER_RESET,
+    component: () => import(/* webpackChunkName: "User" */ '../views/UserReset.vue')
+  },
+  {
+    path: '/user/reset/:verify',
+    props: (route) => ({
+      verify: route.params.verify
+    }),
+    name: Paths.USER_RESET_PASSWORD,
+    component: () => import(/* webpackChunkName: "User" */ '../views/UserReset.vue')
   }
 
   // todo 404 page here

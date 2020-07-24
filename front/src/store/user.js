@@ -6,22 +6,27 @@ function defaultUser () {
   const userLocal = UserService.getUser()
   if (userLocal !== undefined) return userLocal
 
-  // todo
-  //  we need the Anom user id to be specific to
-  //  THIS users PC so when they
-  //  upgrade it's a seamless transfer of
-  //  projects/tasks to the new user id..
-
   return general.DEFAULT_USER()
+}
+
+function defaultOptions () {
+  const userLocal = UserService.getOptions()
+  if (userLocal !== undefined) return userLocal
+
+  return general.DEFAULT_USER_OPTIONS()
 }
 
 export default {
   namespaced: true,
   state: {
-    user: defaultUser()
+    user: defaultUser(),
+    options: defaultOptions(),
+    totals: general.DEFAULT_TOTALS()
   },
   getters: {
     user: (state) => state.user,
+    totals: (state) => state.totals,
+    options: (state) => state.options,
     /**
      * Returns if the User is currently logged in
      *
@@ -39,10 +44,58 @@ export default {
       state.user.name = input.name
       state.user.email = input.email
       state.user.role = input.role
+    },
+    options: function (state, input) {
+      if (input.tasks && input.tasks.showDone !== undefined) {
+        state.options.tasks.showDone = input.tasks.showDone
+      }
+      if (input.projects && input.projects.showDone !== undefined) {
+        state.options.projects.showDone = input.projects.showDone
+      }
+
+      if (input) {
+        UserService.setOptions(state.options)
+      }
+    },
+    totals: function (state, input) {
+      state.totals.tasks = input.tasks
+      state.totals.tasksDone = input.tasksDone
+      state.totals.projects = input.projects
+      state.totals.projectsDone = input.projectsDone
     }
   },
   actions: {
-    // todo user create / update / delete / login / logout etc
+    // todo user  /  / delete /  /  etc
+    /**
+     * Get latest user account data
+     *
+     * @param {object}    context
+     * @returns {promise} user
+     */
+    get: function (context) {
+      return UserService.getMeta()
+        .then(res => {
+          context.commit('totals', res.data.data)
+          context.commit('user', res.data.data.account)
+          return res
+        })
+    },
+    /**
+     * Get a anon user token
+     *
+     * @param {object}    context
+     * @returns {promise} user
+     */
+    getAnonToken: function (context) {
+      const userDetails = {
+        id: context.state.user.id,
+        created: context.state.user.meta.created
+      }
+      return UserService.getAnonApiToken(userDetails)
+        .then(res => {
+          return res
+        })
+    },
     /**
      * Login a user
      *
@@ -122,6 +175,32 @@ export default {
       return UserService.update(input)
         .then(res => {
           context.commit('user', res.data.data.account)
+          return res
+        })
+    },
+    /**
+     * Begin user password reset process
+     *
+     * @param {object}    context
+     * @param {object}    input
+     * @returns {promise} anon user
+     */
+    resetStart: function (context, input) {
+      return UserService.resetStart(input)
+        .then(res => {
+          return res
+        })
+    },
+    /**
+     * Begin user password reset process
+     *
+     * @param {object}    context
+     * @param {object}    input
+     * @returns {promise} anon user
+     */
+    resetComplete: function (context, input) {
+      return UserService.resetComplete(input)
+        .then(res => {
           return res
         })
     }

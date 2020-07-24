@@ -15,8 +15,9 @@ const DB_DELETE_PROJECT_BY_ID = 'DELETE FROM projects WHERE id = ?'
 const DB_DELETE_PROJECTS_BY_USER = 'SELECT * FROM projects WHERE user = ?'
 const DB_GET_PROJECT_BY_ID = 'SELECT * FROM projects WHERE id = ?'
 const DB_GET_PROJECT_BY_USER = 'SELECT * FROM projects WHERE user = ? ORDER BY updated DESC'
+const DB_GET_PROJECT_BY_USER_DONE = 'SELECT * FROM projects WHERE user = ? AND isDone = ? ORDER BY updated DESC'
 const DB_GET_PROJECT_BY_NAME = 'SELECT * FROM projects WHERE name = ? ORDER BY updated DESC'
-const DB_GET_PROJECTS_BY_IS_DONE = 'SELECT * FROM projects WHERE isDone = ? ORDER BY updated DESC'
+const DB_GET_PROJECTS_BY_IS_DONE = 'SELECT * FROM projects WHERE user = ? AND isDone = ? ORDER BY updated DESC'
 const DB_GET_PROJECTS_BY_IS_DONE_DATE = 'SELECT * FROM projects WHERE doneDate = ? ORDER BY doneDate DESC'
 
 const DB_SET = ' SET'
@@ -41,6 +42,8 @@ const DB_CREATE_PROJECTS_TABLE = 'CREATE TABLE projects ' +
   'isDone bool default FALSE, ' +
   'doneDate DATETIME) ' +
   'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci'
+
+// todo: future optimisation by indexing certain columns for quicker searches
 
 const ALL_QUERIES = {
   DB_SHOW_PROJECTS,
@@ -196,9 +199,13 @@ exports.GetProjectByName = GetProjectByName
  * Returns all project objects from the db if found via user
  *
  * @param   {int}     user      user id
+ * @param   {int}     showDone  return based on state of project
  * @return  {array}   project object
  */
-function GetProjectsByUser(user) {
+function GetProjectsByUser(user, showDone= null) {
+  if (has.hasAnItem(showDone)) {
+    return db.Query(DB_GET_PROJECT_BY_USER_DONE, [user, showDone])
+  }
   return db.Query(DB_GET_PROJECT_BY_USER, [user])
 }
 
@@ -219,11 +226,12 @@ exports.DeleteProjectsByUser = DeleteProjectsByUser
 /**
  * Returns all project objects by the isDone value
  *
+ * @param   {number}  user id
  * @param   {bool}    isDone
  * @return  {array}   project object
  */
-function GetProjectsByIsDone(isDone) {
-  return db.Query(DB_GET_PROJECTS_BY_IS_DONE, [isDone])
+function GetProjectsByIsDone(user, isDone) {
+  return db.Query(DB_GET_PROJECTS_BY_IS_DONE, [user, isDone === true? 1: 0])
 }
 
 exports.GetProjectsByIsDone = GetProjectsByIsDone

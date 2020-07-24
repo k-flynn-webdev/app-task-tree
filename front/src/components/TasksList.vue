@@ -1,15 +1,11 @@
 <template>
-  <div class="task__project__tasks-list no-overflow">
-
-     <transition-group name="list-anim" tag="ul">
+  <div class="task__project__tasks-list relative no-overflow">
 
       <TaskItem
         v-for="item in tasks"
         :key="item.id"
         :data="item"
       />
-
-    </transition-group>
 
     <Card v-if="tasks.length < 1" class="text-center">
       <p v-if="project.id >= 0"
@@ -24,7 +20,6 @@
 </template>
 
 <script>
-import general from '../constants/general'
 import status from '../constants/status.js'
 import Card from '../components/general/Card'
 import TaskItem from '../components/TaskItem'
@@ -37,29 +32,60 @@ export default {
   },
   props: {
     project: {
-      type: Object,
-      default: general.DEFAULT_PROJECT()
+      type: Number,
+      default: -1
     }
   },
   computed: {
-    task: function () {
-      return this.$store.getters['tasks/current']
+    ready: function () {
+      return this.$store.getters.ready
+    },
+    userOptions: function () {
+      return this.$store.getters['user/options'].tasks
     },
     tasks: function () {
+      if (!this.userOptions.showDone) {
+        return this.$store.getters['tasks/tasksNotDone']
+      }
       return this.$store.getters['tasks/tasks']
+    },
+    taskHistory: function () {
+      return this.$store.getters['tasks/taskHistory']
+    }
+  },
+  watch: {
+    ready: function (input) {
+      if (input) this.getTasks()
+    },
+    'userOptions.showDone': function (input, oldValue) {
+      if (input === oldValue) return
+      return this.getTasks()
     }
   },
   mounted () {
-    return this.getTasksOfProject()
+    if (!this.ready) return
+    return this.getTasks()
   },
   methods: {
-    getTasksOfProject: function () {
-      return this.$store.dispatch('tasks/getTasksByUserOrProject',
-        { project: this.project.id })
-        .then(() => {
-          const currentProj = this.$store.getters['projects/findProject'](this.project.id)
-          this.$store.commit('projects/projectCurrent', currentProj)
-        })
+    getTasks: function () {
+      if (this.project < 0) return
+      if (this.taskHistory.project === this.project &&
+        this.userOptions.showDone === this.taskHistory.showDone) {
+        return
+      }
+
+      this.$store.commit('status', status.WAITING)
+      this.$store.commit('tasks/taskHistory',
+        { showDone: this.userOptions.showDone })
+      if (this.taskHistory.project !== this.project) {
+        this.$store.commit('tasks/taskSet', [])
+      }
+
+      const params = { project: this.project }
+      if (!this.userOptions.showDone) params.showDone = false
+
+      return this.$store.dispatch('tasks/getTasksByUserOrProject', params)
+        .then(() => this.$store.commit('status', status.SUCCESS))
         .catch(err => this.handleError(err))
     },
     handleError: function (err) {

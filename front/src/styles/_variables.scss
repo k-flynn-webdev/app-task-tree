@@ -192,3 +192,63 @@ $all-screen-sizes: (
 @mixin screen-xxxl {
   @media (min-width: $screen-xxl) and (max-width: 3000px) { @content }
 }
+
+@mixin md-down {
+  @include screen-md {
+    @content;
+  }
+  @include screen-sm {
+    @content;
+  }
+  @include screen-xs {
+    @content;
+  }
+}
+
+@mixin lg-down {
+  @include screen-lg {
+    @content;
+  }
+  @include screen-md {
+    @content;
+  }
+  @include screen-sm {
+    @content;
+  }
+  @include screen-xs {
+    @content;
+  }
+}
+
+@mixin md-up {
+  @include screen-md {
+    @content;
+  }
+  @include screen-lg {
+    @content;
+  }
+  @include screen-xl {
+    @content;
+  }
+  @include screen-xxl {
+    @content;
+  }
+  @include screen-xxxl {
+    @content;
+  }
+}
+
+@mixin lg-up {
+  @include screen-lg {
+    @content;
+  }
+  @include screen-xl {
+    @content;
+  }
+  @include screen-xxl {
+    @content;
+  }
+  @include screen-xxxl {
+    @content;
+  }
+}

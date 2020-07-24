@@ -15,6 +15,49 @@ const userUpgradeLogic = require('../../logic/user.upgrade.js')
 module.exports = function (app) {
 
   /**
+   * Return a anon token to continue using the api
+   *
+   *    @params { user }
+   *    @query { created }
+   *    @return { id }
+   */
+  app.get(constants.paths.API_USER_ANON + '/:user',
+    userMiddle.HasParam,
+    prepareMiddle,
+    function (req, res) {
+
+      user.GetUserByID(Number(req.params.user))
+      .then(userObj => {
+        const userFound = mysqlVal(userObj)
+
+        if (!has.hasAnItem(userObj) ||
+          userFound.role !== constants.roles.ANON ||
+          !has.hasAnItem(req.query.created)) {
+          throw {
+            status: 404,
+            message: constants.errors.ACCOUNT_MISSING
+          }
+        }
+
+        if (req.query.created.toString() !==
+          new Date(userFound.created).toISOString()) {
+          throw {
+            status: 404,
+            message: constants.errors.ACCOUNT_MISSING
+          }
+        }
+
+        exit(res, 200,
+          constants.messages.SUCCESS,
+          { token: token.Create(userFound) })
+      })
+      .catch(err => {
+        logger.Log(err.message || err, req)
+        exit(res, 400, err || 'error')
+      })
+    })
+
+  /**
    * Create a anon user account and returns only the id
    *    this type of account can be upgraded in the future
    *    to a full account
@@ -32,7 +75,7 @@ module.exports = function (app) {
         exit(res, 201,
           constants.messages.SUCCESS_CREATED_ANON_ACCOUNT,
           { account: userObj,
-            token: ''
+            token: token.Create(userObj)
           })
       })
       .catch(err => {
@@ -44,14 +87,17 @@ module.exports = function (app) {
   /**
    * Upgrade a anon user account
    */
-  app.patch(constants.paths.API_USER_UPGRADE(),
+  app.patch(constants.paths.API_USER_UPGRADE,
     userMiddle.Upgrade,
+    token.Required,
     prepareMiddle,
     function (req, res) {
 
       userUpgradeLogic(req.body, app)
       .then(userObj => {
-
+        return Promise.all([userObj, token.AddTokenToBlackList(req)])
+      })
+      .then(([userObj, tokenAdded]) => {
         logger.Log(constants.messages.SUCCESS_UPGRADED_ACCOUNT, req)
 
         exit(res, 201,

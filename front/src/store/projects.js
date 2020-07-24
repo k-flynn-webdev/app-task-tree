@@ -6,7 +6,8 @@ export default {
   namespaced: true,
   state: {
     projects: [],
-    current: general.DEFAULT_PROJECT()
+    current: general.DEFAULT_PROJECT(),
+    history: general.DEFAULT_PROJECT_HISTORY()
   },
   getters: {
     /**
@@ -16,6 +17,7 @@ export default {
      * @returns {object}
      */
     current: (state) => state.current,
+    projectHistory: (state) => state.history,
     /**
      * Returns all projects
      *
@@ -23,6 +25,8 @@ export default {
      * @returns {Array}
      */
     projects: (state) => state.projects,
+    projectsDone: (state) => state.projects.filter(item => item.isDone),
+    projectsNotDone: (state) => state.projects.filter(item => !item.isDone),
     /**
      * Returns a function to find a Project by ID
      *
@@ -31,10 +35,18 @@ export default {
      * @returns {function}
      */
     findProject: (state) => (id) => {
-      return state.projects.find(item => item.id === id)
+      return state.projects.find(project => project.id === id)
     }
   },
   mutations: {
+    projectHistory: (state, input) => {
+      if (input.user !== undefined) {
+        state.history.user = input.user
+      }
+      if (input.showDone !== undefined) {
+        state.history.showDone = input.showDone
+      }
+    },
     /**
      * Sets current project selected
      *
@@ -107,8 +119,8 @@ export default {
     create: function (context, input) {
       return ProjectService.create(input)
         .then(res => {
-          context.commit('projectCurrent', res.data.data.project)
           context.commit('projectAdd', res.data.data.project)
+          context.commit('projectCurrent', res.data.data.project)
           return res.data.data.project
         })
     },
@@ -173,9 +185,12 @@ export default {
     getProjectsByUserId: function (context, input) {
       return ProjectService.all(input)
         .then(res => {
-          if (res.data.data.projects.length < 1) return
-          context.commit('projectSet', res.data.data.projects)
-          context.commit('projectCurrent', res.data.data.projects[0])
+          if (res.data.data.projects.length > 0) {
+            context.commit('projectHistory', {
+              user: res.data.data.projects[0].user
+            })
+            context.commit('projectSet', res.data.data.projects)
+          }
           return res
         })
     }

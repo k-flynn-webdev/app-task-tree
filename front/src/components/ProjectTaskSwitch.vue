@@ -2,15 +2,17 @@
   <div class="task__project__header__controls__switch">
 
     <button class="task__project__header__controls__switch-projects"
+            :tabindex="[ allowInput && !isProjects? 0: -1 ]"
             :class="{ 'ACTIVE': isProjects, 'DISABLED': !isEnabled }"
             @click="showProjects">
-      <span>projects</span>
+      projects
     </button>
 
     <button class="task__project__header__controls__switch-tasks"
+            :tabindex="[ allowInput && isProjects? 0: -1 ]"
             :class="{ 'ACTIVE': isTasks, 'DISABLED': !isEnabled }"
             @click="showTasks">
-      <span>tasks</span>
+      tasks
     </button>
 
   </div>
@@ -33,6 +35,9 @@ export default {
     }
   },
   computed: {
+    allowInput: function () {
+      return (this.isEnabled)
+    },
     isTasks: function () {
       return this.mode === modes.TASKS
     },

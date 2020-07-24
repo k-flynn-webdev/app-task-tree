@@ -28,6 +28,7 @@
       &-login,
       &-create {
         color: $color-fore;
+        -webkit-text-fill-color: $color-fore;
         font-weight: bolder;
       }
 

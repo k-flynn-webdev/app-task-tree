@@ -23,7 +23,7 @@ function userLogin(input,  app) {
     if (!has.hasAnItem(usrFnd)) {
       throw {
         status: 404,
-        message: constants.errors.ACCOUNT_MISSING
+        message: constants.errors.ACCOUNT_GENERIC_LOGIN_ERROR
       }
     }
 

@@ -1,6 +1,8 @@
 <template>
 
-  <li class="row__item">
+  <li
+    class="row__item"
+    :class="{ 'anim-show-fast': isLoading }">
 
     <div class="row__item__line"
         :class="{
@@ -27,7 +29,7 @@
             {{ progress }}
           </small>
 
-          <p class="row__item__line__mid__content-data word-break">
+          <p class="row__item__line__mid__content-data">
             {{ textOrName }}
           </p>
 
@@ -141,9 +143,12 @@ export default {
     }
   },
   computed: {
+    isLoading: function () {
+      return this.$store.getters.status !== status.CLEAR
+    },
     progress: function () {
       if (!this.data.tasksTotal) return null
-      return helpers.renderProgressNum(this.data)
+      return helpers.renderProgressPercent(this.data)
     },
     textOrName: function () {
       return this.data.name || this.data.text

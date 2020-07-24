@@ -17,7 +17,8 @@ const DB_DELETE_TASKS_BY_PROJECT = 'DELETE FROM tasks WHERE project = ?'
 const DB_GET_TASK_BY_ID = 'SELECT * FROM tasks WHERE id = ?'
 const DB_GET_TASK_BY_USER = 'SELECT * FROM tasks WHERE user = ? ORDER BY updated DESC'
 const DB_GET_TASK_BY_PROJECT = 'SELECT * FROM tasks WHERE project = ? ORDER BY updated DESC'
-const DB_GET_TASK_BY_IS_DONE = 'SELECT * FROM tasks WHERE isDone = ? ORDER BY updated DESC'
+const DB_GET_TASK_BY_PROJECT_AND_DONE = 'SELECT * FROM tasks WHERE project = ? AND isDone = ? ORDER BY updated DESC'
+const DB_GET_TASK_BY_IS_DONE = 'SELECT * FROM tasks WHERE user = ? AND isDone = ? ORDER BY updated DESC'
 const DB_GET_TASK_BY_IS_DONE_DATE = 'SELECT * FROM tasks WHERE doneDate = ? ORDER BY doneDate DESC'
 
 const DB_SET = ' SET'
@@ -40,6 +41,8 @@ const DB_CREATE_TASKS_TABLE = 'CREATE TABLE tasks ' +
   'isDone bool default FALSE, ' +
   'doneDate DATETIME) ' +
   'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci'
+
+// todo: future optimisation by indexing certain columns for quicker searches
 
 ALL_QUERIES = {
   DB_SHOW_TASKS,
@@ -178,9 +181,13 @@ exports.GetTaskByID = GetTaskByID
  * Returns all task objects from the db if found via project
  *
  * @param   {int}     project
+ * @param   {int}     showDone
  * @return  {array}   task object
  */
-function GetTasksByProject(project) {
+function GetTasksByProject(project, showDone = null) {
+  if (has.hasAnItem(showDone)) {
+    return db.Query(DB_GET_TASK_BY_PROJECT_AND_DONE, [project, showDone])
+  }
   return db.Query(DB_GET_TASK_BY_PROJECT, [project])
 }
 
@@ -211,7 +218,7 @@ function DeleteTasksByProject(project) {
 exports.DeleteTasksByProject = DeleteTasksByProject
 
 /**
- * Returns all task objects from the db if found via user
+ * Returns all task objects from the db if found via user id
  *
  * @param   {int}     user
  * @return  {array}   task object
@@ -225,11 +232,12 @@ exports.GetTasksByUser = GetTasksByUser
 /**
  * Returns all task objects that are done
  *
+ * @param   {number}  user
  * @param   {bool}    isDone
- * @return  {array}  task object
+ * @return  {array}   task object
  */
-function GetTasksByIsDone(isDone) {
-  return db.Query(DB_GET_TASK_BY_IS_DONE, [isDone])
+function GetTasksByIsDone(user, isDone) {
+  return db.Query(DB_GET_TASK_BY_IS_DONE, [user, isDone === true? 1: 0 ])
 }
 
 exports.GetTasksByIsDone = GetTasksByIsDone

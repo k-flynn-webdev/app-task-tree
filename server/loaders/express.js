@@ -1,4 +1,5 @@
 const cors = require('cors')
+const helmet = require("helmet")
 const uniqid = require('uniqid')
 const filter = require('content-filter')
 const bodyParser = require('body-parser')
@@ -62,6 +63,8 @@ module.exports = function (app) {
 
     // Set default json response header ..
     app.set('json spaces', 4)
+
+    app.use(helmet())
 
     logger.Log('	✅ Express setup.')
     return Promise.resolve()

@@ -216,6 +216,7 @@ describe('User', () => {
   })
 
   let userCreated = null
+  let userToken = null
 
   it('Should create a user account', (done) => {
     chai.request(config.ip + ':' + config.port)
@@ -227,6 +228,7 @@ describe('User', () => {
     })
     .then(res => {
       userCreated = res.body.data.account
+      userToken = res.body.data.token
       expect(res).toBeDefined()
       expect(res.status).toBe(201)
       expect(res.body).toBeDefined()
@@ -276,6 +278,7 @@ describe('User', () => {
   it('Should not be able to update a account without any properties', (done) => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_USER)
+    .set('Authorization', `Bearer ${userToken}`)
     .send({
       id: userCreated.id
     })
@@ -293,9 +296,9 @@ describe('User', () => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_USER)
     .send({
-      id: userCreated.id,
       name: 'aa'
     })
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(400)
@@ -310,9 +313,9 @@ describe('User', () => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_USER)
     .send({
-      id: userCreated.id,
       email: 'aa'
     })
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(400)
@@ -327,9 +330,9 @@ describe('User', () => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_USER)
     .send({
-      id: userCreated.id,
       password: 'aa'
     })
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(400)
@@ -340,13 +343,13 @@ describe('User', () => {
     })
   })
 
-  it('Should not be able to update a account with that still needs to be verified', (done) => {
+  it('Should not be able to update a account that still needs to be verified', (done) => {
     chai.request(config.ip + ':' + config.port)
     .patch(constants.paths.API_USER)
     .send({
-      id: userCreated.id,
       name: 'newNameHere'
     })
+    .set('Authorization', `Bearer ${userToken}`)
     .end(function(err, res){
       expect(res).toBeDefined()
       expect(res.status).toBe(401)
@@ -358,14 +361,16 @@ describe('User', () => {
   })
 
   it('Should update a account name that has been verified', (done) => {
+    const newNameHere = 'newNameHere'
+
     clearVerify(userCreated.id)
     .then(() => {
       return chai.request(config.ip + ':' + config.port)
       .patch(constants.paths.API_USER)
       .send({
-        id: userCreated.id,
-        name: 'newNameHere'
+        name: newNameHere
       })
+      .set('Authorization', `Bearer ${userToken}`)
     })
     .then(res => {
       expect(res).toBeDefined()
@@ -377,10 +382,12 @@ describe('User', () => {
       expect(res.body.data.account).toBeDefined()
       expect(res.body.data.account.id).toBeDefined()
       expect(res.body.data.account.name).toBeDefined()
+      expect(res.body.data.account.name).toBe(newNameHere)
       expect(res.body.data.account.email).toBeDefined()
       expect(res.body.data.account.role).toBeDefined()
       expect(res.body.data.token).toBeDefined()
       expect(res.body.data.token.length).toBeGreaterThan(10)
+      userToken = res.body.data.token
       done()
     })
   })
@@ -391,9 +398,9 @@ describe('User', () => {
       return chai.request(config.ip + ':' + config.port)
       .patch(constants.paths.API_USER)
       .send({
-        id: userCreated.id,
         email: 'aa@aaaaa.com'
       })
+      .set('Authorization', `Bearer ${userToken}`)
     })
     .then(res => {
       expect(res).toBeDefined()
@@ -409,6 +416,7 @@ describe('User', () => {
       expect(res.body.data.account.role).toBeDefined()
       expect(res.body.data.token).toBeDefined()
       expect(res.body.data.token.length).toBeGreaterThan(10)
+      userToken = res.body.data.token
       return dbConnection.Query(userServiceQueries.DB_GET_USER_BY_ID, [userCreated.id])
     })
     .then(([result]) => {
@@ -423,9 +431,9 @@ describe('User', () => {
       return chai.request(config.ip + ':' + config.port)
       .patch(constants.paths.API_USER)
       .send({
-        id: userCreated.id,
         password: 'newPasswordHere1234'
       })
+      .set('Authorization', `Bearer ${userToken}`)
     })
     .then(res => {
       expect(res).toBeDefined()
@@ -441,10 +449,7 @@ describe('User', () => {
       expect(res.body.data.account.role).toBeDefined()
       expect(res.body.data.token).toBeDefined()
       expect(res.body.data.token.length).toBeGreaterThan(10)
-      return dbConnection.Query(userServiceQueries.DB_GET_USER_BY_ID, [userCreated.id])
-    })
-    .then(([result]) => {
-      // expect(result.verify.length).toBeGreaterThanOrEqual(10)
+      userToken = res.body.data.token
       done()
     })
   })
@@ -457,6 +462,7 @@ describe('User', () => {
       .send({
         id: userCreated.id,
       })
+      .set('Authorization', `Bearer ${userToken}`)
     })
     .then(res => {
       expect(res).toBeDefined()
@@ -477,6 +483,7 @@ describe('User', () => {
       .send({
         id: userCreated.id,
       })
+      .set('Authorization', `Bearer ${userToken}`)
     })
     .then(res => {
       expect(res).toBeDefined()
@@ -497,6 +504,7 @@ describe('User', () => {
       .send({
         id: userCreated.id,
       })
+      .set('Authorization', `Bearer ${userToken}`)
     })
     .then(res => {
       expect(res).toBeDefined()
@@ -511,8 +519,29 @@ describe('User', () => {
     })
   })
 
+  it('Should not be able delete a account with a previously deleted token', (done) => {
+    return clearVerify(userCreated.id)
+    .then(() => clearRecover(userCreated.id))
+    .then(() => {
+      return chai.request(config.ip + ':' + config.port)
+      .delete(constants.paths.API_USER)
+      .send({
+        id: userCreated.id,
+      })
+      .set('Authorization', `Bearer ${userToken}`)
+    })
+    .then(res => {
+      expect(res).toBeDefined()
+      expect(res.status).toBe(401)
+      expect(res.body).toBeDefined()
+      expect(res.body.message).toBeDefined()
+      expect(res.body.message).toEqual('Token previously consumed.')
+      done()
+    })
+  })
+
   // todo test for updating event
-  // todo test for deleteing event
+  // todo test for deleting event
   // todo test for escaping/script hacking
 
 })

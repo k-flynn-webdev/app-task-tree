@@ -51,7 +51,6 @@ export default {
       this.$store.commit('projects/projectCurrent', this.data)
     },
     onShowTasks: function () {
-      // this.$emit('show-tasks')
       this.$router.push({
         name: Paths.PROJECT_TASKS,
         params: {

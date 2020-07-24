@@ -13,11 +13,6 @@ const taskUpdateLogic = require('../../logic/task.update.js')
 const taskDeleteLogic = require('../../logic/task.delete.js')
 
 
-
-// todo
-//    add passive token check, & if theres a user
-//    id on a task double check they match
-
 module.exports = function (app) {
 
   /**
@@ -25,9 +20,9 @@ module.exports = function (app) {
    */
   app.post(constants.paths.API_TASK_CREATE,
     taskMiddle.Create,
+    token.Required,
     prepareMiddle,
     function (req, res) {
-    // todo check for user token and integrate
 
       taskCreateLogic(req.body, app)
       .then(taskObj => {
@@ -48,14 +43,13 @@ module.exports = function (app) {
   app.patch(constants.paths.API_TASK(),
     taskMiddle.HasParam,
     taskMiddle.Update,
+    token.Required,
     prepareMiddle,
     function (req, res) {
 
-      let updateData = Object.assign(
-      { id: req.params.task }, req.body)
-    // todo check for user token and integrate
+    req.body.id = req.params.task
 
-    taskUpdateLogic(updateData, app)
+    taskUpdateLogic(req.body, app)
     .then(taskObj => {
       logger.Log('Task updated, id: ' + taskObj.id, req)
       exit(res, 202,
@@ -73,14 +67,13 @@ module.exports = function (app) {
    */
   app.delete(constants.paths.API_TASK(),
     taskMiddle.HasParam,
+    token.Required,
     prepareMiddle,
     function (req, res) {
 
-      // todo this will need securing so
-      //  random peeps can't delete other items
-      //  check for user token and integrate
+      req.body.id = req.params.task
 
-      taskDeleteLogic({ id: req.params.task }, app)
+      taskDeleteLogic(req.body, app)
       .then(taskObj => {
         logger.Log('Task deleted, id: ' + taskObj.id, req)
         exit(res, 202,
@@ -97,10 +90,13 @@ module.exports = function (app) {
    */
   app.get(constants.paths.API_TASK(),
     taskMiddle.HasParam,
+    token.Required,
     prepareMiddle,
     function (req, res) {
 
-      task.GetTaskByID(req.params.task)
+      req.body.id = req.params.task
+
+      task.GetTaskByID(req.body.id)
       .then(taskObj => {
         if (!taskObj || taskObj.length < 1) {
           return exit(res, 404,
@@ -122,25 +118,31 @@ module.exports = function (app) {
    */
   app.get(constants.paths.API_TASKS,
     taskMiddle.HasUserOrProject,
+    token.Required,
     prepareMiddle,
     function (req, res) {
 
-      // todo check for user token and integrate
-      // todo implement pagination or search by date ..
+    // todo implement pagination or search by date ..
 
       let promiseValue = -1
       let promiseTask = null
 
       if (has.hasAnItem(req.query.user)){
         promiseTask = task.GetTasksByUser
-        promiseValue = req.query.user
+        promiseValue = req.body.token.id
+        // todo
       }
       if (has.hasAnItem(req.query.project)){
         promiseTask = task.GetTasksByProject
         promiseValue = req.query.project
       }
 
-      return promiseTask(promiseValue)
+      let showDone = null
+      if (has.hasAnItem(req.query.showDone)) {
+        showDone = req.query.showDone.indexOf('true') >= 0 ? 1: 0
+      }
+
+      return promiseTask(promiseValue, showDone)
       .then(taskObjs => {
         const allSafeTasks = taskObjs.map(item => task.SafeExport(item))
         exit(res, 200,

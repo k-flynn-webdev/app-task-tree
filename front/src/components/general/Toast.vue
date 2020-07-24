@@ -3,11 +3,11 @@
 
     <div class="toast__message__content ">
 
-      <p class="text-bold md word-break color-bg">
+      <p class="text-bold md color-bg">
         {{ data.title }}
       </p>
 
-      <p class="text-bold word-break color-bg">
+      <p class="text-bold color-bg">
         {{ data.message }}
       </p>
 

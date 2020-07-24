@@ -14,6 +14,9 @@ const constants = require('../constants')
  * @returns {object}  projectObj promise
  */
 function projectCreate(input, app) {
+
+  input.user = input.token.id
+
   return project.Create(input)
     .then(({ insertId }) => project.GetProjectByID(insertId))
     .then(projectObj => project.SafeExport(mysqlVal(projectObj)))

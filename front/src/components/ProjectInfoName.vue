@@ -3,7 +3,7 @@
       title="click to toggle between % or total"
       @click="showTotals = !showTotals">
     <p class="task__project__header__info-name name text-bold">
-      {{ project.name }}
+      {{ projectName }}
     </p>
     <p class="task__project__header__info-count text-bold">
       {{ progress }}
@@ -29,12 +29,23 @@ export default {
     }
   },
   computed: {
+    ready: function () {
+      return this.$store.getters.ready
+    },
     project: function () {
-      if (this.mode === modes.CLEAR) return { name: 'MiniTask ..' }
       return this.$store.getters['projects/current']
     },
+    showName: function () {
+      return (this.mode !== modes.CLEAR &&
+        this.ready &&
+        this.project)
+    },
+    projectName: function () {
+      if (!this.showName) return 'MiniTask ..'
+      return this.project.name
+    },
     progress: function () {
-      if (this.mode === modes.CLEAR) return
+      if (!this.showName) return
       if (!this.showTotals) {
         return helpers.renderProgressPercent(this.project)
       }
