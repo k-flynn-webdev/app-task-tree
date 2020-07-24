@@ -10,6 +10,7 @@ const USER = 'user'
 const USER_CREATE = 'user.create'
 const USER_LOGIN = 'user.login'
 const USER_LOGOUT = 'user.logout'
+const USER_VERIFY = 'user.verify'
 const USER_RESET = 'user.reset'
 const USER_RESET_PASSWORD = 'user.reset.password'
 
@@ -32,6 +33,7 @@ export default {
   USER_LOGIN,
   USER_LOGOUT,
   USER_RESET,
+  USER_VERIFY,
   USER_RESET_PASSWORD,
   TASK,
   TASKS,
