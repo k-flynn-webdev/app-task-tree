@@ -25,7 +25,10 @@ function userAnonCreate(input, app) {
   .then(userObj => {
     app.emit(constants.events.CREATE_ANON_ACCOUNT, userObj)
 
-    return user.SafeExport(userObj)
+    const userSafe = user.SafeExport(userObj)
+    userSafe.meta = { created: userObj.created }
+
+    return userSafe
   })
 }
 

@@ -303,13 +303,12 @@ function SafeExport(userData, meta = false) {
   }
 
   if (meta) {
-
-    hasRecover = (userData.recover && userData.recover.length > 0)
-    hasVerify = (userData.verify && userData.verify.length > 0)
+    const hasRecover = (userData.recover && userData.recover.length > 0)
+    const hasVerify = (userData.verify && userData.verify.length > 0)
 
     freshUser.meta = {
-      login: userData.login,
       created: userData.created,
+      login: userData.login,
       updated: userData.updated,
       verified: ( userData.role !== constants.roles.ANON
         && !hasRecover && !hasVerify)

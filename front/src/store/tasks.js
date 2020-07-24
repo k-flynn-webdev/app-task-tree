@@ -142,7 +142,7 @@ export default {
       return TaskService.all(input)
         .then(res => {
           context.commit('taskSet', res.data.data.tasks)
-          if (res.data.data.tasks) {
+          if (res.data.data.tasks.length > 0) {
             context.commit('taskHistory', {
               project: res.data.data.tasks[0].project
             })
