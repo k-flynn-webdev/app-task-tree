@@ -29,16 +29,28 @@ module.exports = function (app) {
     prepareMiddle,
     function (req, res) {
 
+      // console.log(req.body.token)
+
       const userId = req.body.token.id
 
-      const allDetails = [
-        user.GetUserByID(userId),
-        tasks.GetTasksByUser(userId),
-        tasks.GetTasksByIsDone(userId, true),
-        projects.GetProjectsByUser(userId),
-        projects.GetProjectsByIsDone(userId, true)]
+      return user.GetUserByID(userId)
+      .then(userObj => {
+        if (!has.hasAnItem(userObj)) {
+          throw {
+            status: 404,
+            message: constants.errors.ACCOUNT_MISSING
+          }
+        }
 
-      return Promise.all(allDetails)
+        const allDetails = [
+          userObj,
+          tasks.GetTasksByUser(userId),
+          tasks.GetTasksByIsDone(userId, true),
+          projects.GetProjectsByUser(userId),
+          projects.GetProjectsByIsDone(userId, true)]
+
+        return Promise.all(allDetails)
+      })
       .then(([userObj, taskItems, tasksDone, projectItems, projectsDone]) => {
 
         exit(res, 200,
