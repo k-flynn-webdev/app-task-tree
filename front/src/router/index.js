@@ -72,12 +72,23 @@ const routes = [
   },
   {
     path: '/user/verify/:verify',
+    component: Home,
     props: (route) => ({
+      mode: modes.CLEAR,
       verify: route.params.verify
     }),
-    name: Paths.USER_VERIFY,
-    component: () => import(/* webpackChunkName: "User" */ '../views/UserVerify.vue')
-  }, // todo!!
+    children: [
+      {
+        path: '',
+        name: Paths.USER_VERIFY,
+        props: (route) => ({
+          mode: modes.CLEAR,
+          verify: route.params.verify
+        }),
+        component: () => import(/* webpackChunkName: "User" */ '../components/VerifyUser.vue')
+      }
+    ]
+  },
   {
     path: '/user/reset',
     props: (route) => ({

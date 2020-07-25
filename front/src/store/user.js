@@ -138,6 +138,20 @@ export default {
         })
     },
     /**
+     * Verify a user
+     *
+     * @param {object}    context
+     * @param {object}    input
+     * @returns {promise} anon user
+     */
+    verify: function (context, input) {
+      return UserService.verify(input)
+        .then(res => {
+          context.commit('user', res.data.data.account)
+          return res
+        })
+    },
+    /**
      * Creates anon user
      *
      * @param {object}    context
@@ -192,7 +206,7 @@ export default {
         })
     },
     /**
-     * Begin user password reset process
+     * Complete user password reset process
      *
      * @param {object}    context
      * @param {object}    input
