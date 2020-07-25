@@ -58,9 +58,8 @@ module.exports = function (app) {
     })
 
   /**
-   * Create a anon user account and returns only the id
-   *    this type of account can be upgraded in the future
-   *    to a full account
+   * Create a anon user account
+   *    this type of account can be upgraded to a full account
    *    @params { no password, no email, no name }
    *    @return { id }
    */

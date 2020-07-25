@@ -142,7 +142,7 @@ export default {
      *
      * @param {object}    context
      * @param {object}    input
-     * @returns {promise} anon user
+     * @returns {promise} user
      */
     verify: function (context, input) {
       return UserService.verify(input)

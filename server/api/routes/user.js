@@ -10,13 +10,13 @@ const mysqlVal = require('../../helpers/MYSQL_value.js')
 const prepareMiddle = require('../middlewares/prepare.js')
 const constants = require('../../constants/index')
 // business
+const userResetLogic = require('../../logic/user.reset.js')
+const userLoginLogic = require('../../logic/user.login.js')
 const userCreateLogic = require('../../logic/user.create.js')
 const userUpdateLogic = require('../../logic/user.update.js')
 const userDeleteLogic = require('../../logic/user.delete.js')
-const userLoginLogic = require('../../logic/user.login.js')
 const userVerifyLogic = require('../../logic/user.verify.js')
 const userResetEmailLogic = require('../../logic/user.reset.email.js')
-const userResetLogic = require('../../logic/user.reset.js')
 
 
 module.exports = function (app) {
