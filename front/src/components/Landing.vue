@@ -35,7 +35,7 @@
         <ul>
           <li> No need for an account </li>
           <li> A quick overview of progress </li>
-          <li> Share projects with others </li>
+          <li> Share projects with others (due beta) </li>
           <li> Works on Mobile and Desktop </li>
         </ul>
 

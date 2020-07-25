@@ -2,7 +2,8 @@
 
   <div>
 
-    <router-link to="/" title="go to home"
+    <router-link to="/"
+                 title="Home"
                  class="user__home text-bold fill-fore">
       <icBack class="md" />
     </router-link>
@@ -135,8 +136,9 @@
         <template slot="footer" class="user__form__footer">
           <button
             type="button"
-            :class="{ 'DISABLED': !allowEdit }"
             class="user__form__footer__edit-btn"
+            :class="{ 'DISABLED': !allowEdit }"
+            :tabindex="!allowEdit ? -1: 0"
             @click.prevent="toggleEdit">
             <p v-if="!isEdit">Edit</p>
             <p v-else>Cancel</p>
@@ -145,8 +147,8 @@
           <button
             type="submit"
             class="user__form__footer__ok-btn"
-            :tabindex="!isValid ? -1: 0"
             :class="{ 'DISABLED': !isValid }"
+            :tabindex="!isValid ? -1: 0"
             @click.prevent="submitUserUpgrade">
             <p>OK</p>
           </button>
