@@ -5,17 +5,17 @@ const API_USER = '/api/user'
 const API_USER_ANON = '/api/user/anon'
 const API_USER_LOGIN = '/api/user/login'
 const API_USER_LOGOUT = '/api/user/logout'
-const API_USER_RESET = (id=':reset') => `/api/user/reset/${id}`
-const API_USER_VERIFY = (id=':verify') => `/api/user/verify/${id}`
+const API_USER_RESET = (id=':reset', pre ='/api') => `${pre}/user/reset/${id}`
+const API_USER_VERIFY = (id=':verify', pre ='/api') => `${pre}/user/verify/${id}`
 const API_USER_UPGRADE = '/api/user/upgrade'
 
 const API_PROJECT_CREATE = '/api/project/create'
 const API_PROJECTS = '/api/projects'
-const API_PROJECT = (id=':project') => `/api/project/${id}`
+const API_PROJECT = (id=':project', pre ='/api') => `${pre}/project/${id}`
 
 const API_TASK_CREATE = '/api/task/create'
 const API_TASKS = '/api/tasks'
-const API_TASK = (id=':task') => `/api/task/${id}`
+const API_TASK = (id=':task', pre ='/api') => `${pre}/task/${id}`
 
 // EVENTS
 const CREATE_ACCOUNT = 'CREATE-ACCOUNT'

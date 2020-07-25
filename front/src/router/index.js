@@ -72,12 +72,23 @@ const routes = [
   },
   {
     path: '/user/verify/:verify',
+    component: Home,
     props: (route) => ({
+      mode: modes.CLEAR,
       verify: route.params.verify
     }),
-    name: Paths.USER_VERIFY,
-    component: () => import(/* webpackChunkName: "User" */ '../views/UserVerify.vue')
-  }, // todo!!
+    children: [
+      {
+        path: '',
+        name: Paths.USER_VERIFY,
+        props: (route) => ({
+          mode: modes.CLEAR,
+          verify: route.params.verify
+        }),
+        component: () => import(/* webpackChunkName: "User" */ '../components/VerifyUser.vue')
+      }
+    ]
+  },
   {
     path: '/user/reset',
     props: (route) => ({
@@ -94,9 +105,29 @@ const routes = [
     name: Paths.USER_RESET_PASSWORD,
     component: () => import(/* webpackChunkName: "User" */ '../views/UserReset.vue')
   }
-
   // todo 404 page here
 ]
+
+// only for dev use
+if (process.env.NODE_ENV.toLowerCase() === 'development') {
+  routes.push({
+    path: '/GetUser/:user',
+    component: Home,
+    props: (route) => ({
+      user: route.params.user
+    }),
+    children: [
+      {
+        path: '',
+        name: 'get.user',
+        props: (route) => ({
+          user: route.params.user
+        }),
+        component: () => import(/* webpackChunkName: "GetUser" */ '../components/GetUser.vue')
+      }
+    ]
+  })
+}
 
 const router = new VueRouter({
   mode: 'history',

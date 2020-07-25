@@ -10,13 +10,13 @@ const mysqlVal = require('../../helpers/MYSQL_value.js')
 const prepareMiddle = require('../middlewares/prepare.js')
 const constants = require('../../constants/index')
 // business
+const userResetLogic = require('../../logic/user.reset.js')
+const userLoginLogic = require('../../logic/user.login.js')
 const userCreateLogic = require('../../logic/user.create.js')
 const userUpdateLogic = require('../../logic/user.update.js')
 const userDeleteLogic = require('../../logic/user.delete.js')
-const userLoginLogic = require('../../logic/user.login.js')
 const userVerifyLogic = require('../../logic/user.verify.js')
 const userResetEmailLogic = require('../../logic/user.reset.email.js')
-const userResetLogic = require('../../logic/user.reset.js')
 
 
 module.exports = function (app) {
@@ -31,14 +31,24 @@ module.exports = function (app) {
 
       const userId = req.body.token.id
 
-      const allDetails = [
-        user.GetUserByID(userId),
-        tasks.GetTasksByUser(userId),
-        tasks.GetTasksByIsDone(userId, true),
-        projects.GetProjectsByUser(userId),
-        projects.GetProjectsByIsDone(userId, true)]
+      return user.GetUserByID(userId)
+      .then(userObj => {
+        if (!has.hasAnItem(userObj)) {
+          throw {
+            status: 404,
+            message: constants.errors.ACCOUNT_MISSING
+          }
+        }
 
-      return Promise.all(allDetails)
+        const allDetails = [
+          userObj,
+          tasks.GetTasksByUser(userId),
+          tasks.GetTasksByIsDone(userId, true),
+          projects.GetProjectsByUser(userId),
+          projects.GetProjectsByIsDone(userId, true)]
+
+        return Promise.all(allDetails)
+      })
       .then(([userObj, taskItems, tasksDone, projectItems, projectsDone]) => {
 
         exit(res, 200,

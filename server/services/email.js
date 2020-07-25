@@ -18,6 +18,7 @@ function Init(app) {
     if (mailConfig.active === true &&
       config.node_env !== 'test'){
       app.on(constants.events.CREATE_ACCOUNT, AccountCreate)
+      app.on(constants.events.UPGRADE_ACCOUNT, AccountCreate)
       app.on(constants.events.VERIFY_ACCOUNT, AccountVerify)
       app.on(constants.events.RESET_ACCOUNT, AccountReset)
       app.on(constants.events.UPDATED_ACCOUNT, AccountUpdate)

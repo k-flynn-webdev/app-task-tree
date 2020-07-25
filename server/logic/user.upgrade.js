@@ -51,10 +51,6 @@ function userUpgrade(input,  app) {
   .then(userObj => {
     const userObjTmp = mysqlVal(userObj)
 
-    if (has.hasAnItem(input.email)) {
-      app.emit(constants.events.VERIFY_ACCOUNT, userObjTmp)
-    }
-
     app.emit(constants.events.UPGRADE_ACCOUNT, userObjTmp)
 
     return user.SafeExport(userObjTmp)

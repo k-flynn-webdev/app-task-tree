@@ -120,6 +120,9 @@ export default {
     }
   },
   methods: {
+    toggle: function () {
+      this.$emit('input', !this.value)
+    },
     toggleProjectsShowDone: function () {
       const newOption = { projects: { showDone: !this.userOptions.projects.showDone } }
       this.$store.commit('user/options', newOption)
@@ -127,9 +130,6 @@ export default {
     toggleTasksShowDone: function () {
       const newOption = { tasks: { showDone: !this.userOptions.tasks.showDone } }
       this.$store.commit('user/options', newOption)
-    },
-    toggle: function () {
-      this.$emit('input', !this.value)
     },
     logout: function () {
       return this.$store.dispatch('user/logout')
@@ -144,7 +144,7 @@ export default {
     },
     handleError: function (err) {
       this.$emit(status.ERROR, err)
-      this.$store.commit('toasts/toastAdd', err)
+      this.$router.push({ name: Paths.HOME })
     }
   }
 }

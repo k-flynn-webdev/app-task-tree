@@ -2,7 +2,8 @@
 
   <div>
 
-    <router-link to="/" title="go to home"
+    <router-link to="/"
+                 title="Home"
                  class="user__home text-bold fill-fore">
       <icBack class="md" />
     </router-link>
@@ -15,11 +16,9 @@
 
           <StatusBar :class="status" />
 
-          <div class="text-center ">
-            <p class="upper text-bold display-inline-b">
-              User
-            </p>
-          </div>
+          <p class="title">
+            User
+          </p>
 
           <form class="user__form" @submit.prevent="submitUserUpgrade">
             <div class="input-control">
@@ -74,8 +73,8 @@
             <div class="input-control">
               <label>
                 <p>Role</p>
-                <p class="user__form-detail">
-                  {{ form.role }}
+                <p v-if="user" class="user__form-detail">
+                  {{ user.role }}
                 </p>
               </label>
             </div>
@@ -137,8 +136,9 @@
         <template slot="footer" class="user__form__footer">
           <button
             type="button"
-            :class="{ 'DISABLED': !allowEdit }"
             class="user__form__footer__edit-btn"
+            :class="{ 'DISABLED': !allowEdit }"
+            :tabindex="!allowEdit ? -1: 0"
             @click.prevent="toggleEdit">
             <p v-if="!isEdit">Edit</p>
             <p v-else>Cancel</p>
@@ -147,16 +147,14 @@
           <button
             type="submit"
             class="user__form__footer__ok-btn"
-            :tabindex="!isValid ? -1: 0"
             :class="{ 'DISABLED': !isValid }"
+            :tabindex="!isValid ? -1: 0"
             @click.prevent="submitUserUpgrade">
             <p>OK</p>
           </button>
         </template>
 
       </Card>
-
-      <UserLogout/>
 
       <div class="container max-30">
 
@@ -191,7 +189,6 @@ import general from '../constants/general'
 import status from '../constants/status.js'
 import icBack from '../assets/icons/ic_left'
 import Card from '../components/general/Card'
-import UserLogout from '../components/UserLogout'
 import StatusBar from '../components/general/StatusBar'
 
 export default {
@@ -199,15 +196,13 @@ export default {
   components: {
     Card,
     icBack,
-    StatusBar,
-    UserLogout
+    StatusBar
   },
   data () {
     return {
       isEdit: false,
       status: status.CLEAR,
       form: {
-        role: '',
         name: '',
         email: '',
         password: ''
@@ -271,7 +266,6 @@ export default {
       if (!this.user) return
       this.form.name = this.user.name
       this.form.email = this.user.email
-      this.form.role = this.user.role
     },
     resetStatus: function () {
       this.status = status.CLEAR

@@ -311,6 +311,7 @@ function SafeExport(userData, meta = false) {
     const hasVerify = (userData.verify && userData.verify.length > 0)
 
     freshUser.meta = {
+      created: userData.created,
       login: userData.login,
       updated: userData.updated,
       verified: ( userData.role !== constants.roles.ANON
