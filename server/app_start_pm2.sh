@@ -6,4 +6,5 @@ echo $script_location
 cd $script_location
 pwd
 
-pm2 start ./config/pm2.config.js
+#pm2 start ./config/pm2.config.js
+npm run production
