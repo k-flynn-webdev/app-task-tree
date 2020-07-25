@@ -154,8 +154,6 @@
 
       </Card>
 
-      <UserLogout/>
-
       <div class="container max-30">
 
         <p v-if="isAnon" class="word-break">
@@ -189,7 +187,6 @@ import general from '../constants/general'
 import status from '../constants/status.js'
 import icBack from '../assets/icons/ic_left'
 import Card from '../components/general/Card'
-import UserLogout from '../components/UserLogout'
 import StatusBar from '../components/general/StatusBar'
 
 export default {
@@ -197,8 +194,7 @@ export default {
   components: {
     Card,
     icBack,
-    StatusBar,
-    UserLogout
+    StatusBar
   },
   data () {
     return {
