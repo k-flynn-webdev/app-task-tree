@@ -45,7 +45,7 @@ export default {
   props: {
     mode: {
       type: String,
-      default: status.CLEAR
+      default: modes.CLEAR
     },
     isEnabled: {
       type: Boolean,
@@ -61,6 +61,7 @@ export default {
   },
   computed: {
     allowInput: function () {
+      if (this.mode === modes.CLEAR) return false
       return (!this.isDisabled && this.isEnabled)
     },
     isValid: function () {
@@ -80,7 +81,7 @@ export default {
     mode: function (val, pre) {
       this.status = status.CLEAR
 
-      if (this.mode === modes.TASKS) {
+      if (val === modes.TASKS) {
         if (this.project.id < 0) {
           this.status = status.DISABLED
         }
