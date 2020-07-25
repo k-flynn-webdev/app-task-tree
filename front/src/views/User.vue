@@ -15,11 +15,9 @@
 
           <StatusBar :class="status" />
 
-          <div class="text-center ">
-            <p class="upper text-bold display-inline-b">
-              User
-            </p>
-          </div>
+          <p class="title">
+            User
+          </p>
 
           <form class="user__form" @submit.prevent="submitUserUpgrade">
             <div class="input-control">

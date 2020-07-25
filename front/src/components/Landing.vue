@@ -2,7 +2,7 @@
 
     <div>
       <Card class="max-30 intro-text">
-        <p class="intro-text__title"> Welcome to MiniTask </p>
+        <p class="title"> Welcome to MiniTask </p>
         <p class="intro-text__desc1"> A simple, fast, easy and shareable todo list. </p>
         <p class="intro-text__desc2"> To get started, choose a account option from below. </p>
 
@@ -28,7 +28,7 @@
       </Card>
 
       <Card class="max-30 intro-text">
-        <p class="intro-text__title">
+        <p class="title">
           Features:
         </p>
 
