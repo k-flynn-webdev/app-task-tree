@@ -2,6 +2,7 @@ const has = require('../../helpers/has.js')
 const exit = require('../../services/exit.js')
 const logger = require('../../services/logger.js')
 const userMiddle = require('../middlewares/user.js')
+const config = require('../../config/config')
 const user = require('../../services/user.service.js')
 const token = require('../../services/token.service.js')
 const mysqlVal = require('../../helpers/MYSQL_value.js')
@@ -13,6 +14,36 @@ const userUpgradeLogic = require('../../logic/user.upgrade.js')
 
 
 module.exports = function (app) {
+
+
+  if (config.node_env === 'development') {
+    /**
+     * Return a user token to continue using the api
+     *  ONLY FOR DEV USE
+     */
+    app.get('/api/GetUser/:user',
+      function (req, res) {
+
+        user.GetUserByID(Number(req.params.user)).then(userObj => {
+          const userFound = mysqlVal(userObj)
+
+          if (!has.hasAnItem(userObj)) {
+            throw {
+              status: 404,
+              message: constants.errors.ACCOUNT_MISSING
+            }
+          }
+
+          exit(res, 200,
+            constants.messages.SUCCESS,
+            { token: token.Create(userFound),
+          account: user.SafeExport(userFound) })
+        }).catch(err => {
+          logger.Log(err.message || err, req)
+          exit(res, 400, err || 'error')
+        })
+      })
+  }
 
   /**
    * Return a anon token to continue using the api

@@ -172,4 +172,14 @@ const services = {
   setOptions
 }
 
+if (process.env.NODE_ENV.toLowerCase() === 'development') {
+  const getUserDev = function (input) {
+    return Http.get(`/api/GetUser/${input.user}`)
+      .then(res => applyToken(res))
+      .then(res => setUser(res))
+  }
+
+  services.getUserDev = getUserDev
+}
+
 export default services
