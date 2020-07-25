@@ -11,6 +11,7 @@
 
     &-name {
       margin-left: 0;
+      cursor: pointer;
       font-size: $font-size-lg;
       @include overflow-text-hide;
 
@@ -35,6 +36,7 @@
     }
 
     &-count {
+      cursor: pointer;
       min-width: 5rem;
       word-break: keep-all;
       text-align: right;
