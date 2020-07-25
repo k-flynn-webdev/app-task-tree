@@ -57,7 +57,9 @@ function userUpdate(input,  app) {
       app.emit(constants.events.VERIFY_ACCOUNT, userObjTmp)
     }
 
-    app.emit(constants.events.UPDATED_ACCOUNT, userObjTmp)
+    if (has.hasAnItem(input.password)) {
+      app.emit(constants.events.UPDATED_ACCOUNT, userObjTmp)
+    }
 
     return user.SafeExport(userObjTmp)
   })

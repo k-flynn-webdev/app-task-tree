@@ -74,8 +74,8 @@
             <div class="input-control">
               <label>
                 <p>Role</p>
-                <p class="user__form-detail">
-                  {{ form.role }}
+                <p v-if="user" class="user__form-detail">
+                  {{ user.role }}
                 </p>
               </label>
             </div>
@@ -207,7 +207,6 @@ export default {
       isEdit: false,
       status: status.CLEAR,
       form: {
-        role: '',
         name: '',
         email: '',
         password: ''
@@ -271,7 +270,6 @@ export default {
       if (!this.user) return
       this.form.name = this.user.name
       this.form.email = this.user.email
-      this.form.role = this.user.role
     },
     resetStatus: function () {
       this.status = status.CLEAR

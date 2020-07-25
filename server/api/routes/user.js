@@ -29,8 +29,6 @@ module.exports = function (app) {
     prepareMiddle,
     function (req, res) {
 
-      // console.log(req.body.token)
-
       const userId = req.body.token.id
 
       return user.GetUserByID(userId)
