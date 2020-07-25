@@ -32,6 +32,7 @@ function StartServer() {
 
     process.stdout.write(`
     ################################################
+      App: ${config.web.name}
       Server listening: ${config.ip}:${config.port}
       - mode: ${config.node_env}
     ################################ ver: ${config.version} ####\n\n`)
