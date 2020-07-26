@@ -66,10 +66,14 @@ function CheckUsers() {
   return GetAllUsers()
   .then((items) => {
     const anonUsers = items.filter(item => item.name === constants.roles.ANON).length
+    const recoverUsers = items.filter(item => item.recover !== null || item.length > 5).length
+    const verifyUsers = items.filter(item => item.verify !== null || item.length > 5).length
     const normalUsers = items.length - anonUsers
     logger.Log( 'Users found')
-    logger.Log( ` \t anon: \t ${anonUsers}`)
-    logger.Log( ` \t normal: ${normalUsers}`)
+    logger.Log( ` \t anon: \t  ${anonUsers}`)
+    logger.Log( ` \t normal:  ${normalUsers}`)
+    logger.Log( ` \t verify:  ${verifyUsers}`)
+    logger.Log( ` \t recover: ${recoverUsers}`)
   })
 }
 
