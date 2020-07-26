@@ -51,13 +51,14 @@ export default {
   methods: {
     showTasks: function () {
       if (this.isTasks) return
-
-      this.$router.push({
-        name: Paths.PROJECT_TASKS,
-        params: {
-          project: this.project.id
-        }
-      })
+      if (this.project && this.project.id) {
+        this.$router.push({
+          name: Paths.PROJECT_TASKS,
+          params: {
+            project: this.project.id
+          }
+        })
+      }
     },
     showProjects: function () {
       if (this.isProjects) return
