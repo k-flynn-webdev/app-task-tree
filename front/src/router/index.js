@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Missing from '../views/Missing.vue'
 import modes from '../constants/modes'
 import Paths from '../constants/paths.js'
 import Tasks from '../components/TasksList'
@@ -51,11 +52,6 @@ const routes = [
     ]
   },
   {
-    path: '/switch',
-    name: 'switch',
-    component: () => import(/* webpackChunkName: "Switch" */ '../views/Switch.vue')
-  },
-  {
     path: '/user',
     name: Paths.USER,
     component: () => import(/* webpackChunkName: "User" */ '../views/User.vue')
@@ -91,7 +87,7 @@ const routes = [
   },
   {
     path: '/user/reset',
-    props: (route) => ({
+    props: () => ({
       verify: ''
     }),
     name: Paths.USER_RESET,
@@ -104,8 +100,12 @@ const routes = [
     }),
     name: Paths.USER_RESET_PASSWORD,
     component: () => import(/* webpackChunkName: "User" */ '../views/UserReset.vue')
+  },
+  {
+    path: '*',
+    name: Paths.MISSING,
+    component: Missing
   }
-  // todo 404 page here
 ]
 
 // only for dev use
