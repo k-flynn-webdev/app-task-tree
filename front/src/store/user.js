@@ -34,7 +34,8 @@ export default {
      * @returns {boolean}
      */
     isLoggedIn: (state) => {
-      return (state.user.email !== status.ANON &&
+      return (state.user &&
+        state.user.email !== status.ANON &&
       state.user.email.length > 4)
     }
   },

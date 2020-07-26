@@ -88,8 +88,8 @@
 
     &-icon {
       fill: $color-fore;
-      margin: $margin-default 0;
       width: $unit-default * 2;
+      margin: $margin-default 0;
 
       &.DISABLED {
         fill: $color-grey;
