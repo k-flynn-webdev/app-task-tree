@@ -21,14 +21,9 @@
           <div class="text-center">
 
             <p> The page your looking for is missing. </p>
-            <br>
             <router-link to="/"
-                         title="Home"
-                         class="user__home text-bold fill-fore">
-              Home
-
-              <br>
-
+                         title="Home">
+              <p class="text-bold no-margin">Home</p>
               <icUserAnon class="xl fill-fore margin" />
 
             </router-link>
