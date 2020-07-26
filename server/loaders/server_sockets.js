@@ -1,6 +1,7 @@
 // Here we import all external API websockets
 const fs = require('fs')
 const path = require('path')
+const attrs = require('../constants/attrs.js')
 
 const logger = require('../services/logger.js')
 const dirFind = require('../helpers/dir_find.js')
@@ -32,7 +33,7 @@ function ServerSockets(app) {
       }
       const newLine = '\t\t\t\t\t\t\t  '
       logger.Log('\t✅ Server Sockets\t' +
-        listToString(result, '[ ', ' ]', 60, newLine))
+        listToString(result, '[ ', ' ]', attrs.print.maxWidth, attrs.print.maxNewLine))
       return resolve()
     })
   })
