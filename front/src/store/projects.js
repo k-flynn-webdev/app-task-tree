@@ -25,8 +25,8 @@ export default {
      * @returns {Array}
      */
     projects: (state) => state.projects,
-    projectsDone: (state) => state.projects.filter(item => item.isDone),
-    projectsNotDone: (state) => state.projects.filter(item => !item.isDone),
+    projectsDone: (state) => state.projects.filter(item => item.doneDate && item.doneDate.length > 5),
+    projectsNotDone: (state) => state.projects.filter(item => !item.doneDate),
     /**
      * Returns a function to find a Project by ID
      *
@@ -67,6 +67,22 @@ export default {
     projectAdd: function (state, input) {
       state.projects.unshift(input)
       return input
+    },
+    /**
+     * Updates a project item with an updated version
+     *
+     * @param {object}    state
+     * @param {object}    input project
+     * @returns {object}  new project
+     */
+    projectPatch: function (state, input) {
+      for (let i = 0, max = state.projects.length; i < max; i++) {
+        if (state.projects[i].id === input.id) {
+          const newObj = Object.assign(state.projects[i], input)
+          state.projects.splice(i, 1, newObj)
+          return state.projects[i]
+        }
+      }
     },
     /**
      * Replace a project item with an updated version

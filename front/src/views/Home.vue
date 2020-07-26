@@ -55,10 +55,11 @@ export default {
     setProjectName: function () {
       if (!this.project) return
       const projectStore = this.$store.getters['projects/current']
+      if (!this.projectStore) return
       if (projectStore.id !== this.project) {
         const projectFound =
           this.$store.getters['projects/findProject'](this.project)
-        if (projectFound.id < 0) return
+        if (!projectFound || projectFound.id < 0) return
         this.$store.commit('projects/projectCurrent', projectFound)
       }
     }
