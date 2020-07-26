@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import TaskService from '../services/TaskService.js'
 import general from '../constants/general'
+import helpers from '../services/Helpers'
 
 export default {
   namespaced: true,
@@ -10,8 +11,8 @@ export default {
   },
   getters: {
     taskHistory: (state) => state.history,
-    tasksDone: (state) => state.tasks.filter(item => item.isDone),
-    tasksNotDone: (state) => state.tasks.filter(item => !item.isDone),
+    tasksDone: (state) => state.tasks.filter(item => item.doneDate && item.doneDate.length > 5),
+    tasksNotDone: (state) => state.tasks.filter(item => !item.doneDate),
     /**
      * Returns all tasks
      *
@@ -49,6 +50,22 @@ export default {
     taskAdd: function (state, input) {
       state.tasks.unshift(input)
       return input
+    },
+    /**
+     * Update a task item with an updated version
+     *
+     * @param {object}    state
+     * @param {object}    input task
+     * @returns {object}  new task
+     */
+    taskPatch: function (state, input) {
+      for (let i = 0, max = state.tasks.length; i < max; i++) {
+        if (state.tasks[i].id === input.id) {
+          const newObj = Object.assign(state.tasks[i], input)
+          state.tasks.splice(i, 1, newObj)
+          return state.tasks[i]
+        }
+      }
     },
     /**
      * Replace a task item with an updated version
@@ -115,6 +132,13 @@ export default {
     update: function (context, input) {
       return TaskService.update(input)
         .then(res => {
+          if (input.isDone !== undefined) {
+            // helps show a task is done visually if showDone is false
+            helpers.timeDelay(() => {
+              context.commit('taskReplace', res.data.data.task)
+            }, general.DELAY_SUCCESS)
+            return res.data.data.task
+          }
           return context.commit('taskReplace', res.data.data.task)
         })
     },
