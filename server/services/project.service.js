@@ -67,7 +67,10 @@ function InitProjects() {
 function CheckProjects() {
   return GetAllProjects()
   .then((items) => {
-    logger.Log(items.length + ' Projects found')
+    const doneTasks = items.filter(item => item.isDone > 0).length
+    logger.Log( 'Projects')
+    logger.Log( ` \t all: \t  ${items.length}`)
+    logger.Log( ` \t done: \t  ${doneTasks}`)
   })
 }
 

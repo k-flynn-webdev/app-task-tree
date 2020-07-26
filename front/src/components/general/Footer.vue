@@ -21,9 +21,7 @@
         </a>
 
         <div class="task__footer__content-version">
-          <small class="hide-md-down">alpha {{ version }}</small>
-          <small class="hide-lg-up">a {{ version }}</small>
-          <small></small>
+          <small> alpha {{ version }} </small>
         </div>
       </div>
 

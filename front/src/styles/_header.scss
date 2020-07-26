@@ -1,6 +1,7 @@
 
 .task__project__header {
   max-width: 100%;
+  margin-top: $margin-default * 0.5;
 
   &__info {
     display: flex;
@@ -10,6 +11,7 @@
 
     &-name {
       margin-left: 0;
+      cursor: pointer;
       font-size: $font-size-lg;
       @include overflow-text-hide;
 
@@ -34,6 +36,7 @@
     }
 
     &-count {
+      cursor: pointer;
       min-width: 5rem;
       word-break: keep-all;
       text-align: right;
@@ -85,8 +88,8 @@
 
     &-icon {
       fill: $color-fore;
-      margin: $margin-default 0;
       width: $unit-default * 2;
+      margin: $margin-default 0;
 
       &.DISABLED {
         fill: $color-grey;

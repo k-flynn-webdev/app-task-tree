@@ -1,4 +1,4 @@
-const CLEAR = 'CLEAR'
+const CLEAR = ''
 const USER = 'USER'
 const PROJECTS = 'PROJECTS'
 const TASKS = 'TASKS'

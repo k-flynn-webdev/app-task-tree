@@ -39,7 +39,6 @@ exports.Create = Create
  * @param next  the cb
  */
 function Verify(req, res, next) {
-  console.log(req.params)
   if (!has.hasAnItem(req.params) &&
     !has.hasAnItem(req.params.verify)) {
     exit(res, 400, 'Missing verify link.')

@@ -9,7 +9,17 @@
       <p class="task__project__header__user-name upper text-bold hide-sm-down">
         {{ userName }}
       </p>
-      <icUser class="task__project__header__user-icon"
+      <icUser
+        v-if="isUser && isLoggedIn"
+        class="task__project__header__user-icon"
+        :class="{ 'DISABLED': !isEnabled }" />
+      <icUserAnon
+        v-if="isAnon"
+        class="task__project__header__user-icon"
+        :class="{ 'DISABLED': !isEnabled }" />
+      <icUserNone
+        v-if="user.id < 0"
+        class="task__project__header__user-icon"
         :class="{ 'DISABLED': !isEnabled }" />
     </div>
 
@@ -17,12 +27,17 @@
 </template>
 
 <script>
+import status from '../constants/status'
 import icUser from '../assets/icons/ic_user'
+import icUserAnon from '../assets/icons/ic_user_anon'
+import icUserNone from '../assets/icons/ic_user_none'
 
 export default {
   name: 'UserInfoMini',
   components: {
-    icUser
+    icUser,
+    icUserAnon,
+    icUserNone
   },
   props: {
     isEnabled: {
@@ -31,9 +46,21 @@ export default {
     }
   },
   computed: {
+    isAnon: function () {
+      return this.user.role === status.ANON
+    },
+    isUser: function () {
+      return this.user.role !== status.ANON
+    },
+    user: function () {
+      return this.$store.getters['user/user']
+    },
     userName: function () {
       if (!this.isEnabled) return '...'
-      return this.$store.getters['user/user'].name
+      return this.user.name
+    },
+    isLoggedIn: function () {
+      return this.$store.getters['user/isLoggedIn']
     }
   }
 }

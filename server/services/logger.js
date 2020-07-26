@@ -9,6 +9,19 @@ morgan.token('id', function getId (req) {
   return req.id
 })
 
+function getUserId (req, item) {
+  if (req &&
+    req.body &&
+    req.body.token &&
+    req.body.token.id) return req.body.token.id
+  if (item && item.id) return item.id
+  return '-'
+}
+
+morgan.token('user_token_id', function (req, res) {
+  return getUserId(req)
+})
+
 function Init(app) {
 
   let tempDir = path.join(__dirname, '..', 'log')
@@ -23,7 +36,7 @@ function Init(app) {
   if (config.node_env !== 'test') {
     accessLogStream = fs.createWriteStream(path.join(tempDir, 'log'),
       { flags: 'a' })
-    morganType = ':date[iso] :id :method :url :status :res[content-length] :remote-addr :response-time ms'
+    morganType = ':date[iso] :id :user_token_id :method :url :status :res[content-length] :remote-addr :response-time ms'
 
     app.use(morgan(morganType, { stream: accessLogStream }))
     app.use(morgan(morganType))
@@ -33,7 +46,7 @@ function Init(app) {
 exports.Init = Init
 
 
-function Log(line, req = { id: '-' }) {
+function Log(line, req = { id: '-' }, account ) {
 
   if (config.node_env === 'test') {
     return
@@ -50,8 +63,14 @@ function Log(line, req = { id: '-' }) {
 
   const date = new Date().toISOString()
 
-  process.stdout.write(date + ' ' + req.id + ' ' + line)
-  accessLogStream.write(date + ' ' + req.id + ' ' + line)
+  const lineToRender = [
+    date,
+    req.id,
+    getUserId(req, account),
+    line ]
+
+  process.stdout.write(lineToRender.join(' '))
+  accessLogStream.write(lineToRender.join(' '))
 }
 
 exports.Log = Log
