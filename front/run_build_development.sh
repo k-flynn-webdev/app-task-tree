@@ -7,6 +7,5 @@ pwd
 # browser url = 'http://127.0.0.1:8600/'
 
 
-NODE_ENV=development
-npm run build
+npm run build_dev
 
