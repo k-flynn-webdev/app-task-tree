@@ -41,7 +41,8 @@ function CheckOldTokens() {
     }
 
     tokensBlackListed = blackTokens
-    logger.Log(tokensBlackListed.length + ' Tokens loaded')
+    logger.Log( 'Tokens')
+    logger.Log( ` \t denied:  ${tokensBlackListed.length}`)
     return oldTokens
   })
   .then((oldTokens) => {
@@ -54,7 +55,7 @@ function CheckOldTokens() {
     Promise.all(allDBPromises)
     .then((items) => {
       let deletedItems = items !== undefined ? items.length : 0
-      logger.Log(deletedItems + ' Tokens expired & removed')
+      logger.Log( ` \t expired: ${deletedItems}`)
     })
   })
   .catch((err) => {

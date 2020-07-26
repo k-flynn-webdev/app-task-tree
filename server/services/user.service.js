@@ -69,7 +69,7 @@ function CheckUsers() {
     const recoverUsers = items.filter(item => item.recover !== null || item.length > 5).length
     const verifyUsers = items.filter(item => item.verify !== null || item.length > 5).length
     const normalUsers = items.length - anonUsers
-    logger.Log( 'Users found')
+    logger.Log( 'Users')
     logger.Log( ` \t anon: \t  ${anonUsers}`)
     logger.Log( ` \t normal:  ${normalUsers}`)
     logger.Log( ` \t verify:  ${verifyUsers}`)

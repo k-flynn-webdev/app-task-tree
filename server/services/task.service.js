@@ -66,7 +66,10 @@ function InitTasks() {
 function CheckTasks() {
   return GetAllTasks()
   .then((items) => {
-    logger.Log(items.length + ' Tasks found')
+    const doneTasks = items.filter(item => item.isDone > 0).length
+    logger.Log( 'Tasks')
+    logger.Log( ` \t all: \t  ${items.length}`)
+    logger.Log( ` \t done: \t  ${doneTasks}`)
   })
 }
 
