@@ -77,7 +77,7 @@ module.exports = function (app) {
       userCreateLogic(req.body, app)
       .then(userObj => {
 
-        logger.Log(constants.messages.SUCCESS_CREATED_ACCOUNT, req)
+        logger.Log(constants.messages.SUCCESS_CREATED_ACCOUNT, req, userObj)
 
         exit(res, 201,
           constants.messages.SUCCESS_CREATED_ACCOUNT,

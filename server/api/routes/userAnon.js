@@ -100,7 +100,7 @@ module.exports = function (app) {
       userAnonCreateLogic(req.body, app)
       .then(userObj => {
 
-        logger.Log(constants.messages.SUCCESS_CREATED_ANON_ACCOUNT, req)
+        logger.Log(constants.messages.SUCCESS_CREATED_ANON_ACCOUNT, req, userObj)
 
         exit(res, 201,
           constants.messages.SUCCESS_CREATED_ANON_ACCOUNT,
