@@ -66,7 +66,7 @@ module.exports = function (app) {
 
     app.use(helmet())
 
-    logger.Log('	✅ Express setup.')
+    logger.Log('\t✅ Express setup\tComplete')
     return Promise.resolve()
 }
 

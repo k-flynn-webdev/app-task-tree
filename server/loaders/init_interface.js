@@ -40,8 +40,9 @@ function InitInterfaces(app) {
 
       return Promise.all(allPromises)
       .then(() => {
-        logger.Log('	✅ Interface .Init() : '
-        + listToString(initFiles))
+        const newLine = '\t\t\t\t\t\t\t  '
+        logger.Log('\t✅ Interface .Init()\t' +
+          listToString(initFiles, '[ ', ' ]', 60, newLine))
       })
       .then(() => resolve())
       .catch((err) => reject(err))

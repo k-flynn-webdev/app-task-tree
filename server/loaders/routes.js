@@ -29,8 +29,9 @@ function Routes(app) {
           return reject(e)
         }
       }
-
-      logger.Log('	✅ Routes : ' + listToString(result))
+      const newLine = '\t\t\t\t\t\t\t  '
+      logger.Log('\t✅ Routes\t\t' +
+        listToString(result, '[ ', ' ]', 60, newLine))
       return resolve()
     })
   })

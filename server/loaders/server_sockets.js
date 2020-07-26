@@ -30,8 +30,9 @@ function ServerSockets(app) {
           return reject(e)
         }
       }
-
-      logger.Log('	✅ Server Sockets : ' + listToString(result))
+      const newLine = '\t\t\t\t\t\t\t  '
+      logger.Log('\t✅ Server Sockets\t' +
+        listToString(result, '[ ', ' ]', 60, newLine))
       return resolve()
     })
   })

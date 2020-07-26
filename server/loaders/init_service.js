@@ -37,7 +37,9 @@ function InitServices(app) {
         }
       }
 
-      logger.Log('	✅ Services .Init() : ' + listToString(initFiles))
+      const newline = '\t\t\t\t\t\t\t  '
+      logger.Log('\t✅ Services.Init()\t' +
+        listToString(initFiles, '[ ', ' ]', 60, newline))
       return resolve()
     })
   })

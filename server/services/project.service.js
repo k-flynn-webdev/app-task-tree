@@ -65,14 +65,27 @@ function InitProjects() {
 }
 
 function CheckProjects() {
-  return GetAllProjects()
-  .then((items) => {
-    const doneTasks = items.filter(item => item.isDone > 0).length
+  return getStats()
+  .then(result => {
     logger.Log( 'Projects')
-    logger.Log( ` \t all: \t  ${items.length}`)
-    logger.Log( ` \t done: \t  ${doneTasks}`)
+    logger.Log( ` \t all \t ${result.all}`)
+    logger.Log( ` \t done \t ${result.done}`)
   })
 }
+
+function getStats () {
+  return GetAllProjects()
+  .then(items => {
+    const allTasks = items.length
+    const doneTasks = items.filter(item => item.isDone > 0).length
+    return {
+      all: allTasks,
+      done: doneTasks
+    }
+  })
+}
+
+exports.getStats = getStats
 
 function Init(app) {
   app.on(DB_READY, InitProjects)

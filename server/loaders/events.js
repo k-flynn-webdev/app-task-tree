@@ -31,7 +31,9 @@ function InitEvents(app) {
         }
       }
 
-      logger.Log('	✅ Event subscribers : ' + listToString(result))
+      const newLine = '\t\t\t\t\t\t\t  '
+      logger.Log('\t✅ Event subscribers\t' +
+        listToString(result, '[ ', ' ]', 60, newLine))
       return resolve()
     })
   })

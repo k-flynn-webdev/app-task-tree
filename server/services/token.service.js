@@ -24,39 +24,22 @@ function InitTokens() {
   return db.InitTable(DB_TOKENS, DB_CREATE_TOKENS_TABLE, DB_READY_TOKENS)
 }
 
-function CheckOldTokens() {
-  return db.Query(DB_SHOW_TOKENS)
-  .then((items) => {
-    let oldTokens = []
-    let blackTokens = []
-
-    for (let i = 0, j = items.length; i < j; i++) {
-      jwt.verify(items[i].token, config.token.secret, ((err, result) => {
-        if (err) {
-          oldTokens.push(items[i].id)
-        } else {
-          blackTokens.push(items[i].token.toString())
-        }
-      }))
-    }
-
-    tokensBlackListed = blackTokens
+function CheckTokens() {
+  return getStats()
+  .then(result => {
     logger.Log( 'Tokens')
-    logger.Log( ` \t denied:  ${tokensBlackListed.length}`)
-    return oldTokens
+    logger.Log( ` \t all \t ${result.all}`)
+    logger.Log( ` \t denied  ${result.denied.length}`)
+    logger.Log( ` \t expired ${result.expired.length}`)
+    return result
   })
-  .then((oldTokens) => {
-    let allDBPromises = []
-
-    oldTokens.forEach(item => {
-      allDBPromises.push(db.Query(DB_DELETE_TOKEN, [item]))
-    });
-
-    Promise.all(allDBPromises)
-    .then((items) => {
-      let deletedItems = items !== undefined ? items.length : 0
-      logger.Log( ` \t expired: ${deletedItems}`)
+  .then(result => {
+    tokensBlackListed = result.denied.map(item => item.toString())
+    let allPromises = []
+    result.expired.forEach(item => {
+      allPromises.push(db.Query(DB_DELETE_TOKEN, [item]))
     })
+    return Promise.all(allPromises)
   })
   .catch((err) => {
     logger.Log(err.message || err)
@@ -65,10 +48,36 @@ function CheckOldTokens() {
 
 function Init(app) {
   app.on(DB_READY, InitTokens)
-  app.on(DB_READY_TOKENS, CheckOldTokens)
+  app.on(DB_READY_TOKENS, CheckTokens)
 }
 
 exports.Init = Init
+
+function getStats () {
+  return db.Query(DB_SHOW_TOKENS)
+  .then(items => {
+    let deniedTokens = []
+    let expiredTokens = []
+
+    for (let i = 0, j = items.length; i < j; i++) {
+      jwt.verify(items[i].token, config.token.secret, ((err, result) => {
+        if (err) {
+          expiredTokens.push(items[i].id)
+        } else {
+          deniedTokens.push(items[i].token)
+        }
+      }))
+    }
+
+    return {
+      all: items.length,
+      denied: deniedTokens,
+      expired: expiredTokens
+    }
+  })
+}
+
+exports.getStats = getStats
 
 /**
  * Returns a json web magic token object from a user id

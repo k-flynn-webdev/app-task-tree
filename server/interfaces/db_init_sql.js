@@ -96,7 +96,7 @@ function Connect() {
       logger.Log('Error connecting ' + err)
       errorHandler(err)
     }
-    logger.Log('db connected')
+    // logger.Log('db connected')
   })
 
   connection.on(ERROR, errorHandler)
@@ -138,7 +138,7 @@ function CreateDB() {
 
 function SelectDB(db) {
   return Query(DB_USE + db)
-  .then(() => logger.Log('	✅ DB connected : ' + config.db.database))
+  .then(() => logger.Log('	✅ DB connected\t\t' + config.db.database))
   .then(() => {
     if (appTemp) { appTemp.emit(DB_READY) }
   })
