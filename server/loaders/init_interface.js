@@ -1,6 +1,7 @@
 //Here we Init all service funcs that have a .Init(app).
 const fs = require('fs')
 const path = require('path')
+const attrs = require('../constants/attrs.js')
 
 const logger = require('../services/logger.js')
 const dirFind = require('../helpers/dir_find.js')
@@ -40,8 +41,9 @@ function InitInterfaces(app) {
 
       return Promise.all(allPromises)
       .then(() => {
-        logger.Log('	✅ Interface .Init() : '
-        + listToString(initFiles))
+        const newLine = '\t\t\t\t\t\t\t  '
+        logger.Log('\t✅ Interface .Init()\t' +
+          listToString(initFiles, '[ ', ' ]', attrs.print.maxWidth, attrs.print.maxNewLine))
       })
       .then(() => resolve())
       .catch((err) => reject(err))

@@ -7,6 +7,7 @@ const PROJECT = 'project'
 const PROJECT_TASKS = 'project.tasks'
 
 const USER = 'user'
+const MISSING = 'missing'
 const USER_CREATE = 'user.create'
 const USER_LOGIN = 'user.login'
 const USER_LOGOUT = 'user.logout'
@@ -28,6 +29,7 @@ const USER_RESET_PASSWORD = 'user.reset.password'
 
 export default {
   HOME,
+  MISSING,
   USER,
   USER_CREATE,
   USER_LOGIN,

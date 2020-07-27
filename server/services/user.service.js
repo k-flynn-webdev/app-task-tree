@@ -63,17 +63,14 @@ function InitUsers() {
 }
 
 function CheckUsers() {
-  return GetAllUsers()
-  .then((items) => {
-    const anonUsers = items.filter(item => item.name === constants.roles.ANON).length
-    const recoverUsers = items.filter(item => item.recover !== null || item.length > 5).length
-    const verifyUsers = items.filter(item => item.verify !== null || item.length > 5).length
-    const normalUsers = items.length - anonUsers
+  return getStats()
+  .then(result => {
     logger.Log( 'Users')
-    logger.Log( ` \t anon: \t  ${anonUsers}`)
-    logger.Log( ` \t normal:  ${normalUsers}`)
-    logger.Log( ` \t verify:  ${verifyUsers}`)
-    logger.Log( ` \t recover: ${recoverUsers}`)
+    logger.Log( ` \t all \t ${result.all}`)
+    logger.Log( ` \t anon \t ${result.anon}`)
+    logger.Log( ` \t normal  ${result.normal}`)
+    logger.Log( ` \t verify  ${result.verify}`)
+    logger.Log( ` \t recover ${result.recover}`)
   })
 }
 
@@ -83,6 +80,25 @@ function Init(app) {
 }
 
 exports.Init = Init
+
+function getStats () {
+  return GetAllUsers()
+  .then(items => {
+    const anonUsers = items.filter(item => item.name === constants.roles.ANON).length
+    const recoverUsers = items.filter(item => item.recover !== null || item.length > 5).length
+    const verifyUsers = items.filter(item => item.verify !== null || item.length > 5).length
+    const normalUsers = items.length - anonUsers
+    return {
+      all: items.length,
+      anon: anonUsers,
+      normal: normalUsers,
+      verify: verifyUsers,
+      recover: recoverUsers
+    }
+  })
+}
+
+exports.getStats = getStats
 
 /**
  * Returns a new basic user object and saves to db

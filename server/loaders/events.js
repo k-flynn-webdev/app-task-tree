@@ -1,6 +1,7 @@
 //Here we import all internal events/subscribers
 const fs = require('fs')
 const path = require('path')
+const attrs = require('../constants/attrs.js')
 
 const logger = require('../services/logger.js')
 const dirFind = require('../helpers/dir_find.js')
@@ -31,7 +32,8 @@ function InitEvents(app) {
         }
       }
 
-      logger.Log('	✅ Event subscribers : ' + listToString(result))
+      logger.Log('\t✅ Event subscribers\t' +
+        listToString(result, '[ ', ' ]', attrs.print.maxWidth, attrs.print.maxNewLine))
       return resolve()
     })
   })

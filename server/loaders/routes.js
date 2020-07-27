@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const attrs = require('../constants/attrs.js')
 
 const logger = require('../services/logger.js')
 const dirFind = require('../helpers/dir_find.js')
@@ -29,8 +30,9 @@ function Routes(app) {
           return reject(e)
         }
       }
-
-      logger.Log('	✅ Routes : ' + listToString(result))
+      const newLine = '\t\t\t\t\t\t\t  '
+      logger.Log('\t✅ Routes\t\t' +
+        listToString(result, '[ ', ' ]', attrs.print.maxWidth, attrs.print.maxNewLine))
       return resolve()
     })
   })
