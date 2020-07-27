@@ -50,7 +50,8 @@ module.exports = {
     port: envs.parsed.DATABASE_PORT,
     user: envs.parsed.DATABASE_USER,
     pass: envs.parsed.DATABASE_PASS,
-    database: envs.parsed.DATABASE_NAME
+    database: envs.parsed.DATABASE_NAME,
+    connections: envs.parsed.DATABASE_CONNECTIONS
   },
   mail: {
     active: envs.parsed.MAIL_ACTIVE === 'true',

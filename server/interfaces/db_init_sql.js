@@ -83,23 +83,29 @@ exports.InitTable = InitTable
 
 function Connect() {
 
-  connection = mysql.createConnection({
+  connection = mysql.createPool({
     host: config.db.url,
     port: config.db.port,
     user: config.db.user,
     password: config.db.pass,
     charset : 'utf8mb4',
+    database: config.db.database,
+    connectionLimit : config.db.connections
   })
 
-  connection.connect(function (err) {
-    if (err) {
-      logger.Log('Error connecting ' + err)
-      errorHandler(err)
-    }
-    // logger.Log('db connected')
-  })
+  return connection
 
-  connection.on(ERROR, errorHandler)
+  // return SelectDB(config.db.database)
+  //   .then(item => connection)
+
+  // connection.connect(function (err) {
+  //   if (err) {
+  //     logger.Log('Error connecting ' + err)
+  //     errorHandler(err)
+  //   }
+  // })
+  //
+  // connection.on(ERROR, errorHandler)
 
   //   // todo make sure the exit process runs ???
   //   app.on('exit', () => {
@@ -111,7 +117,7 @@ function Connect() {
   //     Close();
   //   });
 
-  return connection
+
 }
 
 exports.Connect = Connect
