@@ -3,7 +3,7 @@
 
     <button class="task__project__header__controls__switch-projects"
             :tabindex="[ allowInput && !isProjects? 0: -1 ]"
-            :class="{ 'ACTIVE': isProjects, 'DISABLED': !isEnabled }"
+            :class="{ 'ACTIVE': isProjects, 'DISABLED': !isEnabled, 'HIGHLIGHT': highLight }"
             @click="showProjects">
       projects
     </button>
@@ -35,6 +35,12 @@ export default {
     }
   },
   computed: {
+    highLight: function () {
+      return (this.$route.name === Paths.HOME && this.hasUser)
+    },
+    hasUser: function () {
+      return this.$store.getters['user/user'].id !== -1
+    },
     allowInput: function () {
       return (this.isEnabled)
     },
