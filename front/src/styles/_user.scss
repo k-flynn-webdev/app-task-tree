@@ -1,6 +1,12 @@
 .user {
   padding-top: $margin-default * 2;
 
+  &__meta {
+    &-label {
+      //min-width: $unit-default * 5;
+    }
+  }
+
   &__home {
     margin: 0;
     padding: 0;

@@ -87,24 +87,24 @@
 
             <div v-if="user.meta.created" class="input-control">
               <label>
-                <p class="sm">Created</p>
-                <p class="user__form-detail sm">
+                <p class="">Created</p>
+                <p class="">
                   {{ renderDateTime(user.meta.created) }}
                 </p>
               </label>
             </div>
             <div v-if="user.meta.updated" class="input-control">
               <label>
-                <p class="sm">Updated</p>
-                <p class="user__form-detail sm">
+                <p class="">Updated</p>
+                <p class="">
                   {{ renderDateTime(user.meta.updated) }}
                 </p>
               </label>
             </div>
             <div v-if="user.meta.login" class="input-control">
               <label>
-                <p class="sm">Login</p>
-                <p class="user__form-detail sm">
+                <p class="">Login</p>
+                <p class="">
                   {{ renderDateTime(user.meta.login) }}
                 </p>
               </label>
@@ -115,8 +115,8 @@
 
           <div class="input-control">
             <label>
-              <p class="sm">Tasks</p>
-              <p class="user__form-detail sm">
+              <p class="">Tasks</p>
+              <p class="">
                 {{ totals.tasksDone }}  /  {{ totals.tasks }}
               </p>
             </label>
@@ -124,8 +124,8 @@
 
           <div class="input-control">
             <label>
-              <p class="sm">Projects</p>
-              <p class="user__form-detail sm">
+              <p class="">Projects</p>
+              <p class="">
                 {{ totals.projectsDone }}  /  {{ totals.projects }}
               </p>
             </label>
