@@ -20,7 +20,7 @@
 
           <div class="text-center">
 
-            <p> The page your looking for is missing. </p>
+            <p> The page you're looking for is missing. </p>
             <router-link to="/"
                          title="Home">
               <p class="text-bold no-margin">Home</p>

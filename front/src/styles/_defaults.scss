@@ -146,6 +146,14 @@ body {
   cursor: pointer;
 }
 
+.hover {
+  transition: transform $transition-default;
+
+  &:hover {
+    transform: scale($hover-scale);
+  }
+}
+
 .min-half {
   min-width: 50%;
 }
@@ -328,7 +336,7 @@ body {
   }
 }
 
-.fade {
+.anim-setup {
   animation-delay: 0s;
   animation-fill-mode: both;
   animation-duration: $transition-default * 0.5;
@@ -338,13 +346,13 @@ body {
 
 .anim-show {
   animation-name: anim_show;
-  @extend .fade;
+  @extend .anim-setup;
   @include delay_anims(20, 1, 0.15, 0);
 }
 
 .anim-show-fast {
   animation-name: anim_fade;
-  @extend .fade;
+  @extend .anim-setup;
   @include delay_anims(20, 1, 0.03, 0);
 }
 

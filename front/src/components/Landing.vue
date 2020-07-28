@@ -3,26 +3,33 @@
     <div>
       <Card class="max-30 intro-text">
         <p class="title"> Welcome to MiniTask </p>
-        <p class="intro-text__desc1"> A simple, fast, easy and shareable todo list. </p>
-        <p class="intro-text__desc2"> To get started, choose a account option from below. </p>
+        <p class="intro-text__desc1">
+          A simple, fast, easy and shareable todo list.
+        </p>
+        <p v-if="!hasUser"
+           class="intro-text__desc2">
+          To get started, choose a account option from below.
+        </p>
+        <p v-else
+           class="intro-text__desc2">
+          To start, view your
+          <router-link
+            to="/projects"
+            class="no-margin text-bold color-fore"
+          >Projects</router-link>.
+        </p>
 
-        <div class="flex-row flex-between intro-text__buttons">
+        <div v-if="!hasUser"
+             class="flex-row flex-between intro-text__buttons">
           <router-link
             class="text-bold color-fore"
-            to="/user/login">
-            Login
-          </router-link>
+            to="/user/login">Login</router-link>
           <router-link
             class="text-bold color-fore"
-            to="/user/create">
-            Create
-          </router-link>
+            to="/user/create">Create</router-link>
           <button
-            v-if="showTry"
             class="intro-text__anon"
-            @click="createAnonUser">
-            Try
-          </button>
+            @click="createAnonUser">Try</button>
         </div>
 
       </Card>
@@ -56,8 +63,9 @@ export default {
     Card
   },
   computed: {
-    showTry: function () {
-      return this.$store.getters['user/user'].id < 0
+    hasUser: function () {
+      const user = this.$store.getters['user/user']
+      return (user && user.id)
     }
   },
   methods: {

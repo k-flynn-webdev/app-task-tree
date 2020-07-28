@@ -170,7 +170,6 @@ button {
     }
 
     @mixin small-input {
-      p,
       input,
       button {
         flex-grow: 10;

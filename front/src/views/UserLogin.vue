@@ -133,7 +133,7 @@ export default {
 
       helpers.timeDelay(() => {
         this.status = status.CLEAR
-        this.$router.push({ name: Paths.HOME })
+        this.$router.push({ name: Paths.PROJECTS })
       }, general.DELAY_SUCCESS)
     },
     handleError: function (err) {
