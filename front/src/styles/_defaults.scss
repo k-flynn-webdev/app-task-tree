@@ -146,6 +146,14 @@ body {
   cursor: pointer;
 }
 
+.hover {
+  transition: transform $transition-default;
+
+  &:hover {
+    transform: scale($hover-scale);
+  }
+}
+
 .min-half {
   min-width: 50%;
 }

@@ -58,7 +58,7 @@
                   :value="userOptions.projects.showDone"
                   @click="toggleProjectsShowDone">
 
-           <div class="display-inline-b align-middle">
+           <div class="display-inline-b align-middle hover">
              <icDone :class="[userOptions.projects.showDone?'fill-bg':'fill-mid alpha']"/>
            </div>
 
@@ -76,7 +76,7 @@
                   :value="userOptions.tasks.showDone"
                   @click="toggleTasksShowDone">
 
-           <div class="display-inline-b align-middle">
+           <div class="display-inline-b align-middle hover">
              <icDone :class="[userOptions.tasks.showDone?'fill-bg':'fill-mid alpha']"/>
            </div>
 
