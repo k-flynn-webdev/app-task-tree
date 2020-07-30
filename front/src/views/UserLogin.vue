@@ -7,9 +7,11 @@
 
     <br>
 
-    <Card class="user__card max-30">
+    <form class="user__form" @submit.prevent="submitLogin">
 
-      <div slot="default">
+      <Card class="user__card max-30">
+
+        <div slot="default">
 
         <StatusBar :class="status" />
 
@@ -17,7 +19,6 @@
           Login
         </p>
 
-        <form class="user__form" @submit.prevent="submitLogin">
           <div class="input-control">
             <label>
               <p>Email</p>
@@ -42,28 +43,27 @@
             </label>
           </div>
 
-        </form>
+        </div>
 
-      </div>
+        <template slot="footer" class="user__form__footer">
+          <router-link
+            class="text-bold color-fore"
+            to="/user/create">
+            Create
+          </router-link>
 
-      <template slot="footer" class="user__form__footer">
-        <router-link
-          class="text-bold color-fore"
-          to="/user/create">
-          Create
-        </router-link>
+          <button
+            class="user__form__footer__ok-btn"
+            :tabindex="!isValid ? -1: 0"
+            :class="{ 'DISABLED': !isValid }"
+            type="submit"
+            @click.prevent="submitLogin">
+            <p>OK</p>
+          </button>
+        </template>
 
-        <button
-          class="user__form__footer__ok-btn"
-          :tabindex="!isValid ? -1: 0"
-          :class="{ 'DISABLED': !isValid }"
-          type="submit"
-          @click.prevent="submitLogin">
-          <p>OK</p>
-        </button>
-      </template>
-
-    </Card>
+      </Card>
+    </form>
 
     <div class="container max-30">
       <router-link
@@ -124,17 +124,28 @@ export default {
       if (this.status !== status.CLEAR) return
 
       this.status = status.WAITING
+      this.$store.commit('status', status.WAITING)
+
       return this.$store.dispatch('user/login', this.form)
+        .then(() => {
+          const params = { user: this.$store.getters['user/user'].id }
+          const userOptions = this.$store.getters['user/options'].projects
+          if (!userOptions.showDone) params.showDone = false
+          return this.$store.dispatch('projects/getProjectsByUserId', params)
+        })
         .then(res => this.handleSuccess(res))
         .catch(err => this.handleError(err))
     },
     handleSuccess: function () {
       this.status = status.SUCCESS
+      this.$store.commit('status', status.SUCCESS)
 
       helpers.timeDelay(() => {
         this.status = status.CLEAR
-        this.$router.push({ name: Paths.PROJECTS })
       }, general.DELAY_SUCCESS)
+      helpers.timeDelay(() => {
+        this.$router.push({ name: Paths.PROJECTS })
+      }, general.DELAY_SUCCESS + general.DELAY_SHORT)
     },
     handleError: function (err) {
       this.status = status.ERROR

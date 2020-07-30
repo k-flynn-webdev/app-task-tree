@@ -51,11 +51,10 @@ export default new Vuex.Store({
      */
     status: (state, input) => {
       state.status = input
-      if (input === status.SUCCESS ||
-        input === status.ERROR) {
+      if (input !== status.CLEAR) {
         helpers.timeDelay(() => {
           state.status = status.CLEAR
-        }, general.DELAY_SUCCESS)
+        }, general.DELAY_SUCCESS * 3)
       }
     }
   },

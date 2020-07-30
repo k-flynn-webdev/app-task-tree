@@ -65,7 +65,7 @@ export default {
   computed: {
     hasUser: function () {
       const user = this.$store.getters['user/user']
-      return (user && user.id)
+      return (user && user.id !== -1)
     }
   },
   methods: {
