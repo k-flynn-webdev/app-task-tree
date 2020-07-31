@@ -74,7 +74,6 @@ export default {
         return
       }
 
-      this.$store.commit('status', status.WAITING)
       this.$store.commit('tasks/taskHistory',
         { showDone: this.userOptions.showDone })
       if (this.taskHistory.project !== this.project) {
@@ -85,7 +84,7 @@ export default {
       if (!this.userOptions.showDone) params.showDone = false
 
       return this.$store.dispatch('tasks/getTasksByUserOrProject', params)
-        .then(() => this.$store.commit('status', status.SUCCESS))
+        .then(() => true)
         .catch(err => this.handleError(err))
     },
     handleError: function (err) {

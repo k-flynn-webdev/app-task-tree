@@ -17,11 +17,6 @@ new Vue({
     const userFound = this.$store.getters['user/user']
     if (userFound.id < 0) return
 
-    this.$store.commit('status', status.CLEAR)
-    helpers.timeDelay(() => {
-      this.$store.commit('status', status.WAITING)
-    }, general.DELAY_BLIP)
-
     let getUserAnonToken = Promise.resolve()
     if (userFound.role === status.ANON) {
       getUserAnonToken = this.$store.dispatch('user/getAnonToken')
@@ -39,7 +34,6 @@ new Vue({
       })
       .then(() => {
         helpers.timeDelay(() => {
-          this.$store.commit('status', status.SUCCESS)
           this.$store.commit('ready', true)
         }, general.DELAY_BLIP)
       })

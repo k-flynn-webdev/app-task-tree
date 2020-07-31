@@ -22,8 +22,6 @@
 import Card from '../components/general/Card'
 import ProjectItem from '../components/ProjectItem'
 import status from '../constants/status'
-import helpers from '../services/Helpers'
-import general from '../constants/general'
 
 export default {
   name: 'ProjectsList',
@@ -75,7 +73,6 @@ export default {
         return
       }
 
-      this.$store.commit('status', status.WAITING)
       this.$store.commit('projects/projectHistory',
         { showDone: this.userOptions.showDone })
       if (this.projectHistory.user !== this.user.id) {
@@ -87,11 +84,7 @@ export default {
 
       return this.$store.dispatch('projects/getProjectsByUserId',
         params)
-        .then(() => {
-          helpers.timeDelay(() => {
-            this.$store.commit('status', status.SUCCESS)
-          }, general.DELAY_BLIP)
-        })
+        .then(() => true)
         .catch(err => this.handleError(err))
     },
     handleError: function (err) {

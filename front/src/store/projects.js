@@ -150,6 +150,8 @@ export default {
     update: function (context, input) {
       return ProjectService.update(input)
         .then(res => {
+          // todo this is a horrible way to handle it
+          if (!res.data) return
           context.commit('projectReplace', res.data.data.project)
           if (context.getters.current.id !== input.id) return
           context.commit('projectCurrent', res.data.data.project)

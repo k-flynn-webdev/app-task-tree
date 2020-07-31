@@ -7,7 +7,6 @@ import paths from '../constants/paths'
 import modes from '../constants/modes.js'
 import helpers from '../services/Helpers'
 import general from '../constants/general'
-import status from '../constants/status.js'
 
 export default {
   name: 'VerifyUser',
@@ -27,7 +26,6 @@ export default {
         .catch(err => this.handleError(err))
     },
     handleSuccess: function (res) {
-      this.$store.commit('status', status.SUCCESS)
       const toastMsg = {
         message: res.data.message,
         isTimed: true,
@@ -38,18 +36,9 @@ export default {
       helpers.timeDelay(() => {
         this.$router.push({ name: paths.HOME })
       }, general.DELAY)
-
-      helpers.timeDelay(() => {
-        this.$store.commit('status', status.CLEAR)
-      }, general.DELAY_SUCCESS + general.DELAY)
     },
     handleError: function (err) {
-      this.$store.commit('status', status.ERROR)
       this.$store.commit('toasts/toastAdd', err)
-
-      helpers.timeDelay(() => {
-        this.$store.commit('status', status.CLEAR)
-      }, general.DELAY_ERROR)
     }
   }
 }

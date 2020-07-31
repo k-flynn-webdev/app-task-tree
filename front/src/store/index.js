@@ -37,17 +37,15 @@ export default new Vuex.Store({
      *
      * @param           state
      * @param {boolean} input   app status
-     * @returns {boolean}
      */
     ready: (state, input) => {
       state.ready = input
     },
     /**
-     * Sets current app status
+     * Sets current app loading bar status
      *
      * @param           state
-     * @param {boolean} input   app status
-     * @returns {boolean}
+     * @param {string}  input   app status [WAITING,SUCCESS,ERROR]
      */
     status: (state, input) => {
       state.status = input

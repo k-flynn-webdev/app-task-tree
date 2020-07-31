@@ -28,7 +28,6 @@ export default {
         .catch(err => this.handleError(err))
     },
     handleSuccess: function (res) {
-      this.$store.commit('status', status.SUCCESS)
       const toastMsg = {
         message: res.data.message,
         isTimed: true,
@@ -39,13 +38,8 @@ export default {
       helpers.timeDelay(() => {
         this.$router.push({ name: paths.HOME })
       }, general.DELAY)
-
-      helpers.timeDelay(() => {
-        this.$store.commit('status', status.CLEAR)
-      }, general.DELAY_SUCCESS + general.DELAY)
     },
     handleError: function (err) {
-      this.$store.commit('status', status.ERROR)
       this.$store.commit('toasts/toastAdd', err)
 
       helpers.timeDelay(() => {

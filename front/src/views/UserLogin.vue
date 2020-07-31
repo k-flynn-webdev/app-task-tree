@@ -124,7 +124,6 @@ export default {
       if (this.status !== status.CLEAR) return
 
       this.status = status.WAITING
-      this.$store.commit('status', status.WAITING)
 
       return this.$store.dispatch('user/login', this.form)
         .then(() => {
@@ -138,7 +137,6 @@ export default {
     },
     handleSuccess: function () {
       this.status = status.SUCCESS
-      this.$store.commit('status', status.SUCCESS)
 
       helpers.timeDelay(() => {
         this.status = status.CLEAR

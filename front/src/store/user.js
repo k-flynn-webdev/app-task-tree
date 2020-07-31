@@ -118,10 +118,11 @@ export default {
      * @returns {promise} user
      */
     logout: function (context) {
+      if (context.getters.user.role === status.ANON) return false
       return UserService.logout()
-        .then(res => {
+        .then(() => {
           context.commit('user', general.DEFAULT_USER())
-          return res
+          return true
         })
     },
     /**
