@@ -132,8 +132,10 @@ export default {
     update: function (context, input) {
       return TaskService.update(input)
         .then(res => {
+        // todo this is a horrible way to handle it
+          if (!res.data) return
           if (input.isDone !== undefined) {
-            // helps show a task is done visually if showDone is false
+          // helps show a task is done visually if showDone is false
             helpers.timeDelay(() => {
               context.commit('taskReplace', res.data.data.task)
             }, general.DELAY_SUCCESS)
