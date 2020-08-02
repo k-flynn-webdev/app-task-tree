@@ -23,6 +23,7 @@ import general from '../constants/general'
 import status from '../constants/status.js'
 import RowItem from './general/RowItem'
 import Paths from '../constants/paths'
+import { get } from 'lodash-es'
 
 export default {
   name: 'ProjectItem',
@@ -78,7 +79,7 @@ export default {
       return this.$store.dispatch('projects/update', updatedName)
         .then(() => this.$root.$emit('blur'))
         .then(() => this.handleSuccess())
-        .catch(err => this.handleError(err))
+        .catch(err => this.handleError(err, this.confirmEdit))
     },
     confirmDelete: function () {
       if (this.status !== status.CLEAR) return
@@ -87,7 +88,7 @@ export default {
 
       return this.$store.dispatch('projects/remove', this.data)
         .then(() => this.handleSuccess())
-        .catch(err => this.handleError(err))
+        .catch(err => this.handleError(err, this.confirmDelete))
     },
     checkEdit: function () {
       this.resetStatus()
@@ -113,7 +114,18 @@ export default {
         this.resetStatus()
       }, general.DELAY_SUCCESS + general.DELAY)
     },
-    handleError: function (err) {
+    /**
+     * Handle error response
+     * @param {error}     err       error from response
+     * @param {function}  cbRetry   function that the error arose from
+     */
+    handleError: function (err, cbRetry) {
+      const errStatus = get(err, 'response.status')
+      if (errStatus && errStatus === 401) {
+        if (!cbRetry) return
+        return cbRetry()
+      }
+
       this.status = status.ERROR
       this.$root.$emit(modes.EDIT.toLowerCase(), false)
 

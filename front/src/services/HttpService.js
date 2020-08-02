@@ -10,25 +10,31 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 axios.interceptors.request.use((config) => {
   store.commit('status', status.WAITING)
   return config
-}, (err) => {
-  return Promise.reject(err)
-})
+}, (err) => Promise.reject(err))
 
-axios.interceptors.response.use(res => {
+axios.interceptors.response.use(httpSuccess, httpError)
+
+function httpSuccess (res) {
   store.commit('status', status.SUCCESS)
   return res
-}, error => {
+}
+
+function httpError (error) {
   if (error.response.data.status === 401) {
-    store.commit('status', status.ERROR)
-    if (store.getters['user/user'].role === status.ANON) {
-      return store.dispatch('user/getAnonToken')
-        .then(() => router.push({ name: Paths.HOME }))
-    }
-    store.dispatch('user/logout')
-    router.push({ name: Paths.USER_LOGIN })
+    const isAnon = (store.getters['user/user'].role === status.ANON)
+    const signOut = isAnon
+      ? store.dispatch('user/getAnonToken')
+      : store.dispatch('user/logout')
+
+    return signOut
+      .then(() => {
+        if (!isAnon) router.push({ name: Paths.USER_LOGIN })
+        throw error
+      })
   }
-  return Promise.reject(error)
-})
+  store.commit('status', status.ERROR)
+  throw error
+}
 
 function get (url, params) {
   return axios.get(url, params)

@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { get } from 'lodash-es'
 import status from '../constants/status.js'
 import Card from '../components/general/Card'
 import TaskItem from '../components/TaskItem'
@@ -84,10 +85,20 @@ export default {
       if (!this.userOptions.showDone) params.showDone = false
 
       return this.$store.dispatch('tasks/getTasksByUserOrProject', params)
-        .then(() => true)
-        .catch(err => this.handleError(err))
+        .catch(err => this.handleError(err, this.getTasks))
     },
-    handleError: function (err) {
+    /**
+     * Handle error response
+     * @param {error}     err       error from response
+     * @param {function}  cbRetry   function that the error arose from
+     */
+    handleError: function (err, cbRetry) {
+      const errStatus = get(err, 'response.status')
+      if (errStatus && errStatus === 401) {
+        if (!cbRetry) return
+        return cbRetry()
+      }
+
       this.status = status.ERROR
       this.$emit(status.ERROR, err)
       this.$store.commit('toasts/toastAdd', err)
