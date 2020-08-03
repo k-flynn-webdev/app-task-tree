@@ -94,7 +94,7 @@ export default {
      */
     handleError: function (err, cbRetry) {
       const errStatus = get(err, 'response.status')
-      if (errStatus && errStatus === 401) {
+      if (errStatus && errStatus === 401 && this.$store.getters['user/isAnon']) {
         if (!cbRetry) return
         return cbRetry()
       }

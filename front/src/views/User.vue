@@ -190,6 +190,7 @@ import status from '../constants/status.js'
 import icBack from '../assets/icons/ic_left'
 import Card from '../components/general/Card'
 import StatusBar from '../components/general/StatusBar'
+import { get } from 'lodash-es'
 
 export default {
   name: 'User',
@@ -292,7 +293,7 @@ export default {
 
       return this.$store.dispatch('user/update', newUser)
         .then(res => this.handleSuccess(res))
-        .catch(err => this.handleError(err))
+        .catch(err => this.handleError(err, this.submitUserUpgrade))
     },
     handleSuccess: function (res) {
       res.isTimed = true
@@ -305,7 +306,13 @@ export default {
         this.toggleEdit()
       }, general.DELAY_SUCCESS)
     },
-    handleError: function (err) {
+    handleError: function (err, cbRetry) {
+      const errStatus = get(err, 'response.status')
+      if (errStatus && errStatus === 401 && this.$store.getters['user/isAnon']) {
+        if (!cbRetry) return
+        return cbRetry()
+      }
+
       this.status = status.ERROR
       this.$emit(status.ERROR, err)
       this.$store.commit('toasts/toastAdd', err)

@@ -172,7 +172,7 @@ function TokenDecode(token, req, res, next) {
   if (!decoded) {
     let err = new Error('Token issued appears broken')
     logger.Log(err, req)
-    return exit(res, 401, err || 'Please relogin.')
+    return exit(res, 401, err || 'Please login')
   }
 
   decoded.logout = true
@@ -188,9 +188,9 @@ function TokenVerify(token, req, res, next) {
       logger.Log(error, req)
       if (error.message === 'jwt expired') {
         // todo send user to relogin!
-        return exit(res, 401, error.name || error, 'Please relogin.')
+        return exit(res, 401, 'Please login')
       } else {
-        return exit(res, 401, error.name || error, 'Please relogin.')
+        return exit(res, 402, err || 'Please login')
       }
     }
 

@@ -133,7 +133,7 @@ export default {
       return TaskService.update(input)
         .then(res => {
         // todo this is a horrible way to handle it
-          if (!res.data) return
+        //   if (!res.data) return
           if (input.isDone !== undefined) {
           // helps show a task is done visually if showDone is false
             helpers.timeDelay(() => {

@@ -35,6 +35,7 @@ import general from '../constants/general'
 import status from '../constants/status.js'
 import StatusBar from './general/StatusBar'
 import icTick from '../assets/icons/ic_tick'
+import { get } from 'lodash-es'
 
 export default {
   name: 'InputBar',
@@ -147,13 +148,19 @@ export default {
             return this.getLatestProject()
           }
         })
-        .catch(err => this.handleError(err))
+        .catch(err => this.handleError(err, this.submitInput))
     },
     getLatestProject: function () {
       return this.$store.dispatch('projects/getProjectById',
         { id: this.project.id })
     },
-    handleError: function (err) {
+    handleError: function (err, cbRetry) {
+      const errStatus = get(err, 'response.status')
+      if (errStatus && errStatus === 401 && this.$store.getters['user/isAnon']) {
+        if (!cbRetry) return
+        return cbRetry()
+      }
+
       this.status = status.ERROR
       this.$emit(status.ERROR, err)
       this.$store.commit('toasts/toastAdd', err)

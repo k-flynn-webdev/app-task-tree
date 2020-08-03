@@ -25,7 +25,19 @@ export default {
   },
   getters: {
     user: (state) => state.user,
+    /**
+     * user tasks / projects meta totals
+     *
+     * @param state
+     * @returns {{projects: number, projectsDone: number, tasksDone: number, tasks: number}}
+     */
     totals: (state) => state.totals,
+    /**
+     * User selected options for show/hide projects/tasks that are done
+     *
+     * @param state
+     * @returns {undefined|any|{projects: {showDone: boolean}, tasks: {showDone: boolean}}}
+     */
     options: (state) => state.options,
     /**
      * Returns if the User is currently logged in
@@ -33,11 +45,10 @@ export default {
      * @param state
      * @returns {boolean}
      */
-    isLoggedIn: (state) => {
-      return (state.user &&
-        state.user.email !== status.ANON &&
-      state.user.email.length > 4)
-    }
+    isLoggedIn: (state) => (!state.isAnon && (state.isUser || state.isAdmin)),
+    isAnon: (state) => state.user.role === status.ANON && state.user.id >= 0,
+    isUser: (state) => state.user.role === status.USER,
+    isAdmin: (state) => state.user.role === status.ADMIN
   },
   mutations: {
     user: function (state, input) {
