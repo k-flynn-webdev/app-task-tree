@@ -1,6 +1,6 @@
 {
   "name": "app-minitask",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "private": true,
   "scripts": {
     "start": "vue-cli-service serve",
