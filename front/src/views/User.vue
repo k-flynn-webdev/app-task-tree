@@ -169,7 +169,11 @@
         </p>
 
         <p v-if="isUser" class="word-break">
-          Your account is a User account.
+          Account type: User
+        </p>
+
+        <p v-if="!isVerified" class="word-break">
+          !Account not verified
         </p>
 
         <p v-if="isAdmin" class="word-break">
@@ -224,13 +228,16 @@ export default {
       return (this.isUser || this.isAdmin)
     },
     isAnon: function () {
-      return this.user.role === status.ANON
+      return this.$store.getters['user/isAnon']
     },
     isUser: function () {
-      return this.user.role === status.USER
+      return this.$store.getters['user/isUser']
     },
     isAdmin: function () {
-      return this.user.role === status.ADMIN
+      return this.$store.getters['user/isAdmin']
+    },
+    isVerified: function () {
+      return this.user.meta.verified
     },
     isValid: function () {
       if (!this.isLoggedIn) return false
@@ -267,6 +274,7 @@ export default {
       if (!this.user) return
       this.form.name = this.user.name
       this.form.email = this.user.email
+      this.form.password = ''
     },
     resetStatus: function () {
       this.status = status.CLEAR
@@ -278,17 +286,10 @@ export default {
       this.status = status.WAITING
 
       const newUser = {
-        id: this.user.id
-      }
-
-      if (this.isValidName) {
-        newUser.name = this.form.name
-      }
-      if (this.isValidEmail) {
-        newUser.email = this.form.email
-      }
-      if (this.isValidPassword) {
-        newUser.password = this.form.password
+        id: this.user.id,
+        name: this.isValidName ? this.form.name : undefined,
+        email: this.isValidEmail ? this.form.email : undefined,
+        password: this.validPassword ? this.form.password : undefined
       }
 
       return this.$store.dispatch('user/update', newUser)

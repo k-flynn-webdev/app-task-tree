@@ -81,13 +81,12 @@
 </template>
 
 <script>
+import Paths from '../constants/paths'
 import helpers from '../services/Helpers'
 import general from '../constants/general'
 import status from '../constants/status.js'
-import StatusBar from '../components/general/StatusBar'
 import Card from '../components/general/Card'
-import Paths from '../constants/paths'
-const ANON = 'anon'
+import StatusBar from '../components/general/StatusBar'
 
 export default {
   name: 'UserCreate',
@@ -127,7 +126,7 @@ export default {
       if (this.status !== status.CLEAR) return
 
       this.status = status.WAITING
-      if (this.user && this.user.email === ANON) {
+      if (this.$store.getters['user/isAnon']) {
         return this.submitUserUpgrade()
       } else {
         return this.submitUser()

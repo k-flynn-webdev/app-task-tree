@@ -1,6 +1,7 @@
 import UserService from '../services/UserService.js'
 import general from '../constants/general'
 import status from '../constants/status'
+import Vue from 'vue'
 
 function defaultUser () {
   const userLocal = UserService.getUser()
@@ -43,19 +44,19 @@ export default {
      * Returns if the User is currently logged in
      *
      * @param state
+     * @param getters
      * @returns {boolean}
      */
-    isLoggedIn: (state) => (!state.isAnon && (state.isUser || state.isAdmin)),
-    isAnon: (state) => state.user.role === status.ANON && state.user.id >= 0,
+    isLoggedIn: (state, getters) => (getters.isUser || getters.isAdmin),
+    isAnon: (state) => state.user.role === status.ANON && state.user.id > -1,
     isUser: (state) => state.user.role === status.USER,
     isAdmin: (state) => state.user.role === status.ADMIN
   },
   mutations: {
     user: function (state, input) {
-      state.user.id = input.id
-      state.user.name = input.name
-      state.user.email = input.email
-      state.user.role = input.role
+      Object.entries(input).forEach(([key, value]) => {
+        Vue.set(state.user, key, value)
+      })
     },
     options: function (state, input) {
       if (input.tasks && input.tasks.showDone !== undefined) {
@@ -70,10 +71,9 @@ export default {
       }
     },
     totals: function (state, input) {
-      state.totals.tasks = input.tasks
-      state.totals.tasksDone = input.tasksDone
-      state.totals.projects = input.projects
-      state.totals.projectsDone = input.projectsDone
+      Object.entries(input).forEach(([key, value]) => {
+        Vue.set(state.totals, key, value)
+      })
     }
   },
   actions: {
@@ -87,7 +87,7 @@ export default {
     get: function (context) {
       return UserService.getMeta()
         .then(res => {
-          context.commit('totals', res.data.data)
+          context.commit('totals', res.data.data.totals)
           context.commit('user', res.data.data.account)
           return res
         })

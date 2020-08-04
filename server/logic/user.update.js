@@ -30,14 +30,14 @@ function userUpdate(input,  app) {
 
     if (has.hasAnItem(userFound.verify)) {
       throw {
-        status: 401,
+        status: 403,
         message: constants.errors.ACCOUNT_UNVERIFIED
       }
     }
 
     if (has.hasAnItem(userFound.recover)) {
       throw {
-        status: 401,
+        status: 403,
         message: constants.errors.ACCOUNT_IN_RECOVERY
       }
     }

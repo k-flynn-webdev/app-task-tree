@@ -112,7 +112,7 @@ export default {
       return this.$store.getters['user/user']
     },
     showResetLink: function () {
-      return this.user.email !== status.ANON
+      return !this.$store.getters['user/isAnon']
     }
   },
   methods: {
@@ -126,10 +126,13 @@ export default {
       this.status = status.WAITING
 
       return this.$store.dispatch('user/login', this.form)
+        .then(() => this.$store.commit('ready', true))
         .then(() => {
-          const params = { user: this.$store.getters['user/user'].id }
           const userOptions = this.$store.getters['user/options'].projects
-          if (!userOptions.showDone) params.showDone = false
+          const params = {
+            user: this.$store.getters['user/user'].id,
+            showDone: !userOptions.showDone ? false : null
+          }
           return this.$store.dispatch('projects/getProjectsByUserId', params)
         })
         .then(res => this.handleSuccess(res))

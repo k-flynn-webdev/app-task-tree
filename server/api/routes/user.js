@@ -54,10 +54,12 @@ module.exports = function (app) {
         exit(res, 200,
           constants.messages.SUCCESS,
           { account: user.SafeExport(mysqlVal(userObj), true),
-            tasks: taskItems.length,
-            tasksDone: tasksDone.length,
-            projects: projectItems.length,
-            projectsDone: projectsDone.length
+            totals: {
+              tasks: taskItems.length,
+              tasksDone: tasksDone.length,
+              projects: projectItems.length,
+              projectsDone: projectsDone.length
+            }
           })
       })
       .catch(err => {

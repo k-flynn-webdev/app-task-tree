@@ -9,7 +9,8 @@ const DEFAULT_USER = () => {
     id: -1,
     name: '',
     email: '',
-    role: ''
+    role: '',
+    meta: {}
   }
 }
 
