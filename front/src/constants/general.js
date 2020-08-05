@@ -21,6 +21,10 @@ const DEFAULT_USER_OPTIONS = () => {
     },
     projects: {
       showDone: true
+    },
+    sort: {
+      asc: true,
+      type: 'date'
     }
   }
 }

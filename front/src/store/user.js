@@ -11,10 +11,16 @@ function defaultUser () {
 }
 
 function defaultOptions () {
-  const userLocal = UserService.getOptions()
-  if (userLocal !== undefined) return userLocal
+  const userOptions = general.DEFAULT_USER_OPTIONS()
 
-  return general.DEFAULT_USER_OPTIONS()
+  const userLocal = UserService.getOptions()
+  if (!userLocal) return userOptions
+
+  Object.entries(userLocal).forEach(([key, value]) => {
+    Vue.set(userOptions, key, value)
+  })
+
+  return userOptions
 }
 
 export default {
@@ -59,12 +65,9 @@ export default {
       })
     },
     options: function (state, input) {
-      if (input.tasks && input.tasks.showDone !== undefined) {
-        state.options.tasks.showDone = input.tasks.showDone
-      }
-      if (input.projects && input.projects.showDone !== undefined) {
-        state.options.projects.showDone = input.projects.showDone
-      }
+      Object.entries(input).forEach(([key, value]) => {
+        Vue.set(state.options, key, value)
+      })
 
       if (input) {
         UserService.setOptions(state.options)

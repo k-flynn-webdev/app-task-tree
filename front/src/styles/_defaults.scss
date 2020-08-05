@@ -186,6 +186,26 @@ body {
   transition: $transition-default * 2;
 }
 
+.rot-0 {
+  transform: rotateZ(0);
+}
+
+.rot-90 {
+  transform: rotateZ(90deg);
+}
+
+.rot-180 {
+  transform: rotateZ(180deg);
+}
+
+.rot-270 {
+  transform: rotateZ(270deg);
+}
+
+.rot-360 {
+  transform: rotateZ(360deg);
+}
+
 .no-pad {
   padding: 0;
 }
