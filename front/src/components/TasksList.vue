@@ -24,6 +24,7 @@ import { get } from 'lodash-es'
 import status from '../constants/status.js'
 import Card from '../components/general/Card'
 import TaskItem from '../components/TaskItem'
+// import columns from '@/constants/columns'
 
 export default {
   name: 'TasksList',

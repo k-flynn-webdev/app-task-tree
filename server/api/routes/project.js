@@ -122,12 +122,24 @@ module.exports = function (app) {
     function (req, res) {
 
       // todo implement pagination or search by date ..
-      let showDone = null
+      let showDone = true
+      let sortAsc = false
+      let sortType = 'updated'
+
+      console.log(req.query)
+
       if (has.hasAnItem(req.query.showDone)) {
-        showDone = req.query.showDone.indexOf('true') >= 0 ? 1: 0
+        showDone = req.query.showDone.indexOf('true') >= 0
+      }
+      if (has.hasAnItem(req.query.sortAsc)) {
+        sortAsc = req.query.sortAsc.indexOf('true') >= 0
+      }
+      if (has.hasAnItem(req.query.sortType)) {
+        sortType = req.query.sortType
       }
 
-      project.GetProjectsByUser(req.body.token.id, showDone)
+      project.GetProjectsByUser(req.body.token.id,
+        { showDone, sortAsc, sortType })
       .then(projectObjs => {
         const allSafeProjects = projectObjs.map(item => project.SafeExport(item))
         exit(res, 200,

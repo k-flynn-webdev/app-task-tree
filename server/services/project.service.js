@@ -14,7 +14,8 @@ const DB_CREATE_PROJECT = 'INSERT INTO projects SET ?'
 const DB_DELETE_PROJECT_BY_ID = 'DELETE FROM projects WHERE id = ?'
 const DB_DELETE_PROJECTS_BY_USER = 'SELECT * FROM projects WHERE user = ?'
 const DB_GET_PROJECT_BY_ID = 'SELECT * FROM projects WHERE id = ?'
-const DB_GET_PROJECT_BY_USER = 'SELECT * FROM projects WHERE user = ? ORDER BY updated DESC'
+const DB_GET_PROJECT_BY_USER = 'SELECT * FROM projects WHERE user = ?'
+const DB_GET_PROJECT_BY_USER_DESC = 'SELECT * FROM projects WHERE user = ? ORDER BY ? DESC'
 const DB_GET_PROJECT_BY_USER_DONE = 'SELECT * FROM projects WHERE user = ? AND isDone = ? ORDER BY updated DESC'
 const DB_GET_PROJECT_BY_NAME = 'SELECT * FROM projects WHERE name = ? ORDER BY updated DESC'
 const DB_GET_PROJECTS_BY_IS_DONE = 'SELECT * FROM projects WHERE user = ? AND isDone = ? ORDER BY updated DESC'
@@ -218,11 +219,19 @@ exports.GetProjectByName = GetProjectByName
  * @param   {int}     showDone  return based on state of project
  * @return  {array}   project object
  */
-function GetProjectsByUser(user, showDone= null) {
-  if (has.hasAnItem(showDone)) {
-    return db.Query(DB_GET_PROJECT_BY_USER_DONE, [user, showDone])
-  }
-  return db.Query(DB_GET_PROJECT_BY_USER, [user])
+function GetProjectsByUser(user,
+  { showDone= true,
+    sortAsc = true,
+    sortType = 'updated'}) {
+
+  const SHOW_DONE = showDone? '' :  ' AND isDone = 0'
+  const ORDER_BY = ` ORDER BY ${sortType} `
+  // todo this is a horrible way to do this!!
+  const SORT_ASC = sortAsc ? ' DESC': ''
+
+  let SearchTerm = DB_GET_PROJECT_BY_USER + SHOW_DONE + ORDER_BY + SORT_ASC
+
+  return db.Query(SearchTerm, [user])
 }
 
 exports.GetProjectsByUser = GetProjectsByUser

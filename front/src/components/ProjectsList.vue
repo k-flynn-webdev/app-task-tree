@@ -23,6 +23,7 @@ import { get } from 'lodash-es'
 import Card from '../components/general/Card'
 import ProjectItem from '../components/ProjectItem'
 import status from '../constants/status'
+import columns from '../constants/columns'
 
 export default {
   name: 'ProjectsList',
@@ -44,9 +45,9 @@ export default {
       return this.$store.getters['projects/current']
     },
     projects: function () {
-      if (!this.userOptions.projects.showDone) {
-        return this.$store.getters['projects/projectsNotDone']
-      }
+      // if (!this.userOptions.projects.showDone) {
+      //   return this.$store.getters['projects/projectsNotDone']
+      // }
       return this.$store.getters['projects/projects']
     },
     projectHistory: function () {
@@ -76,15 +77,15 @@ export default {
         user: this.user.id,
         showDone: !this.userOptions.projects.showDone ? false : undefined,
         sortAsc: this.userOptions.sort.asc ? true : undefined,
-        sortType: this.userOptions.sort.type
+        sortType: columns[this.userOptions.sort.type]
       }
     },
     getProjects: function () {
       if (this.user.id < 0) return
 
       // update store with last request
-      this.$store.commit('projects/projectHistory',
-        { showDone: this.userOptions.projects.showDone })
+      // this.$store.commit('projects/projectHistory',
+      //   { showDone: this.userOptions.projects.showDone })
 
       // empty store if user changed ..
       if (this.projectHistory.user !== this.user.id) {
