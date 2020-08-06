@@ -122,11 +122,9 @@ module.exports = function (app) {
     function (req, res) {
 
       // todo implement pagination or search by date ..
-      let showDone = true
+      let showDone = null
       let sortAsc = false
       let sortType = 'updated'
-
-      console.log(req.query)
 
       if (has.hasAnItem(req.query.showDone)) {
         showDone = req.query.showDone.indexOf('true') >= 0

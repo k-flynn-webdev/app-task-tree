@@ -122,7 +122,20 @@ module.exports = function (app) {
     prepareMiddle,
     function (req, res) {
 
-    // todo implement pagination or search by date ..
+      // todo implement pagination or search by date ..
+      let showDone = null
+      let sortAsc = false
+      let sortType = 'updated'
+
+      if (has.hasAnItem(req.query.showDone)) {
+        showDone = req.query.showDone.indexOf('true') >= 0
+      }
+      if (has.hasAnItem(req.query.sortAsc)) {
+        sortAsc = req.query.sortAsc.indexOf('true') >= 0
+      }
+      if (has.hasAnItem(req.query.sortType)) {
+        sortType = req.query.sortType
+      }
 
       let promiseValue = -1
       let promiseTask = null
@@ -130,19 +143,13 @@ module.exports = function (app) {
       if (has.hasAnItem(req.query.user)){
         promiseTask = task.GetTasksByUser
         promiseValue = req.body.token.id
-        // todo
       }
       if (has.hasAnItem(req.query.project)){
         promiseTask = task.GetTasksByProject
         promiseValue = req.query.project
       }
 
-      let showDone = null
-      if (has.hasAnItem(req.query.showDone)) {
-        showDone = req.query.showDone.indexOf('true') >= 0 ? 1: 0
-      }
-
-      return promiseTask(promiseValue, showDone)
+      return promiseTask(promiseValue, { showDone, sortAsc, sortType })
       .then(taskObjs => {
         const allSafeTasks = taskObjs.map(item => task.SafeExport(item))
         exit(res, 200,

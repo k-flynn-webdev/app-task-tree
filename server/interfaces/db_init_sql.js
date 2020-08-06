@@ -35,7 +35,6 @@ exports.Init = Init
 function Query(search, params) {
   return new Promise((resolve, reject) => {
     connection.query(search, params, (err, res) => {
-      console.debug(search, params)
       if (err) {
         if (config.node_env === 'development') {
           console.log(err)

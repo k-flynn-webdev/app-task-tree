@@ -24,7 +24,7 @@ import { get } from 'lodash-es'
 import status from '../constants/status.js'
 import Card from '../components/general/Card'
 import TaskItem from '../components/TaskItem'
-// import columns from '@/constants/columns'
+import columns from '../constants/columns'
 
 export default {
   name: 'TasksList',
@@ -81,7 +81,7 @@ export default {
         user: this.user.id,
         showDone: !this.userOptions.tasks.showDone ? false : undefined,
         sortAsc: this.userOptions.sort.asc ? true : undefined,
-        sortType: this.userOptions.sort.type,
+        sortType: columns[this.userOptions.sort.type],
         project: this.project
       }
     },
@@ -89,8 +89,8 @@ export default {
       if (this.user.id < 0) return
 
       // update store with last request
-      this.$store.commit('tasks/taskHistory',
-        { showDone: this.userOptions.tasks.showDone })
+      // this.$store.commit('tasks/taskHistory',
+      //   { showDone: this.userOptions.tasks.showDone })
 
       // empty store if user changed ..
       if (this.taskHistory.user !== this.user.id) {
@@ -108,7 +108,8 @@ export default {
      */
     handleError: function (err, cbRetry) {
       const errStatus = get(err, 'response.status')
-      if (errStatus && errStatus === 401 && this.$store.getters['user/isAnon']) {
+      if (errStatus && errStatus === 401 &&
+        this.$store.getters['user/isAnon']) {
         if (!cbRetry) return
         return cbRetry()
       }

@@ -15,8 +15,8 @@ const DB_DELETE_PROJECT_BY_ID = 'DELETE FROM projects WHERE id = ?'
 const DB_DELETE_PROJECTS_BY_USER = 'SELECT * FROM projects WHERE user = ?'
 const DB_GET_PROJECT_BY_ID = 'SELECT * FROM projects WHERE id = ?'
 const DB_GET_PROJECT_BY_USER = 'SELECT * FROM projects WHERE user = ?'
-const DB_GET_PROJECT_BY_USER_DESC = 'SELECT * FROM projects WHERE user = ? ORDER BY ? DESC'
-const DB_GET_PROJECT_BY_USER_DONE = 'SELECT * FROM projects WHERE user = ? AND isDone = ? ORDER BY updated DESC'
+// const DB_GET_PROJECT_BY_USER_DESC = 'SELECT * FROM projects WHERE user = ? ORDER BY ? DESC'
+// const DB_GET_PROJECT_BY_USER_DONE = 'SELECT * FROM projects WHERE user = ? AND isDone = ? ORDER BY updated DESC'
 const DB_GET_PROJECT_BY_NAME = 'SELECT * FROM projects WHERE name = ? ORDER BY updated DESC'
 const DB_GET_PROJECTS_BY_IS_DONE = 'SELECT * FROM projects WHERE user = ? AND isDone = ? ORDER BY updated DESC'
 const DB_GET_PROJECTS_BY_IS_DONE_DATE = 'SELECT * FROM projects WHERE doneDate = ? ORDER BY doneDate DESC'
@@ -216,22 +216,27 @@ exports.GetProjectByName = GetProjectByName
  * Returns all project objects from the db if found via user
  *
  * @param   {int}     user      user id
- * @param   {int}     showDone  return based on state of project
+ * @param   {object}  params    return based on state of project
  * @return  {array}   project object
  */
-function GetProjectsByUser(user,
-  { showDone= true,
-    sortAsc = true,
-    sortType = 'updated'}) {
+function GetProjectsByUser(user, params) {
 
-  const SHOW_DONE = showDone? '' :  ' AND isDone = 0'
-  const ORDER_BY = ` ORDER BY ${sortType} `
-  // todo this is a horrible way to do this!!
-  const SORT_ASC = sortAsc ? ' DESC': ''
+  const values = [user]
+  let SearchTerm = DB_GET_PROJECT_BY_USER
 
-  let SearchTerm = DB_GET_PROJECT_BY_USER + SHOW_DONE + ORDER_BY + SORT_ASC
+  if (params.showDone !== null) {
+    SearchTerm += ' AND isDone = ??'
+    values.push(params.showDone ? 1 : 0)
+  }
+  if (params.sortType !== null) {
+    SearchTerm += ' ORDER BY ??'
+    values.push(params.sortType)
+  }
+  if (params.sortAsc !== null && params.sortAsc === false) {
+    SearchTerm += ' DESC'
+  }
 
-  return db.Query(SearchTerm, [user])
+  return db.Query(SearchTerm, values)
 }
 
 exports.GetProjectsByUser = GetProjectsByUser

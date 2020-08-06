@@ -16,7 +16,7 @@ const DB_DELETE_TASKS_BY_USER = 'DELETE FROM tasks WHERE user = ?'
 const DB_DELETE_TASKS_BY_PROJECT = 'DELETE FROM tasks WHERE project = ?'
 const DB_GET_TASK_BY_ID = 'SELECT * FROM tasks WHERE id = ?'
 const DB_GET_TASK_BY_USER = 'SELECT * FROM tasks WHERE user = ? ORDER BY updated DESC'
-const DB_GET_TASK_BY_PROJECT = 'SELECT * FROM tasks WHERE project = ? ORDER BY updated DESC'
+const DB_GET_TASK_BY_PROJECT = 'SELECT * FROM tasks WHERE project = ?'
 const DB_GET_TASK_BY_PROJECT_AND_DONE = 'SELECT * FROM tasks WHERE project = ? AND isDone = ? ORDER BY updated DESC'
 const DB_GET_TASK_BY_IS_DONE = 'SELECT * FROM tasks WHERE user = ? AND isDone = ? ORDER BY updated DESC'
 const DB_GET_TASK_BY_IS_DONE_DATE = 'SELECT * FROM tasks WHERE doneDate = ? ORDER BY doneDate DESC'
@@ -194,17 +194,30 @@ function GetTaskByID(id) {
 exports.GetTaskByID = GetTaskByID
 
 /**
- * Returns all task objects from the db if found via project
+ * Returns all task objects from the db found via project
  *
  * @param   {int}     project
- * @param   {int}     showDone
+ * @param   {object}  params
  * @return  {array}   task object
  */
-function GetTasksByProject(project, showDone = null) {
-  if (has.hasAnItem(showDone)) {
-    return db.Query(DB_GET_TASK_BY_PROJECT_AND_DONE, [project, showDone])
+function GetTasksByProject(project, params) {
+
+  const values = [project]
+  let SearchTerm = DB_GET_TASK_BY_PROJECT
+
+  if (params.showDone !== null) {
+    SearchTerm += ' AND isDone = ??'
+    values.push(params.showDone ? 1 : 0)
   }
-  return db.Query(DB_GET_TASK_BY_PROJECT, [project])
+  if (params.sortType !== null) {
+    SearchTerm += ' ORDER BY ??'
+    values.push(params.sortType)
+  }
+  if (params.sortAsc !== null && params.sortAsc === false) {
+    SearchTerm += ' DESC'
+  }
+
+  return db.Query(SearchTerm, values)
 }
 
 exports.GetTasksByProject = GetTasksByProject
