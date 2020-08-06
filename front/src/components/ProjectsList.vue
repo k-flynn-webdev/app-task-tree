@@ -38,13 +38,13 @@ export default {
       return this.$store.getters['user/user']
     },
     userOptions: function () {
-      return this.$store.getters['user/options'].projects
+      return this.$store.getters['user/options']
     },
     project: function () {
       return this.$store.getters['projects/current']
     },
     projects: function () {
-      if (!this.userOptions.showDone) {
+      if (!this.userOptions.projects.showDone) {
         return this.$store.getters['projects/projectsNotDone']
       }
       return this.$store.getters['projects/projects']
@@ -57,7 +57,11 @@ export default {
     ready: function (input) {
       if (input) this.getProjects()
     },
-    'userOptions.showDone': function (input, oldValue) {
+    'userOptions.projects.showDone': function (input, oldValue) {
+      if (input === oldValue) return
+      this.getProjects()
+    },
+    'userOptions.sort': function (input, oldValue) {
       if (input === oldValue) return
       this.getProjects()
     }
@@ -67,24 +71,28 @@ export default {
     return this.getProjects()
   },
   methods: {
+    getParams: function () {
+      return {
+        user: this.user.id,
+        showDone: !this.userOptions.projects.showDone ? false : undefined,
+        sortAsc: this.userOptions.sort.asc ? true : undefined,
+        sortType: this.userOptions.sort.type
+      }
+    },
     getProjects: function () {
       if (this.user.id < 0) return
-      if (this.projectHistory.user === this.user.id &&
-        this.userOptions.showDone === this.projectHistory.showDone) {
-        return
-      }
 
+      // update store with last request
       this.$store.commit('projects/projectHistory',
-        { showDone: this.userOptions.showDone })
+        { showDone: this.userOptions.projects.showDone })
+
+      // empty store if user changed ..
       if (this.projectHistory.user !== this.user.id) {
         this.$store.commit('projects/projectSet', [])
       }
 
-      const params = { user: this.user.id }
-      if (!this.userOptions.showDone) params.showDone = false
-
       return this.$store.dispatch('projects/getProjectsByUserId',
-        params)
+        this.getParams())
         .catch(err => this.handleError(err, this.getProjects))
     },
     /**

@@ -41,11 +41,14 @@ export default {
     ready: function () {
       return this.$store.getters.ready
     },
+    user: function () {
+      return this.$store.getters['user/user']
+    },
     userOptions: function () {
-      return this.$store.getters['user/options'].tasks
+      return this.$store.getters['user/options']
     },
     tasks: function () {
-      if (!this.userOptions.showDone) {
+      if (!this.userOptions.tasks.showDone) {
         return this.$store.getters['tasks/tasksNotDone']
       }
       return this.$store.getters['tasks/tasks']
@@ -58,9 +61,13 @@ export default {
     ready: function (input) {
       if (input) this.getTasks()
     },
-    'userOptions.showDone': function (input, oldValue) {
+    'userOptions.tasks.showDone': function (input, oldValue) {
       if (input === oldValue) return
-      return this.getTasks()
+      this.getTasks()
+    },
+    'userOptions.sort': function (input, oldValue) {
+      if (input === oldValue) return
+      this.getTasks()
     }
   },
   mounted () {
@@ -68,23 +75,29 @@ export default {
     return this.getTasks()
   },
   methods: {
-    getTasks: function () {
-      if (this.project < 0) return
-      if (this.taskHistory.project === this.project &&
-        this.userOptions.showDone === this.taskHistory.showDone) {
-        return
+    getParams: function () {
+      return {
+        user: this.user.id,
+        showDone: !this.userOptions.tasks.showDone ? false : undefined,
+        sortAsc: this.userOptions.sort.asc ? true : undefined,
+        sortType: this.userOptions.sort.type,
+        project: this.project
       }
+    },
+    getTasks: function () {
+      if (this.user.id < 0) return
 
+      // update store with last request
       this.$store.commit('tasks/taskHistory',
-        { showDone: this.userOptions.showDone })
-      if (this.taskHistory.project !== this.project) {
+        { showDone: this.userOptions.tasks.showDone })
+
+      // empty store if user changed ..
+      if (this.taskHistory.user !== this.user.id) {
         this.$store.commit('tasks/taskSet', [])
       }
 
-      const params = { project: this.project }
-      if (!this.userOptions.showDone) params.showDone = false
-
-      return this.$store.dispatch('tasks/getTasksByUserOrProject', params)
+      return this.$store.dispatch('tasks/getTasksByUserOrProject',
+        this.getParams())
         .catch(err => this.handleError(err, this.getTasks))
     },
     /**
