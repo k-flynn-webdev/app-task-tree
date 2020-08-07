@@ -17,7 +17,7 @@ export default {
      * @returns {object}
      */
     current: (state) => state.current,
-    projectHistory: (state) => state.history,
+    history: (state) => state.history,
     /**
      * Returns all projects
      *
@@ -39,13 +39,10 @@ export default {
     }
   },
   mutations: {
-    projectHistory: (state, input) => {
-      if (input.user !== undefined) {
-        state.history.user = input.user
-      }
-      if (input.showDone !== undefined) {
-        state.history.showDone = input.showDone
-      }
+    setHistory: (state, input) => {
+      Object.entries(input).forEach(([key, value]) => {
+        Vue.set(state.history, key, value)
+      })
     },
     /**
      * Sets current project selected
@@ -150,8 +147,6 @@ export default {
     update: function (context, input) {
       return ProjectService.update(input)
         .then(res => {
-          // todo this is a horrible way to handle it
-          // if (!res.data) return
           context.commit('projectReplace', res.data.data.project)
           if (context.getters.current.id !== input.id) return
           context.commit('projectCurrent', res.data.data.project)
@@ -204,9 +199,6 @@ export default {
       return ProjectService.all(input)
         .then(res => {
           if (res.data.data.projects.length > 0) {
-            context.commit('projectHistory', {
-              user: res.data.data.projects[0].user
-            })
             context.commit('projectSet', res.data.data.projects)
           }
           return res

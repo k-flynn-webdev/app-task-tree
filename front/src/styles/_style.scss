@@ -126,6 +126,11 @@ body {
           opacity: 0.7;
           border-bottom: unset;
         }
+
+        &.li-min {
+          padding-bottom: $margin-default * 0.5;
+          margin-bottom: $margin-default * 0.5;
+        }
       }
 
       ul {
@@ -133,6 +138,15 @@ body {
         p,
         button {
           margin-left: $margin-default;
+        }
+      }
+
+      &__sort-item {
+        min-width: $unit-default * 5;
+
+        &-arrow {
+          font-size: $unit-default * 0.5;
+          transform: scale(2.5);
         }
       }
     }

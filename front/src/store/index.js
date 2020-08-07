@@ -52,7 +52,7 @@ export default new Vuex.Store({
       if (input !== status.CLEAR) {
         helpers.timeDelay(() => {
           state.status = status.CLEAR
-        }, general.DELAY_SUCCESS * 3)
+        }, general.DELAY_SUCCESS * 1.1)
       }
     }
   },

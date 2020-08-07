@@ -58,9 +58,9 @@
                   :value="userOptions.projects.showDone"
                   @click="toggleProjectsShowDone">
 
-           <div class="display-inline-b align-middle hover">
+           <span class="display-inline-b align-middle hover">
              <icDone :class="[userOptions.projects.showDone?'fill-bg':'fill-mid alpha']"/>
-           </div>
+           </span>
 
          </label>
        </li>
@@ -76,9 +76,31 @@
                   :value="userOptions.tasks.showDone"
                   @click="toggleTasksShowDone">
 
-           <div class="display-inline-b align-middle hover">
+           <span class="display-inline-b align-middle hover">
              <icDone :class="[userOptions.tasks.showDone?'fill-bg':'fill-mid alpha']"/>
-           </div>
+           </span>
+
+         </label>
+       </li>
+
+       <li class="label">Sort</li>
+
+       <li
+         v-for="item in sort"
+         class="li-min"
+        :key="item">
+         <label class="show-label clickable" @click="toggleSort(item)">
+
+           <span class="color-bg text-bold name settings__holder__sort-item"
+           :class="{ 'alpha': currentSort !== item }">{{ item }}</span>
+
+           <span v-if="currentSort === item"
+                 class="display-inline-b align-middle settings__holder__sort-item-arrow">
+             <icLeft
+              class="fill-bg transition-slow"
+              :class="[ userOptions.sort.asc? 'rot-90' : 'rot-270' ]"
+             />
+           </span>
 
          </label>
        </li>
@@ -97,13 +119,22 @@ import general from '../constants/general'
 import icDone from '../assets/icons/ic_tick'
 import icClose from '../assets/icons/ic_cross'
 import icOptions from '../assets/icons/ic_option'
+import icLeft from '../assets/icons/ic_left'
+
+const SORT_TYPES = ['created', 'updated', 'done', 'scale']
 
 export default {
   name: 'AppSettings',
   components: {
+    icLeft,
     icDone,
     icClose,
     icOptions
+  },
+  data () {
+    return {
+      sort: SORT_TYPES
+    }
   },
   props: {
     value: {
@@ -117,6 +148,9 @@ export default {
     },
     isLoggedIn: function () {
       return this.$store.getters['user/isLoggedIn']
+    },
+    currentSort: function () {
+      return this.userOptions.sort.type
     }
   },
   methods: {
@@ -124,12 +158,21 @@ export default {
       this.$emit('input', !this.value)
     },
     toggleProjectsShowDone: function () {
-      const newOption = { projects: { showDone: !this.userOptions.projects.showDone } }
-      this.$store.commit('user/options', newOption)
+      this.$store.commit('user/options',
+        { projects: { showDone: !this.userOptions.projects.showDone } })
     },
     toggleTasksShowDone: function () {
-      const newOption = { tasks: { showDone: !this.userOptions.tasks.showDone } }
-      this.$store.commit('user/options', newOption)
+      this.$store.commit('user/options',
+        { tasks: { showDone: !this.userOptions.tasks.showDone } })
+    },
+    toggleSort: function (type) {
+      let sortAsc = true
+      if (type === this.currentSort) {
+        sortAsc = !this.userOptions.sort.asc
+      }
+
+      this.$store.commit('user/options',
+        { sort: { asc: sortAsc, type } })
     },
     logout: function () {
       return this.$store.dispatch('user/logout')

@@ -10,7 +10,7 @@ export default {
     history: general.DEFAULT_TASK_HISTORY()
   },
   getters: {
-    taskHistory: (state) => state.history,
+    history: (state) => state.history,
     tasksDone: (state) => state.tasks.filter(item => item.doneDate && item.doneDate.length > 5),
     tasksNotDone: (state) => state.tasks.filter(item => !item.doneDate),
     /**
@@ -32,13 +32,10 @@ export default {
     }
   },
   mutations: {
-    taskHistory: (state, input) => {
-      if (input.project !== undefined) {
-        state.history.project = input.project
-      }
-      if (input.showDone !== undefined) {
-        state.history.showDone = input.showDone
-      }
+    setHistory: (state, input) => {
+      Object.entries(input).forEach(([key, value]) => {
+        Vue.set(state.history, key, value)
+      })
     },
     /**
      * Add a new task to the store
@@ -167,11 +164,8 @@ export default {
     getTasksByUserOrProject: function (context, input) {
       return TaskService.all(input)
         .then(res => {
-          context.commit('taskSet', res.data.data.tasks)
           if (res.data.data.tasks.length > 0) {
-            context.commit('taskHistory', {
-              project: res.data.data.tasks[0].project
-            })
+            context.commit('taskSet', res.data.data.tasks)
           }
           return res.data.data.tasks
         })

@@ -14,8 +14,9 @@ const DB_CREATE_PROJECT = 'INSERT INTO projects SET ?'
 const DB_DELETE_PROJECT_BY_ID = 'DELETE FROM projects WHERE id = ?'
 const DB_DELETE_PROJECTS_BY_USER = 'SELECT * FROM projects WHERE user = ?'
 const DB_GET_PROJECT_BY_ID = 'SELECT * FROM projects WHERE id = ?'
-const DB_GET_PROJECT_BY_USER = 'SELECT * FROM projects WHERE user = ? ORDER BY updated DESC'
-const DB_GET_PROJECT_BY_USER_DONE = 'SELECT * FROM projects WHERE user = ? AND isDone = ? ORDER BY updated DESC'
+const DB_GET_PROJECT_BY_USER = 'SELECT * FROM projects WHERE user = ?'
+// const DB_GET_PROJECT_BY_USER_DESC = 'SELECT * FROM projects WHERE user = ? ORDER BY ? DESC'
+// const DB_GET_PROJECT_BY_USER_DONE = 'SELECT * FROM projects WHERE user = ? AND isDone = ? ORDER BY updated DESC'
 const DB_GET_PROJECT_BY_NAME = 'SELECT * FROM projects WHERE name = ? ORDER BY updated DESC'
 const DB_GET_PROJECTS_BY_IS_DONE = 'SELECT * FROM projects WHERE user = ? AND isDone = ? ORDER BY updated DESC'
 const DB_GET_PROJECTS_BY_IS_DONE_DATE = 'SELECT * FROM projects WHERE doneDate = ? ORDER BY doneDate DESC'
@@ -215,14 +216,27 @@ exports.GetProjectByName = GetProjectByName
  * Returns all project objects from the db if found via user
  *
  * @param   {int}     user      user id
- * @param   {int}     showDone  return based on state of project
+ * @param   {object}  params    return based on state of project
  * @return  {array}   project object
  */
-function GetProjectsByUser(user, showDone= null) {
-  if (has.hasAnItem(showDone)) {
-    return db.Query(DB_GET_PROJECT_BY_USER_DONE, [user, showDone])
+function GetProjectsByUser(user, params) {
+
+  const values = [user]
+  let SearchTerm = DB_GET_PROJECT_BY_USER
+
+  if (params && params.showDone !== undefined) {
+    SearchTerm += ' AND isDone = ?'
+    values.push(params.showDone ? 1 : 0)
   }
-  return db.Query(DB_GET_PROJECT_BY_USER, [user])
+  if (params && params.sortType !== undefined) {
+    SearchTerm += ' ORDER BY ??'
+    values.push(params.sortType)
+  }
+  if (params && params.sortAsc !== undefined && params.sortAsc === false) {
+    SearchTerm += ' DESC'
+  }
+
+  return db.Query(SearchTerm, values)
 }
 
 exports.GetProjectsByUser = GetProjectsByUser
@@ -239,18 +253,18 @@ function DeleteProjectsByUser(user) {
 
 exports.DeleteProjectsByUser = DeleteProjectsByUser
 
-/**
- * Returns all project objects by the isDone value
- *
- * @param   {number}  user id
- * @param   {bool}    isDone
- * @return  {array}   project object
- */
-function GetProjectsByIsDone(user, isDone) {
-  return db.Query(DB_GET_PROJECTS_BY_IS_DONE, [user, isDone === true? 1: 0])
-}
-
-exports.GetProjectsByIsDone = GetProjectsByIsDone
+// /**
+//  * Returns all project objects by the isDone value
+//  *
+//  * @param   {number}  user id
+//  * @param   {bool}    isDone
+//  * @return  {array}   project object
+//  */
+// function GetProjectsByIsDone(user, isDone) {
+//   return db.Query(DB_GET_PROJECTS_BY_IS_DONE, [user, isDone === true? 1: 0])
+// }
+//
+// exports.GetProjectsByIsDone = GetProjectsByIsDone
 
 /**
  * Returns all project objects by the done date
@@ -258,12 +272,12 @@ exports.GetProjectsByIsDone = GetProjectsByIsDone
  * @param   {bool}    doneDate
  * @return  {array}   project object
  */
-function GetProjectsByDoneDate(doneDate) {
-  // todo make this work better with dates before & after .. pagination support here
-  return db.Query(DB_GET_PROJECTS_BY_IS_DONE_DATE, [doneDate])
-}
-
-exports.GetProjectsByDoneDate = GetProjectsByDoneDate
+// function GetProjectsByDoneDate(doneDate) {
+//   // todo make this work better with dates before & after .. pagination support here
+//   return db.Query(DB_GET_PROJECTS_BY_IS_DONE_DATE, [doneDate])
+// }
+//
+// exports.GetProjectsByDoneDate = GetProjectsByDoneDate
 
 /**
  * Export a project model with only the items needed.

@@ -24,6 +24,7 @@ import { get } from 'lodash-es'
 import status from '../constants/status.js'
 import Card from '../components/general/Card'
 import TaskItem from '../components/TaskItem'
+import columns from '../constants/columns'
 
 export default {
   name: 'TasksList',
@@ -41,26 +42,30 @@ export default {
     ready: function () {
       return this.$store.getters.ready
     },
+    user: function () {
+      return this.$store.getters['user/user']
+    },
     userOptions: function () {
-      return this.$store.getters['user/options'].tasks
+      return this.$store.getters['user/options']
     },
     tasks: function () {
-      if (!this.userOptions.showDone) {
+      if (!this.userOptions.tasks.showDone) {
         return this.$store.getters['tasks/tasksNotDone']
       }
       return this.$store.getters['tasks/tasks']
-    },
-    taskHistory: function () {
-      return this.$store.getters['tasks/taskHistory']
     }
   },
   watch: {
     ready: function (input) {
       if (input) this.getTasks()
     },
-    'userOptions.showDone': function (input, oldValue) {
+    'userOptions.tasks.showDone': function (input, oldValue) {
       if (input === oldValue) return
-      return this.getTasks()
+      this.getTasks()
+    },
+    'userOptions.sort': function (input, oldValue) {
+      if (input === oldValue) return
+      this.getTasks()
     }
   },
   mounted () {
@@ -68,23 +73,31 @@ export default {
     return this.getTasks()
   },
   methods: {
-    getTasks: function () {
-      if (this.project < 0) return
-      if (this.taskHistory.project === this.project &&
-        this.userOptions.showDone === this.taskHistory.showDone) {
-        return
+    getParams: function () {
+      return {
+        user: this.user.id,
+        showDone: !this.userOptions.tasks.showDone ? false : undefined,
+        sortAsc: this.userOptions.sort.asc ? true : undefined,
+        sortType: columns[this.userOptions.sort.type],
+        project: this.project
       }
+    },
+    getTasks: function () {
+      const params = this.getParams()
+      const history = this.$store.getters['tasks/history']
+      const isSame = Object.keys(history).filter(k => history[k] !== params[k]).length < 1
+      if (isSame) return
 
-      this.$store.commit('tasks/taskHistory',
-        { showDone: this.userOptions.showDone })
-      if (this.taskHistory.project !== this.project) {
+      // update store with last request
+      this.$store.commit('tasks/setHistory', params)
+
+      // empty store if user changed ..
+      if (history.project !== this.project) {
         this.$store.commit('tasks/taskSet', [])
       }
 
-      const params = { project: this.project }
-      if (!this.userOptions.showDone) params.showDone = false
-
-      return this.$store.dispatch('tasks/getTasksByUserOrProject', params)
+      return this.$store.dispatch('tasks/getTasksByUserOrProject',
+        this.getParams())
         .catch(err => this.handleError(err, this.getTasks))
     },
     /**
@@ -94,7 +107,8 @@ export default {
      */
     handleError: function (err, cbRetry) {
       const errStatus = get(err, 'response.status')
-      if (errStatus && errStatus === 401 && this.$store.getters['user/isAnon']) {
+      if (errStatus && errStatus === 401 &&
+        this.$store.getters['user/isAnon']) {
         if (!cbRetry) return
         return cbRetry()
       }
@@ -102,6 +116,8 @@ export default {
       this.status = status.ERROR
       this.$emit(status.ERROR, err)
       this.$store.commit('toasts/toastAdd', err)
+
+      throw err
     }
   }
 }
