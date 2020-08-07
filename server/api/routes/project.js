@@ -122,7 +122,7 @@ module.exports = function (app) {
     function (req, res) {
 
       // todo implement pagination or search by date ..
-      let showDone = null
+      let showDone
       let sortAsc = false
       let sortType = 'updated'
 
