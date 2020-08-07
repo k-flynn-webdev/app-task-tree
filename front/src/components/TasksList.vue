@@ -53,9 +53,6 @@ export default {
         return this.$store.getters['tasks/tasksNotDone']
       }
       return this.$store.getters['tasks/tasks']
-    },
-    taskHistory: function () {
-      return this.$store.getters['tasks/taskHistory']
     }
   },
   watch: {
@@ -88,11 +85,11 @@ export default {
     getTasks: function () {
       const params = this.getParams()
       const history = this.$store.getters['tasks/history']
-      const isSame = JSON.stringify(params) === JSON.stringify(history)
+      const isSame = Object.keys(history).filter(k => history[k] !== params[k]).length < 1
       if (isSame) return
 
       // update store with last request
-      this.$store.commit('tasks/history', params)
+      this.$store.commit('tasks/setHistory', params)
 
       // empty store if user changed ..
       if (history.project !== this.project) {

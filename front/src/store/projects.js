@@ -199,9 +199,6 @@ export default {
       return ProjectService.all(input)
         .then(res => {
           if (res.data.data.projects.length > 0) {
-            context.commit('projectHistory', {
-              user: res.data.data.projects[0].user
-            })
             context.commit('projectSet', res.data.data.projects)
           }
           return res
