@@ -1,3 +1,4 @@
+
 const DELAY = 500
 const DELAY_SHORT = 250
 const DELAY_BLIP = 33
@@ -24,22 +25,27 @@ const DEFAULT_USER_OPTIONS = () => {
     },
     sort: {
       asc: true,
-      type: 'date'
+      type: 'updated'
     }
   }
 }
 
 const DEFAULT_TASK_HISTORY = () => {
   return {
+    user: -1,
     project: -1,
-    showDone: false
+    showDone: null,
+    sortAsc: null,
+    sortType: ''
   }
 }
 
 const DEFAULT_PROJECT_HISTORY = () => {
   return {
     user: -1,
-    showDone: false
+    showDone: null,
+    sortAsc: null,
+    sortType: ''
   }
 }
 

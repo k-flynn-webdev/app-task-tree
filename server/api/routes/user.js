@@ -43,9 +43,9 @@ module.exports = function (app) {
         const allDetails = [
           userObj,
           tasks.GetTasksByUser(userId),
-          tasks.GetTasksByIsDone(userId, true),
+          tasks.GetTasksByUser(userId, { showDone: true }),
           projects.GetProjectsByUser(userId),
-          projects.GetProjectsByIsDone(userId, true)]
+          projects.GetProjectsByUser(userId, { showDone: true }) ]
 
         return Promise.all(allDetails)
       })

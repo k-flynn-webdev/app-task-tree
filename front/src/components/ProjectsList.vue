@@ -81,14 +81,16 @@ export default {
       }
     },
     getProjects: function () {
-      if (this.user.id < 0) return
+      const params = this.getParams()
+      const history = this.$store.getters['projects/history']
+      const isSame = JSON.stringify(params) === JSON.stringify(history)
+      if (isSame) return
 
       // update store with last request
-      // this.$store.commit('projects/projectHistory',
-      //   { showDone: this.userOptions.projects.showDone })
+      this.$store.commit('projects/history', params)
 
       // empty store if user changed ..
-      if (this.projectHistory.user !== this.user.id) {
+      if (history.user !== this.user) {
         this.$store.commit('projects/projectSet', [])
       }
 
@@ -112,6 +114,8 @@ export default {
       this.status = status.ERROR
       this.$emit(status.ERROR, err)
       this.$store.commit('toasts/toastAdd', err)
+
+      throw err
     }
   }
 }

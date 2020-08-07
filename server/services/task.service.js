@@ -205,15 +205,15 @@ function GetTasksByProject(project, params) {
   const values = [project]
   let SearchTerm = DB_GET_TASK_BY_PROJECT
 
-  if (params.showDone !== null) {
-    SearchTerm += ' AND isDone = ??'
+  if (params && params.showDone !== undefined) {
+    SearchTerm += ' AND isDone = ?'
     values.push(params.showDone ? 1 : 0)
   }
-  if (params.sortType !== null) {
+  if (params && params.sortType !== undefined) {
     SearchTerm += ' ORDER BY ??'
     values.push(params.sortType)
   }
-  if (params.sortAsc !== null && params.sortAsc === false) {
+  if (params && params.sortAsc !== undefined && params.sortAsc === false) {
     SearchTerm += ' DESC'
   }
 
@@ -258,31 +258,31 @@ function GetTasksByUser(user) {
 
 exports.GetTasksByUser = GetTasksByUser
 
-/**
- * Returns all task objects that are done
- *
- * @param   {number}  user
- * @param   {bool}    isDone
- * @return  {array}   task object
- */
-function GetTasksByIsDone(user, isDone) {
-  return db.Query(DB_GET_TASK_BY_IS_DONE, [user, isDone === true? 1: 0 ])
-}
+// /**
+//  * Returns all task objects that are done
+//  *
+//  * @param   {number}  user
+//  * @param   {bool}    isDone
+//  * @return  {array}   task object
+//  */
+// function GetTasksByIsDone(user, isDone) {
+//   return db.Query(DB_GET_TASK_BY_IS_DONE, [user, isDone === true? 1: 0 ])
+// }
+//
+// exports.GetTasksByIsDone = GetTasksByIsDone
 
-exports.GetTasksByIsDone = GetTasksByIsDone
-
-/**
- * Returns all task objects that are done
- *
- * @param   {bool}    isDone
- * @return  {array}  task object
- */
-function GetTasksByDoneDate(doneDate) {
-  // todo make this work better with dates before & after .. pagination support needed
-  return db.Query(DB_GET_TASK_BY_IS_DONE_DATE, [doneDate])
-}
-
-exports.GetTasksByDoneDate = GetTasksByDoneDate
+// /**
+//  * Returns all task objects that are done
+//  *
+//  * @param   {bool}    isDone
+//  * @return  {array}  task object
+//  */
+// function GetTasksByDoneDate(doneDate) {
+//   // todo make this work better with dates before & after .. pagination support needed
+//   return db.Query(DB_GET_TASK_BY_IS_DONE_DATE, [doneDate])
+// }
+//
+// exports.GetTasksByDoneDate = GetTasksByDoneDate
 
 /**
  * Export a task model with only the items needed.

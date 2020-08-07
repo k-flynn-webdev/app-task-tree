@@ -22,21 +22,21 @@ module.exports = Init
  */
 function UpdateProject ({ project }) {
   return tasks.GetTasksByProject(project)
-  .then(allTasks => {
-      const prjUpd = {
-        id: project,
-        tasksTotal: allTasks.length,
-        tasksDone: allTasks.filter(item => item.isDone === 1).length,
-        isDone: false
-      }
-
-    if (prjUpd.tasksTotal > 0){
-      prjUpd.isDone = (prjUpd.tasksDone === prjUpd.tasksTotal)
-    }
-
-     return projects.Update(prjUpd)
-  })
-  .catch(err => {
-    logger.Log(err)
-  })
+  // .then(allTasks => {
+  //     // const prjUpd = {
+  //     //   id: project,
+  //     //   tasksTotal: allTasks.length,
+  //     //   tasksDone: allTasks.filter(item => item.isDone === 1).length,
+  //     //   isDone: false
+  //     // }
+  //
+  //   // if (prjUpd.tasksTotal > 0){
+  //   //   prjUpd.isDone = (prjUpd.tasksDone === prjUpd.tasksTotal)
+  //   // }
+  //   //
+  //   //  return projects.Update(prjUpd)
+  // })
+  // .catch(err => {
+  //   logger.Log(err)
+  // })
 }

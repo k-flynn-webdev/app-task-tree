@@ -86,14 +86,16 @@ export default {
       }
     },
     getTasks: function () {
-      if (this.user.id < 0) return
+      const params = this.getParams()
+      const history = this.$store.getters['tasks/history']
+      const isSame = JSON.stringify(params) === JSON.stringify(history)
+      if (isSame) return
 
       // update store with last request
-      // this.$store.commit('tasks/taskHistory',
-      //   { showDone: this.userOptions.tasks.showDone })
+      this.$store.commit('tasks/history', params)
 
       // empty store if user changed ..
-      if (this.taskHistory.user !== this.user.id) {
+      if (history.project !== this.project) {
         this.$store.commit('tasks/taskSet', [])
       }
 
@@ -117,6 +119,8 @@ export default {
       this.status = status.ERROR
       this.$emit(status.ERROR, err)
       this.$store.commit('toasts/toastAdd', err)
+
+      throw err
     }
   }
 }
