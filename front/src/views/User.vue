@@ -2,7 +2,7 @@
 
   <div>
 
-    <router-link to="/"
+    <router-link :to="{ name: 'home' }"
                  title="Home"
                  class="user__home text-bold fill-fore">
       <icBack class="md" />

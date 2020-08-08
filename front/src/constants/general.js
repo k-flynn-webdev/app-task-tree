@@ -5,6 +5,10 @@ const DELAY_BLIP = 33
 const DELAY_SUCCESS = 900
 const DELAY_ERROR = 6000
 
+/**
+ * @returns {User}
+ * @constructor
+ */
 const DEFAULT_USER = () => {
   return {
     id: -1,
@@ -15,6 +19,10 @@ const DEFAULT_USER = () => {
   }
 }
 
+/**
+ * @returns {UserOptions}
+ * @constructor
+ */
 const DEFAULT_USER_OPTIONS = () => {
   return {
     tasks: {
@@ -30,6 +38,27 @@ const DEFAULT_USER_OPTIONS = () => {
   }
 }
 
+/**
+ * @typedef {object} OptionShowDone
+ * @property {boolean}  showDone      Show done state
+ */
+/**
+ * @typedef {object} OptionSort
+ * @property {boolean}  asc           Direction of sorting [ asc - desc]
+ * @property {string}   type          type of sort [ update | created | done | scale ]
+ */
+/**
+ * @typedef {object} UserOptions
+ *
+ * @property {OptionShowDone}   tasks     Task options
+ * @property {OptionShowDone}   projects  Project options
+ * @property {OptionSort}       sort      Sorting options of Tasks/Projects
+ */
+
+/**
+ * @returns {TaskHistory}
+ * @constructor
+ */
 const DEFAULT_TASK_HISTORY = () => {
   return {
     project: -1,
@@ -39,6 +68,19 @@ const DEFAULT_TASK_HISTORY = () => {
   }
 }
 
+/**
+ * @typedef {object} TaskHistory
+ *
+ * @property {number}     project     Project Id
+ * @property {boolean}    showDone    showDone state of last API call
+ * @property {boolean}    sortAsc     sortAsc state of last API call
+ * @property {string}     sortType    sortType state of last API call
+ */
+
+/**
+ * @returns {ProjectHistory}
+ * @constructor
+ */
 const DEFAULT_PROJECT_HISTORY = () => {
   return {
     user: -1,
@@ -48,6 +90,20 @@ const DEFAULT_PROJECT_HISTORY = () => {
   }
 }
 
+/**
+ * @typedef {object} ProjectHistory
+ *
+ * @property {number}     user        User Id
+ * @property {boolean}    showDone    showDone state of last API call
+ * @property {boolean}    sortAsc     sortAsc state of last API call
+ * @property {string}     sortType    sortType state of last API call
+ */
+
+/**
+ * @param user
+ * @returns {Project}
+ * @constructor
+ */
 const DEFAULT_PROJECT = (user = -1) => {
   return {
     id: -1,
@@ -60,6 +116,11 @@ const DEFAULT_PROJECT = (user = -1) => {
   }
 }
 
+/**
+ * @param user
+ * @returns {Project}
+ * @constructor
+ */
 const DEFAULT_PROJECT_NO_ID = (user = -1) => {
   return {
     name: 'New Project',
@@ -71,6 +132,11 @@ const DEFAULT_PROJECT_NO_ID = (user = -1) => {
   }
 }
 
+/**
+ * @param user
+ * @returns {Task}
+ * @constructor
+ */
 const DEFAULT_TASK = (user = -1) => {
   return {
     id: -1,
@@ -81,6 +147,10 @@ const DEFAULT_TASK = (user = -1) => {
   }
 }
 
+/**
+ * @returns {UserTotals}
+ * @constructor
+ */
 const DEFAULT_TOTALS = () => {
   return {
     tasks: 0,
@@ -89,6 +159,15 @@ const DEFAULT_TOTALS = () => {
     projectsDone: 0
   }
 }
+
+/**
+ * @typedef {object} UserTotals
+ *
+ * @property {number}     tasks           Total tasks
+ * @property {number}     tasksDone       Total tasks done
+ * @property {number}     projects        Total projects
+ * @property {number}     projectsDone    Total projects done
+ */
 
 export default {
   DELAY,

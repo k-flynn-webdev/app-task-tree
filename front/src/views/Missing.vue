@@ -2,7 +2,7 @@
 
   <div>
 
-    <router-link to="/"
+    <router-link :to="{ name: 'home' }"
                  title="Home"
                  class="user__home text-bold fill-fore">
       <icBack class="md" />
@@ -21,7 +21,7 @@
           <div class="text-center">
 
             <p> The page you're looking for is missing. </p>
-            <router-link to="/"
+            <router-link :to="{ name: 'home' }"
                          title="Home">
               <p class="text-bold no-margin">Home</p>
               <icUserAnon class="xl fill-fore margin" />

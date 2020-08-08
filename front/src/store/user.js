@@ -26,25 +26,30 @@ function defaultOptions () {
 export default {
   namespaced: true,
   state: {
+    /**
+     * Current User
+     *
+     * @returns {User}
+     */
     user: defaultUser(),
+    /**
+     * User selected options for show/hide projects/tasks that are done
+     *
+     * @returns {UserOptions}
+     */
     options: defaultOptions(),
+    /**
+     * user tasks / projects meta totals
+     *
+     * @returns {UserTotals}
+     */
     totals: general.DEFAULT_TOTALS()
   },
   getters: {
     user: (state) => state.user,
-    /**
-     * user tasks / projects meta totals
-     *
-     * @param state
-     * @returns {{projects: number, projectsDone: number, tasksDone: number, tasks: number}}
-     */
+
     totals: (state) => state.totals,
-    /**
-     * User selected options for show/hide projects/tasks that are done
-     *
-     * @param state
-     * @returns {undefined|any|{projects: {showDone: boolean}, tasks: {showDone: boolean}}}
-     */
+
     options: (state) => state.options,
     isAnon: (state) => state.user.role === status.ANON && state.user.id !== -1,
     isUser: (state) => state.user.role === status.USER,
@@ -178,7 +183,7 @@ export default {
       return UserService.createAnon()
         .then(res => {
           context.commit('user', res.data.data.account)
-          return res.data.data.account
+          return res
         })
     },
     /**

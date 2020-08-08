@@ -29,3 +29,17 @@ const services = {
 }
 
 export default services
+
+/**
+ * @typedef {object} Project
+ *
+ * @property {number}   [id]          Unique ID
+ * @property {string}   name          Name of project
+ * @property {number}   user          User Id
+ * @property {number}   tasksTotal    Total tasks related
+ * @property {number}   tasksDone     Total tasks related that are done
+ * @property {boolean}  isDone        Task state
+ * @property {date}     doneDate      Date Task was completed
+ * @property {date}     [created]     Date Task was created
+ * @property {date}     [updated]     Date Task was updated
+ */
