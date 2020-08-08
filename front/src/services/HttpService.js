@@ -21,7 +21,7 @@ function httpSuccess (res) {
 
 function httpError (error) {
   if (error.response.data.status === 401) {
-    const isAnon = (store.getters['user/isAnon'])
+    const isAnon = store.getters['user/isAnon']
     const signOut = isAnon
       ? store.dispatch('user/getAnonToken')
       : store.dispatch('user/logout')

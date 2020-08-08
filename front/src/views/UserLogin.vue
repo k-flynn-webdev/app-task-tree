@@ -127,14 +127,6 @@ export default {
 
       return this.$store.dispatch('user/login', this.form)
         .then(() => this.$store.commit('ready', true))
-        .then(() => {
-          const userOptions = this.$store.getters['user/options'].projects
-          const params = {
-            user: this.$store.getters['user/user'].id,
-            showDone: !userOptions.showDone ? false : null
-          }
-          return this.$store.dispatch('projects/getProjectsByUserId', params)
-        })
         .then(res => this.handleSuccess(res))
         .catch(err => this.handleError(err))
     },
