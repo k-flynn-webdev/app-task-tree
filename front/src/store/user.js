@@ -46,6 +46,10 @@ export default {
      * @returns {undefined|any|{projects: {showDone: boolean}, tasks: {showDone: boolean}}}
      */
     options: (state) => state.options,
+    isAnon: (state) => state.user.role === status.ANON && state.user.id !== -1,
+    isUser: (state) => state.user.role === status.USER,
+    isAdmin: (state) => state.user.role === status.ADMIN,
+    isValidUser: (state) => !(state.user.id < 0),
     /**
      * Returns if the User is currently logged in
      *
@@ -53,10 +57,7 @@ export default {
      * @param getters
      * @returns {boolean}
      */
-    isLoggedIn: (state, getters) => (getters.isUser || getters.isAdmin),
-    isAnon: (state) => state.user.role === status.ANON && state.user.id !== -1,
-    isUser: (state) => state.user.role === status.USER,
-    isAdmin: (state) => state.user.role === status.ADMIN
+    isLoggedIn: (state, getters) => (getters.isUser || getters.isAdmin)
   },
   mutations: {
     user: function (state, input) {

@@ -10,12 +10,12 @@
     <div class="task__project__header__controls">
 
       <div class="flex-row">
-        <ProjectTaskSwitch :mode="mode" :is-enabled="validUser" />
+        <ProjectTaskSwitch :mode="mode" :is-enabled="isValidUser" />
 
-        <UserInfoMini :is-enabled="validUser" />
+        <UserInfoMini :is-enabled="isValidUser" />
       </div>
 
-      <InputBar :mode="mode" :is-enabled="validUser" />
+      <InputBar :mode="mode" :is-enabled="isValidUser" />
 
     </div>
 
@@ -23,12 +23,12 @@
 </template>
 
 <script>
-import modes from '../constants/modes'
-import general from '../constants/general'
 import InputBar from '../components/InputBar'
 import UserInfoMini from '../components/UserInfoMini'
 import ProjectInfoName from '../components/ProjectInfoName'
 import ProjectTaskSwitch from '../components/ProjectTaskSwitch'
+import { mapGetters } from 'vuex'
+import status from '../constants/status'
 
 export default {
   name: 'Header',
@@ -41,16 +41,13 @@ export default {
   props: {
     mode: {
       type: String,
-      default: modes.CLEAR
-    },
-    user: {
-      type: Object,
-      default: general.DEFAULT_USER()
-    },
-    validUser: {
-      type: Boolean,
-      default: false
+      default: status.CLEAR
     }
+  },
+  computed: {
+    ...mapGetters({
+      isValidUser: 'user/isValidUser'
+    })
   }
 }
 </script>

@@ -13,6 +13,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     ready: false,
+    /**
+     * Status of the app, eg success , error or loading/waiting on a API
+     */
     status: status.CLEAR
   },
   getters: {

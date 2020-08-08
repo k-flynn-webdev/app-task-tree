@@ -1,10 +1,7 @@
 <template>
   <div class="relative">
 
-    <Header
-      :mode="mode"
-      :user="user"
-      :valid-user="validUser" />
+    <Header :mode="mode" />
 
     <router-view />
 
@@ -17,6 +14,7 @@ import Header from '../components/Header'
 import status from '@/constants/status'
 import ProjectMixin from '../mixins/ProjectMixin'
 import { get } from 'lodash-es'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Home',
@@ -28,29 +26,22 @@ export default {
     mode: {
       type: String,
       default: modes.CLEAR
-    },
-    project: {
-      type: Number,
-      default: -1
     }
   },
   computed: {
-    user: function () {
-      return this.$store.getters['user/user']
-    },
-    validUser: function () {
-      return !(this.user.id === null || this.user.id < 0)
-    }
+    ...mapGetters({
+      isValidUser: 'user/isValidUser'
+    })
   },
   watch: {
-    validUser: {
+    isValidUser: {
       handler: 'fetchList',
       immediate: true
     }
   },
   methods: {
     fetchList () {
-      if (!this.validUser) return
+      if (!this.isValidUser) return
       const params = this.createParams()
       return this.getProjects(params)
         .then(() => this.init())
