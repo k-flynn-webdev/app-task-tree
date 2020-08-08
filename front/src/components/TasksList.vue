@@ -21,10 +21,10 @@
 
 <script>
 import { get } from 'lodash-es'
+import TaskMixin from '../mixins/TaskMixin'
 import status from '../constants/status.js'
 import Card from '../components/general/Card'
 import TaskItem from '../components/TaskItem'
-import columns from '../constants/columns'
 
 export default {
   name: 'TasksList',
@@ -32,6 +32,7 @@ export default {
     Card,
     TaskItem
   },
+  mixins: [TaskMixin],
   props: {
     project: {
       type: Number,
@@ -39,66 +40,38 @@ export default {
     }
   },
   computed: {
-    ready: function () {
-      return this.$store.getters.ready
-    },
-    user: function () {
-      return this.$store.getters['user/user']
-    },
-    userOptions: function () {
-      return this.$store.getters['user/options']
+    ready () {
+      return this.$store.state.ready
     },
     tasks: function () {
       if (!this.userOptions.tasks.showDone) {
         return this.$store.getters['tasks/tasksNotDone']
       }
       return this.$store.getters['tasks/tasks']
+    },
+    user: function () {
+      return this.$store.getters['user/user']
+    },
+    userOptions: function () {
+      return this.$store.getters['user/options']
     }
   },
   watch: {
-    ready: function (input) {
-      if (input) this.getTasks()
-    },
-    'userOptions.tasks.showDone': function (input, oldValue) {
-      if (input === oldValue) return
-      this.getTasks()
-    },
-    'userOptions.sort': function (input, oldValue) {
-      if (input === oldValue) return
-      this.getTasks()
-    }
+    ready: 'fetchList',
+    'userOptions.sort': 'fetchList',
+    'userOptions.tasks.showDone': 'fetchList'
   },
-  mounted () {
-    if (!this.ready) return
-    return this.getTasks()
+  created () {
+    if (this.ready) this.fetchList()
   },
   methods: {
-    getParams: function () {
-      return {
-        user: this.user.id,
-        showDone: !this.userOptions.tasks.showDone ? false : undefined,
-        sortAsc: this.userOptions.sort.asc ? true : undefined,
-        sortType: columns[this.userOptions.sort.type],
-        project: this.project
-      }
-    },
-    getTasks: function () {
-      const params = this.getParams()
-      const history = this.$store.getters['tasks/history']
-      const isSame = Object.keys(history).filter(k => history[k] !== params[k]).length < 1
-      if (isSame) return
-
-      // update store with last request
-      this.$store.commit('tasks/setHistory', params)
-
-      // empty store if user changed ..
-      if (history.project !== this.project) {
-        this.$store.commit('tasks/taskSet', [])
-      }
-
-      return this.$store.dispatch('tasks/getTasksByUserOrProject',
-        this.getParams())
-        .catch(err => this.handleError(err, this.getTasks))
+    /**
+     * Fetch Projects list from API on request/change
+     */
+    fetchList () {
+      const params = this.createParams({ project: this.project })
+      return this.getTasks(params)
+        .catch(err => this.handleError(err, this.fetchList))
     },
     /**
      * Handle error response
@@ -108,8 +81,8 @@ export default {
     handleError: function (err, cbRetry) {
       const errStatus = get(err, 'response.status')
       if (errStatus && errStatus === 401 &&
-        this.$store.getters['user/isAnon']) {
-        if (!cbRetry) return
+        this.$store.getters['user/isAnon'] &&
+        cbRetry) {
         return cbRetry()
       }
 

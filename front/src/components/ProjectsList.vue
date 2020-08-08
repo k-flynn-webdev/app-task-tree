@@ -20,10 +20,10 @@
 
 <script>
 import { get } from 'lodash-es'
-import Card from '../components/general/Card'
-import ProjectItem from '../components/ProjectItem'
 import status from '../constants/status'
-import columns from '../constants/columns'
+import Card from '../components/general/Card'
+import ProjectMixin from '../mixins/ProjectMixin'
+import ProjectItem from '../components/ProjectItem'
 
 export default {
   name: 'ProjectsList',
@@ -31,16 +31,8 @@ export default {
     Card,
     ProjectItem
   },
+  mixins: [ProjectMixin],
   computed: {
-    ready: function () {
-      return this.$store.getters.ready
-    },
-    user: function () {
-      return this.$store.getters['user/user']
-    },
-    userOptions: function () {
-      return this.$store.getters['user/options']
-    },
     project: function () {
       return this.$store.getters['projects/current']
     },
@@ -49,51 +41,23 @@ export default {
         return this.$store.getters['projects/projectsNotDone']
       }
       return this.$store.getters['projects/projects']
+    },
+    userOptions: function () {
+      return this.$store.getters['user/options']
     }
   },
   watch: {
-    ready: function (input) {
-      if (input) this.getProjects()
-    },
-    'userOptions.projects.showDone': function (input, oldValue) {
-      if (input === oldValue) return
-      this.getProjects()
-    },
-    'userOptions.sort': function (input, oldValue) {
-      if (input === oldValue) return
-      this.getProjects()
-    }
-  },
-  mounted () {
-    if (!this.ready) return
-    return this.getProjects()
+    'userOptions.sort': 'fetchList',
+    'userOptions.projects.showDone': 'fetchList'
   },
   methods: {
-    getParams: function () {
-      return {
-        user: this.user.id,
-        showDone: !this.userOptions.projects.showDone ? false : undefined,
-        sortAsc: this.userOptions.sort.asc ? true : undefined,
-        sortType: columns[this.userOptions.sort.type]
-      }
-    },
-    getProjects: function () {
-      const params = this.getParams()
-      const history = this.$store.getters['projects/history']
-      const isSame = Object.keys(history).filter(k => history[k] !== params[k]).length < 1
-      if (isSame) return
-
-      // update store with last request
-      this.$store.commit('projects/setHistory', params)
-
-      // empty store if user changed ..
-      if (history.user !== this.user) {
-        this.$store.commit('projects/projectSet', [])
-      }
-
-      return this.$store.dispatch('projects/getProjectsByUserId',
-        this.getParams())
-        .catch(err => this.handleError(err, this.getProjects))
+    /**
+     * Fetch Projects list from API on request/change
+     */
+    fetchList () {
+      const params = this.createParams()
+      return this.getProjects(params)
+        .catch(err => this.handleError(err, this.fetchList))
     },
     /**
      * Handle error response
@@ -103,8 +67,8 @@ export default {
     handleError: function (err, cbRetry) {
       const errStatus = get(err, 'response.status')
       if (errStatus && errStatus === 401 &&
-        this.$store.getters['user/isAnon']) {
-        if (!cbRetry) return
+        this.$store.getters['user/isAnon'] &&
+        cbRetry) {
         return cbRetry()
       }
 
