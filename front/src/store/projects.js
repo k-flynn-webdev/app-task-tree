@@ -2,6 +2,8 @@ import Vue from 'vue'
 import general from '../constants/general'
 import ProjectService from '../services/ProjectService.js'
 
+const allowedKeys = general.DEFAULT_PROJECT_HISTORY()
+
 export default {
   namespaced: true,
   state: {
@@ -41,7 +43,9 @@ export default {
   mutations: {
     setHistory: (state, input) => {
       Object.entries(input).forEach(([key, value]) => {
-        Vue.set(state.history, key, value)
+        if (allowedKeys[key] !== undefined) {
+          Vue.set(state.history, key, value)
+        }
       })
     },
     /**
@@ -95,6 +99,8 @@ export default {
           return state.projects[i]
         }
       }
+
+      state.projects.unshift(input)
     },
     /**
      * Remove a project item
@@ -174,14 +180,13 @@ export default {
      *    update the store data
      *
      * @param {object}    context
-     * @param {object}    input params
+     * @param {object}    input = { id: projectId }
      * @returns {promise} all tasks
      */
     getProjectById: function (context, input) {
       return ProjectService.get(input)
         .then(res => {
           context.commit('projectReplace', res.data.data.project)
-          if (context.getters.current.id !== input.id) return
           context.commit('projectCurrent', res.data.data.project)
           return res.data.data.project
         })
@@ -200,8 +205,11 @@ export default {
         .then(res => {
           if (res.data.data.projects.length > 0) {
             context.commit('projectSet', res.data.data.projects)
+            if (context.state.current.id < 0) {
+              context.commit('projectCurrent', res.data.data.projects[0])
+            }
           }
-          return res
+          return res.data.data.projects
         })
     }
     // for delayed/time consuming actions

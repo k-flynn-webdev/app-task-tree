@@ -3,6 +3,8 @@ import TaskService from '../services/TaskService.js'
 import general from '../constants/general'
 import helpers from '../services/Helpers'
 
+const allowedKeys = general.DEFAULT_TASK_HISTORY()
+
 export default {
   namespaced: true,
   state: {
@@ -34,7 +36,9 @@ export default {
   mutations: {
     setHistory: (state, input) => {
       Object.entries(input).forEach(([key, value]) => {
-        Vue.set(state.history, key, value)
+        if (allowedKeys[key] !== undefined) {
+          Vue.set(state.history, key, value)
+        }
       })
     },
     /**
@@ -78,6 +82,8 @@ export default {
           return state.tasks[i]
         }
       }
+
+      state.tasks.unshift(input)
     },
     /**
      * Remove a task item
@@ -129,10 +135,8 @@ export default {
     update: function (context, input) {
       return TaskService.update(input)
         .then(res => {
-        // todo this is a horrible way to handle it
-        //   if (!res.data) return
           if (input.isDone !== undefined) {
-          // helps show a task is done visually if showDone is false
+            // helps show a task is done visually if showDone is false
             helpers.timeDelay(() => {
               context.commit('taskReplace', res.data.data.task)
             }, general.DELAY_SUCCESS)
