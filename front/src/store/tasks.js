@@ -13,8 +13,8 @@ export default {
   },
   getters: {
     history: (state) => state.history,
-    tasksDone: (state) => state.tasks.filter(item => item.doneDate && item.doneDate.length > 5),
     tasksNotDone: (state) => state.tasks.filter(item => !item.doneDate),
+    tasksDone: (state) => state.tasks.filter(item => item.doneDate && item.doneDate.length > 5),
     /**
      * Returns all tasks
      *
@@ -23,13 +23,13 @@ export default {
      */
     tasks: (state) => state.tasks, // todo: future freeze arrays of large size
     /**
-     * Returns a function to get a task by ID
+     * Returns a function to find a Task by ID
      *
      * @param {object}      state
-     * @param {string}      id
+     * @param {number}      id
      * @returns {function}
      */
-    task: (state) => (id) => {
+    findTask: (state) => (id) => {
       return state.tasks.find(item => item.id === id)
     }
   },
@@ -165,7 +165,7 @@ export default {
      * @param {object}    input project id
      * @returns {promise} all tasks
      */
-    getTasksByUserOrProject: function (context, input) {
+    getTasksByProjectId: function (context, input) {
       return TaskService.all(input)
         .then(res => {
           if (res.data.data.tasks.length > 0) {

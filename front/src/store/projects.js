@@ -27,17 +27,17 @@ export default {
      * @returns {Array}
      */
     projects: (state) => state.projects,
-    projectsDone: (state) => state.projects.filter(item => item.doneDate && item.doneDate.length > 5),
     projectsNotDone: (state) => state.projects.filter(item => !item.doneDate),
+    projectsDone: (state) => state.projects.filter(item => item.doneDate && item.doneDate.length > 5),
     /**
      * Returns a function to find a Project by ID
      *
      * @param {object}      state
-     * @param {string}      id
+     * @param {number}      id
      * @returns {function}
      */
     findProject: (state) => (id) => {
-      return state.projects.find(project => project.id === id)
+      return state.projects.find(item => item.id === id)
     }
   },
   mutations: {
