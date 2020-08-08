@@ -32,7 +32,6 @@ const DEFAULT_USER_OPTIONS = () => {
 
 const DEFAULT_TASK_HISTORY = () => {
   return {
-    user: -1,
     project: -1,
     showDone: null,
     sortAsc: null,
