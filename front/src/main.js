@@ -2,7 +2,6 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from './store'
 import router from './router'
-import Paths from '@/constants/paths'
 import status from './constants/status'
 import './styles/index.scss'
 
@@ -26,9 +25,6 @@ new Vue({
       .then(() => this.$store.dispatch('user/get'))
       .then(() => {
         this.$store.commit('ready', true)
-      })
-      .then(() => {
-        this.$router.push({ name: Paths.PROJECTS })
       })
       .catch(err => this.$store.commit('toasts/toastAdd', err))
   }
