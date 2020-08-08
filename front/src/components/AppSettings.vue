@@ -86,16 +86,27 @@
        <li class="label">Sort</li>
 
        <li
-         v-for="item in sort"
-         class="li-min"
-        :key="item">
-         <label class="show-label clickable" @click="toggleSort(item)">
+        v-for="(sortRow, idx) in sortArray"
+        class="li-min"
+        :key="idx">
 
-           <span class="color-bg text-bold name settings__holder__sort-item"
-           :class="{ 'alpha': currentSort !== item }">{{ item }}</span>
+          <label
+            v-for="(item, idx2) in sortRow"
+            :key="item"
+            class="show-label clickable"
+            :class="{ 'label-right': idx2 > 0}"
+            @click="toggleSort(item)"
+          >
+            <span
+              class="color-bg text-bold name"
+              :class="{ 'alpha': currentSort !== item }">
+              {{ item }}
+            </span>
 
-           <span v-if="currentSort === item"
-                 class="display-inline-b align-middle settings__holder__sort-item-arrow">
+           <span
+             v-if="currentSort === item"
+             class="display-inline-b align-middle settings__holder__sort-item-arrow"
+           >
              <icLeft
               class="fill-bg transition-slow"
               :class="[ userOptions.sort.asc? 'rot-90' : 'rot-270' ]"
@@ -131,11 +142,6 @@ export default {
     icClose,
     icOptions
   },
-  data () {
-    return {
-      sort: SORT_TYPES
-    }
-  },
   props: {
     value: {
       type: Boolean,
@@ -143,6 +149,14 @@ export default {
     }
   },
   computed: {
+    sortArray () {
+      const rows = []
+      for (let row = 0; row < SORT_TYPES.length; row += 2) {
+        rows.push([SORT_TYPES[row], SORT_TYPES[row + 1]])
+      }
+      return rows
+    },
+
     userOptions: function () {
       return this.$store.getters['user/options']
     },

@@ -91,7 +91,6 @@ body {
       }
 
       ul {
-        margin-right: $unit-default * 2;
       }
 
       .button {
@@ -128,8 +127,18 @@ body {
         }
 
         &.li-min {
-          padding-bottom: $margin-default * 0.5;
-          margin-bottom: $margin-default * 0.5;
+          position: relative;
+          width: 100%;
+
+          label {
+            display: inline-block;
+            min-width: $unit-default * 5;
+
+            &.label-right {
+              float: right;
+              text-align: right;
+            }
+          }
         }
       }
 
@@ -144,9 +153,17 @@ body {
       &__sort-item {
         min-width: $unit-default * 5;
 
+        &-left {
+          margin-right: auto;
+        }
+
         &-arrow {
+          text-align: center;
+          position: absolute;
+          top: 50%;
+          left: 50%;
           font-size: $unit-default * 0.5;
-          transform: scale(2.5);
+          transform: translateX(-50%) translateY(-50%) scale(2.5);
         }
       }
     }

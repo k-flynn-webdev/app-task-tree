@@ -24,7 +24,7 @@ const DEFAULT_USER_OPTIONS = () => {
       showDone: true
     },
     sort: {
-      asc: true,
+      asc: false,
       type: 'updated'
     }
   }
