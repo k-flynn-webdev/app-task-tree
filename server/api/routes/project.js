@@ -97,14 +97,21 @@ module.exports = function (app) {
 
       project.GetProjectByID(req.params.project)
       .then(projectObj => {
-        if (!projectObj || projectObj.length < 1) {
+        const projectFound = project.SafeExport(mysqlVal(projectObj))
+
+        if (!projectFound || projectFound.length < 1) {
+          throw { status: 404,
+            message: constants.errors.PROJECT_NOT_FOUND }
+        }
+
+        if (req.body.token.id !== projectFound.user) {
           throw { status: 404,
             message: constants.errors.PROJECT_NOT_FOUND }
         }
 
         exit(res, 200,
           constants.messages.SUCCESS,
-          { project: project.SafeExport(mysqlVal(projectObj)) })
+          { project: projectFound })
       })
       .catch(err => {
         logger.Log(err.message || err, req)
@@ -116,7 +123,6 @@ module.exports = function (app) {
    * Get all projects by user id
    */
   app.get(constants.paths.API_PROJECTS,
-    userMiddle.HasQuery,
     token.Required,
     prepareMiddle,
     function (req, res) {
