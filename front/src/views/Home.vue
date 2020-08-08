@@ -50,6 +50,7 @@ export default {
   },
   methods: {
     fetchList () {
+      if (!this.validUser) return
       const params = this.createParams()
       return this.getProjects(params)
         .then(() => this.init())
