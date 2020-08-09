@@ -12,7 +12,7 @@ new Vue({
   store,
   render: h => h(App),
   created () {
-    const userFound = this.$store.getters['user/user']
+    const userFound = this.$store.state.user.user
     if (userFound.id < 0) return
 
     let getUserAnonToken = Promise.resolve()

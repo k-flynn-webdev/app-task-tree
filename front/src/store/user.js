@@ -46,11 +46,11 @@ export default {
     totals: general.DEFAULT_TOTALS()
   },
   getters: {
-    user: (state) => state.user,
+    // user: (state) => state.user,
 
-    totals: (state) => state.totals,
+    // totals: (state) => state.totals,
 
-    options: (state) => state.options,
+    // options: (state) => state.options,
     isAnon: (state) => state.user.role === status.ANON && state.user.id !== -1,
     isUser: (state) => state.user.role === status.USER,
     isAdmin: (state) => state.user.role === status.ADMIN,

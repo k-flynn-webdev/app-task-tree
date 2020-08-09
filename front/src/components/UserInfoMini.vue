@@ -27,10 +27,10 @@
 </template>
 
 <script>
-import status from '../constants/status'
 import icUser from '../assets/icons/ic_user'
 import icUserAnon from '../assets/icons/ic_user_anon'
 import icUserNone from '../assets/icons/ic_user_none'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'UserInfoMini',
@@ -46,21 +46,17 @@ export default {
     }
   },
   computed: {
-    isAnon: function () {
-      return this.user.role === status.ANON
-    },
-    isUser: function () {
-      return this.user.role !== status.ANON
-    },
-    user: function () {
-      return this.$store.getters['user/user']
-    },
+    ...mapState('user', {
+      user: state => state.user
+    }),
+    ...mapGetters({
+      isAnon: 'user/isAnon',
+      isUser: 'user/isUser',
+      isLoggedIn: 'user/isLoggedIn'
+    }),
     userName: function () {
       if (!this.isEnabled) return '...'
       return this.user.name
-    },
-    isLoggedIn: function () {
-      return this.$store.getters['user/isLoggedIn']
     }
   }
 }

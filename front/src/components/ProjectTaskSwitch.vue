@@ -21,6 +21,7 @@
 <script>
 import modes from '../constants/modes'
 import Paths from '../constants/paths'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ProjectTaskSwitch',
@@ -35,11 +36,12 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      project: 'projects/current',
+      isValidUser: 'user/isValidUser'
+    }),
     highLight: function () {
-      return (this.$route.name === Paths.HOME && this.hasUser)
-    },
-    hasUser: function () {
-      return this.$store.getters['user/user'].id !== -1
+      return (this.$route.name === Paths.HOME && this.isValidUser)
     },
     allowInput: function () {
       return (this.isEnabled)
@@ -49,9 +51,6 @@ export default {
     },
     isProjects: function () {
       return this.mode === modes.PROJECTS
-    },
-    project: function () {
-      return this.$store.getters['projects/current']
     }
   },
   methods: {

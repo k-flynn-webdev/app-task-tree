@@ -27,14 +27,14 @@
 
        <li v-if="!isLoggedIn" @click="toggle">
          <router-link
-           to="/user/create">
+           :to="{ name: 'user.create' }">
            Create
          </router-link>
        </li>
 
        <li v-if="!isLoggedIn" @click="toggle">
          <router-link
-           to="/user/login">
+           :to="{ name: 'user.login' }">
            Login
          </router-link>
        </li>
@@ -55,11 +55,11 @@
            <span class="color-bg text-bold">Show Done</span>
 
            <input type="checkbox"
-                  :value="userOptions.projects.showDone"
+                  :value="optProject.showDone"
                   @click="toggleProjectsShowDone">
 
            <span class="display-inline-b align-middle hover">
-             <icDone :class="[userOptions.projects.showDone?'fill-bg':'fill-mid alpha']"/>
+             <icDone :class="[optProject.showDone?'fill-bg':'fill-mid alpha']"/>
            </span>
 
          </label>
@@ -73,11 +73,11 @@
            <span class="color-bg text-bold">Show Done</span>
 
            <input type="checkbox"
-                  :value="userOptions.tasks.showDone"
+                  :value="optTasks.showDone"
                   @click="toggleTasksShowDone">
 
            <span class="display-inline-b align-middle hover">
-             <icDone :class="[userOptions.tasks.showDone?'fill-bg':'fill-mid alpha']"/>
+             <icDone :class="[optTasks.showDone?'fill-bg':'fill-mid alpha']"/>
            </span>
 
          </label>
@@ -109,7 +109,7 @@
            >
              <icLeft
               class="fill-bg transition-slow"
-              :class="[ userOptions.sort.asc? 'rot-90' : 'rot-270' ]"
+              :class="[ optSort.asc? 'rot-90' : 'rot-270' ]"
              />
            </span>
 
@@ -131,6 +131,7 @@ import icDone from '../assets/icons/ic_tick'
 import icClose from '../assets/icons/ic_cross'
 import icOptions from '../assets/icons/ic_option'
 import icLeft from '../assets/icons/ic_left'
+import { mapState, mapGetters } from 'vuex'
 
 const SORT_TYPES = ['created', 'updated', 'done', 'scale']
 
@@ -149,6 +150,15 @@ export default {
     }
   },
   computed: {
+    ...mapState('user', {
+      options: state => state.options,
+      optSort: state => state.options.sort,
+      optTasks: state => state.options.tasks,
+      optProject: state => state.options.projects
+    }),
+    ...mapGetters({
+      isLoggedIn: 'user/isLoggedIn'
+    }),
     sortArray () {
       const rows = []
       for (let row = 0; row < SORT_TYPES.length; row += 2) {
@@ -156,15 +166,8 @@ export default {
       }
       return rows
     },
-
-    userOptions: function () {
-      return this.$store.getters['user/options']
-    },
-    isLoggedIn: function () {
-      return this.$store.getters['user/isLoggedIn']
-    },
     currentSort: function () {
-      return this.userOptions.sort.type
+      return this.optSort.type
     }
   },
   methods: {
@@ -173,16 +176,16 @@ export default {
     },
     toggleProjectsShowDone: function () {
       this.$store.commit('user/options',
-        { projects: { showDone: !this.userOptions.projects.showDone } })
+        { projects: { showDone: !this.optProject.showDone } })
     },
     toggleTasksShowDone: function () {
       this.$store.commit('user/options',
-        { tasks: { showDone: !this.userOptions.tasks.showDone } })
+        { tasks: { showDone: !this.optTasks.showDone } })
     },
     toggleSort: function (type) {
       let sortAsc = true
       if (type === this.currentSort) {
-        sortAsc = !this.userOptions.sort.asc
+        sortAsc = !this.optSort.asc
       }
 
       this.$store.commit('user/options',
