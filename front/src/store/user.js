@@ -3,6 +3,9 @@ import general from '../constants/general'
 import status from '../constants/status'
 import Vue from 'vue'
 
+/**
+ * @returns {User|undefined|any}
+ */
 function defaultUser () {
   const userLocal = UserService.getUser()
   if (userLocal !== undefined) return userLocal
@@ -10,6 +13,9 @@ function defaultUser () {
   return general.DEFAULT_USER()
 }
 
+/**
+ * @returns {UserOptions}
+ */
 function defaultOptions () {
   const userOptions = general.DEFAULT_USER_OPTIONS()
 
@@ -46,11 +52,6 @@ export default {
     totals: general.DEFAULT_TOTALS()
   },
   getters: {
-    // user: (state) => state.user,
-
-    // totals: (state) => state.totals,
-
-    // options: (state) => state.options,
     isAnon: (state) => state.user.role === status.ANON && state.user.id !== -1,
     isUser: (state) => state.user.role === status.USER,
     isAdmin: (state) => state.user.role === status.ADMIN,
@@ -138,7 +139,7 @@ export default {
      * @returns {promise} user
      */
     logout: function (context) {
-      if (context.getters.user.role === status.ANON) return false
+      if (context.getters.isAnon) return false
       return UserService.logout()
         .then(() => {
           context.commit('user', general.DEFAULT_USER())

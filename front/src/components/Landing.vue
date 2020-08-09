@@ -6,7 +6,7 @@
         <p class="intro-text__desc1">
           A simple, fast, easy and shareable todo list.
         </p>
-        <p v-if="!hasUser"
+        <p v-if="!isValidUser"
            class="intro-text__desc2">
           To get started, choose a account option from below.
         </p>
@@ -19,7 +19,7 @@
           >Projects</router-link>.
         </p>
 
-        <div v-if="!hasUser"
+        <div v-if="!isValidUser"
              class="flex-row flex-between intro-text__buttons">
           <router-link
             class="text-bold color-fore"
@@ -56,6 +56,7 @@ import Paths from '../constants/paths'
 import helpers from '../services/Helpers'
 import general from '../constants/general'
 import Card from '../components/general/Card'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Landing',
@@ -63,17 +64,15 @@ export default {
     Card
   },
   computed: {
-    hasUser: function () {
-      const user = this.$store.getters['user/user']
-      return (user && user.id !== -1)
-    }
+    ...mapGetters('user', {
+      isValidUser: 'isValidUser'
+    })
   },
   methods: {
     createAnonUser: function () {
-      const userTmp = this.$store.getters['user/user']
-      let initPromise = Promise.resolve(userTmp)
+      let initPromise = Promise.resolve([])
 
-      if (userTmp && userTmp.id < 0) {
+      if (!this.isValidUser) {
         initPromise = this.$store.dispatch('user/createAnon')
       }
 

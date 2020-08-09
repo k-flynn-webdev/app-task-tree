@@ -195,6 +195,7 @@ import icBack from '../assets/icons/ic_left'
 import Card from '../components/general/Card'
 import StatusBar from '../components/general/StatusBar'
 import { get } from 'lodash-es'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'User',
@@ -215,26 +216,18 @@ export default {
     }
   },
   computed: {
-    user: function () {
-      return this.$store.getters['user/user']
-    },
-    totals: function () {
-      return this.$store.getters['user/totals']
-    },
-    isLoggedIn: function () {
-      return this.$store.getters['user/isLoggedIn']
-    },
+    ...mapState('user', {
+      user: state => state.user,
+      totals: state => state.totals
+    }),
+    ...mapGetters({
+      isAnon: 'user/isAnon',
+      isUser: 'user/isUser',
+      isAdmin: 'user/isAdmin',
+      isLoggedIn: 'user/isLoggedIn'
+    }),
     allowEdit: function () {
       return (this.isUser || this.isAdmin)
-    },
-    isAnon: function () {
-      return this.$store.getters['user/isAnon']
-    },
-    isUser: function () {
-      return this.$store.getters['user/isUser']
-    },
-    isAdmin: function () {
-      return this.$store.getters['user/isAdmin']
     },
     isVerified: function () {
       return this.user.meta.verified
@@ -309,14 +302,17 @@ export default {
     },
     handleError: function (err, cbRetry) {
       const errStatus = get(err, 'response.status')
-      if (errStatus && errStatus === 401 && this.$store.getters['user/isAnon']) {
-        if (!cbRetry) return
+      if (errStatus && errStatus === 401 &&
+        this.$store.getters['user/isAnon'] &&
+        cbRetry) {
         return cbRetry()
       }
 
       this.status = status.ERROR
       this.$emit(status.ERROR, err)
       this.$store.commit('toasts/toastAdd', err)
+
+      throw err
     }
   }
 }

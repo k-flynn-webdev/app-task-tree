@@ -1,9 +1,18 @@
 <script>
 import { get } from 'lodash-es'
 import columns from '../constants/columns'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ProjectMixin',
+  computed: {
+    ...mapState('user', {
+      user: state => state.user,
+      sortAsc: state => state.options.sort.asc,
+      sortType: state => state.options.sort.type,
+      showDone: state => state.options.projects.showDone
+    })
+  },
   methods: {
     /**
      * Creates a filter object for API requests
@@ -12,14 +21,11 @@ export default {
      * @returns {object}
      */
     createParams: function (config = undefined) {
-      const user = this.$store.getters['user/user']
-      const userOpts = this.$store.getters['user/options']
-
       return {
-        user: user.id,
-        showDone: !userOpts.projects.showDone ? false : undefined,
-        sortAsc: userOpts.sort.asc ? true : undefined,
-        sortType: columns[userOpts.sort.type],
+        user: this.user.id,
+        showDone: !this.showDone ? false : undefined,
+        sortAsc: this.sortAsc ? true : undefined,
+        sortType: columns[this.sortType],
         config
       }
     },

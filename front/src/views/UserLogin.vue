@@ -84,6 +84,7 @@ import status from '../constants/status.js'
 import StatusBar from '../components/general/StatusBar'
 import Card from '../components/general/Card'
 import Paths from '../constants/paths'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'UserLogin',
@@ -101,6 +102,12 @@ export default {
     }
   },
   computed: {
+    ...mapState('user', {
+      user: state => state.user
+    }),
+    ...mapGetters({
+      isAnon: 'user/isAnon'
+    }),
     isValid: function () {
       if (this.form.email.length < 4) return false
       if (this.form.email.indexOf('@') < 0) return false
@@ -108,11 +115,8 @@ export default {
       if (this.status !== status.CLEAR) return false
       return this.form.password.length >= 7
     },
-    user: function () {
-      return this.$store.getters['user/user']
-    },
     showResetLink: function () {
-      return !this.$store.getters['user/isAnon']
+      return !this.isAnon
     }
   },
   methods: {

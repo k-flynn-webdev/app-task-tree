@@ -87,6 +87,7 @@ import general from '../constants/general'
 import status from '../constants/status.js'
 import Card from '../components/general/Card'
 import StatusBar from '../components/general/StatusBar'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'UserCreate',
@@ -105,6 +106,12 @@ export default {
     }
   },
   computed: {
+    ...mapState('user', {
+      userId: state => state.user.id
+    }),
+    ...mapGetters({
+      isAnon: 'user/isAnon'
+    }),
     isValid: function () {
       if (this.form.name.length < 4) return false
       if (this.form.email.length < 4) return false
@@ -112,9 +119,6 @@ export default {
       if (this.form.email.indexOf('.') < 0) return false
       if (this.status !== status.CLEAR) return false
       return this.form.password.length >= 7
-    },
-    user: function () {
-      return this.$store.getters['user/user']
     }
   },
   methods: {
@@ -126,7 +130,7 @@ export default {
       if (this.status !== status.CLEAR) return
 
       this.status = status.WAITING
-      if (this.$store.getters['user/isAnon']) {
+      if (this.isAnon) {
         return this.submitUserUpgrade()
       } else {
         return this.submitUser()
@@ -139,7 +143,7 @@ export default {
     },
     submitUserUpgrade: function () {
       const newUser = {
-        id: this.user.id,
+        id: this.userId,
         name: this.form.name,
         email: this.form.email,
         password: this.form.password

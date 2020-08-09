@@ -36,6 +36,7 @@ import status from '../constants/status.js'
 import StatusBar from './general/StatusBar'
 import icTick from '../assets/icons/ic_tick'
 import { get } from 'lodash-es'
+import { mapState } from 'vuex'
 
 export default {
   name: 'InputBar',
@@ -61,15 +62,15 @@ export default {
     }
   },
   computed: {
+    ...mapState('user', {
+      userId: state => state.user.id
+    }),
     allowInput: function () {
       if (this.mode === modes.CLEAR) return false
       return (!this.isDisabled && this.isEnabled)
     },
     isValid: function () {
       return this.input.length >= 4
-    },
-    user: function () {
-      return this.$store.getters['user/user']
     },
     project: function () {
       return this.$store.getters['projects/current']
@@ -120,13 +121,13 @@ export default {
 
       let dispatchType = 'projects/create'
       let dispatchValue = {
-        user: this.user.id,
+        user: this.userId,
         name: this.input
       }
       if (this.mode === modes.TASKS) {
         dispatchType = 'tasks/create'
         dispatchValue = {
-          user: this.user.id,
+          user: this.userId,
           project: this.project.id,
           text: this.input
         }
@@ -154,16 +155,24 @@ export default {
       return this.$store.dispatch('projects/getProjectById',
         { id: this.project.id })
     },
+    /**
+     * Handle error response
+     * @param {error}     err       error from response
+     * @param {function}  cbRetry   function that the error arose from
+     */
     handleError: function (err, cbRetry) {
       const errStatus = get(err, 'response.status')
-      if (errStatus && errStatus === 401 && this.$store.getters['user/isAnon']) {
-        if (!cbRetry) return
+      if (errStatus && errStatus === 401 &&
+        this.$store.getters['user/isAnon'] &&
+        cbRetry) {
         return cbRetry()
       }
 
       this.status = status.ERROR
       this.$emit(status.ERROR, err)
       this.$store.commit('toasts/toastAdd', err)
+
+      throw err
     }
   }
 }

@@ -25,6 +25,7 @@ import TaskMixin from '../mixins/TaskMixin'
 import status from '../constants/status.js'
 import Card from '../components/general/Card'
 import TaskItem from '../components/TaskItem'
+import { mapState } from 'vuex'
 
 export default {
   name: 'TasksList',
@@ -40,26 +41,23 @@ export default {
     }
   },
   computed: {
-    ready () {
-      return this.$store.state.ready
-    },
+    ...mapState(['ready']),
+    ...mapState('user', {
+      user: state => state.user,
+      sort: state => state.options.sort,
+      showDone: state => state.options.tasks.showDone
+    }),
     tasks: function () {
-      if (!this.userOptions.tasks.showDone) {
+      if (!this.showDone) {
         return this.$store.getters['tasks/tasksNotDone']
       }
       return this.$store.getters['tasks/tasks']
-    },
-    user: function () {
-      return this.$store.getters['user/user']
-    },
-    userOptions: function () {
-      return this.$store.getters['user/options']
     }
   },
   watch: {
     ready: 'fetchList',
-    'userOptions.sort': 'fetchList',
-    'userOptions.tasks.showDone': 'fetchList'
+    sort: 'fetchList',
+    showDone: 'fetchList'
   },
   created () {
     if (this.ready) this.fetchList()

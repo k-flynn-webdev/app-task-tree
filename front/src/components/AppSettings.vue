@@ -195,6 +195,7 @@ export default {
       return this.$store.dispatch('user/logout')
         .then(res => this.handleSuccess(res))
         .catch(err => this.handleError(err))
+      // todo should clear all tasks and projects from local memory
     },
     handleSuccess: function () {
       helpers.timeDelay(() => {

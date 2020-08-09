@@ -24,6 +24,7 @@ import status from '../constants/status'
 import Card from '../components/general/Card'
 import ProjectMixin from '../mixins/ProjectMixin'
 import ProjectItem from '../components/ProjectItem'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ProjectsList',
@@ -33,22 +34,23 @@ export default {
   },
   mixins: [ProjectMixin],
   computed: {
+    ...mapState('user', {
+      sort: state => state.options.sort,
+      showDone: state => state.options.projects.showDone
+    }),
     project: function () {
       return this.$store.getters['projects/current']
     },
     projects: function () {
-      if (!this.userOptions.projects.showDone) {
+      if (!this.showDone) {
         return this.$store.getters['projects/projectsNotDone']
       }
       return this.$store.getters['projects/projects']
-    },
-    userOptions: function () {
-      return this.$store.getters['user/options']
     }
   },
   watch: {
-    'userOptions.sort': 'fetchList',
-    'userOptions.projects.showDone': 'fetchList'
+    sort: 'fetchList',
+    showDone: 'fetchList'
   },
   methods: {
     /**

@@ -123,9 +123,6 @@ export default {
     },
     isValid: function () {
       return (this.status === status.CLEAR)
-    },
-    user: function () {
-      return this.$store.getters['user/user']
     }
   },
   methods: {
