@@ -42,7 +42,7 @@ export default {
 
       // empty store if user changed ..
       if (history.user !== this.user) {
-        this.$store.commit('projects/projectSet', [])
+        this.$store.commit('projects/setProjects', [])
       }
 
       // update store with last request

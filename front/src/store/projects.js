@@ -41,7 +41,15 @@ export default {
     }
   },
   mutations: {
+    /**
+     * Set the history of the last request
+     *
+     * @param state
+     * @param input
+     */
     setHistory: (state, input) => {
+      if (!input) input = general.DEFAULT_PROJECT_HISTORY()
+
       Object.entries(input).forEach(([key, value]) => {
         if (allowedKeys[key] !== undefined) {
           Vue.set(state.history, key, value)
@@ -118,12 +126,13 @@ export default {
       }
     },
     /**
-     * Sets all project items
+     * Sets projects array
      *
      * @param {object}    state
      * @param {array}     input projects
      */
-    projectSet: function (state, input) {
+    setProjects: function (state, input) {
+      if (!input) input = []
       Vue.set(state, 'projects', input)
     }
   },
@@ -204,7 +213,7 @@ export default {
       return ProjectService.all(input)
         .then(res => {
           if (res.data.data.projects.length > 0) {
-            context.commit('projectSet', res.data.data.projects)
+            context.commit('setProjects', res.data.data.projects)
             if (context.state.current.id < 0) {
               context.commit('projectCurrent', res.data.data.projects[0])
             }

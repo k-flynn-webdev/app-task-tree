@@ -34,7 +34,15 @@ export default {
     }
   },
   mutations: {
+    /**
+     * Set the history of the last request
+     *
+     * @param state
+     * @param input
+     */
     setHistory: (state, input) => {
+      if (!input) input = general.DEFAULT_TASK_HISTORY()
+
       Object.entries(input).forEach(([key, value]) => {
         if (allowedKeys[key] !== undefined) {
           Vue.set(state.history, key, value)
@@ -101,13 +109,14 @@ export default {
       }
     },
     /**
-     * Sets all task items
+     * Set tasks array
      *
      * @param {object}    state
      * @param {array}     input tasks
      * @returns {array}  tasks added
      */
-    taskSet: function (state, input) {
+    setTasks: function (state, input) {
+      if (!input) input = []
       Vue.set(state, 'tasks', input)
     }
   },
@@ -169,7 +178,7 @@ export default {
       return TaskService.all(input)
         .then(res => {
           if (res.data.data.tasks.length > 0) {
-            context.commit('taskSet', res.data.data.tasks)
+            context.commit('setTasks', res.data.data.tasks)
           }
           return res.data.data.tasks
         })

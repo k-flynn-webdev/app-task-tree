@@ -40,7 +40,7 @@ export default {
 
       // empty store if task changed ..
       if (history.project !== params.project) {
-        this.$store.commit('tasks/taskSet', [])
+        this.$store.commit('tasks/setTasks', [])
       }
 
       // update store with last request

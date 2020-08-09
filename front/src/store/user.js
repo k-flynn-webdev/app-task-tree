@@ -143,6 +143,10 @@ export default {
       return UserService.logout()
         .then(() => {
           context.commit('user', general.DEFAULT_USER())
+          context.commit('tasks/setTasks', [], { root: true })
+          context.commit('tasks/setHistory', null, { root: true })
+          context.commit('projects/setProjects', [], { root: true })
+          context.commit('projects/setHistory', null, { root: true })
           return true
         })
     },
