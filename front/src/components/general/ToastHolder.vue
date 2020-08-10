@@ -22,7 +22,7 @@ export default {
   },
   computed: {
     Toasts: function () {
-      return this.$store.getters['toasts/toasts']
+      return this.$store.state.toasts.toasts
     }
   },
   methods: {

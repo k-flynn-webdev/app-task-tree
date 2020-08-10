@@ -12,27 +12,18 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    /**
+     * Status of the app ready state
+     * @returns {boolean}
+     */
     ready: false,
     /**
      * Status of the app, eg success , error or loading/waiting on a API
+     * @returns {string}
      */
     status: status.CLEAR
   },
   getters: {
-    /**
-     * Returns current status
-     *
-     * @param state
-     * @returns {object}
-     */
-    status: (state) => state.status,
-    /**
-     * Returns the app finished loading
-     *
-     * @param state
-     * @returns {object}
-     */
-    ready: (state) => state.ready
   },
   mutations: {
     /**

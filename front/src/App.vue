@@ -20,6 +20,7 @@ import ToastHolder from './components/general/ToastHolder'
 import AppSettings from './components/AppSettings'
 import StatusBar from './components/general/StatusBar'
 import Footer from './components/general/Footer'
+import { mapState } from 'vuex'
 
 export default {
   name: 'App',
@@ -35,11 +36,11 @@ export default {
     }
   },
   computed: {
-    appStatus: function () {
-      return this.$store.getters.status
-    },
+    ...mapState({
+      appStatus: state => state.status
+    }),
     hasToast: function () {
-      return this.$store.getters['toasts/toasts'].length > 0
+      return this.$store.state.toasts.toasts.length > 0
     }
   }
 }

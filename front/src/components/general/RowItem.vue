@@ -144,7 +144,7 @@ export default {
   },
   computed: {
     isLoading: function () {
-      return this.$store.getters.status !== status.CLEAR
+      return this.$store.state.status !== status.CLEAR
     },
     progress: function () {
       if (!this.data.tasksTotal) return null
