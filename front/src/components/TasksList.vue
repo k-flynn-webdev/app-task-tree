@@ -2,12 +2,13 @@
   <div class="task__project__tasks-list relative no-overflow">
 
       <TaskItem
-        v-for="item in tasks"
+        v-for="item in tasksList"
         :key="item.id"
         :data="item"
+        :selected="task.id === item.id"
       />
 
-    <Card v-if="tasks.length < 1" class="text-center">
+    <Card v-if="tasksList.length < 1" class="text-center">
       <p v-if="project.id >= 0"
          class="hint"> Add a new task
       </p>
@@ -25,7 +26,7 @@ import TaskMixin from '../mixins/TaskMixin'
 import status from '../constants/status.js'
 import Card from '../components/general/Card'
 import TaskItem from '../components/TaskItem'
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'TasksList',
@@ -42,16 +43,17 @@ export default {
   },
   computed: {
     ...mapState(['ready']),
+    ...mapState('tasks', ['task', 'tasks']),
     ...mapState('user', {
       user: state => state.user,
       sort: state => state.options.sort,
       showDone: state => state.options.tasks.showDone
     }),
-    tasks: function () {
-      if (!this.showDone) {
-        return this.$store.getters['tasks/tasksNotDone']
-      }
-      return this.$store.getters['tasks/tasks']
+    ...mapGetters('tasks',
+      ['tasksNotDone', 'tasksDone']),
+    tasksList: function () {
+      if (!this.showDone) return this.tasksNotDone
+      return this.tasks
     }
   },
   watch: {

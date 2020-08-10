@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     onSelectProject: function () {
-      this.$store.commit('projects/projectCurrent', this.data)
+      this.$store.commit('projects/setProject', this.data)
     },
     onShowTasks: function () {
       this.$router.push({

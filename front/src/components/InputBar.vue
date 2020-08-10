@@ -65,15 +65,13 @@ export default {
     ...mapState('user', {
       userId: state => state.user.id
     }),
+    ...mapState('projects', ['project']),
     allowInput: function () {
       if (this.mode === modes.CLEAR) return false
       return (!this.isDisabled && this.isEnabled)
     },
     isValid: function () {
       return this.input.length >= 4
-    },
-    project: function () {
-      return this.$store.getters['projects/current']
     },
     placeHolder: function () {
       return this.mode === modes.TASKS ? 'Add a new task' : 'Add a new project'

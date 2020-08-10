@@ -7,28 +7,28 @@ const allowedKeys = general.DEFAULT_PROJECT_HISTORY()
 export default {
   namespaced: true,
   state: {
-    projects: [],
-    current: general.DEFAULT_PROJECT(),
+    /** Current selected Project */
+    project: general.DEFAULT_PROJECT(),
+    /** Project array */
+    projects: [], // todo: future freeze arrays of large size
+    /** Last API request config */
     history: general.DEFAULT_PROJECT_HISTORY()
   },
   getters: {
     /**
-     * Returns current project
+     * Returns all finished projects
      *
      * @param state
-     * @returns {object}
+     * @returns {Project[]}
      */
-    current: (state) => state.current,
-    history: (state) => state.history,
-    /**
-     * Returns all projects
-     *
-     * @param state
-     * @returns {Array}
-     */
-    projects: (state) => state.projects,
-    projectsNotDone: (state) => state.projects.filter(item => !item.doneDate),
     projectsDone: (state) => state.projects.filter(item => item.doneDate && item.doneDate.length > 5),
+    /**
+     * Returns all unfinished projects
+     *
+     * @param state
+     * @returns {Project[]}
+     */
+    projectsNotDone: (state) => state.projects.filter(item => !item.doneDate),
     /**
      * Returns a function to find a Project by ID
      *
@@ -42,10 +42,10 @@ export default {
   },
   mutations: {
     /**
-     * Set the history of the last request
+     * Set the API request config
      *
      * @param state
-     * @param input
+     * @param {ProjectHistory} input
      */
     setHistory: (state, input) => {
       if (!input) input = general.DEFAULT_PROJECT_HISTORY()
@@ -57,34 +57,33 @@ export default {
       })
     },
     /**
-     * Sets current project selected
+     * Set the current Project
      *
-     * @param           state
-     * @param {object}  input   project object
-     * @returns {object}
+     * @param state
+     * @param {Project}  input   project object
      */
-    projectCurrent: (state, input) => {
-      Vue.set(state, 'current', input)
+    setProject: (state, input) => {
+      Vue.set(state, 'project', input)
     },
     /**
      * Add a new project to the store
      *
-     * @param {object}    state
-     * @param {object}    input project obj
-     * @returns {object}  new project
+     * @param {object}      state
+     * @param {Project}     input project obj
+     * @returns {Project}   new project
      */
-    projectAdd: function (state, input) {
+    addProject: function (state, input) {
       state.projects.unshift(input)
       return input
     },
     /**
      * Updates a project item with an updated version
      *
-     * @param {object}    state
-     * @param {object}    input project
-     * @returns {object}  new project
+     * @param {object}      state
+     * @param {Project}     input project
+     * @returns {Project}   new project
      */
-    projectPatch: function (state, input) {
+    patchProject: function (state, input) {
       for (let i = 0, max = state.projects.length; i < max; i++) {
         if (state.projects[i].id === input.id) {
           const newObj = Object.assign(state.projects[i], input)
@@ -96,11 +95,11 @@ export default {
     /**
      * Replace a project item with an updated version
      *
-     * @param {object}    state
-     * @param {object}    input project
-     * @returns {object}  new project
+     * @param {object}      state
+     * @param {Project}     input project
+     * @returns {Project}   new project
      */
-    projectReplace: function (state, input) {
+    replaceProject: function (state, input) {
       for (let i = 0, max = state.projects.length; i < max; i++) {
         if (state.projects[i].id === input.id) {
           state.projects.splice(i, 1, input)
@@ -114,10 +113,10 @@ export default {
      * Remove a project item
      *
      * @param {object}    state
-     * @param {object}    input project
-     * @returns {object}  project removed
+     * @param {Project}    input project
+     * @returns {Project}  project removed
      */
-    projectRemove: function (state, input) {
+    removeProject: function (state, input) {
       for (let i = 0, max = state.projects.length; i < max; i++) {
         if (state.projects[i].id === input.id) {
           state.projects.splice(i, 1)
@@ -128,8 +127,8 @@ export default {
     /**
      * Sets projects array
      *
-     * @param {object}    state
-     * @param {array}     input projects
+     * @param {object}      state
+     * @param {Project[]}   input projects
      */
     setProjects: function (state, input) {
       if (!input) input = []
@@ -140,31 +139,31 @@ export default {
     /**
      * Creates a project and adds to store
      *
-     * @param {object}    context
-     * @param {object}    input project info
-     * @returns {promise} new project
+     * @param {object}      context
+     * @param {Project}     input project info
+     * @returns {promise}   new project
      */
     create: function (context, input) {
       return ProjectService.create(input)
         .then(res => {
-          context.commit('projectAdd', res.data.data.project)
-          context.commit('projectCurrent', res.data.data.project)
+          context.commit('addProject', res.data.data.project)
+          context.commit('setProject', res.data.data.project)
           return res.data.data.project
         })
     },
     /**
      * Update a project and store
      *
-     * @param {object}    context
-     * @param {object}    input project obj
-     * @returns {promise} updated project
+     * @param {object}      context
+     * @param {Project}     input project obj
+     * @returns {promise}   updated project
      */
     update: function (context, input) {
       return ProjectService.update(input)
         .then(res => {
-          context.commit('projectReplace', res.data.data.project)
-          if (context.getters.current.id !== input.id) return
-          context.commit('projectCurrent', res.data.data.project)
+          context.commit('replaceProject', res.data.data.project)
+          if (context.state.project.id !== input.id) return
+          context.commit('setProject', res.data.data.project)
           return res.data.data.project
         })
     },
@@ -172,16 +171,16 @@ export default {
      * Remove a project and remove from store
      *  and reset the current project ..
      *
-     * @param {object}    context
-     * @param {object}    input project obj
-     * @returns {promise} updated project
+     * @param {object}      context
+     * @param {Project}     input project obj
+     * @returns {promise}   updated project
      */
     remove: function (context, input) {
       return ProjectService.remove(input)
         .then(() => {
-          context.commit('projectRemove', input)
-          if (context.getters.current.id !== input.id) return
-          return context.commit('projectCurrent', context.getters.projects[0])
+          context.commit('removeProject', input)
+          if (context.state.project.id !== input.id) return
+          return context.commit('setProject', context.state.projects[0])
         })
     },
     /**
@@ -195,8 +194,8 @@ export default {
     getProjectById: function (context, input) {
       return ProjectService.get(input)
         .then(res => {
-          context.commit('projectReplace', res.data.data.project)
-          context.commit('projectCurrent', res.data.data.project)
+          context.commit('replaceProject', res.data.data.project)
+          context.commit('setProject', res.data.data.project)
           return res.data.data.project
         })
     },
@@ -214,8 +213,8 @@ export default {
         .then(res => {
           if (res.data.data.projects.length > 0) {
             context.commit('setProjects', res.data.data.projects)
-            if (context.state.current.id < 0) {
-              context.commit('projectCurrent', res.data.data.projects[0])
+            if (context.state.project.id < 0) {
+              context.commit('setProject', res.data.data.projects[0])
             }
           }
           return res.data.data.projects

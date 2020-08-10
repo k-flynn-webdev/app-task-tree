@@ -8,20 +8,28 @@ const allowedKeys = general.DEFAULT_TASK_HISTORY()
 export default {
   namespaced: true,
   state: {
-    tasks: [],
+    /** Current selected Task */
+    task: general.DEFAULT_TASK(-1),
+    /** Task array */
+    tasks: [], // todo: future freeze arrays of large size
+    /** Last API request config */
     history: general.DEFAULT_TASK_HISTORY()
   },
   getters: {
-    history: (state) => state.history,
-    tasksNotDone: (state) => state.tasks.filter(item => !item.doneDate),
-    tasksDone: (state) => state.tasks.filter(item => item.doneDate && item.doneDate.length > 5),
     /**
-     * Returns all tasks
+     * Returns all finished tasks
      *
      * @param state
-     * @returns {Array}
+     * @returns {Project[]}
      */
-    tasks: (state) => state.tasks, // todo: future freeze arrays of large size
+    tasksDone: (state) => state.tasks.filter(item => item.doneDate && item.doneDate.length > 5),
+    /**
+     * Returns all unfinished tasks
+     *
+     * @param state
+     * @returns {Project[]}
+     */
+    tasksNotDone: (state) => state.tasks.filter(item => !item.doneDate),
     /**
      * Returns a function to find a Task by ID
      *
@@ -35,10 +43,10 @@ export default {
   },
   mutations: {
     /**
-     * Set the history of the last request
+     * Set the API request config
      *
      * @param state
-     * @param input
+     * @param {TaskHistory} input
      */
     setHistory: (state, input) => {
       if (!input) input = general.DEFAULT_TASK_HISTORY()
@@ -50,13 +58,22 @@ export default {
       })
     },
     /**
+     * Set the current Task
+     *
+     * @param state
+     * @param {Task}  input   task object
+     */
+    setTask: (state, input) => {
+      Vue.set(state, 'task', input)
+    },
+    /**
      * Add a new task to the store
      *
      * @param {object}    state
-     * @param {object}    input task obj
-     * @returns {object}  new task
+     * @param {Task}      input task obj
+     * @returns {Task}    new task
      */
-    taskAdd: function (state, input) {
+    addTask: function (state, input) {
       state.tasks.unshift(input)
       return input
     },
@@ -64,10 +81,10 @@ export default {
      * Update a task item with an updated version
      *
      * @param {object}    state
-     * @param {object}    input task
-     * @returns {object}  new task
+     * @param {Task}      input task
+     * @returns {Task}    new task
      */
-    taskPatch: function (state, input) {
+    patchTask: function (state, input) {
       for (let i = 0, max = state.tasks.length; i < max; i++) {
         if (state.tasks[i].id === input.id) {
           const newObj = Object.assign(state.tasks[i], input)
@@ -80,10 +97,10 @@ export default {
      * Replace a task item with an updated version
      *
      * @param {object}    state
-     * @param {object}    input task
-     * @returns {object}  new task
+     * @param {Task}      input task
+     * @returns {Task}    new task
      */
-    taskReplace: function (state, input) {
+    replaceTask: function (state, input) {
       for (let i = 0, max = state.tasks.length; i < max; i++) {
         if (state.tasks[i].id === input.id) {
           state.tasks.splice(i, 1, input)
@@ -97,10 +114,10 @@ export default {
      * Remove a task item
      *
      * @param {object}    state
-     * @param {object}    input task
-     * @returns {object}  task removed
+     * @param {Task}      input task
+     * @returns {Task}    task removed
      */
-    taskRemove: function (state, input) {
+    removeTask: function (state, input) {
       for (let i = 0, max = state.tasks.length; i < max; i++) {
         if (state.tasks[i].id === input.id) {
           state.tasks.splice(i, 1)
@@ -111,9 +128,8 @@ export default {
     /**
      * Set tasks array
      *
-     * @param {object}    state
-     * @param {array}     input tasks
-     * @returns {array}  tasks added
+     * @param {object}      state
+     * @param {Task[]}      input tasks
      */
     setTasks: function (state, input) {
       if (!input) input = []
@@ -124,47 +140,44 @@ export default {
     /**
      * Creates a task item and adds to store
      *
-     * @param {object}    context
-     * @param {object}    input task info
-     * @returns {promise} new task
+     * @param {object}      context
+     * @param {Task}        input task info
+     * @returns {promise}   new task
      */
     create: function (context, input) {
       return TaskService.create(input)
         .then(res => {
-          return context.commit('taskAdd', res.data.data.task)
+          return context.commit('addTask', res.data.data.task)
         })
     },
     /**
      * Update a task item and store
      *
-     * @param {object}    context
-     * @param {object}    input task obj
-     * @returns {promise} updated task
+     * @param {object}      context
+     * @param {Task}        input task obj
+     * @returns {promise}   updated task
      */
     update: function (context, input) {
       return TaskService.update(input)
         .then(res => {
-          if (input.isDone !== undefined) {
-            // helps show a task is done visually if showDone is false
-            helpers.timeDelay(() => {
-              context.commit('taskReplace', res.data.data.task)
-            }, general.DELAY_SUCCESS)
-            return res.data.data.task
-          }
-          return context.commit('taskReplace', res.data.data.task)
+          let delayTime = 0
+          if (input.isDone !== undefined) delayTime = general.DELAY_SUCCESS
+          helpers.timeDelay(() => {
+            context.commit('replaceTask', res.data.data.task)
+          }, delayTime)
         })
     },
     /**
      * Remove a task item and remove from store
      *
-     * @param {object}    context
-     * @param {object}    input task obj
-     * @returns {promise} removed task
+     * @param {object}      context
+     * @param {Task}        input task obj
+     * @returns {promise}   removed task
      */
     remove: function (context, input) {
       return TaskService.remove(input)
         .then(() => {
-          return context.commit('taskRemove', input)
+          return context.commit('removeTask', input)
         })
     },
     /**

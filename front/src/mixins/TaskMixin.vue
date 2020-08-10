@@ -34,7 +34,7 @@ export default {
      * @returns {Promise<any>|Promise<void>}
      */
     getTasks: function (params) {
-      const history = this.$store.getters['tasks/history']
+      const history = this.$store.state.tasks.history
       const isSame = Object.keys(history).filter(k => get(history, k) !== get(params, k)).length < 1
       if (isSame) return Promise.resolve([])
 

@@ -21,7 +21,7 @@
 <script>
 import modes from '../constants/modes'
 import Paths from '../constants/paths'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'ProjectTaskSwitch',
@@ -36,8 +36,8 @@ export default {
     }
   },
   computed: {
+    ...mapState('projects', ['project']),
     ...mapGetters({
-      project: 'projects/current',
       isValidUser: 'user/isValidUser'
     }),
     highLight: function () {

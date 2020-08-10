@@ -2,13 +2,13 @@
   <div class="task__project__projects-list relative no-overflow">
 
       <ProjectItem
-        v-for="item in projects"
+        v-for="item in projectList"
         :key="item.id"
         :data="item"
         :selected="project.id === item.id"
       />
 
-    <Card v-if="projects.length < 1"
+    <Card v-if="projectList.length < 1"
           class="text-center">
       <p class="hint">
         Start by creating a new project to add tasks to
@@ -24,7 +24,7 @@ import status from '../constants/status'
 import Card from '../components/general/Card'
 import ProjectMixin from '../mixins/ProjectMixin'
 import ProjectItem from '../components/ProjectItem'
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'ProjectsList',
@@ -34,23 +34,26 @@ export default {
   },
   mixins: [ProjectMixin],
   computed: {
+    ...mapState(['ready']),
+    ...mapState('projects', ['project', 'projects']),
     ...mapState('user', {
       sort: state => state.options.sort,
       showDone: state => state.options.projects.showDone
     }),
-    project: function () {
-      return this.$store.getters['projects/current']
-    },
-    projects: function () {
-      if (!this.showDone) {
-        return this.$store.getters['projects/projectsNotDone']
-      }
-      return this.$store.getters['projects/projects']
+    ...mapGetters('projects',
+      ['projectsNotDone', 'projectsDone']),
+    projectList: function () {
+      if (!this.showDone) return this.projectsNotDone
+      return this.projects
     }
   },
   watch: {
+    ready: 'fetchList',
     sort: 'fetchList',
     showDone: 'fetchList'
+  },
+  created () {
+    if (this.ready) this.fetchList()
   },
   methods: {
     /**

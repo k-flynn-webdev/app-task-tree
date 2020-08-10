@@ -14,6 +14,7 @@
 <script>
 import modes from '../constants/modes'
 import helpers from '../services/Helpers'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ProjectInfoName',
@@ -29,12 +30,8 @@ export default {
     }
   },
   computed: {
-    ready: function () {
-      return this.$store.getters.ready
-    },
-    project: function () {
-      return this.$store.getters['projects/current']
-    },
+    ...mapState(['ready']),
+    ...mapState('projects', ['project']),
     showName: function () {
       return (this.mode !== modes.CLEAR &&
         this.ready &&

@@ -55,7 +55,7 @@ export default {
 
       return this.$store.dispatch('tasks/update', taskUpdateBool)
         .then(() => {
-          this.$store.commit('tasks/taskPatch', taskUpdateBool)
+          this.$store.commit('tasks/patchTask', taskUpdateBool)
           this.handleSuccess()
           return this.getLatestProject()
         })

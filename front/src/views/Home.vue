@@ -55,7 +55,7 @@ export default {
       const hasProject = !(!projectFound || projectFound.id < 0)
 
       if (hasProject) {
-        this.$store.commit('projects/projectCurrent', projectFound)
+        this.$store.commit('projects/setProject', projectFound)
         return
       }
 
