@@ -8,14 +8,14 @@ axios.defaults.headers.common['Accept-Version'] = 'v1'
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
 axios.interceptors.request.use((config) => {
-  store.commit('status', status.WAITING)
+  store.commit('setStatus', status.WAITING)
   return config
 }, (err) => Promise.reject(err))
 
 axios.interceptors.response.use(httpSuccess, httpError)
 
 function httpSuccess (res) {
-  store.commit('status', status.SUCCESS)
+  store.commit('setStatus', status.SUCCESS)
   return res
 }
 
@@ -32,7 +32,7 @@ function httpError (error) {
         throw error
       })
   }
-  store.commit('status', status.ERROR)
+  store.commit('setStatus', status.ERROR)
   throw error
 }
 

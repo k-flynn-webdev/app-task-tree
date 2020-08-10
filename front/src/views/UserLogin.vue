@@ -130,7 +130,7 @@ export default {
       this.status = status.WAITING
 
       return this.$store.dispatch('user/login', this.form)
-        .then(() => this.$store.commit('ready', true))
+        .then(() => this.$store.commit('setReady', true))
         .then(res => this.handleSuccess(res))
         .catch(err => this.handleError(err))
     },

@@ -27,12 +27,12 @@ export default new Vuex.Store({
   },
   mutations: {
     /**
-     * Sets current app ready
+     * Sets current app ready state
      *
      * @param           state
      * @param {boolean} input   app status
      */
-    ready: (state, input) => {
+    setReady: (state, input) => {
       state.ready = input
     },
     /**
@@ -41,7 +41,7 @@ export default new Vuex.Store({
      * @param           state
      * @param {string}  input   app status [WAITING,SUCCESS,ERROR]
      */
-    status: (state, input) => {
+    setStatus: (state, input) => {
       state.status = input
       if (input !== status.CLEAR) {
         helpers.timeDelay(() => {

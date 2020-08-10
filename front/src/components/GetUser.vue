@@ -43,7 +43,7 @@ export default {
       this.$store.commit('toasts/toastAdd', err)
 
       helpers.timeDelay(() => {
-        this.$store.commit('status', status.CLEAR)
+        this.$store.commit('setStatus', status.CLEAR)
       }, general.DELAY_ERROR)
     }
   }

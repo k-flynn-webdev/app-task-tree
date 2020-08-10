@@ -24,7 +24,7 @@ new Vue({
     return getUserAnonToken
       .then(() => this.$store.dispatch('user/get'))
       .then(() => {
-        this.$store.commit('ready', true)
+        this.$store.commit('setReady', true)
       })
       .catch(err => this.$store.commit('toasts/toastAdd', err))
   }
