@@ -57,9 +57,11 @@ module.exports = function (app) {
     prepareMiddle,
     function (req, res) {
 
+      let userFound
+
       user.GetUserByID(Number(req.params.user))
       .then(userObj => {
-        const userFound = mysqlVal(userObj)
+        userFound = mysqlVal(userObj)
 
         if (!has.hasAnItem(userObj) ||
           userFound.role !== constants.roles.ANON ||
@@ -77,6 +79,11 @@ module.exports = function (app) {
             message: constants.errors.ACCOUNT_MISSING
           }
         }
+
+        return user.Update({ id: userFound.id, login: true })
+      })
+      .then(() => {
+        logger.Log(constants.messages.SUCCESS_LOGIN_ACCOUNT, req)
 
         exit(res, 200,
           constants.messages.SUCCESS,
