@@ -139,7 +139,7 @@ export default {
       this.$root.$emit(modes.EDIT.toLowerCase(), false)
 
       this.$emit(status.ERROR.toLowerCase(), err)
-      this.$store.commit('toasts/toastAdd', err)
+      this.$store.commit('toasts/addToast', err)
 
       helpers.timeDelay(() => {
         this.resetStatus()

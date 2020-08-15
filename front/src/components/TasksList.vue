@@ -88,7 +88,7 @@ export default {
 
       this.status = status.ERROR
       this.$emit(status.ERROR, err)
-      this.$store.commit('toasts/toastAdd', err)
+      this.$store.commit('toasts/addToast', err)
 
       throw err
     }

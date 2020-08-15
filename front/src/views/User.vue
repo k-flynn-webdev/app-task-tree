@@ -293,7 +293,7 @@ export default {
       res.isTimed = true
       res.isError = false
       this.status = status.SUCCESS
-      this.$store.commit('toasts/toastAdd', res)
+      this.$store.commit('toasts/addToast', res)
 
       helpers.timeDelay(() => {
         this.status = status.CLEAR
@@ -310,7 +310,7 @@ export default {
 
       this.status = status.ERROR
       this.$emit(status.ERROR, err)
-      this.$store.commit('toasts/toastAdd', err)
+      this.$store.commit('toasts/addToast', err)
 
       throw err
     }

@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     closeToast: function () {
-      this.$store.commit('toasts/toastRemove', this.data)
+      this.$store.commit('toasts/removeToast', this.data)
     }
   }
 }

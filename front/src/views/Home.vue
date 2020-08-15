@@ -10,8 +10,8 @@
 
 <script>
 import modes from '../constants/modes'
-import Header from '../components/Header'
 import status from '@/constants/status'
+import Header from '../components/Header'
 import ProjectMixin from '../mixins/ProjectMixin'
 import { get } from 'lodash-es'
 import { mapGetters } from 'vuex'
@@ -77,7 +77,7 @@ export default {
 
       this.status = status.ERROR
       this.$emit(status.ERROR, err)
-      this.$store.commit('toasts/toastAdd', err)
+      this.$store.commit('toasts/addToast', err)
 
       throw err
     }

@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     clearAllToasts: function () {
-      this.$store.commit('toasts/toastRemoveAll')
+      this.$store.commit('toasts/clearAllToasts')
     }
   }
 }

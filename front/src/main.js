@@ -26,6 +26,6 @@ new Vue({
       .then(() => {
         this.$store.commit('setReady', true)
       })
-      .catch(err => this.$store.commit('toasts/toastAdd', err))
+      .catch(err => this.$store.commit('toasts/addToast', err))
   }
 }).$mount('#app')

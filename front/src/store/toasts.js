@@ -6,6 +6,32 @@ const defaultToastTime = 4
 const timerDelay = 1000
 
 /**
+ *
+ * @return {Toast}
+ * @constructor
+ */
+const DEFAULT_TOAST = () => {
+  return {
+    id: 0,
+    title: '',
+    message: '',
+    isError: false,
+    isTimed: false,
+    time: -1
+  }
+}
+/**
+ * @typedef {object} Toast
+ *
+ * @property {number}   [id]          Unique ID
+ * @property {string}   title         Title of toast
+ * @property {string}   message       Message of toast
+ * @property {boolean}  isError       Is error toast (affects colour)
+ * @property {boolean}  isTimed       Is auto time closed toast
+ * @property {number}   time          Time var before closing
+ */
+
+/**
  * Create a toast to alert the user
  *    options:
  *      isTimed: true     will add a delayed self close,
@@ -13,6 +39,7 @@ const timerDelay = 1000
  *      isError: true     will add error visual class
  *
  * @param input
+ * @returns {Toast}
  */
 function createToast (input) {
   msgId += 1
@@ -36,14 +63,15 @@ function createToast (input) {
     }
   }
 
-  return {
-    id: msgId,
-    title: title,
-    message: message,
-    isError: isError,
-    isTimed: isTimed,
-    time: time()
-  }
+  const newToast = DEFAULT_TOAST()
+  newToast.id = msgId
+  newToast.title = title
+  newToast.message = message
+  newToast.isError = isError
+  newToast.isTimed = isTimed
+  newToast.time = time()
+
+  return newToast
 }
 
 function startTimerCheck (state) {
@@ -87,18 +115,10 @@ function updateTimerCheck (state) {
 export default {
   namespaced: true,
   state: {
+    /** All toasts */
     toasts: []
   },
   getters: {
-    /**
-     * Returns all toasts
-     *
-     * @param state
-     * @returns {Array}
-     */
-    toasts: function (state) {
-      return state.toasts
-    },
     /**
      * Returns a function to get a toast by ID
      *
@@ -106,9 +126,30 @@ export default {
      * @param {string}      id
      * @returns {function}
      */
-    toast: function (state) {
+    getToastById: function (state) {
       return function (id) {
         return state.toasts.filter(item => item.id === id)
+      }
+    },
+    /**
+     * Returns a function to get a toast by message content
+     *
+     * @param {object}      state
+     * @param {string}      content   term to search by
+     * @returns {function}
+     */
+    getToastByContent: function (state) {
+      return function (content) {
+        const foundTitle = state.toasts.filter(item => item.title === content)
+        const foundMessage = state.toasts.filter(item => item.message === content)
+
+        if (foundTitle.length > 0) {
+          return foundTitle
+        }
+        if (foundMessage.length > 0) {
+          return foundMessage
+        }
+        return []
       }
     }
   },
@@ -117,18 +158,24 @@ export default {
      * Add a new toast to the store
      *
      * @param {object}    state
-     * @param {object}    input toast obj
-     * @returns {object}  new toast
+     * @param {object}    input   toast properties
+     * @returns {Toast}           new toast
      */
-    toastAdd: function (state, input) {
+    addToast: function (state, input) {
       const newTask = createToast(input)
+
+      // check for duplication
+      const fndTitle = state.toasts.filter(item => item.title === newTask.title)
+      const fndMsg = state.toasts.filter(item => item.message === newTask.message)
+      if (fndTitle.length > 0 || fndMsg.length > 0) return
+
       state.toasts.push(newTask)
 
       if (newTask.isTimed >= 0) {
         startTimerCheck(state)
       }
 
-      return input
+      return newTask
     },
     /**
      * Remove a toast item
@@ -137,7 +184,7 @@ export default {
      * @param {object}    input toast
      * @returns {object}  toast removed
      */
-    toastRemove: function (state, input) {
+    removeToast: function (state, input) {
       for (let i = 0, max = state.toasts.length; i < max; i++) {
         if (state.toasts[i].id === input.id) {
           Vue.delete(state.toasts, i)
@@ -149,10 +196,9 @@ export default {
      * Remove all toast items
      *
      * @param {object}    state
-     * @param {object}    input toast
      * @returns {object}  toast removed
      */
-    toastRemoveAll: function (state) {
+    clearAllToasts: function (state) {
       Vue.set(state, 'toasts', [])
     }
   },

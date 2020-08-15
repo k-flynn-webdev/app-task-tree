@@ -31,14 +31,14 @@ export default {
         isTimed: true,
         isError: false
       }
-      this.$store.commit('toasts/toastAdd', toastMsg)
+      this.$store.commit('toasts/addToast', toastMsg)
 
       helpers.timeDelay(() => {
         this.$router.push({ name: paths.HOME })
       }, general.DELAY)
     },
     handleError: function (err) {
-      this.$store.commit('toasts/toastAdd', err)
+      this.$store.commit('toasts/addToast', err)
     }
   }
 }

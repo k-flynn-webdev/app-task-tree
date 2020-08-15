@@ -83,7 +83,7 @@ export default {
           }, general.DELAY_SUCCESS)
         })
         .catch(err => {
-          this.$store.commit('toasts/toastAdd', err)
+          this.$store.commit('toasts/addToast', err)
         })
     }
   }
