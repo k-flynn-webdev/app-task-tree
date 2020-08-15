@@ -266,6 +266,18 @@
         left: 0;
         width: 100%;
         height: 100%;
+
+        .check-box {
+          $boxSize: 10%;
+
+          position: absolute;
+          top: $boxSize;
+          left: $boxSize;
+          right: $boxSize;
+          bottom: $boxSize;
+          border: $border-size * 1.1 solid rgba($color-fore, 1 - $color-alpha);
+          border-radius: $border-radius * 0.5;
+        }
       }
 
       input,

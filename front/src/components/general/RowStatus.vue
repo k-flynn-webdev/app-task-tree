@@ -10,6 +10,7 @@
       <div class="row__item__status-icon control">
         <icDone v-if="isDone" class="fill-success-status" />
         <icNone v-else-if="isWaiting" class="fill-waiting-status" />
+        <div v-else-if="isCheckBox" class="check-box"></div>
         <icRound v-else class="fill-fore" />
       </div>
 
