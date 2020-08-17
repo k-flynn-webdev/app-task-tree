@@ -1,9 +1,18 @@
 const constants = require('../constants/index')
 
-const welcomeMsg = ((link, address, name) => {
-  return `Hello, you've signed up to ${name}, to finish setting up, please visit :
-${address}${constants.paths.API_USER_VERIFY(link, '')}`
+const welcomeMsg = ((userName, link, address, name) => {
+  return {
+    title: 'Welcome',
+    actionText: `Hello ${userName}, you've signed up to ${name}, to finish visit the link.`,
+    actionURL: `${address}${constants.paths.API_USER_VERIFY(link, '')}`,
+    actionURLText: 'Verify link',
+    text: `Hello ${userName}, you've signed up to ${name}, to finish visit ${address}${constants.paths.API_USER_VERIFY(link, '')}.`
+  }
 })
+// const welcomeMsg = ((link, address, name) => {
+//   return `Hello, you've signed up to ${name}, to finish setting up, please visit :
+// ${address}${constants.paths.API_USER_VERIFY(link, '')}`
+// })
 const verifyMsg = ((link, address) => {
   return `Hello, you've recently changed your account email or password, to verify please visit :
 ${address}${constants.paths.API_USER_VERIFY(link, '')}`

@@ -8,6 +8,12 @@ const mailgun = require('mailgun-js')({
   host: mailConfig.host
 })
 
+// const templateAction = require('../mail/dist/action.html')
+const pug = require('pug')
+
+// Compile the source code
+const createdUser = pug.compileFile('mail/dist/action.html');
+
 let appTemp = null
 let hasInit = false
 
@@ -60,11 +66,14 @@ const EmailSend = (emailData) => {
  * @param user 	{Object}	user object
  */
 const AccountCreate = (user) => {
+  const emailTextRender = mailConfig.strings.create.msg(user.name, user.verify, config.web.address, config.web.name)
   EmailSend({
     from: mailConfig.strings.create.from,
     to: user.email,
     subject: mailConfig.strings.create.subject,
-    text: mailConfig.strings.create.msg(user.verify, config.web.address, config.web.name)})
+    html: createdUser(emailTextRender),
+    text: emailTextRender.text
+  })
 }
 
 /**
@@ -77,7 +86,8 @@ const AccountVerify = (user) => {
     from: mailConfig.strings.verify.from,
     to: user.email,
     subject: mailConfig.strings.verify.subject,
-    text: mailConfig.strings.verify.msg(user.verify, config.web.address)})
+    text: templateAction })
+    // text: mailConfig.strings.verify.msg(user.verify, config.web.address)})
 }
 
 /**
