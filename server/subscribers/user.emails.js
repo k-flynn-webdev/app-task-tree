@@ -21,7 +21,6 @@ function Init(app) {
 module.exports = Init
 
 
-
 // const templateAction = require('../mail/dist/action.html')
 
 // Compile the source code
