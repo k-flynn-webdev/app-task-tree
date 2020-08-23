@@ -4,7 +4,6 @@ const path = require('path')
 const dotEnv = require('dotenv')
 const configPath = getEnvPath()
 const appVersion = require('../package.json').version
-const mailStrings = require('./mail.string.config.js')
 const envs = dotEnv.config({ path: configPath })
 
 function getEnvPath () {
@@ -57,8 +56,7 @@ module.exports = {
     active: envs.parsed.MAIL_ACTIVE === 'true',
     api: envs.parsed.MAIL_API,
     host: envs.parsed.MAIL_HOST,
-    domain: envs.parsed.MAIL_DOMAIN,
-    strings: mailStrings
+    domain: envs.parsed.MAIL_DOMAIN
   }
 }
 

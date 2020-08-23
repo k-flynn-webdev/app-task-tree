@@ -1,5 +1,4 @@
 const logger = require('./logger.js')
-const constants = require('../constants/index')
 const config = require('../config/config')
 const mailConfig = require('../config/config').mail
 const mailgun = require('mailgun-js')({
@@ -8,29 +7,14 @@ const mailgun = require('mailgun-js')({
   host: mailConfig.host
 })
 
-// const templateAction = require('../mail/dist/action.html')
-const pug = require('pug')
-
-// Compile the source code
-const createdUser = pug.compileFile('mail/dist/action.html');
-
-let appTemp = null
 let hasInit = false
+let useMailService = false
 
-function Init(app) {
+function Init() {
   if (!hasInit) {
-    appTemp = app
 
-    const useMailService = (mailConfig.active === true &&
+    useMailService = (mailConfig.active === true &&
       config.node_env !== 'test')
-
-    if (useMailService){
-      app.on(constants.events.CREATE_ACCOUNT, AccountCreate)
-      app.on(constants.events.UPGRADE_ACCOUNT, AccountCreate)
-      app.on(constants.events.VERIFY_ACCOUNT, AccountVerify)
-      app.on(constants.events.RESET_ACCOUNT, AccountReset)
-      app.on(constants.events.UPDATED_ACCOUNT, AccountUpdate)
-    }
 
     logger.Log(`\t✅ Email service\t${useMailService}`)
 
@@ -41,77 +25,37 @@ function Init(app) {
 exports.Init = Init
 
 /**
- * Email API
+ * Send an email via the API
  *
- * @param emailData 	{Object}	data to send (from, to, subject, text)
+ * @param {Email}   emailData   email data to send
+ * @returns {boolean|Error}
  */
-const EmailSend = (emailData) => {
+const sendEmail = (emailData) => {
+  if (!useMailService) return
+
   mailgun.messages().send(emailData, (err, result) => {
 
     if (err) {
       logger.Log('email err\n')
       logger.Log(err.statusCode + '\n')
       logger.Log(err)
-      return
+      return err
     }
 
     logger.Log(result.id)
     logger.Log(result.message)
+    return true
   })
 }
+exports.sendEmail = sendEmail
+
 
 /**
- * Send a user account creation email
+ * @typedef {object} Email
  *
- * @param user 	{Object}	user object
+ * @property {string}   from      From email address
+ * @property {string}   to        To email address
+ * @property {string}   subject   Subject text
+ * @property {string}   [text]    Basic text version of the email
+ * @property {string}   [html]    HTML of the email
  */
-const AccountCreate = (user) => {
-  const emailTextRender = mailConfig.strings.create.msg(user.name, user.verify, config.web.address, config.web.name)
-  EmailSend({
-    from: mailConfig.strings.create.from,
-    to: user.email,
-    subject: mailConfig.strings.create.subject,
-    html: createdUser(emailTextRender),
-    text: emailTextRender.text
-  })
-}
-
-/**
- * Send a user account verify email
- *
- * @param user 	{Object}	user object
- */
-const AccountVerify = (user) => {
-  EmailSend({
-    from: mailConfig.strings.verify.from,
-    to: user.email,
-    subject: mailConfig.strings.verify.subject,
-    text: templateAction })
-    // text: mailConfig.strings.verify.msg(user.verify, config.web.address)})
-}
-
-/**
- * Send a user reset email
- *
- * @param user 	{Object}	user object
- */
-const AccountReset = (user) => {
-  EmailSend({
-    from: mailConfig.strings.reset.from,
-    to: user.email,
-    subject: mailConfig.strings.reset.subject,
-    text: mailConfig.strings.reset.msg(user.recover, config.web.address)})
-}
-
-/**
- * Inform a user has been updated
- *
- * @param user 	{Object}	user object
- */
-const AccountUpdate = (user) => {
-  EmailSend({
-    from: mailConfig.strings.update.from,
-    to: user.email,
-    subject: mailConfig.strings.update.subject,
-    text: mailConfig.strings.update.msg(user.verify, config.web.address)})
-}
