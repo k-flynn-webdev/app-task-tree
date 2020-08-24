@@ -1,6 +1,6 @@
 {
-  "host": "localhost",
-  "port": 3030,
+  "host": "APP_IP",
+  "port": "APP_PORT",
   "public": "../public/",
   "paginate": {
     "default": 10,
@@ -9,7 +9,7 @@
   "authentication": {
     "entity": "user",
     "service": "users",
-    "secret": "hKqiEaMN/j4FgvN4dQ3ASFwKGRo=",
+    "secret": "APP_SECRET",
     "authStrategies": [
       "jwt",
       "local"
@@ -24,6 +24,7 @@
       "expiresIn": "1d"
     },
     "local": {
+      "hashSize": 10,
       "usernameField": "email",
       "passwordField": "password"
     }
