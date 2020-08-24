@@ -1,7 +1,5 @@
 'use strict'
 process.stdout.write('\n')
-
-const path = require('path')
 const express = require('express')
 const config = require('./config/config.js')
 const logger = require('./services/logger.js')
