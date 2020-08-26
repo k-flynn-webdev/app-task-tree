@@ -13,8 +13,13 @@ module.exports = function (app) {
       db.schema.createTable(tableName, table => {
         table.increments('id');
 
+        table.string('role').defaultTo('user');
+
         table.string('email').unique();
         table.string('password');
+
+        table.string('verify');
+        table.string('recover');
 
         table.timestamp('created_at').defaultTo(db.fn.now());
         table.timestamp('updated_at').defaultTo(db.fn.now());

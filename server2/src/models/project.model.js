@@ -12,6 +12,7 @@ module.exports = function (app) {
       db.schema.createTable(tableName, table => {
         table.increments('id');
         table.string('text');
+
         table.timestamp('created_at').defaultTo(db.fn.now());
         table.timestamp('updated_at').defaultTo(db.fn.now());
       })
