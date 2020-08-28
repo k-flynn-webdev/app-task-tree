@@ -5,6 +5,8 @@ const { hashPassword, protect
 
 const timeStamp = require('../../hooks/time-stamp');
 const createNanoId = require('../../hooks/create-nano-id');
+const validateUser = require('../../hooks/validate-user');
+
 
 module.exports = {
   before: {
@@ -12,16 +14,19 @@ module.exports = {
     find: [ authenticate('jwt') ],
     get: [ authenticate('jwt') ],
     create: [
+      validateUser.create(),
       hashPassword('password'),
       timeStamp('created_at'),
       createNanoId()],
     update: [
+      validateUser.create(),
       authenticate('jwt'),
       hashPassword('password'),
       timeStamp('updated_at'),
       createNanoId()],
     patch: [
       // authenticate('jwt'),
+      validateUser.patch(),
       createNanoId(),
       hashPassword('password'),
       timeStamp('updated_at')],

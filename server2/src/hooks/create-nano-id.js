@@ -8,19 +8,13 @@ module.exports = () => {
 
   return async context => {
 
-    let addVerify = false;
+    const allowedMethods = [
+      'create',
+      'update',
+      'patch'];
 
-    if (context.method === 'create') {
-      addVerify = true;
-    }
-    if (context.method === 'update') {
-      addVerify = true;
-    }
-    if (context.method === 'patch' &&
-    context.data &&
-    context.data.email) {
-      addVerify = true;
-    }
+    const hasEmail = context.data && context.data.email;
+    const addVerify = allowedMethods.includes(context.method) && hasEmail;
 
     if (addVerify) {
       context.data['verify'] = nanoid();

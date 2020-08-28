@@ -48,6 +48,8 @@ app.configure(services);
 // Set up event channels (see channels.js)
 app.configure(channels);
 
+app.logger = logger;
+
 // Configure a middleware for 404s and the error handler
 app.use(express.notFound());
 app.use(express.errorHandler({ logger }));

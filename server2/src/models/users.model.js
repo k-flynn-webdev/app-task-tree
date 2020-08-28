@@ -11,18 +11,18 @@ module.exports = function (app) {
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
-        table.increments('id');
+        !table.increments('id').notNullable();
 
-        table.string('role').defaultTo('user');
+        table.string('role').defaultTo('user').notNullable();
 
-        table.string('email').unique();
-        table.string('password');
+        table.string('email').unique().notNullable();
+        table.string('password').notNullable();
 
         table.string('verify');
         table.string('recover');
 
-        table.timestamp('created_at').defaultTo(db.fn.now());
-        table.timestamp('updated_at').defaultTo(db.fn.now());
+        table.timestamp('created_at').defaultTo(db.fn.now()).notNullable();
+        table.timestamp('updated_at').defaultTo(db.fn.now()).notNullable();
 
       })
         .then(() => console.log(`Created ${tableName} table`))
