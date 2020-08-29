@@ -8,7 +8,6 @@ const createNanoId = require('../../hooks/create-nano-id');
 const userValidate = require('../../hooks/user-validate');
 const userIsVerified = require('../../hooks/user-is-verified');
 
-
 module.exports = {
   before: {
     all: [],
@@ -20,21 +19,21 @@ module.exports = {
       userValidate.create(),
       hashPassword('password'),
       timeStamp('created_at'),
-      createNanoId()],
+      createNanoId('verify')],
     update: [
       userValidate.create(),
       userIsVerified(),
       authenticate('jwt'),
       hashPassword('password'),
       timeStamp('updated_at'),
-      createNanoId()],
+      createNanoId('verify')],
     patch: [
       userValidate.patch(),
       userIsVerified(),
       // authenticate('jwt'),
       hashPassword('password'),
       timeStamp('updated_at'),
-      createNanoId(),
+      createNanoId('verify'),
     ],
     remove: [
       authenticate('jwt') ]
@@ -58,7 +57,7 @@ module.exports = {
     all: [
       // Make sure the password field is never sent to the client
       // Always must be the last hook
-      protect('password')
+      protect('password'),
     ],
     find: [],
     get: [],

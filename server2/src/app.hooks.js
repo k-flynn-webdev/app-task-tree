@@ -1,8 +1,9 @@
 // Application hooks that run for every service
+const handleErrors = require('./hooks/handle-errors');
 
 module.exports = {
   before: {
-    all: [],
+    all: [handleErrors],
     find: [],
     get: [],
     create: [],

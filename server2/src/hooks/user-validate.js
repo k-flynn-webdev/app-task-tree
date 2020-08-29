@@ -3,6 +3,7 @@
 // validation
 const joi = require('@hapi/joi');
 const get = require('lodash').get;
+const { BadRequest } = require('@feathersjs/errors');
 
 const checkEmail = joi.string().min(4).email({ minDomainSegments: 2 }).required();
 const checkPassword = joi.string().min(6).max(100).required();
@@ -19,7 +20,8 @@ const validateItems = (testItems, context) => {
     const test = testFunc.validate(source);
 
     if (testRequire && test.error) {
-      throw new Error(get(test, 'error.details[0].message', 'error'));
+      throw new BadRequest(get(test, 'error.details[0].message',
+        'An error occurred on validation.'), test);
     }
   }
 };

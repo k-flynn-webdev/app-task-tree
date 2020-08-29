@@ -3,6 +3,7 @@
 // validation
 // const joi = require('@hapi/joi');
 // const get = require('lodash').get;
+const { BadRequest } = require('@feathersjs/errors');
 
 /**
  * Checks if a User is verified
@@ -17,7 +18,7 @@ const isVerified = () => {
     const userModel = await context.app.service('users').get(userId);
 
     if (userModel.verify && userModel.verify.length > 3) {
-      throw new Error('User must be verified in order to update details.');
+      throw new BadRequest('User must be verified in order to update details.');
     }
 
     context.resource = userModel;

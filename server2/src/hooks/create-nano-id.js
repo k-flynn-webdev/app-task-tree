@@ -4,20 +4,14 @@ const nanoid = require('nanoid').nanoid;
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
 
 // eslint-disable-next-line no-unused-vars
-module.exports = () => {
+module.exports = (name) => {
 
   return async context => {
 
-    const allowedMethods = [
-      'create',
-      'update',
-      'patch'];
-
     const hasEmail = context.data && context.data.email;
-    const addVerify = allowedMethods.includes(context.method) && hasEmail;
 
-    if (addVerify) {
-      context.data['verify'] = nanoid();
+    if (hasEmail) {
+      context.data[name] = nanoid();
     }
 
     return context;
