@@ -13,9 +13,7 @@ module.exports = {
   before: {
     all: [],
     find: [ authenticate('jwt') ],
-    get: [
-      authenticate('jwt')
-       ],
+    get: [ authenticate('jwt') ],
     create: [
       userValidate.create(),
       hashPassword('password'),
