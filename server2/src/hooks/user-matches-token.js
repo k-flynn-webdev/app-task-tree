@@ -11,7 +11,7 @@ const { BadRequest } = require('@feathersjs/errors');
  *
  * @return {function(*): *}
  */
-const isCorrect = (context) => {
+const userMatchesToken = (context) => {
 
   if (context.params.user && context.id) {
 
@@ -29,4 +29,4 @@ const isCorrect = (context) => {
   return context;
 };
 
-module.exports = isCorrect;
+module.exports = userMatchesToken;

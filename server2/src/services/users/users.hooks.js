@@ -3,17 +3,17 @@ const { hashPassword, protect
 } = require('@feathersjs/authentication-local').hooks;
 
 const timeStamp = require('../../hooks/time-stamp');
+const limitByRole = require('../../hooks/limit-by-role');
 const userValidate = require('../../hooks/user-validate');
 const createNanoId = require('../../hooks/create-nano-id');
-const userIsCorrect = require('../../hooks/user-is-correct');
 const userIsVerified = require('../../hooks/user-is-verified');
-
+const userMatchesToken = require('../../hooks/user-matches-token');
 
 module.exports = {
   before: {
     all: [],
-    find: [ authenticate('jwt') ],
-    get: [ authenticate('jwt') ],
+    find: [ authenticate('jwt'), limitByRole('admin') ],
+    get: [ authenticate('jwt'), userMatchesToken ],
     create: [
       userValidate.create(),
       hashPassword('password'),
@@ -22,14 +22,14 @@ module.exports = {
     update: [
       userValidate.create(),
       authenticate('jwt'),
-      userIsVerified(),
+      userIsVerified,
       hashPassword('password'),
       timeStamp('updated_at'),
       createNanoId('verify')],
     patch: [
       userValidate.patch(),
       authenticate('jwt'),
-      userIsVerified(),
+      userIsVerified,
       hashPassword('password'),
       timeStamp('updated_at'),
       createNanoId('verify'),
@@ -45,7 +45,7 @@ module.exports = {
       protect('password', 'verify', 'recover'),
     ],
     find: [],
-    get: [userIsCorrect],
+    get: [],
     create: [],
     update: [],
     patch: [],

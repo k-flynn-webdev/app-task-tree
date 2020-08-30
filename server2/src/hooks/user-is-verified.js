@@ -11,19 +11,17 @@ const { BadRequest } = require('@feathersjs/errors');
  *
  * @return {function(*): *}
  */
-const isVerified = () => {
-  return async context => {
+const isVerified = (context) => {
 
-    const userModel = context.params.user;
+  const userModel = context.params.user;
 
-    if (userModel.verify && userModel.verify.length > 3) {
-      throw new BadRequest('User must be verified in order to update details.');
-    }
+  if (userModel.verify && userModel.verify.length > 3) {
+    throw new BadRequest('User must be verified in order to update details.');
+  }
 
-    context.resource = userModel;
+  context.resource = userModel;
 
-    return context;
-  };
+  return context;
 };
 
 module.exports = isVerified;
