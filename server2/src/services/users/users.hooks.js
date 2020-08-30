@@ -1,20 +1,21 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-
 const { hashPassword, protect
 } = require('@feathersjs/authentication-local').hooks;
 
 const timeStamp = require('../../hooks/time-stamp');
-const createNanoId = require('../../hooks/create-nano-id');
 const userValidate = require('../../hooks/user-validate');
+const createNanoId = require('../../hooks/create-nano-id');
+const userIsCorrect = require('../../hooks/user-is-correct');
 const userIsVerified = require('../../hooks/user-is-verified');
+
 
 module.exports = {
   before: {
     all: [],
-    find: [  ],
-    // find: [ authenticate('jwt') ],
-    get: [ ],
-    // get: [ authenticate('jwt') ],
+    find: [ authenticate('jwt') ],
+    get: [
+      authenticate('jwt'),
+      userIsCorrect ],
     create: [
       userValidate.create(),
       hashPassword('password'),
@@ -22,15 +23,15 @@ module.exports = {
       createNanoId('verify')],
     update: [
       userValidate.create(),
-      userIsVerified(),
       authenticate('jwt'),
+      userIsVerified(),
       hashPassword('password'),
       timeStamp('updated_at'),
       createNanoId('verify')],
     patch: [
       userValidate.patch(),
+      authenticate('jwt'),
       userIsVerified(),
-      // authenticate('jwt'),
       hashPassword('password'),
       timeStamp('updated_at'),
       createNanoId('verify'),
@@ -43,7 +44,7 @@ module.exports = {
     all: [
       // Make sure the password field is never sent to the client
       // Always must be the last hook
-      protect('password')
+      protect(['password', 'verify', 'recover'])
     ],
     find: [],
     get: [],
@@ -57,7 +58,7 @@ module.exports = {
     all: [
       // Make sure the password field is never sent to the client
       // Always must be the last hook
-      protect('password'),
+      protect(['password', 'verify', 'recover'])
     ],
     find: [],
     get: [],

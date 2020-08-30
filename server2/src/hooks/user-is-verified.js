@@ -14,8 +14,7 @@ const { BadRequest } = require('@feathersjs/errors');
 const isVerified = () => {
   return async context => {
 
-    const userId = context.id;
-    const userModel = await context.app.service('users').get(userId);
+    const userModel = context.params.user;
 
     if (userModel.verify && userModel.verify.length > 3) {
       throw new BadRequest('User must be verified in order to update details.');

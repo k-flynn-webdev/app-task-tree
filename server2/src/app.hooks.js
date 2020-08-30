@@ -1,5 +1,6 @@
 // Application hooks that run for every service
 const handleErrors = require('./hooks/handle-errors');
+const { protect } = require('@feathersjs/authentication-local').hooks;
 
 module.exports = {
   before: {
@@ -13,7 +14,7 @@ module.exports = {
   },
 
   after: {
-    all: [],
+    all: [protect(['password', 'user', 'recover'])],
     find: [],
     get: [],
     create: [],

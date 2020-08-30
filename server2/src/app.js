@@ -1,20 +1,20 @@
 require('dotenv').config();
 const path = require('path');
+const cors = require('cors');
+const helmet = require('helmet');
+const logger = require('./logger');
 const favicon = require('serve-favicon');
 const compress = require('compression');
-const helmet = require('helmet');
-const cors = require('cors');
-const logger = require('./logger');
 
-const feathers = require('@feathersjs/feathers');
-const configuration = require('@feathersjs/configuration');
 const express = require('@feathersjs/express');
 const socketio = require('@feathersjs/socketio');
+const feathers = require('@feathersjs/feathers');
+const configuration = require('@feathersjs/configuration');
 
-const middleware = require('./middleware');
 const services = require('./services');
-const appHooks = require('./app.hooks');
 const channels = require('./channels');
+const appHooks = require('./app.hooks');
+const middleware = require('./middleware');
 
 const authentication = require('./authentication');
 
