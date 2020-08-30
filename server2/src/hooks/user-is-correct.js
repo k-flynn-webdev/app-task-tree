@@ -19,7 +19,10 @@ const isCorrect = (context) => {
     const userIsAdmin = context.params.user.role === 'admin';
 
     if (!userIsAdmin && !userIdMatches) {
-      throw new BadRequest('User and Token do not match.');
+      context.statusCode = 400;
+      const error =  new BadRequest('User and Token do not match.');
+      context.dispatch = error;
+      return error;
     }
   }
 

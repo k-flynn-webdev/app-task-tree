@@ -14,8 +14,8 @@ module.exports = {
     all: [],
     find: [ authenticate('jwt') ],
     get: [
-      authenticate('jwt'),
-      userIsCorrect ],
+      authenticate('jwt')
+       ],
     create: [
       userValidate.create(),
       hashPassword('password'),
@@ -44,10 +44,10 @@ module.exports = {
     all: [
       // Make sure the password field is never sent to the client
       // Always must be the last hook
-      protect(['password', 'verify', 'recover'])
+      protect('password', 'verify', 'recover'),
     ],
     find: [],
-    get: [],
+    get: [userIsCorrect],
     create: [],
     update: [],
     patch: [],
@@ -58,7 +58,7 @@ module.exports = {
     all: [
       // Make sure the password field is never sent to the client
       // Always must be the last hook
-      protect(['password', 'verify', 'recover'])
+      protect('password', 'verify', 'recover'),
     ],
     find: [],
     get: [],

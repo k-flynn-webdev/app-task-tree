@@ -14,7 +14,7 @@ module.exports = {
   },
 
   after: {
-    all: [protect(['password', 'user', 'recover'])],
+    all: [ protect('password', 'verify', 'recover') ],
     find: [],
     get: [],
     create: [],
