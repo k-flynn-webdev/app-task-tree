@@ -5,8 +5,8 @@ const joi = require('@hapi/joi');
 const get = require('lodash').get;
 const { BadRequest } = require('@feathersjs/errors');
 
-const checkEmail = joi.string().min(4).email({ minDomainSegments: 2 }).required();
-const checkPassword = joi.string().min(6).max(100).required();
+const checkEmail = joi.string().label('email').min(4).email({ minDomainSegments: 2 }).required();
+const checkPassword = joi.string().label('password').min(6).max(100).required();
 
 
 const validateItems = (testItems, context) => {
@@ -21,7 +21,7 @@ const validateItems = (testItems, context) => {
 
     if (testRequire && test.error) {
       throw new BadRequest(get(test, 'error.details[0].message',
-        'An error occurred on validation.'), test);
+        'An error occurred on validation.'));
     }
   }
 };
@@ -41,6 +41,20 @@ const create = () => {
 };
 
 exports.create = create;
+
+const recover = () => {
+  return async context => {
+    const checkVars = [
+      [checkPassword, 'password', true]
+    ];
+
+    validateItems(checkVars, context);
+
+    return context;
+  };
+};
+
+exports.recover = recover;
 
 const patch = () => {
   return async context => {

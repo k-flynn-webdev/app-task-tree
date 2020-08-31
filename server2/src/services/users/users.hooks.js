@@ -8,6 +8,7 @@ const userValidate = require('../../hooks/user-validate');
 const createNanoId = require('../../hooks/create-nano-id');
 const userIsVerified = require('../../hooks/user-is-verified');
 const userMatchesToken = require('../../hooks/user-matches-token');
+const userIsAnonRenewToken = require('../../hooks/user-is-anon-renew-token');
 
 module.exports = {
   before: {
@@ -54,6 +55,7 @@ module.exports = {
 
   error: {
     all: [
+      userIsAnonRenewToken,
       // Make sure the password field is never sent to the client
       // Always must be the last hook
       protect('password', 'verify', 'recover'),
