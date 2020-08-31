@@ -22,7 +22,6 @@ exports.Recover = class Recover extends Service {
       throw new BadRequest('No User found with recover token.');
     }
 
-    return super.patch(params.user.id,
-      { recover: null, password: data.password }, params);
+    return super.patch(params.user.id, data, params);
   }
 };

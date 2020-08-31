@@ -1,6 +1,7 @@
 const { hashPassword, protect
 } = require('@feathersjs/authentication-local').hooks;
 const userValidate = require('../../hooks/user-validate');
+const timeStamp = require('../../hooks/time-stamp');
 
 module.exports = {
   before: {
@@ -11,7 +12,9 @@ module.exports = {
     update: [],
     patch: [
       userValidate.recover(),
-      hashPassword('password') ],
+      hashPassword('password'),
+      ctx => { ctx.data.recover = null; return ctx; },
+      timeStamp('updated_at')],
     remove: []
   },
 

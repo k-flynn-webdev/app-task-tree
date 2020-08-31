@@ -24,6 +24,11 @@ exports.Verify = class Verify extends Service {
       throw new BadRequest('Invalid verify token.');
     }
 
-    return super.patch(params.user.id, { verify: null });
+    const data = {
+      verify: null,
+      updated_at: new Date()
+    };
+
+    return super.patch(params.user.id, data, params);
   }
 };
