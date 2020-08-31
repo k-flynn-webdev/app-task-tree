@@ -1,8 +1,6 @@
 // Use this hook to manipulate incoming or outgoing data.
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
 const  jsonDecode = require('jsonwebtoken').decode;
-const { BadRequest } = require('@feathersjs/errors');
-const { authenticate } = require('@feathersjs/authentication');
 
 /**
  * If a JS token fails, check if its a Anon user and issue a
