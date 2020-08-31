@@ -17,13 +17,11 @@ const isAnon = async (context) => {
     !!context.error.data.expiredAt);
 
   if (tokenIsExpired) {
-    const isAnon = (jsonDecode(
-      context.params.authentication.accessToken).role === 'anon');
-
-    if (!isAnon) return context;
-
     const userID = jsonDecode(context.params.authentication.accessToken).id;
     const userFound = await context.app.services.users.get({ id: userID });
+    const isAnon = (userFound.role === 'anon');
+
+    if (!isAnon) return context;
 
     const userPayload = {
       sub: userFound.id,
