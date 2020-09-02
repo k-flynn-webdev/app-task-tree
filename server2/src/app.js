@@ -18,7 +18,7 @@ const middleware = require('./middleware');
 
 const authentication = require('./authentication');
 
-const knex = require('./knex');
+const knex = require('./knex')
 
 const app = express(feathers());
 

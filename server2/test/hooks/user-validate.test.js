@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const userValidate = require('../../src/hooks/user-validate');
 
 
-describe.only('\'user validate\' hook', () => {
+describe('\'user validate\' hook', () => {
   describe('Create()', () => {
     it('Should throw an error when no params are provided', () => {
       const ctxObject = { data: { } };
