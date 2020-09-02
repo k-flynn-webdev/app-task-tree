@@ -60,12 +60,12 @@ describe('\'user validate\' hook', () => {
 
       expect(testPass).to.equal(ctxObjectPass);
     });
-    it('Should throw an error when a password is not provided', () => {
+    it('Should throw an error when a password is not provided (01)', () => {
       const ctxObjectPass = { data: { } };
 
       expect(() => userValidate.recover(ctxObjectPass)).throws(Error, 'Missing params.');
     });
-    it('Should throw an error when a password is not provided', () => {
+    it('Should throw an error when a password is not provided (02)', () => {
       const ctxObjectPass = { data: { password: '' } };
 
       expect(() => userValidate.recover(ctxObjectPass)).throws(Error, '"password" is not allowed to be empty');
