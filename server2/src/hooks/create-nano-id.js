@@ -1,16 +1,15 @@
 const nanoid = require('nanoid').nanoid;
 
-// Use this hook to manipulate incoming or outgoing data.
-// For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
-
-// eslint-disable-next-line no-unused-vars
+/**
+ * Adds a nano-id string to a field
+ *    `IF` an email is present in the data payload
+ *
+ * @param name      name of field to add the nano-id string usually:[verify | recover]
+ * @return {function(*)}
+ */
 module.exports = (name) => {
-
-  return async context => {
-
-    const hasEmail = context.data && context.data.email;
-
-    if (hasEmail) {
+  return context => {
+    if (context.data && context.data.email) {
       context.data[name] = nanoid();
     }
 

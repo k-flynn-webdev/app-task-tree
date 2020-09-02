@@ -1,8 +1,8 @@
-const limitByRole = require('../../src/hooks/limit-by-role');
 const { expect } = require('chai');
+const limitByRole = require('../../src/hooks/limit-by-role');
 
 
-describe.only('\'limit by role\' hook', () => {
+describe('\'limit by role\' hook', () => {
   it('Should not throw an error when the `context.params.user.role` matches', () => {
     const hookTest = limitByRole('testRole');
     const testCtx = { params: { user: { role: 'testRole' } }};

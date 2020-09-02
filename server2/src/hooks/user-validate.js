@@ -1,6 +1,5 @@
 // Use this hook to manipulate incoming or outgoing data.
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
-// validation
 const joi = require('@hapi/joi');
 const get = require('lodash').get;
 const { BadRequest } = require('@feathersjs/errors');
@@ -10,6 +9,9 @@ const checkPassword = joi.string().label('password').min(6).max(100).required();
 
 
 const validateItems = (testItems, context) => {
+  if (!context.data) throw new BadRequest('Missing params.');
+  if (Object.keys(context.data).length < 1) throw new BadRequest('Missing params.');
+
   for (let i = 0; i < testItems.length; i ++) {
     const testFunc = testItems[i][0];
     const testParam = testItems[i][1];
@@ -27,47 +29,40 @@ const validateItems = (testItems, context) => {
 };
 
 
-const create = () => {
-  return async context => {
-    const checkVars = [
-      [checkEmail, 'email', true],
-      [checkPassword, 'password', true]
-    ];
+const create = (context) => {
+  const checkVars = [
+    [checkEmail, 'email', true],
+    [checkPassword, 'password', true]
+  ];
 
-    validateItems(checkVars, context);
+  validateItems(checkVars, context);
 
-    return context;
-  };
+  return context;
 };
 
 exports.create = create;
 
-const recover = () => {
-  return async context => {
-    const checkVars = [
-      [checkPassword, 'password', true]
-    ];
+const recover = (context) => {
+  const checkVars = [
+    [checkPassword, 'password', true]
+  ];
 
-    validateItems(checkVars, context);
+  validateItems(checkVars, context);
 
-    return context;
-  };
+  return context;
 };
 
 exports.recover = recover;
 
-const patch = () => {
-  return async context => {
+const patch = (context) => {
+  const checkVars = [
+    [checkEmail, 'email', false],
+    [checkPassword, 'password', false]
+  ];
 
-    const checkVars = [
-      [checkEmail, 'email', false],
-      [checkPassword, 'password', false]
-    ];
+  validateItems(checkVars, context);
 
-    validateItems(checkVars, context);
-
-    return context;
-  };
+  return context;
 };
 
 exports.patch = patch;

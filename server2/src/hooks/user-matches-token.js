@@ -1,8 +1,5 @@
 // Use this hook to manipulate incoming or outgoing data.
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
-// validation
-// const joi = require('@hapi/joi');
-// const get = require('lodash').get;
 const { BadRequest } = require('@feathersjs/errors');
 
 /**
@@ -20,8 +17,9 @@ const userMatchesToken = (context) => {
 
     if (!userIsAdmin && !userIdMatches) {
       context.statusCode = 400;
-      const error =  new BadRequest('User and Token do not match.');
+      const error = new BadRequest('User and Token do not match.');
       context.dispatch = error;
+      context.error = error;
       return error;
     }
   }

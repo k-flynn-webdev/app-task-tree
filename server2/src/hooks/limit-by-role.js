@@ -9,7 +9,7 @@ const { BadRequest } = require('@feathersjs/errors');
  * Limit access to resources by role
  *
  * @params {string}   role    role to limit by
- * @return {function(*): *}
+ * @return {function(*)}
  */
 const limitByRole = (role) => {
   return context => {

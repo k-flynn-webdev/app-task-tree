@@ -11,7 +11,7 @@ module.exports = {
     create: [],
     update: [],
     patch: [
-      userValidate.recover(),
+      userValidate.recover,
       hashPassword('password'),
       ctx => { ctx.data.recover = null; return ctx; },
       timeStamp('updated_at')],

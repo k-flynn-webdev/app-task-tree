@@ -1,4 +1,4 @@
-const assert = require('assert');
+const { expect } = require('chai');
 const nanoIdHook = require('../../src/hooks/create-nano-id');
 
 describe('\'create nano id\' hook', () => {
@@ -8,7 +8,9 @@ describe('\'create nano id\' hook', () => {
 
     hookTest(testObj);
 
-    assert.ok(testObj.data.test.length > 5, 'Hook updated context data');
+
+    expect(testObj.data.test).length.to.be.a('string');
+    expect(testObj.data.test).length.to.be.greaterThan(5);
   });
   it('Without a email present in `context.data` nano-id does not edit context.data{name}', () => {
     const hookTest = nanoIdHook('test');
@@ -16,6 +18,6 @@ describe('\'create nano id\' hook', () => {
 
     hookTest(testObjNoEmail);
 
-    assert.ok(testObjNoEmail.data.test.length < 1, 'Hook did not update context data');
+    expect(testObjNoEmail.data.test).length.to.be.lessThan(1);
   });
 });

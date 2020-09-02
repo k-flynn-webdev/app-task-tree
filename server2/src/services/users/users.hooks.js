@@ -16,19 +16,19 @@ module.exports = {
     find: [ authenticate('jwt'), limitByRole('admin') ],
     get: [ authenticate('jwt'), userMatchesToken ],
     create: [
-      userValidate.create(),
+      userValidate.create,
       hashPassword('password'),
       timeStamp('created_at'),
       createNanoId('verify')],
     update: [
-      userValidate.create(),
+      userValidate.create,
       authenticate('jwt'),
       userIsVerified,
       hashPassword('password'),
       timeStamp('updated_at'),
       createNanoId('verify')],
     patch: [
-      userValidate.patch(),
+      userValidate.patch,
       authenticate('jwt'),
       userIsVerified,
       hashPassword('password'),

@@ -28,9 +28,11 @@ const isAnon = async (context) => {
       created_at: userFound.created_at
     };
 
+
     const token = await context.app.service('authentication').createAccessToken(userPayload);
 
-    context.result = { tokenIsExpired: true, token };
+    context.statusCode = 401;
+    context.result = { message: 'Token has expired', tokenIsExpired: true, token };
   }
 
   return context;
