@@ -1,8 +1,7 @@
 const { expect } = require('chai')
-// const verifyService = require('../../src/services/verify/verify.class')
 const app = require('../../src/app')
 
-describe.only('\'verify\' service', () => {
+describe('\'verify\' service', () => {
   it('registered the service', () => {
     const service = app.service('verify')
 
