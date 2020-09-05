@@ -9,8 +9,8 @@ const checkPassword = joi.string().label('password').min(6).max(100).required();
 
 
 const validateItems = (testItems, context) => {
-  if (!context.data) throw new BadRequest('Missing params.');
-  if (Object.keys(context.data).length < 1) throw new BadRequest('Missing params.');
+  if (!context.data) throw new BadRequest('Missing params.', {})
+  if (Object.keys(context.data).length < 1) throw new BadRequest('Missing params.', {});
 
   for (let i = 0; i < testItems.length; i ++) {
     const testFunc = testItems[i][0];
@@ -23,7 +23,7 @@ const validateItems = (testItems, context) => {
 
     if (testRequire && test.error) {
       throw new BadRequest(get(test, 'error.details[0].message',
-        'An error occurred on validation.'));
+        'An error occurred on validation.'), {});
     }
   }
 };
@@ -33,7 +33,7 @@ const create = (context) => {
   const checkVars = [
     [checkEmail, 'email', true],
     [checkPassword, 'password', true]
-  ];
+  ]
 
   validateItems(checkVars, context);
 

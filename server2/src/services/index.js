@@ -6,6 +6,9 @@ const recover = require('./recover/recover.service.js');
 const project = require('./project/project.service.js');
 
 
+const test = require('./test/test.service.js');
+
+
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
   app.configure(task);
@@ -14,4 +17,5 @@ module.exports = function (app) {
   app.configure(verify);
   app.configure(recover);
   app.configure(project);
+  app.configure(test);
 };

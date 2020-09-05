@@ -1,14 +1,16 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
+const { authenticate } = require('@feathersjs/authentication').hooks
 const { hashPassword, protect
-} = require('@feathersjs/authentication-local').hooks;
+} = require('@feathersjs/authentication-local').hooks
 
-const timeStamp = require('../../hooks/time-stamp');
-const limitByRole = require('../../hooks/limit-by-role');
-const userValidate = require('../../hooks/user-validate');
-const createNanoId = require('../../hooks/create-nano-id');
-const userIsVerified = require('../../hooks/user-is-verified');
-const userMatchesToken = require('../../hooks/user-matches-token');
-const userIsAnonRenewToken = require('../../hooks/user-is-anon-renew-token');
+const timeStamp = require('../../hooks/time-stamp')
+const limitByRole = require('../../hooks/limit-by-role')
+const userValidate = require('../../hooks/user-validate')
+const createNanoId = require('../../hooks/create-nano-id')
+const userIsVerified = require('../../hooks/user-is-verified')
+const userMatchesToken = require('../../hooks/user-matches-token')
+const userIsAnonRenewToken = require('../../hooks/user-is-anon-renew-token')
+const emailIsUnique = require('../../hooks/email-is-unique')
+const sendEmail = require('../../hooks/send-email')
 
 module.exports = {
   before: {
@@ -17,16 +19,19 @@ module.exports = {
     get: [ authenticate('jwt'), userMatchesToken ],
     create: [
       userValidate.create,
+      emailIsUnique,
       hashPassword('password'),
       timeStamp('created_at'),
-      createNanoId('verify')],
+      createNanoId('verify')
+    ],
     update: [
       userValidate.create,
       authenticate('jwt'),
       userIsVerified,
       hashPassword('password'),
       timeStamp('updated_at'),
-      createNanoId('verify')],
+      createNanoId('verify')
+    ],
     patch: [
       userValidate.patch,
       authenticate('jwt'),
@@ -36,7 +41,8 @@ module.exports = {
       createNanoId('verify'),
     ],
     remove: [
-      authenticate('jwt') ]
+      authenticate('jwt')
+    ]
   },
 
   after: {
@@ -47,7 +53,9 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [],
+    create: [
+      sendEmail({ test: true })
+    ],
     update: [],
     patch: [],
     remove: []

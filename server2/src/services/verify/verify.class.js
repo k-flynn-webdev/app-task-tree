@@ -15,13 +15,13 @@ exports.Verify = class Verify extends Service {
     if (!params.user) return;
 
     if (!params.user.verify) {
-      throw new BadRequest('User already verified.');
+      throw new BadRequest('User already verified.', {});
     }
 
     const verifyMatches = (params.user.verify === verify);
 
     if (!verifyMatches) {
-      throw new BadRequest('Invalid verify token.');
+      throw new BadRequest('Invalid verify token.', {});
     }
 
     const data = {

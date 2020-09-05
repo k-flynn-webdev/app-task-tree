@@ -19,7 +19,7 @@ exports.Recover = class Recover extends Service {
     params.user = userFound.data[0];
 
     if (!params.user) {
-      throw new BadRequest('No User found with recover token.');
+      throw new BadRequest('No User found with recover token.', {});
     }
 
     return super.patch(params.user.id, data, params);

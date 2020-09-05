@@ -38,5 +38,11 @@
       "password": "DATABASE_PASS",
       "database": "DATABASE_NAME"
     }
+  },
+  "mail": {
+    "active": "MAIL_ACTIVE",
+    "host": "MAIL_HOST",
+    "domain": "MAIL_DOMAIN",
+    "api": "MAIL_API"
   }
 }
