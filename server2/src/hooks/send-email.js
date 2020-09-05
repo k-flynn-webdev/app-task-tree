@@ -1,24 +1,31 @@
 // Use this hook to manipulate incoming or outgoing data.
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
+const { BadRequest } = require('@feathersjs/errors');
 
 const createEmail = require('../templates/user-create-email')
 
+const TEMPLATES = {
+  create: createEmail
+}
 /**
  *
  * Send an email via a hook call
  *
- * @param {string}   template   email data to send
+ * @param {string}   template   type of email data to send
  * @return {function(*): Promise<*>}
  */
 const sendEmail = (template) => {
   return async context => {
 
-    // todo we add templating here
     if (!template) return Promise.reject('No email template given')
-    // todo create a template object collection
-    // if (!templates[template]) return Promise.reject('Template does not exist')
 
-    const emailToSend = createEmail(context, context.result)
+    if (!TEMPLATES[template]) {
+      const err = new BadRequest('Template does not exist', {})
+      context.app.log(err)
+      throw err
+    }
+
+    const emailToSend = TEMPLATES[template](context, context.result)
 
     return context.app.service('email').create(emailToSend)
       .then(res => context.app.log(res))
