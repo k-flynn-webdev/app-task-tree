@@ -5,6 +5,7 @@ exports.Email = class Email {
   constructor (options) {
     this.options = options || {}
     this.active = options.active
+    this.from = options.from
 
     if (options.active) {
       this.email = mailgun({
@@ -26,6 +27,7 @@ exports.Email = class Email {
     return new Promise((resolve, reject) => {
 
       if (!this.active) return resolve('Email not active.')
+      data.from = this.from
 
       this.email.messages().send(data, (err, result) => {
         if (err) return reject(err)

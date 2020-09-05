@@ -39,8 +39,17 @@
       "database": "DATABASE_NAME"
     }
   },
+  "web": {
+    "name": "WEB_NAME",
+    "address": "WEB_ADDRESS",
+    "twitter": {
+      "name": "WEB_TWITTER_NAME",
+      "address": "WEB_TWITTER_URL"
+    }
+  },
   "mail": {
     "active": "MAIL_ACTIVE",
+    "from": "MAIL_FROM",
     "host": "MAIL_HOST",
     "domain": "MAIL_DOMAIN",
     "api": "MAIL_API"

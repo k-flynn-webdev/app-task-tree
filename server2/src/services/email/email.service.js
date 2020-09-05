@@ -9,6 +9,7 @@ module.exports = function (app) {
     api: app.get('mail').api,
     domain: app.get('mail').domain,
     host: app.get('mail').host,
+    from: app.get('mail').from
   }
 
   // Initialize our service with any options it requires
