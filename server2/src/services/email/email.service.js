@@ -1,6 +1,6 @@
 // Initializes the `test` service on path `/test`
-const { Test } = require('./test.class')
-const hooks = require('./test.hooks')
+const { Email } = require('./email.class')
+const hooks = require('./email.hooks')
 
 module.exports = function (app) {
   const options = {
@@ -12,10 +12,10 @@ module.exports = function (app) {
   }
 
   // Initialize our service with any options it requires
-  app.use('/test', new Test(options, app))
+  app.use('/email', new Email(options, app))
 
   // Get our initialized service so that we can register hooks
-  const service = app.service('test')
+  const service = app.service('email')
 
   service.hooks(hooks)
 };

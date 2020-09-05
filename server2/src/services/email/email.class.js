@@ -1,7 +1,7 @@
 const mailgun = require('mailgun-js')
 
 /* eslint-disable no-unused-vars */
-exports.Test = class Test {
+exports.Email = class Email {
   constructor (options) {
     this.options = options || {}
     this.active = options.active
@@ -14,9 +14,6 @@ exports.Test = class Test {
       })
     }
   }
-
-  // mailgun.messages().send(emailData, (err, result) => {
-  // console.log(this.email.messages().send({ to: '', from: '', subject: '', text: '', html: '' }))
 
   /**
    * Send an email via API

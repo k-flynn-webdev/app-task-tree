@@ -20,7 +20,7 @@ const sendEmail = (email) => {
       text: 'testing email test here'
     }
 
-    return context.app.service('test').create(emailTmp)
+    return context.app.service('email').create(emailTmp)
       .then(res => context.app.log(res))
       .catch(err => context.app.log(err))
   }
