@@ -41,7 +41,8 @@ module.exports = {
       createNanoId('verify'),
     ],
     remove: [
-      authenticate('jwt')
+      authenticate('jwt'),
+      userMatchesToken
     ]
   },
 
