@@ -7,9 +7,9 @@ const path = require('path')
 const templatePath = path.join(__dirname, '..', 'templates','dist','t_recover.html')
 const pugFn = pug.compileFile(templatePath)
 
-const getSubject = (ctx, userData) => { return `Password reset ${ctx.app.get('web').name}` }
+const getSubject = (ctx) => { return `Password reset ${ctx.app.get('web').name}` }
 const getLinkURL = (ctx, userData) => { return `${ctx.app.get('web').address}/recover/${userData.recover}` }
-const getEmailText = (ctx, userData) => { return `Hello you've recently requested a password reset for ${ctx.app.get('web').name}, to recover your account visit the link.` }
+const getEmailText = (ctx) => { return `Hello you've recently requested a password reset for ${ctx.app.get('web').name}, to recover your account visit the link.` }
 const getTextOnly = (ctx, userData) => { return `Hello you've recently requested a password reset for ${ctx.app.get('web').name}, to recover your account visit ${ctx.app.get('web').address}/recover/${userData.recover}` }
 const emailDetails = (ctx, userData) => {
   return {

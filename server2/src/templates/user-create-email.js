@@ -7,9 +7,9 @@ const path = require('path')
 const templatePath = path.join(__dirname, '..', 'templates','dist','t_create.html')
 const pugFn = pug.compileFile(templatePath)
 
-const getSubject = (ctx, userData) => { return `Welcome to ${ctx.app.get('web').name}` }
+const getSubject = (ctx) => { return `Welcome to ${ctx.app.get('web').name}` }
 const getLinkURL = (ctx, userData) => { return `${ctx.app.get('web').address}/verify/${userData.verify}` }
-const getEmailText = (ctx, userData) => { return `Hello you've recently signed up to ${ctx.app.get('web').name}, to finish visit the link.` }
+const getEmailText = (ctx) => { return `Hello you've recently signed up to ${ctx.app.get('web').name}, to finish visit the link.` }
 const getTextOnly = (ctx, userData) => { return `Hello you've recently signed up to ${ctx.app.get('web').name}, to finish visit ${ctx.app.get('web').address}/verify/${userData.verify}` }
 const emailDetails = (ctx, userData) => {
   return {
