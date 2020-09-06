@@ -54,10 +54,22 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      sendEmail({ test: true })
+      sendEmail('create')
     ],
-    update: [],
-    patch: [],
+    update: [
+      ctx => {
+        if (ctx.data.email) {
+          sendEmail('verify')
+        }
+      }
+    ],
+    patch: [
+      ctx => {
+        if (ctx.data.email) {
+          sendEmail('verify')
+        }
+      }
+    ],
     remove: []
   },
 

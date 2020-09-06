@@ -11,8 +11,10 @@ const  jsonDecode = require('jsonwebtoken').decode;
  */
 const isAnon = async (context) => {
 
-  const tokenIsExpired = (context.error.data.name === 'TokenExpiredError' &&
-    !!context.error.data.expiredAt);
+  const tokenIsExpired = (context.error &&
+      context.error.data &&
+      context.error.data.name === 'TokenExpiredError' &&
+    !!context.error.data.expiredAt)
 
   if (tokenIsExpired) {
     const userID = jsonDecode(context.params.authentication.accessToken).id;
@@ -34,6 +36,7 @@ const isAnon = async (context) => {
     context.statusCode = 401;
     context.result = { message: 'Token has expired', tokenIsExpired: true, token };
   }
+
 
   return context;
 };

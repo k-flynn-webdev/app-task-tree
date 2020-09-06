@@ -1,8 +1,8 @@
-const limitByProvider = require('../../hooks/limit-by-provider')
+const disallow = require('../../hooks/disallow')
 
 module.exports = {
   before: {
-    all: [ limitByProvider('server') ],
+    all: [ disallow('external') ],
     find: [],
     get: [],
     create: [],

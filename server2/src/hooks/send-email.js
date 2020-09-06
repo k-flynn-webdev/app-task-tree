@@ -3,15 +3,19 @@
 const { BadRequest } = require('@feathersjs/errors');
 
 const createEmail = require('../templates/user-create-email')
+const recoverEmail = require('../templates/user-recover-email')
+const verifyEmail = require('../templates/user-recover-email')
 
 const TEMPLATES = {
-  create: createEmail
+  create: createEmail,
+  recover: recoverEmail,
+  verify: verifyEmail
 }
 /**
  *
  * Send an email via a hook call
  *
- * @param {string}   template   type of email data to send
+ * @param {string}    template    type of email data to send
  * @return {function(*): Promise<*>}
  */
 const sendEmail = (template) => {
