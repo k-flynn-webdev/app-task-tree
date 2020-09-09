@@ -32,6 +32,7 @@
               <b-button native-type="submit"
                         type="is-primary"
                         :disabled="isDisabled"
+                        :loading="isLoading"
                         @click="submitForm">
                 Create
               </b-button>
@@ -48,8 +49,9 @@
 </template>
 
 <script>
-import { API } from '../constants/index'
-import HTTP from 'services/HttpService'
+import CONSTANTS from '../constants'
+import HTTP from '../services/HttpService'
+import { get } from 'lodash-es'
 
 export default {
   name: 'Create',
@@ -78,12 +80,12 @@ export default {
       this.isDisabled = false
     },
     submitForm () {
-      if (!this.isDisabled) return
+      if (this.isDisabled) return
       if (this.isLoading) return
 
       this.isLoading = true
 
-      return HTTP.get(API.USER.POST, {
+      return HTTP.post(CONSTANTS.API.USER.POST, {
         strategy: 'local',
         email: this.email.value,
         password: this.password.value
@@ -91,10 +93,26 @@ export default {
       .then(res => {
         this.isLoading = false
         console.log(res)
+
+        // todo server not sending a success [message] obj or token but
+        // user obj instead
+
+        this.$buefy.toast.open({
+          duration: 1500,
+          message: res.message || 'success',
+          position: 'is-top',
+          type: 'is-success'
+        })
       })
       .catch(err => {
         this.isLoading = false
-        console.log(err)
+
+        this.$buefy.toast.open({
+          duration: 5000,
+          message: get(err, 'response.data.message', 'error'),
+          position: 'is-top',
+          type: 'is-danger'
+        })
       })
     }
   }
