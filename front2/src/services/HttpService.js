@@ -4,7 +4,7 @@ import axios from 'axios'
 // import Paths from '../constants/paths.js'
 // import status from '../constants/status'
 
-const USER_TOKEN = 'user_token'
+const USER_TOKEN = 'accessToken'
 
 axios.defaults.headers.common['Accept-Version'] = 'v1'
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
@@ -17,7 +17,7 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
 function authSet (auth) {
   axios.defaults.headers.common.authorization = `Bearer ${auth}`
-  localStorage.setItem(USER_TOKEN, JSON.stringify({ token: auth }))
+  localStorage.setItem(USER_TOKEN, auth)
 }
 
 function authRemove () {
@@ -33,9 +33,11 @@ function authRemove () {
 axios.interceptors.response.use(httpSuccess, httpError)
 
 function httpSuccess (res) {
-  if (res.data && res.data.token) {
-    authSet(res.data.token)
+  if (res.data && res.data.accessToken) {
+    authSet(res.data.accessToken)
   }
+
+  return res
 }
 
 function httpError (err) {

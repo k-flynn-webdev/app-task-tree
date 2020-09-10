@@ -1,4 +1,11 @@
 html,
 body {
   background-color: $color-bg;
+  width: 100%;
+  min-width: 100%;
+}
+
+.columns {
+  margin-left: 0;
+  margin-right: 0;
 }

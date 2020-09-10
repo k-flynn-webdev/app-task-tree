@@ -9,6 +9,7 @@ const createNanoId = require('../../hooks/create-nano-id')
 const userIsVerified = require('../../hooks/user-is-verified')
 const userMatchesToken = require('../../hooks/user-matches-token')
 const userIsAnonRenewToken = require('../../hooks/user-is-anon-renew-token')
+const userPostLogin = require('../../hooks/user-post-login')
 const emailIsUnique = require('../../hooks/email-is-unique')
 const sendEmail = require('../../hooks/send-email')
 
@@ -20,6 +21,7 @@ module.exports = {
     create: [
       userValidate.create,
       emailIsUnique,
+      ctx => { ctx.password = ctx.data.password; return ctx },
       hashPassword('password'),
       timeStamp('created_at'),
       createNanoId('verify')
@@ -55,6 +57,7 @@ module.exports = {
     find: [],
     get: [],
     create: [
+      userPostLogin,
       sendEmail('create')
     ],
     update: [

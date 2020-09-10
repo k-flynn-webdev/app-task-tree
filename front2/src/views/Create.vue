@@ -2,7 +2,8 @@
   <section>
 
     <div class="columns is-centered">
-      <div class="column is-half has-text-left">
+
+      <div class="column is-8 has-text-left">
 
         <div class="box">
 
@@ -86,20 +87,15 @@ export default {
       this.isLoading = true
 
       return HTTP.post(CONSTANTS.API.USER.POST, {
-        strategy: 'local',
         email: this.email.value,
         password: this.password.value
       })
       .then(res => {
         this.isLoading = false
-        console.log(res)
-
-        // todo server not sending a success [message] obj or token but
-        // user obj instead
 
         this.$buefy.toast.open({
           duration: 1500,
-          message: res.message || 'success',
+          message: get(res, 'data.message', 'success'),
           position: 'is-top',
           type: 'is-success'
         })
@@ -113,6 +109,8 @@ export default {
           position: 'is-top',
           type: 'is-danger'
         })
+
+        throw err
       })
     }
   }
