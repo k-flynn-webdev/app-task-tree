@@ -8,7 +8,7 @@
         <div class="box">
 
           <p class="is-size-4 has-text-centered has-text-weight-bold">
-            Create
+            Login
           </p>
 
           <form @submit.prevent="submitForm">
@@ -36,8 +36,8 @@
             <div class="columns is-gapless is-mobile is-vbottom">
 
               <div class="column">
-                <router-link :to="{ name: 'login' }" class="has-text-link">
-                  Login..
+                <router-link :to="{ name: 'create' }" class="has-text-link">
+                  Create..
                 </router-link>
               </div>
 
@@ -47,7 +47,7 @@
                           :disabled="isDisabled"
                           :loading="isLoading"
                           @click="submitForm">
-                  Create
+                  Login
                 </b-button>
               </div>
 
@@ -101,7 +101,8 @@ export default {
 
       this.isLoading = true
 
-      return HTTP.post(CONSTANTS.API.USER.POST, {
+      return HTTP.post(CONSTANTS.API.USER.LOGIN, {
+        strategy: 'local',
         email: this.email.value,
         password: this.password.value
       })

@@ -35,12 +35,10 @@ const create = (context) => {
     [checkPassword, 'password', true]
   ]
 
-  const dataToCreate = {
+  context.data = {
     email: context.data.email,
     password: context.data.password
   }
-
-  context.data = dataToCreate
 
   validateItems(checkVars, context);
 
@@ -54,12 +52,9 @@ const recover = (context) => {
     [checkPassword, 'password', true]
   ];
 
-  const dataToCreate = {
+  context.data = {
     password: context.data.password
   }
-
-  context.data = dataToCreate
-
 
   validateItems(checkVars, context);
 

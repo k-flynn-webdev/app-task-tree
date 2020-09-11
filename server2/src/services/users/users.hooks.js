@@ -2,16 +2,18 @@ const { authenticate } = require('@feathersjs/authentication').hooks
 const { hashPassword, protect
 } = require('@feathersjs/authentication-local').hooks
 
+const ifHasProperty = require('../../hooks/if-has-property')
+const sendEmail = require('../../hooks/send-email')
 const timeStamp = require('../../hooks/time-stamp')
 const limitByRole = require('../../hooks/limit-by-role')
-const userValidate = require('../../hooks/user-validate')
 const createNanoId = require('../../hooks/create-nano-id')
+const emailIsUnique = require('../../hooks/email-is-unique')
+const userValidate = require('../../hooks/user-validate')
+const userPreCreate = require('../../hooks/user-pre-create')
+const userPostCreate = require('../../hooks/user-post-create')
 const userIsVerified = require('../../hooks/user-is-verified')
 const userMatchesToken = require('../../hooks/user-matches-token')
 const userIsAnonRenewToken = require('../../hooks/user-is-anon-renew-token')
-const userPostLogin = require('../../hooks/user-post-login')
-const emailIsUnique = require('../../hooks/email-is-unique')
-const sendEmail = require('../../hooks/send-email')
 
 module.exports = {
   before: {
@@ -21,7 +23,7 @@ module.exports = {
     create: [
       userValidate.create,
       emailIsUnique,
-      ctx => { ctx.password = ctx.data.password; return ctx },
+      userPreCreate,
       hashPassword('password'),
       timeStamp('created_at'),
       createNanoId('verify')
@@ -57,22 +59,14 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      userPostLogin,
-      sendEmail('create')
+      userPostCreate,
+      ifHasProperty('data.email', sendEmail('create'))
     ],
     update: [
-      ctx => {
-        if (ctx.data.email) {
-          sendEmail('verify')
-        }
-      }
+      ifHasProperty('data.email', sendEmail('verify'))
     ],
     patch: [
-      ctx => {
-        if (ctx.data.email) {
-          sendEmail('verify')
-        }
-      }
+      ifHasProperty('data.email', sendEmail('verify'))
     ],
     remove: []
   },
