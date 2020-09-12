@@ -14,6 +14,16 @@ module.exports = {
         ws: true,
         changeOrigin: true
       },
+      '/verify': {
+        target: 'http://127.0.0.1:8600',
+        ws: true,
+        changeOrigin: true
+      },
+      '/recover': {
+        target: 'http://127.0.0.1:8600',
+        ws: true,
+        changeOrigin: true
+      },
       '/authentication': {
         target: 'http://127.0.0.1:8600',
         ws: true,

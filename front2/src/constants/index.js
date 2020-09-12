@@ -4,7 +4,8 @@ const API_PATHS = {
     GET: '/users/me',
     POST: '/users',
     PATCH: '/users',
-    DELETE: '/users'
+    DELETE: '/users',
+    RECOVER: '/recover',
   }
 }
 

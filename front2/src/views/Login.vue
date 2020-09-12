@@ -57,6 +57,11 @@
 
         </div>
 
+        <div>
+          <router-link :to="{ name: 'recover' }" class="has-text-link">
+            Forgot password?
+          </router-link>
+        </div>
 
       </div>
     </div>
@@ -70,7 +75,7 @@ import HTTP from '../services/HttpService'
 import { get } from 'lodash-es'
 
 export default {
-  name: 'Create',
+  name: 'Login',
 
   data () {
     return {

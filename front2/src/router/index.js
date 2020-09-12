@@ -27,6 +27,16 @@ Vue.use(VueRouter)
     path: '/login',
     name: 'login',
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
+  },
+  {
+    path: '/recover',
+    name: 'recover',
+    component: () => import(/* webpackChunkName: "recover" */ '../views/Recover.vue')
+  },
+  {
+    path: '/recover/:token',
+    name: 'recover-token',
+    component: () => import(/* webpackChunkName: "recover" */ '../views/Recover.vue')
   }
 ]
 
