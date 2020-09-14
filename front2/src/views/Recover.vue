@@ -13,7 +13,7 @@
 
           <form @submit.prevent="submitForm">
 
-            <b-field v-if="hasToken"
+            <b-field v-if="token"
                      label="New Password"
                      :type="{ 'is-danger': password.errors.length > 0 }"
                      :message="password.errors">
@@ -85,11 +85,8 @@ export default {
   },
 
   computed: {
-    hasToken () {
-      return (this.$route.params && this.$route.params.token)
-    },
     token () {
-      return this.hasToken ? this$route.params.token : null
+      return (this.$route.params && this.$route.params.token)
     }
   },
 
@@ -97,7 +94,7 @@ export default {
     inputUpdate () {
       this.isDisabled = true
 
-      if (this.hasToken) {
+      if (this.token) {
         if (this.password.value.length < 8) return
       } else {
         if (this.email.value.length < 5) return
@@ -111,12 +108,14 @@ export default {
 
       this.isLoading = true
 
-      let promise = HTTP.get(CONSTANTS.API.USER.RECOVER,
-          { params: { email: this.email.value } })
+      let promise = Promise.resolve()
 
-      if (this.hasToken) {
+      if (this.token) {
         promise = HTTP.patch(CONSTANTS.API.USER.RECOVER + '/' + this.token,
             { password: this.password.value })
+      } else {
+        promise = HTTP.get(CONSTANTS.API.USER.RECOVER,
+            { params: { email: this.email.value } })
       }
 
       return promise

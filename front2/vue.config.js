@@ -9,22 +9,7 @@ module.exports = {
     host: '127.0.0.1',
     port: 8080,
     proxy: {
-      '/user': {
-        target: 'http://127.0.0.1:8600',
-        ws: true,
-        changeOrigin: true
-      },
-      '/verify': {
-        target: 'http://127.0.0.1:8600',
-        ws: true,
-        changeOrigin: true
-      },
-      '/recover': {
-        target: 'http://127.0.0.1:8600',
-        ws: true,
-        changeOrigin: true
-      },
-      '/authentication': {
+      '/api': {
         target: 'http://127.0.0.1:8600',
         ws: true,
         changeOrigin: true

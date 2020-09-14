@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const logger = require('./logger');
 const favicon = require('serve-favicon');
 const compress = require('compression');
+const constants = require('../constants')
 
 const express = require('@feathersjs/express');
 const socketio = require('@feathersjs/socketio');
@@ -24,6 +25,8 @@ const app = express(feathers());
 
 // Load app configuration
 app.configure(configuration());
+// load app constants
+app.configure(constants)
 // Enable security, CORS, compression, favicon and body parsing
 app.use(helmet());
 app.use(cors());

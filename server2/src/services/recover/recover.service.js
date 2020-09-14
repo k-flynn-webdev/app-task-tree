@@ -9,11 +9,13 @@ module.exports = function (app) {
     paginate: app.get('paginate')
   }
 
+  const constants = app.get('constants')
+
   // Initialize our service with any options it requires
-  app.use('/recover', new Recover(options, app))
+  app.use(constants.path.recover, new Recover(options, app))
 
   // Get our initialized service so that we can register hooks
-  const service = app.service('recover')
+  const service = app.service(constants.path.recover)
 
   service.hooks(hooks)
 }

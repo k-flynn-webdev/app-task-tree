@@ -16,9 +16,12 @@ const isAnon = async (context) => {
       context.error.data.name === 'TokenExpiredError' &&
     !!context.error.data.expiredAt)
 
+  const constants = context.app.get('constants')
+
   if (tokenIsExpired) {
     const userID = jsonDecode(context.params.authentication.accessToken).id;
-    const userFound = await context.app.services.users.get({ id: userID });
+    const userFound = await context.app.service(constants.path.users).
+      get({ id: userID });
     const isAnon = (userFound.role === 'anon');
 
     if (!isAnon) return context;
@@ -31,7 +34,8 @@ const isAnon = async (context) => {
     };
 
 
-    const token = await context.app.service('authentication').createAccessToken(userPayload);
+    const token = await context.app.service(constants.path.authentication).
+      createAccessToken(userPayload);
 
     context.statusCode = 401;
     context.result = { message: 'Token has expired', tokenIsExpired: true, token };

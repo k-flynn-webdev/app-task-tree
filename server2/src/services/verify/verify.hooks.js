@@ -1,6 +1,7 @@
 const { protect } = require('@feathersjs/authentication-local').hooks;
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const disallow = require('../../hooks/disallow')
+const addMessage = require('../../hooks/add-message')
 
 module.exports = {
   before: {
@@ -16,7 +17,7 @@ module.exports = {
   after: {
     all: [ protect('password', 'verify', 'recover') ],
     find: [],
-    get: [],
+    get: [ addMessage('verify') ],
     create: [],
     update: [],
     patch: [],

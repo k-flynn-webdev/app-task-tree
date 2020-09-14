@@ -29,6 +29,11 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
   },
   {
+    path: '/verify/:token',
+    name: 'verify',
+    component: () => import(/* webpackChunkName: "verify" */ '../views/Verify.vue')
+  },
+  {
     path: '/recover',
     name: 'recover',
     component: () => import(/* webpackChunkName: "recover" */ '../views/Recover.vue')

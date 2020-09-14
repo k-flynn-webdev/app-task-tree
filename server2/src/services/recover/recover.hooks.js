@@ -4,6 +4,7 @@ const userValidate = require('../../hooks/user-validate')
 const disallow = require('../../hooks/disallow')
 const timeStamp = require('../../hooks/time-stamp')
 const sendEmail = require('../../hooks/send-email')
+const addMessage = require('../../hooks/add-message')
 
 module.exports = {
   before: {
@@ -26,12 +27,15 @@ module.exports = {
   after: {
     all: [ protect('password') ],
     find: [
-      sendEmail('recover')
+      sendEmail('recover'),
+      addMessage('recoverSent', true)
     ],
     get: [],
     create: [],
     update: [],
-    patch: [],
+    patch: [
+      addMessage('recover', true)
+    ],
     remove: []
   },
 

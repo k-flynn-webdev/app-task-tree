@@ -1,6 +1,5 @@
 // Use this hook to manipulate incoming or outgoing data.
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
-const constants = require('../../constants/index')
 
 /**
  * Returns the result of User login on user creation
@@ -16,11 +15,10 @@ module.exports = async (context) => {
     strategy: 'local'
   }
 
-  const message = constants.message.create
-  const tokenObj = await context.app.service('authentication').
-    create(userLogin, context.params)
+  const constants = context.app.get('constants')
 
-  context.dispatch = Object.assign(tokenObj, { message })
+  context.dispatch = await context.app.service(constants.path.authentication).
+    create(userLogin, context.params)
 
   return context
 }

@@ -13,7 +13,9 @@ const { BadRequest } = require('@feathersjs/errors')
  */
 const emailIsUnique = async (context) => {
 
-  const userFind = await context.app.services.users.find(
+  const constants = context.app.get('constants')
+
+  const userFind = await context.app.service(constants.path.users).find(
     { query: { email: context.data.email } })
   if (userFind.total > 0) throw new BadRequest('Email already in use.', {})
 

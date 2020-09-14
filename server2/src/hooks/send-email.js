@@ -29,9 +29,10 @@ const sendEmail = (template) => {
       throw err
     }
 
+    const constants = context.app.get('constants')
     const emailToSend = TEMPLATES[template](context, context.result)
 
-    return context.app.service('email').create(emailToSend)
+    return context.app.service(constants.path.email).create(emailToSend)
       .then(res => context.app.log(res))
       .catch(err => context.app.log(err))
   }
