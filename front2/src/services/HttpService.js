@@ -1,5 +1,5 @@
-import router from '../router'
-import store from '../store'
+// import router from '../router'
+// import store from '../store'
 import axios from 'axios'
 // import Paths from '../constants/paths.js'
 // import status from '../constants/status'
@@ -41,20 +41,24 @@ function httpSuccess (res) {
 }
 
 function httpError (err) {
-// if (error.response.data.status === 401) {
-//   const isAnon = store.getters['user/isAnon']
-//   const signOut = isAnon
-//     ? store.dispatch('user/getAnonToken')
-//     : store.dispatch('user/logout')
-//
-//   return signOut
-//     .then(() => {
-//       if (!isAnon) router.push({ name: Paths.USER_LOGIN })
-//       throw error
-//     })
-// }
-// store.commit('setStatus', status.ERROR)
+  console.log(err.response)
+  if (err.response.status === 401 &&
+    err.response.statusText === 'Unauthorized') {
+    authRemove()
+  //   const isAnon = store.getters['user/isAnon']
+  //   const signOut = isAnon
+  //     ? store.dispatch('user/getAnonToken')
+  //     : store.dispatch('user/logout')
+  //
+  //   return signOut
+  //     .then(() => {
+  //       if (!isAnon) router.push({ name: Paths.USER_LOGIN })
+  //       throw error
+  //     })
+  }
+
   throw err
+  // store.commit('setStatus', status.ERROR)
 }
 
 function get (url, params) {
@@ -75,6 +79,8 @@ function patch (url, params) {
 
 function remove (url, params) {
   return axios.delete(url, params)
+    .catch(() => { /** silent **/ })
+    .finally(() => authRemove())
 }
 
 const services = {

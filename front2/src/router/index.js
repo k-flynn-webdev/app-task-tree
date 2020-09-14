@@ -19,6 +19,11 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
+    path: '/user',
+    name: 'user',
+    component: () => import(/* webpackChunkName: "user" */ '../views/User.vue')
+  },
+  {
     path: '/create',
     name: 'create',
     component: () => import(/* webpackChunkName: "create" */ '../views/Create.vue')
@@ -27,6 +32,11 @@ Vue.use(VueRouter)
     path: '/login',
     name: 'login',
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
+  },
+  {
+    path: '/logout',
+    name: 'logout',
+    component: () => import(/* webpackChunkName: "logout" */ '../views/Logout.vue')
   },
   {
     path: '/verify/:token',

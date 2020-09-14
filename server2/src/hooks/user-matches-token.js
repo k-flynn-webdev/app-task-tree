@@ -1,6 +1,6 @@
 // Use this hook to manipulate incoming or outgoing data.
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
-const { BadRequest } = require('@feathersjs/errors');
+const { BadRequest } = require('@feathersjs/errors')
 
 /**
  * Checks if a User Id matches the token Id
@@ -12,19 +12,19 @@ const userMatchesToken = (context) => {
 
   if (context.params.user && context.id) {
 
-    const userIdMatches = Number(context.id) === context.params.user.id;
-    const userIsAdmin = context.params.user.role === 'admin';
+    const userIsAdmin = context.params.user.role === 'admin'
+    const userIdMatches = Number(context.id) === context.params.user.id
 
     if (!userIsAdmin && !userIdMatches) {
-      context.statusCode = 400;
-      const error = new BadRequest('User and Token do not match.');
-      context.dispatch = error;
-      context.error = error;
-      return error;
+      const error = new BadRequest('User and Token do not match.')
+      context.statusCode = 400
+      context.dispatch = error
+      context.error = error
+      return error
     }
   }
 
-  return context;
-};
+  return context
+}
 
-module.exports = userMatchesToken;
+module.exports = userMatchesToken

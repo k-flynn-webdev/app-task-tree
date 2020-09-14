@@ -1,6 +1,7 @@
 const API_PATHS = {
   USER: {
     LOGIN: '/api/authentication',
+    LOGOUT: '/api/authentication',
     GET: '/api/users/me',
     POST: '/api/users',
     PATCH: '/api/users',

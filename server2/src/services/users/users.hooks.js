@@ -9,8 +9,10 @@ const limitByRole = require('../../hooks/limit-by-role')
 const createNanoId = require('../../hooks/create-nano-id')
 const emailIsUnique = require('../../hooks/email-is-unique')
 const userValidate = require('../../hooks/user-validate')
+const userPreGetMe = require('../../hooks/user-pre-get-me')
 const userPreCreate = require('../../hooks/user-pre-create')
 const userPostCreate = require('../../hooks/user-post-create')
+const userPostGetMe = require('../../hooks/user-post-get-me')
 const userIsVerified = require('../../hooks/user-is-verified')
 const userMatchesToken = require('../../hooks/user-matches-token')
 const userIsAnonRenewToken = require('../../hooks/user-is-anon-renew-token')
@@ -19,8 +21,15 @@ const addMessage = require('../../hooks/add-message')
 module.exports = {
   before: {
     all: [],
-    find: [ authenticate('jwt'), limitByRole('admin') ],
-    get: [ authenticate('jwt'), userMatchesToken ],
+    find: [
+      authenticate('jwt'),
+      limitByRole('admin')
+    ],
+    get: [
+      authenticate('jwt'),
+      userPreGetMe,
+      userMatchesToken
+    ],
     create: [
       userValidate.create,
       emailIsUnique,
@@ -58,7 +67,7 @@ module.exports = {
       protect('password'),
     ],
     find: [],
-    get: [],
+    get: [ userPostGetMe ],
     create: [
       userPostCreate,
       ifHasProperty('data.email', sendEmail('create')),

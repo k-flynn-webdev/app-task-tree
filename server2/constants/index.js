@@ -16,6 +16,12 @@ const ALL_MESSAGES = {
   logout: MESSAGE_LOGOUT
 }
 
+const ME = 'me'
+
+const ALL_DICT = {
+  me: ME
+}
+
 const EMAIL = 'email'
 const USERS = 'users'
 const VERIFY = 'verify'
@@ -42,7 +48,8 @@ const init = (app) => {
 
   const obj ={
     message: ALL_MESSAGES,
-    path: paths(prefix)
+    path: paths(prefix),
+    dict: ALL_DICT
   }
 
   app.set('constants', obj)

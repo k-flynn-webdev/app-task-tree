@@ -25,6 +25,10 @@
 
           <div class="">
             <router-link class="has-text-link"
+                         :to="{ name: 'user' }">
+              User
+            </router-link>
+            <router-link class="has-text-link"
                          :to="{ name: 'login' }">
               Login
             </router-link>
@@ -36,6 +40,11 @@
             <b-button type="is-link">
               Try
             </b-button>
+
+            <router-link class="has-text-link"
+                         :to="{ name: 'logout' }">
+              Logout
+            </router-link>
 
           </div>
 
