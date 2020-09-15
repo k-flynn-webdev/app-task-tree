@@ -1,4 +1,4 @@
-// import router from '../router'
+import router from '../router'
 // import store from '../store'
 import axios from 'axios'
 // import Paths from '../constants/paths.js'
@@ -44,6 +44,11 @@ function httpError (err) {
   if (err.response.status === 401 &&
     err.response.statusText === 'Unauthorized') {
     authRemove()
+
+    setTimeout(function() {
+      router.push({ name: 'login' })
+    }, 1 *1000)
+
   //   const isAnon = store.getters['user/isAnon']
   //   const signOut = isAnon
   //     ? store.dispatch('user/getAnonToken')
