@@ -1,0 +1,68 @@
+<template>
+  <b-navbar centered transparent class="mb-4">
+    <template slot="brand">
+      <b-navbar-item tag="router-link" :to="{ name: 'home' }">
+
+        <svg class="icon" viewBox="0 0 100 100" version="1.1" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+          <path d="M76.37,36.698c0,-9.812 -7.966,-17.778 -17.778,-17.778l-35.555,0c-9.812,0 -17.778,7.966 -17.778,17.778l-0,35.556c-0,9.812 7.966,17.778 17.778,17.778l35.555,-0c9.812,-0 17.778,-7.966 17.778,-17.778l0,-35.556Z" style="fill:#284b53;"/>
+          <path d="M43.492,84.926l-35.66,-35.661l18.228,-18.229l17.369,17.37l35.538,-35.538l18.292,18.291l-53.767,53.767Z" style="fill:#7ae742;"/>
+        </svg>
+
+        <h1>
+          <strong>
+            Minitask
+          </strong>
+        </h1>
+      </b-navbar-item>
+    </template>
+    <template slot="start">
+<!--      <b-navbar-item href="#">-->
+<!--        Home-->
+<!--      </b-navbar-item>-->
+<!--      <b-navbar-item href="#" active>-->
+<!--        Documentation-->
+<!--      </b-navbar-item>-->
+<!--      <b-navbar-dropdown label="Info" :collapsible="true">-->
+<!--        <b-navbar-item href="#">-->
+<!--          About-->
+<!--        </b-navbar-item>-->
+<!--        <b-navbar-item href="#">-->
+<!--          Contact-->
+<!--        </b-navbar-item>-->
+<!--      </b-navbar-dropdown>-->
+    </template>
+
+    <template slot="end">
+      <b-navbar-item tag="div">
+        <div class="buttons is-right">
+          <b-button type="is-primary"
+                    tag="router-link"
+                    :to="{ name: 'create' }">
+            Sign up
+          </b-button>
+          <b-button tag="router-link"
+                    :to="{ name: 'login' }">
+            Login
+          </b-button>
+<!--          <a class="button is-primary">-->
+<!--            <strong>Sign up</strong>-->
+<!--          </a>-->
+<!--          <a class="button is-light">-->
+<!--            Log in-->
+<!--          </a>-->
+        </div>
+      </b-navbar-item>
+    </template>
+  </b-navbar>
+</template>
+
+<script>
+
+export default {
+  name: 'navbar'
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+</style>
