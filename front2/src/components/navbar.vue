@@ -34,7 +34,18 @@
 
     <template slot="end">
       <b-navbar-item tag="div">
-        <div class="buttons is-right">
+        <div v-if="isLoggedIn"
+             class="buttons is-right">
+          <b-button type="is-primary"
+                    tag="router-link"
+                    :to="{ name: 'user' }">
+            User
+          </b-button>
+          <btnLogout />
+
+        </div>
+        <div v-else
+             class="buttons is-right">
           <b-button type="is-primary"
                     tag="router-link"
                     :to="{ name: 'create' }">
@@ -44,22 +55,28 @@
                     :to="{ name: 'login' }">
             Login
           </b-button>
-<!--          <a class="button is-primary">-->
-<!--            <strong>Sign up</strong>-->
-<!--          </a>-->
-<!--          <a class="button is-light">-->
-<!--            Log in-->
-<!--          </a>-->
         </div>
+
       </b-navbar-item>
     </template>
   </b-navbar>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import btnLogout from '../components/btnLogout'
 
 export default {
-  name: 'navbar'
+  name: 'navbar',
+
+  components: {
+    btnLogout
+  },
+
+  computed: {
+    ...mapState('user', [ 'isLoggedIn', 'user' ])
+  }
+
 }
 </script>
 
