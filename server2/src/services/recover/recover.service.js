@@ -1,6 +1,6 @@
 // Initializes the `recover` service on path `/recover`
 const { Recover } = require('./recover.class')
-const createModel = require('../../models/recover.model')
+const createModel = require('../../models/users.model')
 const hooks = require('./recover.hooks')
 
 module.exports = function (app) {
