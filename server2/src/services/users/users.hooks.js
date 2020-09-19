@@ -41,6 +41,7 @@ module.exports = {
     update: [
       userValidate.create,
       authenticate('jwt'),
+      limitToOwner,
       userIsVerified,
       hashPassword('password'),
       timeStamp('updated_at'),
@@ -49,6 +50,7 @@ module.exports = {
     patch: [
       userValidate.patch,
       authenticate('jwt'),
+      limitToOwner,
       userIsVerified,
       hashPassword('password'),
       timeStamp('updated_at'),
