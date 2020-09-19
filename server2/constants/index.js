@@ -27,13 +27,19 @@ const USERS = 'users'
 const VERIFY = 'verify'
 const RECOVER = 'recover'
 const AUTHENTICATION = 'authentication'
+const PROJECT = 'project'
+const PLAN = 'plan'
+const TASK = 'task'
 
 const ALL_PATHS = [
   EMAIL,
   USERS,
   VERIFY,
   RECOVER,
-  AUTHENTICATION
+  AUTHENTICATION,
+  PROJECT,
+  PLAN,
+  TASK
 ]
 
 const paths = (prefix) => {

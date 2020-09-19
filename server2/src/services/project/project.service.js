@@ -9,11 +9,13 @@ module.exports = function (app) {
     paginate: app.get('paginate')
   };
 
+  const constants = app.get('constants')
+
   // Initialize our service with any options it requires
-  app.use('/projects', new Project(options, app));
+  app.use(constants.path.project, new Project(options, app));
 
   // Get our initialized service so that we can register hooks
-  const service = app.service('projects');
+  const service = app.service(constants.path.project);
 
   service.hooks(hooks);
 };

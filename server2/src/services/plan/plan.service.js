@@ -1,7 +1,7 @@
 // Initializes the `goal` service on path `/goals`
-const { Goal } = require('./goal.class');
-const createModel = require('../../models/goal.model');
-const hooks = require('./goal.hooks');
+const { Plan } = require('./plan.class');
+const createModel = require('../../models/plan.model');
+const hooks = require('./plan.hooks');
 
 module.exports = function (app) {
   const options = {
@@ -9,11 +9,13 @@ module.exports = function (app) {
     paginate: app.get('paginate')
   };
 
+  const constants = app.get('constants')
+
   // Initialize our service with any options it requires
-  app.use('/goals', new Goal(options, app));
+  app.use(constants.path.plan, new Plan(options, app));
 
   // Get our initialized service so that we can register hooks
-  const service = app.service('goals');
+  const service = app.service(constants.path.plan);
 
   service.hooks(hooks);
 };

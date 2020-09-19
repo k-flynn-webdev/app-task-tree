@@ -14,7 +14,7 @@ const API_PATHS = {
 const MODES = [
   { mode: 'Minitask', value: 'Minitask'},
   { mode: 'project', value: '' },
-  { mode: 'goal', value: '' },
+  { mode: 'plan', value: '' },
   { mode: 'task', value: '' }
 ]
 
