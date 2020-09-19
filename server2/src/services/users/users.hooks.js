@@ -5,7 +5,8 @@ const { hashPassword, protect
 const ifHasProperty = require('../../hooks/if-has-property')
 const sendEmail = require('../../hooks/send-email')
 const timeStamp = require('../../hooks/time-stamp')
-const limitByRole = require('../../hooks/limit-by-role')
+const limitToRole = require('../../hooks/limit-to-role')
+const limitToOwner = require('../../hooks/limit-to-owner')
 const createNanoId = require('../../hooks/create-nano-id')
 const emailIsUnique = require('../../hooks/email-is-unique')
 const userValidate = require('../../hooks/user-validate')
@@ -14,7 +15,6 @@ const userPreCreate = require('../../hooks/user-pre-create')
 const userPostCreate = require('../../hooks/user-post-create')
 const userPostGetMe = require('../../hooks/user-post-get-me')
 const userIsVerified = require('../../hooks/user-is-verified')
-const userMatchesToken = require('../../hooks/user-matches-token')
 const userIsAnonRenewToken = require('../../hooks/user-is-anon-renew-token')
 const addMessage = require('../../hooks/add-message')
 
@@ -23,12 +23,12 @@ module.exports = {
     all: [],
     find: [
       authenticate('jwt'),
-      limitByRole('admin')
+      limitToRole('admin')
     ],
     get: [
       authenticate('jwt'),
       userPreGetMe,
-      userMatchesToken
+      limitToOwner
     ],
     create: [
       userValidate.create,
@@ -56,7 +56,7 @@ module.exports = {
     ],
     remove: [
       authenticate('jwt'),
-      userMatchesToken
+      limitToOwner
     ]
   },
 

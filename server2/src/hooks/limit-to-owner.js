@@ -8,7 +8,7 @@ const { BadRequest } = require('@feathersjs/errors')
  *
  * @return {function(*): *}
  */
-const userMatchesToken = (context) => {
+const limitToOwner = (context) => {
 
   if (context.params.user && context.id) {
 
@@ -27,4 +27,4 @@ const userMatchesToken = (context) => {
   return context
 }
 
-module.exports = userMatchesToken
+module.exports = limitToOwner

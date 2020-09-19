@@ -9,7 +9,7 @@ const { BadRequest } = require('@feathersjs/errors');
  * @params {string}   role    role to limit by
  * @return {function(*)}
  */
-const limitByRole = (role) => {
+const limitToRole = (role) => {
   return context => {
 
     if (context.params.user) {
@@ -17,8 +17,8 @@ const limitByRole = (role) => {
       const roleMatches = context.params.user.role === role;
 
       if (!roleMatches) {
-        context.statusCode = 400;
         const error = new BadRequest('User role not allowed.');
+        context.statusCode = 400;
         context.dispatch = error;
         return error;
       }
@@ -28,4 +28,4 @@ const limitByRole = (role) => {
   };
 };
 
-module.exports = limitByRole;
+module.exports = limitToRole;
