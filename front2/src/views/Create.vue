@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import CONSTANTS from '../constants'
+import { USER } from '../constants'
 import HTTP from '../services/HttpService'
 import { get } from 'lodash-es'
 
@@ -101,7 +101,7 @@ export default {
 
       this.isLoading = true
 
-      return HTTP.post(CONSTANTS.API.USER.POST, {
+      return HTTP.post(USER.API.POST, {
         email: this.email.value,
         password: this.password.value
       })

@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import CONSTANTS from '../constants'
+import { RECOVER } from '../constants'
 import HTTP from '../services/HttpService'
 import { get } from 'lodash-es'
 
@@ -111,10 +111,10 @@ export default {
       let promise = Promise.resolve()
 
       if (this.token) {
-        promise = HTTP.patch(CONSTANTS.API.USER.RECOVER + '/' + this.token,
+        promise = HTTP.patch(RECOVER.API.PATCH + '/' + this.token,
             { password: this.password.value })
       } else {
-        promise = HTTP.get(CONSTANTS.API.USER.RECOVER,
+        promise = HTTP.get(RECOVER.API.GET,
             { params: { email: this.email.value } })
       }
 

@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import user from './user.js'
-import CONSTANTS from '../constants'
+import { MODES } from '../constants'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    mode: CONSTANTS.MODES[0]
+    mode: MODES[0]
   },
   mutations: {
     /**
@@ -17,8 +17,8 @@ export default new Vuex.Store({
      * @param {number} input
      */
     mode: function (state, input) {
-      if (input < 0 && input >= CONSTANTS.MODES.length) return
-      Vue.set(state, 'mode', CONSTANTS.MODES[input] )
+      if (input < 0 && input >= MODES.length) return
+      Vue.set(state, 'mode', MODES[input] )
     }
   },
   actions: {

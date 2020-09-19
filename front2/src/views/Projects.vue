@@ -1,13 +1,16 @@
 <template>
+  <section>
+    projects
+  </section>
 </template>
 
 <script>
-import { VERIFY } from '../constants'
+import { PROJECTS } from '../constants'
 import HTTP from '../services/HttpService'
 import { get } from 'lodash-es'
 
 export default {
-  name: 'Verify',
+  name: 'Projects',
 
   data () {
     return {
@@ -21,8 +24,8 @@ export default {
     }
   },
 
-  mounted () {
-    return this.submitForm()
+  created () {
+    // return this.submitForm()
   },
 
   methods: {
@@ -31,7 +34,7 @@ export default {
 
       this.isLoading = true
 
-      return HTTP.get(VERIFY.API.GET + '/' + this.token)
+      return HTTP.get(PROJECTS.API.GET)
       .then(res => {
         this.isLoading = false
 
@@ -41,11 +44,6 @@ export default {
           position: 'is-top',
           type: 'is-success'
         })
-
-        let self = this
-        setTimeout(function () {
-          self.$router.push({ name: 'home' })
-        }, 1.5 * 1000)
       })
       .catch(err => {
         this.isLoading = false

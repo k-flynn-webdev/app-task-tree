@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import CONSTANTS from '../constants'
+import { LOGIN } from '../constants'
 import HTTP from '../services/HttpService'
 import { get } from 'lodash-es'
 
@@ -26,7 +26,7 @@ export default {
 
       this.isLoading = true
 
-      return HTTP.remove(CONSTANTS.API.USER.LOGOUT)
+      return HTTP.remove(LOGIN.API.DELETE)
       .then(res => {
         HTTP.authRemove()
         this.isLoading = false

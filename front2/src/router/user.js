@@ -1,7 +1,9 @@
+import { USER, LOGIN, RECOVER, VERIFY } from '../constants'
+
 export default [
   {
-    path: '/user',
-    name: 'user',
+    path: USER.route.path,
+    name: USER.route.name,
     component: () => import(/* webpackChunkName: "user" */ '../views/User.vue')
   },
   {
@@ -10,8 +12,8 @@ export default [
     component: () => import(/* webpackChunkName: "create" */ '../views/Create.vue')
   },
   {
-    path: '/login',
-    name: 'login',
+    path: LOGIN.route.path,
+    name: LOGIN.route.name,
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
   },
   {
@@ -20,18 +22,18 @@ export default [
     component: () => import(/* webpackChunkName: "logout" */ '../views/Logout.vue')
   },
   {
-    path: '/verify/:token',
-    name: 'verify',
+    path: VERIFY.route.path + '/:token',
+    name: VERIFY.route.name,
     component: () => import(/* webpackChunkName: "verify" */ '../views/Verify.vue')
   },
   {
-    path: '/recover',
-    name: 'recover',
+    path: RECOVER.route.path,
+    name: RECOVER.route.name,
     component: () => import(/* webpackChunkName: "recover" */ '../views/Recover.vue')
   },
   {
-    path: '/recover/:token',
-    name: 'recover-token',
+    path: RECOVER.route.path + '/:token',
+    name: RECOVER.route.name + '-token',
     component: () => import(/* webpackChunkName: "recover" */ '../views/Recover.vue')
   }
 ]
