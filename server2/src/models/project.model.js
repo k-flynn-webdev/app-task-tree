@@ -11,7 +11,14 @@ module.exports = function (app) {
     if(!exists) {
       db.schema.createTable(tableName, table => {
         table.increments('id');
-        table.string('text');
+        table.integer('owner');
+        table.string('value');
+
+        table.integer('total');
+        table.integer('progress');
+
+        table.boolean('is_done');
+        table.timestamp('done_at');
 
         table.timestamp('created_at').defaultTo(db.fn.now());
         table.timestamp('updated_at').defaultTo(db.fn.now());
