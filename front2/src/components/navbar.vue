@@ -10,7 +10,7 @@
 
         <h1>
           <strong>
-            Minitask
+            {{ modeName }}
           </strong>
         </h1>
       </b-navbar-item>
@@ -36,7 +36,8 @@
       <b-navbar-item tag="div">
         <div v-if="isLoggedIn"
              class="buttons is-right">
-          <b-button type="is-primary"
+          <b-button class="flex-grow"
+                    type="is-primary"
                     tag="router-link"
                     :to="{ name: 'user' }">
             User
@@ -46,12 +47,14 @@
         </div>
         <div v-else
              class="buttons is-right">
-          <b-button type="is-primary"
+          <b-button class="flex-grow"
+                    type="is-primary"
                     tag="router-link"
                     :to="{ name: 'create' }">
             Sign up
           </b-button>
-          <b-button tag="router-link"
+          <b-button class="flex-grow"
+                    tag="router-link"
                     :to="{ name: 'login' }">
             Login
           </b-button>
@@ -74,12 +77,9 @@ export default {
   },
 
   computed: {
-    ...mapState('user', [ 'isLoggedIn', 'user' ])
+    ...mapState({ modeName: state => state.mode.value }),
+    ...mapState('user', ['isLoggedIn', 'user'])
   }
 
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-</style>

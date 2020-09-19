@@ -11,6 +11,14 @@ const API_PATHS = {
   }
 }
 
+const MODES = [
+  { mode: 'Minitask', value: 'Minitask'},
+  { mode: 'project', value: '' },
+  { mode: 'goal', value: '' },
+  { mode: 'task', value: '' }
+]
+
 export default {
-  API: API_PATHS
+  API: API_PATHS,
+  MODES,
 }

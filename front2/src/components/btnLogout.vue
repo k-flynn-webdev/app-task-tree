@@ -1,5 +1,6 @@
 <template>
-  <b-button :loading="isLoading"
+  <b-button class="flex-grow"
+    :loading="isLoading"
     @click="submitForm">
     Logout
   </b-button>

@@ -3,9 +3,9 @@
 
     <div class="container">
 
-      <p class="is-size-2 has-text-centered has-text-weight-bold has-text-light">
-        Minitask
-      </p>
+<!--      <p class="is-size-2 has-text-centered has-text-weight-bold has-text-light">-->
+<!--        Minitask-->
+<!--      </p>-->
 
       <div class="columns is-centered">
 
@@ -23,38 +23,9 @@
             To get started, choose a option from below.
           </p>
 
-          <div class="">
-            <router-link class="has-text-link"
-                         :to="{ name: 'user' }">
-              User
-            </router-link>
-            <router-link class="has-text-link"
-                         :to="{ name: 'login' }">
-              Login
-            </router-link>
-            <router-link class="has-text-link"
-                         :to="{ name: 'create' }">
-              Create
-            </router-link>
-
-            <b-button type="is-link">
-              Try
-            </b-button>
-
-            <router-link class="has-text-link"
-                         :to="{ name: 'logout' }">
-              Logout
-            </router-link>
-
-          </div>
-
         </div>
 
       </div>
-
-    </div>
-
-    <div>
 
     </div>
 
