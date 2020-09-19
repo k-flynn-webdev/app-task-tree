@@ -2,6 +2,7 @@ const { AuthenticationService, JWTStrategy } = require('@feathersjs/authenticati
 const { LocalStrategy } = require('@feathersjs/authentication-local');
 const { expressOauth } = require('@feathersjs/authentication-oauth');
 const addMessage = require('./hooks/add-message')
+const onLogin = require('./hooks/on-login')
 
 /**
  * Extend the standard AuthenticationService package to include
@@ -39,8 +40,13 @@ module.exports = app => {
 
   service.hooks({
     after: {
-      create: [ addMessage('login') ],
-      remove: [ addMessage('logout') ]
+      create: [
+        addMessage('login'),
+        onLogin
+      ],
+      remove: [
+        addMessage('logout')
+      ]
     }
   })
 

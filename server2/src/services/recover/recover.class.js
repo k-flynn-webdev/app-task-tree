@@ -17,7 +17,7 @@ exports.Recover = class Recover extends Service {
    * @param params
    * @return {Promise<T[]>}
    */
-  find (params) {
+  async find (params) {
 
     if (!params.query) throw new BadRequest('Missing a query', {})
     if (!params.query['email']) throw new BadRequest('Missing email query', {})

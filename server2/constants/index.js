@@ -43,12 +43,21 @@ const paths = (prefix) => {
   }, {})
 }
 
+/**
+ * Adds global constants to the APP in a accessible getter `constants`
+ *
+ * @param app
+ * @return {*}
+ */
 const init = (app) => {
   const prefix = app.get('apiPath').length > 0 ? app.get('apiPath') + '/' : ''
 
   const obj ={
+    /** Message to return to User */
     message: ALL_MESSAGES,
+    /** Path to all services */
     path: paths(prefix),
+    /** Useful dict of items */
     dict: ALL_DICT
   }
 

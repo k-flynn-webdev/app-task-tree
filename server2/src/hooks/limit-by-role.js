@@ -1,9 +1,7 @@
 // Use this hook to manipulate incoming or outgoing data.
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
-// validation
-// const joi = require('@hapi/joi');
-// const get = require('lodash').get;
 const { BadRequest } = require('@feathersjs/errors');
+// todo use constants file here
 
 /**
  * Limit access to resources by role

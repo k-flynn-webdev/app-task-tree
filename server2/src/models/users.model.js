@@ -21,6 +21,7 @@ module.exports = function (app) {
         table.string('verify');
         table.string('recover');
 
+        table.timestamp('login_at').defaultTo(db.fn.now()).notNullable();
         table.timestamp('created_at').defaultTo(db.fn.now()).notNullable();
         table.timestamp('updated_at').defaultTo(db.fn.now()).notNullable();
 
