@@ -1,9 +1,8 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
 const limitToProjectOwner = require('../../hooks/limit-to-project-owner')
+const projectValidate = require('../../hooks/project-validate')
 const timeStamp = require('../../hooks/time-stamp');
-
-// todo validate all incoming requests like on user
 
 module.exports = {
   before: {
@@ -16,13 +15,17 @@ module.exports = {
       limitToProjectOwner,
       () => console.log('in projects')
     ],
-    create: [ timeStamp('created_at') ],
+    create: [
+      projectValidate.create,
+      timeStamp('created_at') ],
     update: [
       limitToProjectOwner,
+      projectValidate.update,
       timeStamp('updated_at')
     ],
     patch: [
       limitToProjectOwner,
+      projectValidate.patch,
       timeStamp('updated_at')
     ],
     remove: [ limitToProjectOwner ]
