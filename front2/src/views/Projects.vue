@@ -25,10 +25,13 @@ export default {
   },
 
   created () {
-    // return this.submitForm()
+    return this.getProjects()
   },
 
   methods: {
+    getProjects () {
+      return HTTP.get(PROJECTS.API.GET)
+    },
     submitForm () {
       if (this.isLoading) return
 

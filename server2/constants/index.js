@@ -22,16 +22,16 @@ const ALL_DICT = {
   me: ME
 }
 
-const EMAIL = 'email'
 const USERS = 'users'
 const VERIFY = 'verify'
 const RECOVER = 'recover'
+const EMAIL = 'email'
 const AUTHENTICATION = 'authentication'
-const PROJECT = 'project'
-const PLAN = 'plan'
-const TASK = 'task'
+const PROJECT = 'projects'
+const PLAN = 'plans'
+const TASK = 'tasks'
 
-const ALL_PATHS = [
+const ALL_PATHS = {
   EMAIL,
   USERS,
   VERIFY,
@@ -40,11 +40,11 @@ const ALL_PATHS = [
   PROJECT,
   PLAN,
   TASK
-]
+}
 
 const paths = (prefix) => {
-  return ALL_PATHS.reduce((acc, item) => {
-    acc[item.toLowerCase()] = prefix + item.toLowerCase()
+  return Object.entries(ALL_PATHS).reduce((acc, [key, val]) => {
+    acc[key.toLowerCase()] = prefix + val.toLowerCase()
     return acc
   }, {})
 }

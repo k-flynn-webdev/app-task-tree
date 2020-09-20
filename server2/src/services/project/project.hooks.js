@@ -6,7 +6,7 @@ module.exports = {
   before: {
     all: [ authenticate('jwt') ],
     find: [],
-    get: [],
+    get: [ () => console.log('in projects') ],
     create: [timeStamp('created_at')],
     update: [timeStamp('updated_at')],
     patch: [timeStamp('updated_at')],
