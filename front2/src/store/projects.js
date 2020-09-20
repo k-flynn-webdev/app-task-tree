@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import router from '../router'
 import { PROJECTS } from '../constants'
 import HTTP from '../services/HttpService'
 import { get } from 'lodash-es'
@@ -49,6 +50,8 @@ export default {
     createProject: function (context, input) {
       return HTTP.post(PROJECTS.API.POST, input)
         .then(res => {
+          if (get(router.currentRoute, 'query.page')) return
+
           context.commit('addProject',
             get(res, 'data.data'))
         })
@@ -61,7 +64,7 @@ export default {
      * @return {Promise}
      */
     getProjects: function (context, input) {
-      return HTTP.get(PROJECTS.API.POST, input)
+      return HTTP.get(PROJECTS.API.POST, { params: input.query })
       .then(res => {
         context.commit('setProjects',
           get(res, 'data.data'))

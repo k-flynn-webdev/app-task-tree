@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import { PROJECTS } from '../constants'
-import HTTP from '../services/HttpService'
 import { get } from 'lodash-es'
 
 import projectCreate from '../components/projectCreate'
@@ -35,37 +33,40 @@ export default {
   },
 
   methods: {
+    /**
+     * Get projects via API
+     *
+     * @return {Promise}
+     */
     getProjects () {
-      return HTTP.get(PROJECTS.API.GET)
-    },
-    submitForm () {
       if (this.isLoading) return
 
       this.isLoading = true
 
-      return HTTP.get(PROJECTS.API.GET)
-      .then(res => {
-        this.isLoading = false
+      return this.$store.dispatch('projects/getProjects',
+          { query: this.$route.query })
+        .then(res => {
+          this.isLoading = false
 
-        this.$buefy.toast.open({
-          duration: 1500,
-          message: get(res, 'data.message', 'success'),
-          position: 'is-top',
-          type: 'is-success'
+          this.$buefy.toast.open({
+            duration: 1500,
+            message: get(res, 'data.message', 'success'),
+            position: 'is-top',
+            type: 'is-success'
+          })
         })
-      })
-      .catch(err => {
-        this.isLoading = false
+        .catch(err => {
+          this.isLoading = false
 
-        this.$buefy.toast.open({
-          duration: 5000,
-          message: get(err, 'response.data.message', 'error'),
-          position: 'is-top',
-          type: 'is-danger'
+          this.$buefy.toast.open({
+            duration: 5000,
+            message: get(err, 'response.data.message', 'error'),
+            position: 'is-top',
+            type: 'is-danger'
+          })
+
+          throw err
         })
-
-        throw err
-      })
     }
   }
 }

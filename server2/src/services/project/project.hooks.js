@@ -3,8 +3,9 @@ const { authenticate } = require('@feathersjs/authentication').hooks
 const limitToProjectOwner = require('../../hooks/limit-to-project-owner')
 const projectValidate = require('../../hooks/project-validate')
 const resultToData = require('../../hooks/result-to-data')
-const timeStamp = require('../../hooks/time-stamp')
 const userToOwner = require('../../hooks/user-to-owner')
+const timeStamp = require('../../hooks/time-stamp')
+
 
 module.exports = {
   before: {
