@@ -1,23 +1,25 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
+const { authenticate } = require('@feathersjs/authentication').hooks
 
 const limitToProjectOwner = require('../../hooks/limit-to-project-owner')
 const projectValidate = require('../../hooks/project-validate')
-const timeStamp = require('../../hooks/time-stamp');
+const resultToData = require('../../hooks/result-to-data')
+const timeStamp = require('../../hooks/time-stamp')
+const userToOwner = require('../../hooks/user-to-owner')
 
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
     find: [
       limitToProjectOwner,
-      (ctx) => console.log(ctx.params)
     ],
     get: [
       limitToProjectOwner,
-      () => console.log('in projects')
     ],
     create: [
       projectValidate.create,
-      timeStamp('created_at') ],
+      userToOwner,
+      timeStamp('created_at')
+    ],
     update: [
       limitToProjectOwner,
       projectValidate.update,
@@ -35,9 +37,9 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
-    update: [],
-    patch: [],
+    create: [ resultToData ],
+    update: [ resultToData ],
+    patch: [ resultToData ],
     remove: []
   },
 
@@ -50,4 +52,4 @@ module.exports = {
     patch: [],
     remove: []
   }
-};
+}

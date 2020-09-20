@@ -1,6 +1,6 @@
 <template>
   <section>
-    projects
+    <projectCreate />
   </section>
 </template>
 
@@ -9,8 +9,14 @@ import { PROJECTS } from '../constants'
 import HTTP from '../services/HttpService'
 import { get } from 'lodash-es'
 
+import projectCreate from '../components/projectCreate'
+
 export default {
   name: 'Projects',
+
+  components: {
+    projectCreate
+  },
 
   data () {
     return {

@@ -12,12 +12,12 @@ module.exports = function (app) {
       db.schema.createTable(tableName, table => {
         table.increments('id');
         table.integer('owner');
-        table.string('value');
+        table.string('value').notNullable();
 
-        table.integer('total');
-        table.integer('progress');
+        table.integer('total').defaultTo(0);
+        table.integer('progress').defaultTo(0);
 
-        table.boolean('is_done');
+        table.boolean('is_done').defaultTo(false);
         table.timestamp('done_at');
 
         table.timestamp('created_at').defaultTo(db.fn.now());

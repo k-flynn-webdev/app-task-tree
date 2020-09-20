@@ -14,9 +14,9 @@ module.exports = function (app) {
         table.integer('owner');
         table.integer('project');
         table.integer('plan');
-        table.string('value');
+        table.string('value').notNullable();
 
-        table.boolean('is_done');
+        table.boolean('is_done').defaultTo(false);
         table.timestamp('done_at');
 
         table.timestamp('created_at').defaultTo(db.fn.now());

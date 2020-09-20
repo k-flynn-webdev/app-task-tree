@@ -1,0 +1,89 @@
+<template>
+  <section>
+    <form @submit.prevent="submitForm">
+      <b-field>
+        <b-input class="is-expanded"
+                 v-model="value"
+                 type="string"
+                 maxlength="200"
+                 placeholder="project to start">
+        </b-input>
+        <p class="control">
+          <b-button native-type="submit"
+                    type="is-primary"
+                    :disabled="!isValid"
+                    :loading="isLoading"
+                    @click="submitForm">
+            Add
+          </b-button>
+        </p>
+      </b-field>
+    </form>
+  </section>
+</template>
+
+<script>
+import { get } from 'lodash-es'
+
+export default {
+  name: 'projectCreate',
+
+  data () {
+    return {
+      value: '',
+      previous: null,
+      isLoading: false
+    }
+  },
+
+  computed: {
+    isValid () {
+      return this.value.length >= 3 && this.value.length <= 200
+    }
+  },
+
+  created () {
+    this.reset()
+  },
+
+  methods: {
+    reset () {
+      this.value = ''
+      this.isLoading = false
+    },
+    submitForm () {
+      if (!this.isValid) return
+      if (this.isLoading) return
+      if (this.previous === this.value) return
+
+      this.isLoading = true
+      return this.$store.dispatch('projects/createProject',
+          { value: this.value })
+        .then(res => {
+          this.previous = this.value
+          this.reset()
+
+          this.$buefy.toast.open({
+            duration: 1500,
+            message: get(res, 'data.message', 'success'),
+            position: 'is-top',
+            type: 'is-success'
+          })
+        })
+        .catch(err => {
+          this.isLoading = false
+
+          this.$buefy.toast.open({
+            duration: 5000,
+            message: get(err, 'response.data.message', 'error'),
+            position: 'is-top',
+            type: 'is-danger'
+          })
+
+          throw err
+        })
+    }
+  }
+
+}
+</script>

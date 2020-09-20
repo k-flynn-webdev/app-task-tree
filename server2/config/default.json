@@ -22,7 +22,7 @@
       "audience": "WEB_ADDRESS",
       "issuer": "WEB_NAME",
       "algorithm": "HS256",
-      "expiresIn": "10m"
+      "expiresIn": "1d"
     },
     "local": {
       "hashSize": 10,
