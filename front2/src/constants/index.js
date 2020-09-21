@@ -1,3 +1,6 @@
+// todo : Add default func objects in each object
+
+
 export const LOGIN = {
   route: { name: 'login', path: '/login' },
   API: {

@@ -1,18 +1,27 @@
 <template>
   <section>
     <projectCreate />
+
+    <project v-for="project in projects"
+             :key="project.id"
+             :project="project"
+    />
+
   </section>
 </template>
 
 <script>
 import { get } from 'lodash-es'
+import { mapState } from 'vuex'
 
 import projectCreate from '../components/projectCreate'
+import project from '../components/project'
 
 export default {
   name: 'Projects',
 
   components: {
+    project,
     projectCreate
   },
 
@@ -23,6 +32,10 @@ export default {
   },
 
   computed: {
+    ...mapState('projects', [
+      'current',
+      'projects'
+    ]),
     token () {
       return (this.$route.params && this.$route.params.token)
     }
