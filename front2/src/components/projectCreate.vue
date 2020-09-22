@@ -1,12 +1,13 @@
 <template>
-  <section>
+  <div class="column is-8 is-12-mobile px-0 mb-0">
     <form @submit.prevent="submitForm">
       <b-field>
         <b-input class="is-expanded"
                  v-model="value"
                  type="string"
                  maxlength="200"
-                 placeholder="project to start">
+                 placeholder="project to start"
+                 :hasCounter="false">
         </b-input>
         <p class="control">
           <b-button native-type="submit"
@@ -19,7 +20,7 @@
         </p>
       </b-field>
     </form>
-  </section>
+  </div>
 </template>
 
 <script>

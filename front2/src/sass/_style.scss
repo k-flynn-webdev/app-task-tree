@@ -11,6 +11,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.btn-options {
+  fill: $light;
+}
+
+.pad {
+  padding: 0.33rem 0.5rem;
+}
+
 .columns {
   margin-left: 0;
   margin-right: 0;
@@ -24,10 +32,42 @@ body {
   align-items: flex-end;
 }
 
+.is-radius {
+  border-radius: $radius;
+}
+
+.is-flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .flex-grow {
   flex-grow: 1;
 }
 
 .flex-shrink {
   flex-shrink: 1;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+
+.row {
+  &__content {
+    &-input {
+      border-color: transparent;
+      background-color: transparent;
+
+      &.textarea {
+        min-height: 1rem;
+        height: min-content;
+      }
+    }
+  }
 }

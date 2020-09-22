@@ -1,11 +1,14 @@
 <template>
-  <section>
-    <projectCreate />
+  <section class="container mx-1">
 
-    <project v-for="project in projects"
-             :key="project.id"
-             :project="project"
-    />
+    <div class="columns is-centered flex-wrap">
+      <projectCreate />
+
+      <project v-for="project in projects"
+               :key="project.id"
+               :project="project"
+      />
+    </div>
 
   </section>
 </template>
