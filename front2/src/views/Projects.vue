@@ -4,9 +4,10 @@
     <div class="columns is-centered flex-wrap">
       <projectCreate />
 
-      <project v-for="project in projects"
-               :key="project.id"
-               :project="project"
+      <row-item v-for="project in projects"
+                :key="project.id"
+                :item="project"
+                :type="'project'"
       />
     </div>
 
@@ -18,13 +19,13 @@ import { get } from 'lodash-es'
 import { mapState } from 'vuex'
 
 import projectCreate from '../components/projectCreate'
-import project from '../components/project'
+import rowItem from '../components/rowItem'
 
 export default {
   name: 'Projects',
 
   components: {
-    project,
+    rowItem,
     projectCreate
   },
 

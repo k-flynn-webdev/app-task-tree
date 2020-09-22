@@ -11,12 +11,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.btn-options {
-  fill: $light;
+.p-0 {
+  padding: 0;
+}
+
+.m-0 {
+  margin: 0;
 }
 
 .pad {
   padding: 0.33rem 0.5rem;
+}
+
+.v-align-center {
+  vertical-align: middle;
 }
 
 .columns {
@@ -40,6 +48,9 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
+
+  &.start { align-items: flex-start; }
+  &.end { align-items: flex-end; }
 }
 
 .flex-grow {
@@ -58,8 +69,37 @@ body {
   flex-wrap: nowrap;
 }
 
+.align-self-start {
+  align-self: flex-start;
+}
+
+.align-self-end {
+  align-self: flex-end;
+}
+
 .row {
   &__content {
+    &-button,
+    &-progress {
+      margin: 0;
+      padding: 0;
+      min-width: 1.95rem;
+    }
+
+    &-button {
+      border-color: transparent;
+      background-color: transparent;
+
+      svg {
+        transition: $speed-slow;
+      }
+    }
+
+    &-progress {
+      padding-left: 0.25rem;
+      padding-top: 0.35rem;
+    }
+
     &-input {
       border-color: transparent;
       background-color: transparent;

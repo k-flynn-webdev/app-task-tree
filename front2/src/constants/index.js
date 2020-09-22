@@ -2,6 +2,7 @@
 
 
 export const LOGIN = {
+  value: 'login',
   route: { name: 'login', path: '/login' },
   API: {
     POST: '/api/authentication',
@@ -10,11 +11,13 @@ export const LOGIN = {
 }
 
 export const VERIFY = {
+  value: 'verify',
   route: { name: 'verify', path: '/verify' },
   API: { GET: '/api/verify' }
 }
 
 export const RECOVER = {
+  value: 'recover',
   route: { name: 'recover', path: '/recover' },
   API: {
     GET: '/api/recover',
@@ -23,6 +26,7 @@ export const RECOVER = {
 }
 
 export const USER = {
+  value: 'user',
   route: { name: 'user', path: '/user' },
   API: {
     GET: '/api/users/me',
@@ -33,6 +37,7 @@ export const USER = {
 }
 
 export const PROJECTS = {
+  value: 'project',
   route: { name: 'projects', path: '/projects' },
   API: {
     GET: '/api/projects',
@@ -40,6 +45,34 @@ export const PROJECTS = {
     PATCH: '/api/projects',
     DELETE: '/api/projects',
   }
+}
+
+export const PLANS = {
+  value: 'plan',
+  route: { name: 'plans', path: '/plans' },
+  API: {
+    GET: '/api/plans',
+    POST: '/api/plans',
+    PATCH: '/api/plans',
+    DELETE: '/api/plans',
+  }
+}
+
+export const TASKS = {
+  value: 'task',
+  route: { name: 'tasks', path: '/tasks' },
+  API: {
+    GET: '/api/tasks',
+    POST: '/api/tasks',
+    PATCH: '/api/tasks',
+    DELETE: '/api/tasks',
+  }
+}
+
+export const TYPES = {
+  project: PROJECTS,
+  plan: PLANS,
+  task: TASKS
 }
 
 export const MODES = [
