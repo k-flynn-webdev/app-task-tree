@@ -4,6 +4,9 @@ export default [
   {
     path: PROJECTS.route.path,
     name: PROJECTS.route.name,
-    component: () => import(/* webpackChunkName: "projects" */ '../views/Projects.vue')
+    props: {
+      type: 'project'
+    },
+    component: () => import(/* webpackChunkName: "items" */ '../views/Items.vue')
   }
 ]

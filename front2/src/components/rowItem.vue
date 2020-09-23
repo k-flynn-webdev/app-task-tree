@@ -84,6 +84,17 @@ export default {
     }
   },
 
+  props: {
+    item: {
+      type: Object,
+      default: defaultItem
+    },
+    type: {
+      type: String,
+      default: ''
+    }
+  },
+
   computed: {
     showProgress () {
       return this.type !== TYPES.task.value
@@ -97,17 +108,6 @@ export default {
       if (this.isLoading) return 'fill-transparent'
       if (this.item.is_done) return 'fill-success'
       return 'fill-bg'
-    }
-  },
-
-  props: {
-    item: {
-      type: Object,
-      default: defaultItem
-    },
-    type: {
-      type: String,
-      default: ''
     }
   },
 

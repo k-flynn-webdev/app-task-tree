@@ -30,7 +30,7 @@ import { TYPES } from '../constants'
 import { get } from 'lodash-es'
 
 export default {
-  name: 'projectCreate',
+  name: 'rowCreate',
 
   components: {
     icAdd
@@ -40,8 +40,14 @@ export default {
     return {
       value: '',
       previous: null,
-      isLoading: false,
-      type: 'project'
+      isLoading: false
+    }
+  },
+
+  props: {
+    type: {
+      type: String,
+      default: 'project'
     }
   },
 

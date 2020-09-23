@@ -2,7 +2,7 @@
   <section class="container mx-1">
 
     <div class="columns is-centered flex-wrap">
-      <projectCreate />
+      <row-create :type="type" />
 
       <row-item v-for="item in items"
                 :key="item.id"
@@ -15,23 +15,29 @@
 </template>
 
 <script>
-import projectCreate from '../components/projectCreate'
+import rowCreate from '../components/rowCreate'
 import rowItem from '../components/rowItem'
 import { TYPES } from '../constants'
 import { get } from 'lodash-es'
 
 export default {
-  name: 'Projects',
+  name: 'Items',
 
   components: {
     rowItem,
-    projectCreate
+    rowCreate
   },
 
   data () {
     return {
-      isLoading: false,
-      type: 'project'
+      isLoading: false
+    }
+  },
+
+  props: {
+    type: {
+      type: String,
+      default: ''
     }
   },
 
