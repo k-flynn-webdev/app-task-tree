@@ -4,10 +4,10 @@
     <div class="columns is-centered flex-wrap">
       <projectCreate />
 
-      <row-item v-for="project in projects"
-                :key="project.id"
-                :item="project"
-                :type="'project'"
+      <row-item v-for="item in items"
+                :key="item.id"
+                :item="item"
+                :type="type"
       />
     </div>
 
@@ -15,11 +15,10 @@
 </template>
 
 <script>
-import { get } from 'lodash-es'
-import { mapState } from 'vuex'
-
 import projectCreate from '../components/projectCreate'
 import rowItem from '../components/rowItem'
+import { TYPES } from '../constants'
+import { get } from 'lodash-es'
 
 export default {
   name: 'Projects',
@@ -31,36 +30,36 @@ export default {
 
   data () {
     return {
-      isLoading: false
+      isLoading: false,
+      type: 'project'
     }
   },
 
   computed: {
-    ...mapState('projects', [
-      'current',
-      'projects'
-    ]),
-    token () {
-      return (this.$route.params && this.$route.params.token)
+    current () {
+      return this.$store.state[TYPES[this.type].store].current
+    },
+    items () {
+      return this.$store.state[TYPES[this.type].store].items
     }
   },
 
   created () {
-    return this.getProjects()
+    return this.get()
   },
 
   methods: {
     /**
-     * Get projects via API
+     * Get Items via API
      *
      * @return {Promise}
      */
-    getProjects () {
+    get () {
       if (this.isLoading) return
 
       this.isLoading = true
 
-      return this.$store.dispatch('projects/getProjects',
+      return this.$store.dispatch(`${TYPES[this.type].store}/get`,
           { query: this.$route.query })
         .then(res => {
           this.isLoading = false

@@ -38,6 +38,7 @@ export const USER = {
 
 export const PROJECTS = {
   value: 'project',
+  store: 'projects',
   route: { name: 'projects', path: '/projects' },
   API: {
     GET: '/api/projects',

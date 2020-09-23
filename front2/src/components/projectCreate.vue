@@ -26,6 +26,7 @@
 
 <script>
 import icAdd from '../assets/icons/ic_add'
+import { TYPES } from '../constants'
 import { get } from 'lodash-es'
 
 export default {
@@ -39,7 +40,8 @@ export default {
     return {
       value: '',
       previous: null,
-      isLoading: false
+      isLoading: false,
+      type: 'project'
     }
   },
 
@@ -69,7 +71,7 @@ export default {
       if (this.previous === this.value) return
 
       this.isLoading = true
-      return this.$store.dispatch('projects/createProject',
+      return this.$store.dispatch(`${TYPES[this.type].store}/post`,
           { value: this.value })
         .then(res => {
           this.previous = this.value

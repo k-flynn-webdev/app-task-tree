@@ -8,7 +8,7 @@ export default {
   namespaced: true,
   state: {
     current: null,
-    projects: [],
+    items: [],
   },
   mutations: {
     /**
@@ -26,8 +26,8 @@ export default {
      * @param state
      * @param {array} input   list of projects
      */
-    setProjects: function (state, input) {
-      Vue.set(state, 'projects', input)
+    set: function (state, input) {
+      Vue.set(state, 'items', input)
     },
     /**
      * Add a Project
@@ -35,8 +35,8 @@ export default {
      * @param state
      * @param {object} input   project
      */
-    addProject: function (state, input) {
-      state.projects.unshift(input)
+    post: function (state, input) {
+      state.items.unshift(input)
     },
     /**
      * Patch a Project via the id
@@ -44,10 +44,10 @@ export default {
      * @param state
      * @param {object} input   project
      */
-    patchProject: function (state, input) {
-      for (let i = 0; i < state.projects.length; i++) {
-        if (state.projects[i].id === input.id) {
-          Vue.set(state.projects, i, input)
+    patch: function (state, input) {
+      for (let i = 0; i < state.items.length; i++) {
+        if (state.items[i].id === input.id) {
+          Vue.set(state.items, i, input)
           return
         }
       }
@@ -61,12 +61,12 @@ export default {
      * @param {object} input
      * @return {Promise}
      */
-    createProject: function (context, input) {
+    post: function (context, input) {
       return HTTP.post(PROJECTS.API.POST, input)
         .then(res => {
           if (get(router.currentRoute, 'query.page')) return
 
-          context.commit('addProject',
+          context.commit('post',
             get(res, 'data.data'))
         })
     },
@@ -77,11 +77,10 @@ export default {
      * @param {object} input
      * @return {Promise}
      */
-    patchProject: function (context, input) {
-      return HTTP.patch(PROJECTS.API.PATCH + '/' + input.id,
-        { value: input.value })
+    patch: function (context, input) {
+      return HTTP.patch(PROJECTS.API.PATCH + '/' + input.id, input)
       .then(res => {
-        context.commit('patchProject',
+        context.commit('patch',
           get(res, 'data.data'))
       })
     },
@@ -92,10 +91,10 @@ export default {
      * @param {number} id
      * @return {Promise}
      */
-    removeProject: function (context, id) {
+    remove: function (context, id) {
       return HTTP.remove(PROJECTS.API.DELETE + '/' + id)
       .then(() => {
-        context.dispatch('getProjects', router.currentRoute)
+        context.dispatch('get', router.currentRoute)
       })
     },
     /**
@@ -105,10 +104,10 @@ export default {
      * @param {object} input    input query
      * @return {Promise}
      */
-    getProjects: function (context, input) {
-      return HTTP.get(PROJECTS.API.POST, { params: input.query })
+    get: function (context, input) {
+      return HTTP.get(PROJECTS.API.GET, { params: input.query })
       .then(res => {
-        context.commit('setProjects',
+        context.commit('set',
           get(res, 'data.data'))
       })
     }

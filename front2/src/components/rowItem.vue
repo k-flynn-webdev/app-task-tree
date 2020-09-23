@@ -56,7 +56,6 @@ import { TYPES } from '../constants'
 import icTick from '../assets/icons/ic_tick'
 import icDelete from '../assets/icons/ic_cross'
 import icOption from '../assets/icons/ic_option'
-import HTTP from '../services/HttpService'
 
 const defaultItem = () => {
   return {
@@ -131,16 +130,16 @@ export default {
       return `${finalNum.toString()}%`
     },
     toggleDone () {
-      if (this.isEdit) return
-      if (this.isLoading) return
-      if (this.type !== TYPES.task.value) return
-
-      this.isLoading = true
-      let self = this
-      setTimeout(function () {
-        self.item.is_done = !self.item.is_done
-        self.isLoading = false
-      }, 1500)
+      // if (this.isEdit) return
+      // if (this.isLoading) return
+      // if (this.type !== TYPES.task.value) return
+      //
+      // this.isLoading = true
+      // let self = this
+      // setTimeout(function () {
+      //   self.item.is_done = !self.item.is_done
+      //   self.isLoading = false
+      // }, 1500)
     },
     /**
      * Remove item via API
@@ -151,16 +150,13 @@ export default {
       if (this.isLoading) return
 
       this.isLoading = true
-      return this.$store.dispatch('projects/patchProject',
+      return this.$store.dispatch(`${TYPES[this.type].store}/patch`,
           { id: this.item.id, value: this.value })
       .then(() => {
         this.isEdit = false
         this.isLoading = false
       })
-      .catch(err => {
-        this.isLoading = true
-        console.log(err)
-      })
+      .catch(err => this.handleError(err))
     },
     /**
      * Remove item via API
@@ -171,14 +167,20 @@ export default {
       if (this.isLoading) return
 
       this.isLoading = true
-      return this.$store.dispatch('projects/removeProject', this.item.id)
+      return this.$store.dispatch(`${TYPES[this.type].store}/remove`, this.item.id)
       .then(() => {
         this.isEdit = false
         this.isLoading = false
       })
-      .catch(err => {
-        this.isLoading = true
-        console.log(err)
+      .catch(err => this.handleError(err))
+    },
+    handleError (err) {
+      this.isLoading = true
+      this.$buefy.toast.open({
+        duration: 5000,
+        message: get(err, 'response.data.message', 'error'),
+        position: 'is-top',
+        type: 'is-danger'
       })
     }
   }
