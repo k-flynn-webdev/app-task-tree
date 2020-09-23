@@ -1,39 +1,52 @@
 <template>
-  <div class="column is-flex start is-8 is-12-mobile px-0 pt-0 pb-3">
+  <div style="width: 100%;">
+    <div class="column is-flex start is-8 is-12-mobile px-0 pt-0 pb-3">
 
-    <div class="flex-grow is-flex start has-text-light is-radius"
-    :class="[ isEdit? 'has-background-transparent has-border-light':
-    'has-border-transparent has-background-mid' ]">
+      <div class="flex-grow is-flex start has-text-light is-radius"
+      :class="[ isEdit? 'has-background-transparent has-border-light':
+      'has-border-transparent has-background-mid' ]">
 
-      <span v-if="showProgress"
-            class="row__content-progress">
-        {{ progress }}
-      </span>
-      <b-button v-else
-                class="row__content-button"
-                :loading="isLoading"
-                @click="toggleDone">
-        <ic-tick :class="tickButtonClass" />
+        <span v-if="showProgress"
+              class="row__content-progress">
+          {{ progress }}
+        </span>
+        <b-button v-else
+                  class="row__content-button"
+                  :loading="isLoading"
+                  @click="toggleDone">
+          <ic-tick :class="tickButtonClass" />
+        </b-button>
+
+        <p v-if="!isEdit"
+           class="pad has-border-transparent is-family-sans-serif">
+          {{ item.value }}
+        </p>
+        <b-input v-else
+                 class="flex-grow is-family-sans-serif"
+                 v-model="value"
+                 :placeholder="value"
+                 :readonly="!isEdit"
+                 type="textarea"
+                 customClass="row__content-input pad has-text-light">
+        </b-input>
+      </div>
+
+      <b-button class="mx-0 is-transparent"
+                @click="onEdit">
+        <ic-option class="fill-light"
+                   :class="{ 'color-alpha': isEdit }" />
       </b-button>
 
-      <p v-if="!isEdit"
-         class="pad has-border-transparent is-family-sans-serif">
-        {{ item.value }}
-      </p>
-      <b-input v-else
-               class="flex-grow is-family-sans-serif"
-               :placeholder="item.value"
-               :value="item.value"
-               :readonly="!isEdit"
-               type="textarea"
-               customClass="row__content-input pad has-text-light">
-      </b-input>
     </div>
 
-    <b-button class="mx-0 is-transparent"
-              @click="isEdit = !isEdit">
-      <icOption class="fill-light" />
-    </b-button>
+    <div v-if="isEdit">
+      <b-button class="mx-2 mb-2">
+        <ic-delete></ic-delete>
+      </b-button>
+      <b-button class="mx-2 mb-2">
+        <ic-tick></ic-tick>
+      </b-button>
+    </div>
 
   </div>
 
@@ -42,6 +55,7 @@
 <script>
 import icTick from '../assets/icons/ic_tick'
 import icOption from '../assets/icons/ic_option'
+import icDelete from '../assets/icons/ic_cross'
 import { TYPES } from '../constants'
 
 const defaultItem = () => {
@@ -59,13 +73,15 @@ export default {
 
   components: {
     icTick,
-    icOption
+    icOption,
+    icDelete
   },
 
   data () {
     return {
       isEdit: false,
-      isLoading: false
+      isLoading: false,
+      value: null
     }
   },
 
@@ -97,6 +113,10 @@ export default {
   },
 
   methods: {
+    onEdit () {
+      this.value = this.item.value
+      this.isEdit = !this.isEdit
+    },
     /**
      * Render the progress from a object
      *

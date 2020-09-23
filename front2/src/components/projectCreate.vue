@@ -6,7 +6,7 @@
                  v-model="value"
                  type="string"
                  maxlength="200"
-                 placeholder="project to start"
+                 placeholder="project to create"
                  :hasCounter="false">
         </b-input>
         <p class="control">
@@ -15,7 +15,7 @@
                     :disabled="!isValid"
                     :loading="isLoading"
                     @click="submitForm">
-            Add
+            <ic-add class="mt-1" :class="createBtnClass" />
           </b-button>
         </p>
       </b-field>
@@ -24,10 +24,15 @@
 </template>
 
 <script>
+import icAdd from '../assets/icons/ic_add'
 import { get } from 'lodash-es'
 
 export default {
   name: 'projectCreate',
+
+  components: {
+    icAdd
+  },
 
   data () {
     return {
@@ -40,6 +45,11 @@ export default {
   computed: {
     isValid () {
       return this.value.length >= 3 && this.value.length <= 200
+    },
+    createBtnClass () {
+      if (this.isLoading) return 'fill-transparent'
+      if (this.isValid) return 'fill-success'
+      return 'fill-light'
     }
   },
 
