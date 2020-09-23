@@ -31,6 +31,24 @@ body {
   vertical-align: middle;
 }
 
+.icon {
+  &.is-small {
+    transform: scale(0.75);
+  }
+
+  &.is-medium {
+    transform: scale(1.25);
+  }
+
+  &.is-large {
+    transform: scale(1.5);
+  }
+}
+
+.animate {
+  transition: $speed-slow;
+}
+
 .columns {
   margin-left: 0;
   margin-right: 0;

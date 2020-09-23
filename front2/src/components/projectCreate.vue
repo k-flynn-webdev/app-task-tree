@@ -15,7 +15,8 @@
                     :disabled="!isValid"
                     :loading="isLoading"
                     @click="submitForm">
-            <ic-add class="mt-1" :class="createBtnClass" />
+            <ic-add class="mt-1 is-medium"
+                    :class="createBtnClass" />
           </b-button>
         </p>
       </b-field>
@@ -48,8 +49,8 @@ export default {
     },
     createBtnClass () {
       if (this.isLoading) return 'fill-transparent'
-      if (this.isValid) return 'fill-success'
-      return 'fill-light'
+      if (this.isValid) return 'fill-bg'
+      return 'fill-bg'
     }
   },
 

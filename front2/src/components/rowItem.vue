@@ -1,28 +1,23 @@
 <template>
-  <div style="width: 100%;">
-    <div class="column is-flex start is-8 is-12-mobile px-0 pt-0 pb-3">
+  <div class="column is-8 is-12-mobile px-0 py-0 mb-2">
 
-      <div class="flex-grow is-flex start has-text-light is-radius"
-      :class="[ isEdit? 'has-background-transparent has-border-light':
-      'has-border-transparent has-background-mid' ]">
+    <div class="is-flex start">
+
+      <div class="is-flex start flex-grow has-text-light is-radius"
+           :class="[ isEdit? 'has-background-transparent has-border-light':
+           'has-border-transparent has-background-mid' ]">
 
         <span v-if="showProgress"
               class="row__content-progress">
           {{ progress }}
         </span>
-        <b-button v-else
-                  class="row__content-button"
-                  :loading="isLoading"
-                  @click="toggleDone">
-          <ic-tick :class="tickButtonClass" />
-        </b-button>
 
-        <p v-if="!isEdit"
+        <span v-if="!isEdit"
            class="pad has-border-transparent is-family-sans-serif">
           {{ item.value }}
-        </p>
+        </span>
         <b-input v-else
-                 class="flex-grow is-family-sans-serif"
+                 class="flex-grow is-inline-block is-family-sans-serif"
                  v-model="value"
                  :placeholder="value"
                  :readonly="!isEdit"
@@ -39,12 +34,12 @@
 
     </div>
 
-    <div v-if="isEdit">
-      <b-button class="mx-2 mb-2">
-        <ic-delete></ic-delete>
+    <div v-if="isEdit" class="mt-2">
+      <b-button class="mx-3 mb-1 has-background-danger has-border-transparent" size="is-small">
+        <ic-delete class="fill-bg v-align-center is-large" />
       </b-button>
-      <b-button class="mx-2 mb-2">
-        <ic-tick></ic-tick>
+      <b-button class="mx-3 mb-1 has-background-success has-border-transparent" size="is-small">
+        <ic-tick class="fill-bg v-align-center is-large" />
       </b-button>
     </div>
 
