@@ -35,10 +35,14 @@
     </div>
 
     <div v-if="isEdit" class="mt-2">
-      <b-button class="mx-3 mb-1 has-background-danger has-border-transparent" size="is-small">
+      <b-button class="mx-3 mb-1 has-background-danger has-border-transparent"
+                size="is-small"
+                @click="removeItem">
         <ic-delete class="fill-bg v-align-center is-large" />
       </b-button>
-      <b-button class="mx-3 mb-1 has-background-success has-border-transparent" size="is-small">
+      <b-button class="mx-3 mb-1 has-background-success has-border-transparent"
+                size="is-small"
+                @click="updateItem">
         <ic-tick class="fill-bg v-align-center is-large" />
       </b-button>
     </div>
@@ -48,10 +52,11 @@
 </template>
 
 <script>
-import icTick from '../assets/icons/ic_tick'
-import icOption from '../assets/icons/ic_option'
-import icDelete from '../assets/icons/ic_cross'
 import { TYPES } from '../constants'
+import icTick from '../assets/icons/ic_tick'
+import icDelete from '../assets/icons/ic_cross'
+import icOption from '../assets/icons/ic_option'
+import HTTP from '../services/HttpService'
 
 const defaultItem = () => {
   return {
@@ -136,6 +141,45 @@ export default {
         self.item.is_done = !self.item.is_done
         self.isLoading = false
       }, 1500)
+    },
+    /**
+     * Remove item via API
+     *
+     * @returns {promise|void}
+     */
+    updateItem () {
+      if (this.isLoading) return
+
+      this.isLoading = true
+      return this.$store.dispatch('projects/patchProject',
+          { id: this.item.id, value: this.value })
+      .then(() => {
+        this.isEdit = false
+        this.isLoading = false
+      })
+      .catch(err => {
+        this.isLoading = true
+        console.log(err)
+      })
+    },
+    /**
+     * Remove item via API
+     *
+     * @returns {promise|void}
+     */
+    removeItem () {
+      if (this.isLoading) return
+
+      this.isLoading = true
+      return this.$store.dispatch('projects/removeProject', this.item.id)
+      .then(() => {
+        this.isEdit = false
+        this.isLoading = false
+      })
+      .catch(err => {
+        this.isLoading = true
+        console.log(err)
+      })
     }
   }
 }

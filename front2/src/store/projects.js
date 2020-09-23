@@ -38,6 +38,20 @@ export default {
     addProject: function (state, input) {
       state.projects.unshift(input)
     },
+    /**
+     * Patch a Project via the id
+     *
+     * @param state
+     * @param {object} input   project
+     */
+    patchProject: function (state, input) {
+      for (let i = 0; i < state.projects.length; i++) {
+        if (state.projects[i].id === input.id) {
+          Vue.set(state.projects, i, input)
+          return
+        }
+      }
+    }
   },
   actions: {
     /**
@@ -55,6 +69,34 @@ export default {
           context.commit('addProject',
             get(res, 'data.data'))
         })
+    },
+    /**
+     * Patch a Project via the API
+     *
+     * @param context
+     * @param {object} input
+     * @return {Promise}
+     */
+    patchProject: function (context, input) {
+      return HTTP.patch(PROJECTS.API.PATCH + '/' + input.id,
+        { value: input.value })
+      .then(res => {
+        context.commit('patchProject',
+          get(res, 'data.data'))
+      })
+    },
+    /**
+     * Remove a Project via the API
+     *
+     * @param context
+     * @param {number} id
+     * @return {Promise}
+     */
+    removeProject: function (context, id) {
+      return HTTP.remove(PROJECTS.API.DELETE + '/' + id)
+      .then(() => {
+        context.dispatch('getProjects', router.currentRoute)
+      })
     },
     /**
      * Get Projects via the API
