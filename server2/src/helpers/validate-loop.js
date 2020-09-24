@@ -19,9 +19,10 @@ module.exports = (testItems, context) => {
     const testParam = testItems[i][1]
     const testRequire = testItems[i][2]
 
-    const source = context.data[testParam] ? context.data[testParam].trim() : ''
+    const source = context.data[testParam] ? context.data[testParam] : ''
+    const sourceTrim = source.trim ? source.trim() : source
 
-    const test = testFunc.validate(source)
+    const test = testFunc.validate(sourceTrim)
 
     if (testRequire && test.error) {
       throw new BadRequest(get(test, 'error.details[0].message',

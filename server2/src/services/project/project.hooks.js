@@ -1,37 +1,36 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
 
-const limitToProjectOwner = require('../../hooks/limit-to-project-owner')
-const projectValidate = require('../../hooks/project-validate')
+const limitToOwner = require('../../hooks/limit-to-project-owner')
+const itemValidate = require('../../hooks/item-validate')
 const resultToData = require('../../hooks/result-to-data')
-const userToOwner = require('../../hooks/user-to-owner')
+const setOwnerFromUser = require('../../hooks/set-owner-from-user')
 const timeStamp = require('../../hooks/time-stamp')
-
 
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
     find: [
-      limitToProjectOwner,
+      limitToOwner,
     ],
     get: [
-      limitToProjectOwner,
+      limitToOwner,
     ],
     create: [
-      projectValidate.create,
-      userToOwner,
+      itemValidate.create,
+      setOwnerFromUser,
       timeStamp('created_at')
     ],
     update: [
-      limitToProjectOwner,
-      projectValidate.update,
+      limitToOwner,
+      itemValidate.update,
       timeStamp('updated_at')
     ],
     patch: [
-      limitToProjectOwner,
-      projectValidate.patch,
+      limitToOwner,
+      itemValidate.patch,
       timeStamp('updated_at')
     ],
-    remove: [ limitToProjectOwner ]
+    remove: [ limitToOwner ]
   },
 
   after: {
