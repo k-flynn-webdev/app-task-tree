@@ -5,7 +5,8 @@
 
       <div class="is-flex start flex-grow has-text-light is-radius"
            :class="[ isEdit? 'has-background-transparent has-border-light':
-           'has-border-transparent has-background-mid' ]">
+           'has-border-transparent has-background-mid' ]"
+           @click="onSelect">
 
         <span v-if="showProgress"
               class="row__content-progress">
@@ -115,6 +116,12 @@ export default {
     onEdit () {
       this.value = this.item.value
       this.isEdit = !this.isEdit
+    },
+    /**
+     * Set current store with selected item
+     */
+    onSelect () {
+      return this.$store.commit(`${TYPES[this.type].store}/setCurrent`, this.item)
     },
     /**
      * Render the progress from a object
