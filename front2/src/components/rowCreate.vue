@@ -47,7 +47,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'project'
+      default: ''
     }
   },
 
@@ -77,6 +77,13 @@ export default {
       if (this.previous === this.value) return
 
       this.isLoading = true
+
+      const projectId = get(this.$store.state, `${TYPES.project.store}.current.id`)
+      const planId = get(this.$store.state, `${TYPES.plan.store}.current.id`)
+      const taskId = get(this.$store.state, `${TYPES.task.store}.current.id`)
+
+      console.log({ project: projectId, plan: planId, task: taskId })
+
       return this.$store.dispatch(`${TYPES[this.type].store}/post`,
           { value: this.value })
         .then(res => {

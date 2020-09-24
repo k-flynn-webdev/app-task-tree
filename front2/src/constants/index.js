@@ -50,6 +50,7 @@ export const PROJECTS = {
 
 export const PLANS = {
   value: 'plan',
+  store: 'plans',
   route: { name: 'plans', path: '/plans' },
   API: {
     GET: '/api/plans',
@@ -61,6 +62,7 @@ export const PLANS = {
 
 export const TASKS = {
   value: 'task',
+  store: 'tasks',
   route: { name: 'tasks', path: '/tasks' },
   API: {
     GET: '/api/tasks',
