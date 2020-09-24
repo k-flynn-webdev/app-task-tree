@@ -51,6 +51,7 @@ export default {
   },
 
   created () {
+    this.$store.commit('mode', TYPES[this.type])
     return this.get()
   },
 

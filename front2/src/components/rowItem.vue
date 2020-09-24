@@ -121,6 +121,7 @@ export default {
      * Set current store with selected item
      */
     onSelect () {
+      this.$store.commit('title', this.item.value)
       return this.$store.commit(`${TYPES[this.type].store}/setCurrent`, this.item)
     },
     /**

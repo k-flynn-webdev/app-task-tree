@@ -10,7 +10,7 @@
 
         <h1>
           <strong>
-            {{ modeName }}
+            {{ title }}
           </strong>
         </h1>
       </b-navbar-item>
@@ -77,7 +77,7 @@ export default {
   },
 
   computed: {
-    ...mapState({ modeName: state => state.mode.value }),
+    ...mapState({ title: state => state.title }),
     ...mapState('user', ['isLoggedIn', 'user'])
   }
 

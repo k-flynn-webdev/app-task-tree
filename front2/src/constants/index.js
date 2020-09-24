@@ -73,14 +73,12 @@ export const TASKS = {
 }
 
 export const TYPES = {
+  home: {
+    value: 'Minitask',
+    title: 'Minitask'
+  },
   project: PROJECTS,
   plan: PLANS,
   task: TASKS
 }
 
-export const MODES = [
-  { mode: 'Minitask', value: 'Minitask'},
-  { mode: 'projects', value: '' },
-  { mode: 'plans', value: '' },
-  { mode: 'tasks', value: '' }
-]

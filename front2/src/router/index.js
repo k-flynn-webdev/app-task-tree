@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import userRoutes from './user'
-import projectRoutes from './projects'
+import itemRoutes from './items'
 import Home from '../views/Home.vue'
 
 
@@ -17,8 +17,9 @@ Vue.use(VueRouter)
     path: '/about',
     name: 'about',
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }, ...userRoutes,
-    ...projectRoutes
+  },
+    ...userRoutes,
+    ...itemRoutes
 ]
 
 const router = new VueRouter({

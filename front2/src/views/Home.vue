@@ -1,11 +1,18 @@
 <template>
   <section>
 
-    <div class="container">
+    <router-link :to="{ name: 'projects' }" class="has-text-link">
+      Projects
+    </router-link>
+    <router-link :to="{ name: 'plans' }" class="has-text-link">
+      Plans
+    </router-link>
+    <router-link :to="{ name: 'tasks' }" class="has-text-link">
+      Tasks
+    </router-link>
 
-<!--      <p class="is-size-2 has-text-centered has-text-weight-bold has-text-light">-->
-<!--        Minitask-->
-<!--      </p>-->
+
+    <div class="container">
 
       <div class="columns is-centered">
 
@@ -33,8 +40,13 @@
 </template>
 
 <script>
+import { TYPES } from '../constants'
 
 export default {
-  name: 'Home'
+  name: 'Home',
+
+  created () {
+    this.$store.commit('mode', TYPES['home'])
+  }
 }
 </script>
