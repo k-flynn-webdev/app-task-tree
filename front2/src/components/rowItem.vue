@@ -12,6 +12,12 @@
               class="row__content-progress">
           {{ progress }}
         </span>
+        <b-button v-else
+                  class="row__content-button"
+                  :loading="isLoadingDone"
+                  @click.stop="toggleDone">
+          <ic-tick :class="tickButtonClass" />
+        </b-button>
 
         <span v-if="!isEdit"
            class="pad has-border-transparent is-family-sans-serif">
@@ -53,10 +59,11 @@
 </template>
 
 <script>
-import { TYPES } from '../constants'
-import icTick from '../assets/icons/ic_tick'
-import icDelete from '../assets/icons/ic_cross'
 import icOption from '../assets/icons/ic_option'
+import icDelete from '../assets/icons/ic_cross'
+import icTick from '../assets/icons/ic_tick'
+import { TYPES } from '../constants'
+import { get } from 'lodash-es'
 
 const defaultItem = () => {
   return {
@@ -80,6 +87,7 @@ export default {
   data () {
     return {
       isEdit: false,
+      isLoadingDone: false,
       isLoading: false,
       value: null
     }
@@ -106,7 +114,7 @@ export default {
           this.item.progress, this.item.total)
     },
     tickButtonClass () {
-      if (this.isLoading) return 'fill-transparent'
+      if (this.isLoadingDone) return 'fill-transparent'
       if (this.item.is_done) return 'fill-success'
       return 'fill-bg'
     }
@@ -121,6 +129,7 @@ export default {
      * Set current store with selected item
      */
     onSelect () {
+      if (this.isEdit) return
       this.$store.commit('title', this.item.value)
       return this.$store.commit(`${TYPES[this.type].store}/setCurrent`, this.item)
     },
@@ -137,17 +146,26 @@ export default {
       const finalNum = Math.floor((done / total) * 100)
       return `${finalNum.toString()}%`
     },
+    /**
+     * Set item to done `IF` is a Task
+     */
     toggleDone () {
-      // if (this.isEdit) return
-      // if (this.isLoading) return
-      // if (this.type !== TYPES.task.value) return
-      //
-      // this.isLoading = true
-      // let self = this
-      // setTimeout(function () {
-      //   self.item.is_done = !self.item.is_done
-      //   self.isLoading = false
-      // }, 1500)
+      if (this.isEdit) return
+      if (this.isLoadingDone) return
+      if (this.type !== TYPES.task.value) return
+
+      this.isLoadingDone = true
+      const doneValue = !!this.item.is_done
+
+      console.log(doneValue)
+
+      return this.$store.dispatch(`${TYPES[this.type].store}/patch`,
+          { id: this.item.id, is_done: !doneValue })
+      .then(res => {
+        console.log(res)
+        this.isLoadingDone = false
+      })
+      .catch(err => this.handleError(err))
     },
     /**
      * Remove item via API
@@ -183,6 +201,7 @@ export default {
       .catch(err => this.handleError(err))
     },
     handleError (err) {
+      console.log(err)
       this.isLoading = true
       this.$buefy.toast.open({
         duration: 5000,
