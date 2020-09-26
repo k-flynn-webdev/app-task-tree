@@ -13,13 +13,19 @@ const SPECIALS = [
   '$or'
 ]
 
-const QUERIES = [
+const DATA = [
+  'is_done',
   'id',
   'owner',
   'project',
   'plan',
   'task',
+  'value'
+]
+
+const ALL = [
+  ...DATA,
   ...SPECIALS
 ]
 
-module.exports = QUERIES
+module.exports = ALL

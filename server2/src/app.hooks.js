@@ -2,14 +2,14 @@
 const handleErrors = require('./hooks/handle-errors');
 const { protect } = require('@feathersjs/authentication-local').hooks;
 const queryDefault = require('./hooks/query-default')
-const queryClean = require('./hooks/query-clean')
+const cleanQuery = require('./hooks/clean-query')
 const allowedQueries = require('../constants/allowed-queries')
 
 module.exports = {
   before: {
     all: [
       handleErrors,
-      queryClean(allowedQueries)
+      cleanQuery(allowedQueries)
     ],
     find: [ queryDefault ],
     get: [],

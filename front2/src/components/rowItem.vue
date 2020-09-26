@@ -6,7 +6,8 @@
       <div class="is-flex start flex-grow has-text-light is-radius"
            :class="[ isEdit? 'has-background-transparent has-border-light':
            'has-border-transparent has-background-mid' ]"
-           @click="onSelect">
+           @click="onSelect"
+           @dblclick="onDblClick">
 
         <span v-if="showProgress"
               class="row__content-progress">
@@ -130,8 +131,21 @@ export default {
      */
     onSelect () {
       if (this.isEdit) return
+      if(this.type === TYPES.task.value) return
+
       this.$store.commit('title', this.item.value)
       return this.$store.commit(`${TYPES[this.type].store}/setCurrent`, this.item)
+    },
+    onOpenItem () {
+      const query = TYPES[this.type].open(this.item)
+      this.$router.push(query)
+    },
+    onDblClick () {
+      if(this.type === TYPES.task.value) {
+        return this.toggleDone()
+      }
+
+      return this.onOpenItem()
     },
     /**
      * Render the progress from a object
@@ -156,8 +170,6 @@ export default {
 
       this.isLoadingDone = true
       const doneValue = !!this.item.is_done
-
-      console.log(doneValue)
 
       return this.$store.dispatch(`${TYPES[this.type].store}/patch`,
           { id: this.item.id, is_done: !doneValue })

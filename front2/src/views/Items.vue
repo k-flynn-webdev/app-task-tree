@@ -52,6 +52,8 @@ export default {
 
   created () {
     this.$store.commit('mode', TYPES[this.type])
+    this.$store.commit('setOpened', this.$route.query)
+
     return this.get()
   },
 

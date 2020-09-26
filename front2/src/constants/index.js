@@ -39,6 +39,7 @@ export const USER = {
 export const PROJECTS = {
   value: 'project',
   store: 'projects',
+  open: item => { return `/plans?project=${item.id}` },
   route: { name: 'projects', path: '/projects' },
   API: {
     GET: '/api/projects',
@@ -51,6 +52,7 @@ export const PROJECTS = {
 export const PLANS = {
   value: 'plan',
   store: 'plans',
+  open: item => { return `/tasks?plan=${item.id}` },
   route: { name: 'plans', path: '/plans' },
   API: {
     GET: '/api/plans',
@@ -63,6 +65,7 @@ export const PLANS = {
 export const TASKS = {
   value: 'task',
   store: 'tasks',
+  open: null,
   route: { name: 'tasks', path: '/tasks' },
   API: {
     GET: '/api/tasks',

@@ -10,11 +10,12 @@
  */
 module.exports = (whitelist) => {
   return context => {
+    if (!context.params.provider) return context
 
-    context.params.query = Object.keys(context.params.query)
+    context.data = Object.keys(context.data)
       .reduce((acc, key) => {
         if (whitelist.includes(key)) {
-          acc[key] = context.params.query[key]
+          acc[key] = context.data[key]
         }
 
         return acc

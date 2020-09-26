@@ -11,9 +11,19 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     mode: {},
+    opened: {},
     title: TYPES.home.title
   },
   mutations: {
+    /**
+     * Sets the opened item \ query item
+     *
+     * @param state
+     * @param {object} input    opened item
+     */
+    setOpened: function(state, input) {
+      state.opened = input
+    },
     /**
      * Set the current mode via index
      *

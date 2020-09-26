@@ -6,7 +6,7 @@
                  v-model="value"
                  type="string"
                  maxlength="200"
-                 placeholder="project to create"
+                 :placeholder="placeHolder"
                  :hasCounter="false">
         </b-input>
         <p class="control">
@@ -55,6 +55,9 @@ export default {
     isValid () {
       return this.value.length >= 3 && this.value.length <= 200
     },
+    placeHolder () {
+      return `${this.type} to create ..`
+    },
     createBtnClass () {
       if (this.isLoading) return 'fill-transparent'
       if (this.isValid) return 'fill-bg'
@@ -78,14 +81,13 @@ export default {
 
       this.isLoading = true
 
-      const projectId = get(this.$store.state, `${TYPES.project.store}.current.id`)
-      const planId = get(this.$store.state, `${TYPES.plan.store}.current.id`)
-      const taskId = get(this.$store.state, `${TYPES.task.store}.current.id`)
-
-      console.log({ project: projectId, plan: planId, task: taskId })
+      const opened = this.$store.state.opened
 
       return this.$store.dispatch(`${TYPES[this.type].store}/post`,
-          { value: this.value })
+          {
+            value: this.value,
+            ...opened
+          })
         .then(res => {
           this.previous = this.value
           this.reset()

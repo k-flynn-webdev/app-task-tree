@@ -3,17 +3,12 @@
 const joi = require('@hapi/joi')
 const validateLoop = require('../helpers/validate-loop')
 
-const checkValue = joi.string().label('value').min(3).required()
 const checkIsDone = joi.boolean().label('is_done').required()
 
 const create = (context) => {
   const checkVars = [
-    [checkValue, 'value', true]
+    [checkIsDone, 'is_done', false]
   ]
-
-  context.data = {
-    value: context.data.value
-  }
 
   validateLoop(checkVars, context)
 
@@ -25,7 +20,6 @@ exports.update = create
 
 const patch = (context) => {
   const checkVars = [
-    [checkValue, 'value', false],
     [checkIsDone, 'is_done', false]
   ]
 

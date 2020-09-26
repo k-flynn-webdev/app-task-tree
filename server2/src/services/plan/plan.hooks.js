@@ -1,10 +1,15 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
 
 const limitToOwner = require('../../hooks/limit-to-project-owner')
-const itemValidate = require('../../hooks/item-validate')
+const itemValueValidate = require('../../hooks/item-value-validate')
+const itemProjectValidate = require('../../hooks/item-project-validate')
+const itemPlanValidate = require('../../hooks/item-plan-validate')
+const itemIsDoneValidate = require('../../hooks/item-isDone-validate')
 const resultToData = require('../../hooks/result-to-data')
 const setOwnerFromUser = require('../../hooks/set-owner-from-user')
 const timeStamp = require('../../hooks/time-stamp')
+const cleanData = require('../../hooks/clean-data')
+const allowedQueries = require('../../../constants/allowed-queries')
 
 module.exports = {
   before: {
@@ -16,18 +21,22 @@ module.exports = {
       limitToOwner,
     ],
     create: [
-      itemValidate.create,
+      cleanData(allowedQueries),
+      itemValueValidate.create,
+      itemProjectValidate,
       setOwnerFromUser,
       timeStamp('created_at')
     ],
     update: [
       limitToOwner,
-      itemValidate.update,
+      cleanData(allowedQueries),
+      itemValueValidate.update,
       timeStamp('updated_at')
     ],
     patch: [
       limitToOwner,
-      itemValidate.patch,
+      cleanData(allowedQueries),
+      itemValueValidate.patch,
       timeStamp('updated_at')
     ],
     remove: [ limitToOwner ]
