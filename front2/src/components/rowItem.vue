@@ -139,16 +139,19 @@ export default {
       this.$store.commit('title', this.item.value)
       return this.$store.commit(`${TYPES[this.type].store}/setCurrent`, this.item)
     },
+    loadPage (page) {
+      this.$store.commit('mode', TYPES[page.name])
+      this.$store.commit('setOpened', page.query)
+      this.$store.dispatch(`${TYPES[page.name].store}/get`, page)
+    },
     /**
      * Opens Item of Type to be worked with
      *    eg open a project to create plan items related to it ..
      */
     onOpenItem () {
-      const query = TYPES[this.type].open(this.item)
-      this.$router.push(query)
-      .then(routeObj => {
-        this.$store.commit('setOpened', routeObj.query)
-      })
+      const openObj = TYPES[this.type].open(this.item)
+      this.$router.push(openObj,
+          this.loadPage(openObj))
     },
     /**
      * Dbl Click catch

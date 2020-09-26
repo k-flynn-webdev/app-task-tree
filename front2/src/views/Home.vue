@@ -1,13 +1,13 @@
 <template>
   <section>
 
-    <router-link :to="{ name: 'projects' }" class="has-text-link">
+    <router-link :to="{ name: 'project' }" class="has-text-link">
       Projects
     </router-link>
-    <router-link :to="{ name: 'plans' }" class="has-text-link">
+    <router-link :to="{ name: 'plan' }" class="has-text-link">
       Plans
     </router-link>
-    <router-link :to="{ name: 'tasks' }" class="has-text-link">
+    <router-link :to="{ name: 'task' }" class="has-text-link">
       Tasks
     </router-link>
 

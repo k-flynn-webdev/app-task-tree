@@ -1,25 +1,25 @@
-import { PROJECTS, PLANS, TASKS } from '../constants/index'
+import { PROJECT, PLAN, TASK } from '../constants/index'
 
 export default [
   {
-    path: PROJECTS.route.path,
-    name: PROJECTS.route.name,
+    path: PROJECT.route.path,
+    name: PROJECT.route.name,
     props: {
       type: 'project'
     },
     component: () => import(/* webpackChunkName: "items" */ '../views/Items.vue')
   },
   {
-    path: PLANS.route.path,
-    name: PLANS.route.name,
+    path: PLAN.route.path,
+    name: PLAN.route.name,
     props: {
       type: 'plan'
     },
     component: () => import(/* webpackChunkName: "items" */ '../views/Items.vue')
   },
   {
-    path: TASKS.route.path,
-    name: TASKS.route.name,
+    path: TASK.route.path,
+    name: TASK.route.name,
     props: {
       type: 'task'
     },

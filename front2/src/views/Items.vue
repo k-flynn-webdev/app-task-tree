@@ -8,6 +8,7 @@
                 :key="item.id"
                 :item="item"
                 :type="type"
+                @reload="get"
       />
     </div>
 
@@ -50,11 +51,14 @@ export default {
     }
   },
 
-  created () {
+  mounted () {
     this.$store.commit('mode', TYPES[this.type])
     this.$store.commit('setOpened', this.$route.query)
 
     return this.get()
+    // .then(() => {
+    //   return this.$store.dispatch()
+    // })
   },
 
   methods: {
@@ -68,6 +72,7 @@ export default {
 
       this.isLoading = true
 
+      // console.log('getting', this.type)
       return this.$store.dispatch(`${TYPES[this.type].store}/get`,
           { query: this.$route.query })
         .then(res => {

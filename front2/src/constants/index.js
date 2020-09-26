@@ -36,11 +36,12 @@ export const USER = {
   }
 }
 
-export const PROJECTS = {
+export const PROJECT = {
   value: 'project',
   store: 'projects',
-  open: item => { return `/plans?project=${item.id}` },
-  route: { name: 'projects', path: '/projects' },
+  open: item => { return { name: 'plan', query: { project: item.id } } },
+  // open: item => { return { go: `/plans?project=${item.id}`, name: 'plan' } },
+  route: { name: 'project', path: '/projects' },
   API: {
     GET: '/api/projects',
     POST: '/api/projects',
@@ -49,11 +50,12 @@ export const PROJECTS = {
   }
 }
 
-export const PLANS = {
+export const PLAN = {
   value: 'plan',
   store: 'plans',
-  open: item => { return `/tasks?plan=${item.id}` },
-  route: { name: 'plans', path: '/plans' },
+  open: item => { return { name: 'task', query: { plan: item.id } } },
+  // open: item => { return { go: `/tasks?plan=${item.id}`, name: 'task' } },
+  route: { name: 'plan', path: '/plans' },
   API: {
     GET: '/api/plans',
     POST: '/api/plans',
@@ -62,11 +64,11 @@ export const PLANS = {
   }
 }
 
-export const TASKS = {
+export const TASK = {
   value: 'task',
   store: 'tasks',
   open: null,
-  route: { name: 'tasks', path: '/tasks' },
+  route: { name: 'task', path: '/tasks' },
   API: {
     GET: '/api/tasks',
     POST: '/api/tasks',
@@ -80,8 +82,8 @@ export const TYPES = {
     value: 'Minitask',
     title: 'Minitask'
   },
-  project: PROJECTS,
-  plan: PLANS,
-  task: TASKS
+  project: PROJECT,
+  plan: PLAN,
+  task: TASK
 }
 

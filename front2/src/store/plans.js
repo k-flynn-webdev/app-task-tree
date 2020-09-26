@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import router from '../router'
-import { PLANS } from '../constants'
+import { PLAN } from '../constants'
 import HTTP from '../services/HttpService'
 import { get } from 'lodash-es'
 
@@ -62,7 +62,7 @@ export default {
      * @return {Promise}
      */
     post: function (context, input) {
-      return HTTP.post(PLANS.API.POST, input)
+      return HTTP.post(PLAN.API.POST, input)
         .then(res => {
           if (get(router.currentRoute, 'query.page')) return
 
@@ -78,7 +78,7 @@ export default {
      * @return {Promise}
      */
     patch: function (context, input) {
-      return HTTP.patch(PLANS.API.PATCH + '/' + input.id, input)
+      return HTTP.patch(PLAN.API.PATCH + '/' + input.id, input)
       .then(res => {
         context.commit('patch',
           get(res, 'data.data'))
@@ -92,7 +92,7 @@ export default {
      * @return {Promise}
      */
     remove: function (context, id) {
-      return HTTP.remove(PLANS.API.DELETE + '/' + id)
+      return HTTP.remove(PLAN.API.DELETE + '/' + id)
       .then(() => {
         context.dispatch('get', router.currentRoute)
       })
@@ -105,7 +105,7 @@ export default {
      * @return {Promise}
      */
     get: function (context, input) {
-      return HTTP.get(PLANS.API.GET, { params: input.query })
+      return HTTP.get(PLAN.API.GET, { params: input.query })
       .then(res => {
         context.commit('set',
           get(res, 'data.data'))
