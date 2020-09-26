@@ -122,6 +122,9 @@ export default {
   },
 
   methods: {
+    /**
+     * Set Edit mode of value
+     */
     onEdit () {
       this.value = this.item.value
       this.isEdit = !this.isEdit
@@ -136,6 +139,10 @@ export default {
       this.$store.commit('title', this.item.value)
       return this.$store.commit(`${TYPES[this.type].store}/setCurrent`, this.item)
     },
+    /**
+     * Opens Item of Type to be worked with
+     *    eg open a project to create plan items related to it ..
+     */
     onOpenItem () {
       const query = TYPES[this.type].open(this.item)
       this.$router.push(query)
@@ -143,6 +150,9 @@ export default {
         this.$store.commit('setOpened', routeObj.query)
       })
     },
+    /**
+     * Dbl Click catch
+     */
     onDblClick () {
       if(this.type === TYPES.task.value) {
         return this.toggleDone()
@@ -176,8 +186,7 @@ export default {
 
       return this.$store.dispatch(`${TYPES[this.type].store}/patch`,
           { id: this.item.id, is_done: !doneValue })
-      .then(res => {
-        console.log(res)
+      .then(() => {
         this.isLoadingDone = false
       })
       .catch(err => this.handleError(err))
@@ -215,8 +224,12 @@ export default {
       })
       .catch(err => this.handleError(err))
     },
+    /**
+     * Show User error messages
+     *
+     * @param err
+     */
     handleError (err) {
-      console.log(err)
       this.isLoading = true
       this.$buefy.toast.open({
         duration: 5000,
