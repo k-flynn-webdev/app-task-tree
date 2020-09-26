@@ -139,6 +139,9 @@ export default {
     onOpenItem () {
       const query = TYPES[this.type].open(this.item)
       this.$router.push(query)
+      .then(routeObj => {
+        this.$store.commit('setOpened', routeObj.query)
+      })
     },
     onDblClick () {
       if(this.type === TYPES.task.value) {
