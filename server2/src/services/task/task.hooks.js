@@ -23,12 +23,14 @@ module.exports = {
     create: [
       cleanData(allowedQueries),
       itemValueValidate.create,
+      itemProjectValidate,
       itemPlanValidate,
       setOwnerFromUser,
       timeStamp('created_at')
     ],
     update: [
       limitToOwner,
+      // todo : allow ONLY [value & is_done] data property
       cleanData(allowedQueries),
       itemValueValidate.update,
       itemIsDoneValidate,
@@ -36,6 +38,7 @@ module.exports = {
     ],
     patch: [
       limitToOwner,
+      // todo : allow ONLY [value & is_done] data property
       cleanData(allowedQueries),
       itemValueValidate.patch,
       timeStamp('updated_at')

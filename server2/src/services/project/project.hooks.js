@@ -27,12 +27,14 @@ module.exports = {
       timeStamp('created_at')
     ],
     update: [
+      // todo : allow ONLY value data property
       limitToOwner,
       cleanData(allowedQueries),
       itemValueValidate.update,
       timeStamp('updated_at')
     ],
     patch: [
+      // todo : allow ONLY value data property
       limitToOwner,
       cleanData(allowedQueries),
       itemValueValidate.patch,
