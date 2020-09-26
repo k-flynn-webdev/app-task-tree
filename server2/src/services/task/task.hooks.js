@@ -7,6 +7,7 @@ const itemPlanValidate = require('../../hooks/item-plan-validate')
 const itemIsDoneValidate = require('../../hooks/item-isDone-validate')
 const resultToData = require('../../hooks/result-to-data')
 const setOwnerFromUser = require('../../hooks/set-owner-from-user')
+const setProjectFromPlan = require('../../hooks/set-project-from-plan')
 const timeStamp = require('../../hooks/time-stamp')
 const cleanData = require('../../hooks/clean-data')
 const allowedQueries = require('../../../constants/allowed-queries')
@@ -23,9 +24,9 @@ module.exports = {
     create: [
       cleanData(allowedQueries),
       itemValueValidate.create,
-      itemProjectValidate,
       itemPlanValidate,
       setOwnerFromUser,
+      setProjectFromPlan,
       timeStamp('created_at')
     ],
     update: [
