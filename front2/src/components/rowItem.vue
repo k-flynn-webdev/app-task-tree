@@ -1,9 +1,9 @@
 <template>
-  <div class="column is-8 is-12-mobile px-0 py-0 mb-2">
+  <div class="column is-8 is-12-mobile px-0 py-0 mb-2 row">
 
     <div class="is-flex start">
 
-      <div class="is-flex start flex-grow has-text-light is-radius"
+      <div class="is-flex start flex-grow has-text-light is-radius row__item"
            :class="[ isEdit? 'has-background-transparent has-border-light':
            'has-border-transparent has-background-mid' ]"
            @click="onSelect"

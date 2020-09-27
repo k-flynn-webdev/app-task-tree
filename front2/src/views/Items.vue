@@ -8,6 +8,7 @@
                 :key="item.id"
                 :item="item"
                 :type="type"
+                :class="{ 'is-active': current.id === item.id }"
                 @reload="get"
       />
     </div>
@@ -44,7 +45,7 @@ export default {
 
   computed: {
     current () {
-      return this.$store.state[TYPES[this.type].store].current
+      return this.$store.state[TYPES[this.type].store].current || { id: -1 }
     },
     items () {
       return this.$store.state[TYPES[this.type].store].items
@@ -56,9 +57,6 @@ export default {
     this.$store.commit('setOpened', this.$route.query)
 
     return this.get()
-    // .then(() => {
-    //   return this.$store.dispatch()
-    // })
   },
 
   methods: {
