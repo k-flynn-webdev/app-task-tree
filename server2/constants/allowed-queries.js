@@ -14,15 +14,22 @@ const SPECIALS = [
 ]
 
 const DATA = [
-  'is_done',
   'id',
   'owner',
   'project',
   'plan',
   'task',
-  'value'
+  'value',
+  'is_done',
+  'total',
+  'progress'
 ]
 
+/**
+ * All allowed properties/keys
+ *
+ * @type {string[]}
+ */
 const ALL = [
   ...DATA,
   ...SPECIALS

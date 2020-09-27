@@ -29,7 +29,7 @@ module.exports = (plan) => {
     })
 
     context.app.service(paths.plan)._patch(planId,
-      { total: allTasks.total, progress: allDoneTasks.total } )
+      { total: allTasks.total, progress: allDoneTasks.total, updated_at: new Date() } )
 
     return context
   }

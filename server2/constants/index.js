@@ -6,6 +6,9 @@ const MESSAGE_RECOVER_SENT = 'Success, an email was sent'
 const MESSAGE_LOGIN = 'Successful login'
 const MESSAGE_LOGOUT = 'Successful logout'
 
+/**
+ * All API returned messages begin here
+ */
 const ALL_MESSAGES = {
   create: MESSAGE_SUCCESS,
   update: MESSAGE_UPDATED,
@@ -22,6 +25,9 @@ const ALL_DICT = {
   me: ME
 }
 
+/**
+ * All services begin here
+ */
 const USERS = 'users'
 const VERIFY = 'verify'
 const RECOVER = 'recover'
@@ -51,6 +57,7 @@ const paths = (prefix) => {
 
 /**
  * Adds global constants to the APP in a accessible getter `constants`
+ *    eg: app.get('constants) ...
  *
  * @param app
  * @return {*}
