@@ -10,7 +10,10 @@ const setOwnerFromUser = require('../../hooks/set-owner-from-user')
 const setProjectFromPlan = require('../../hooks/set-project-from-plan')
 const timeStamp = require('../../hooks/time-stamp')
 const cleanData = require('../../hooks/clean-data')
+const ifHasProperty = require('../../hooks/if-has-property')
 const allowedQueries = require('../../../constants/allowed-queries')
+
+const updatePlanProgress = require('../../hooks/update-plan-progress')
 
 module.exports = {
   before: {
@@ -51,10 +54,23 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [ resultToData ],
-    update: [ resultToData ],
-    patch: [ resultToData ],
-    remove: []
+    create: [
+      resultToData,
+      updatePlanProgress('result.plan'),
+    ],
+    update: [
+      resultToData,
+      ifHasProperty('data.is_done',
+        updatePlanProgress('result.plan')),
+    ],
+    patch: [
+      resultToData,
+      ifHasProperty('data.is_done',
+        updatePlanProgress('result.plan')),
+    ],
+    remove: [
+      updatePlanProgress('result.id'),
+    ]
   },
 
   error: {

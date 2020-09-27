@@ -9,7 +9,10 @@ const resultToData = require('../../hooks/result-to-data')
 const setOwnerFromUser = require('../../hooks/set-owner-from-user')
 const timeStamp = require('../../hooks/time-stamp')
 const cleanData = require('../../hooks/clean-data')
+const ifHasProperty = require('../../hooks/if-has-property')
 const allowedQueries = require('../../../constants/allowed-queries')
+
+const updateProjectProgress = require('../../hooks/update-project-progress')
 
 module.exports = {
   before: {
@@ -48,10 +51,23 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [ resultToData ],
-    update: [ resultToData ],
-    patch: [ resultToData ],
-    remove: []
+    create: [
+      resultToData,
+      updateProjectProgress('result.project'),
+    ],
+    update: [
+      resultToData,
+      ifHasProperty('data.is_done',
+        updateProjectProgress('result.project')),
+    ],
+    patch: [
+      resultToData,
+      ifHasProperty('data.is_done',
+        updateProjectProgress('result.project')),
+    ],
+    remove: [
+      updateProjectProgress('result.id'),
+    ]
   },
 
   error: {
