@@ -28,8 +28,22 @@ module.exports = (project) => {
       query: { $limit: 0, project: projectId, is_done: 1 }
     })
 
-    context.app.service(paths.project)._patch(projectId,
-      { total: allPlans.total, progress: allDonePlans.total, updated_at: new Date() } )
+    let projectData = {
+      updated_at: new Date(),
+      total: allPlans.total,
+      progress: allDonePlans.total
+    }
+
+    if (projectData.total === projectData.progress &&
+      projectData.total !== 0) {
+      projectData.is_done = true
+      projectData.done_at = new Date()
+    } else {
+      projectData.is_done = false
+      projectData.done_at = null
+    }
+
+    context.app.service(paths.project)._patch(projectId, projectData)
 
     return context
   }
