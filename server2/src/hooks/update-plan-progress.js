@@ -2,6 +2,7 @@
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
 const get = require('lodash').get;
 const { BadRequest } = require('@feathersjs/errors');
+// const updateProjectProgress = require('./update-project-progress')('projectId')
 
 /**
  * Update a plans progress, to be triggered by a task updating..
@@ -16,7 +17,7 @@ module.exports = (plan) => {
     const planId = get(context, plan)
 
     if (!planId) {
-      throw new BadRequest('missing plan location', {})
+      throw new BadRequest('missing plan location ' + plan, {})
     }
 
     const paths = context.app.get('constants').path
@@ -43,7 +44,14 @@ module.exports = (plan) => {
       planUpdate.done_at = null
     }
 
-    context.app.service(paths.plan)._patch(planId, planUpdate)
+    await context.app.service(paths.plan)._patch(planId, planUpdate)
+
+    // todo pull this out into it's own mini hook ..
+    if (context.plan) {
+      if (!!context.plan.is_done !== !!planUpdate.is_done) {
+        context.updateProject = true
+      }
+    }
 
     return context
   }

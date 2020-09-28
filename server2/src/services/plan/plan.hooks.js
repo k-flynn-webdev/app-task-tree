@@ -12,6 +12,9 @@ const cleanData = require('../../hooks/clean-data')
 const ifHasProperty = require('../../hooks/if-has-property')
 const allowedQueries = require('../../../constants/allowed-queries')
 
+const getPlan = require('../../hooks/get-plan')
+const getProject = require('../../hooks/get-project')
+const updatePlanProgress = require('../../hooks/update-plan-progress')
 const updateProjectProgress = require('../../hooks/update-project-progress')
 
 module.exports = {
@@ -53,20 +56,38 @@ module.exports = {
     get: [],
     create: [
       resultToData,
-      updateProjectProgress('result.project'),
+      // getPlan('result.plan'),
+      // getProject('result.project'),
+      // updatePlanProgress('plan.id'),
+      // updateProjectProgress('project.id'),
     ],
     update: [
       resultToData,
-      ifHasProperty('data.is_done',
-        updateProjectProgress('result.project')),
+      // ifHasProperty('data.is_done',
+      //   getPlan('result.plan')),
+      // ifHasProperty('data.is_done',
+      //   getProject('result.project')),
+      // ifHasProperty('data.is_done',
+      //   updatePlanProgress('plan.id')),
+      // ifHasProperty('projectUpdate',
+      //   updateProjectProgress('project.id')),
     ],
     patch: [
       resultToData,
-      ifHasProperty('data.is_done',
-        updateProjectProgress('result.project')),
+      // ifHasProperty('data.is_done',
+      //   getPlan('result.plan')),
+      // ifHasProperty('data.is_done',
+      //   getProject('result.project')),
+      // ifHasProperty('data.is_done',
+      //   updatePlanProgress('plan.id')),
+      // ifHasProperty('projectUpdate',
+      //   updateProjectProgress('project.id')),
     ],
     remove: [
-      updateProjectProgress('result.id'),
+      // getPlan('result.plan'),
+      // getProject('result.project'),
+      // updatePlanProgress('plan.id'),
+      // updateProjectProgress('project.id'),
     ]
   },
 

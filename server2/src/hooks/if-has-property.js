@@ -10,10 +10,10 @@ const get = require('lodash').get;
  * @return {function(*)}
  */
 module.exports = (property, action) => {
-  return context => {
+  return async context => {
 
     if (get(context, property, 'not-found') !== 'not-found') {
-      action(context)
+      await action(context)
     }
 
     return context

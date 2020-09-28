@@ -45,6 +45,13 @@ module.exports = (project) => {
 
     context.app.service(paths.project)._patch(projectId, projectData)
 
+    // future todo
+    // if (context.project) {
+    //   if (!!context.project.is_done !== !!projectData.is_done) {
+    //     context.updateAll = true
+    //   }
+    // }
+
     return context
   }
 }
