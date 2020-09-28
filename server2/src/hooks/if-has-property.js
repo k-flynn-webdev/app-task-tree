@@ -6,7 +6,7 @@ const get = require('lodash').get;
  * @param {string}      property    name of field to check for
  *                                  can be 'name' or 'name.here.thing'
  *
- * @param {function|Array<function>}    action      action to execute if field exists
+ * @param {function|Array<function>}    action  action to execute if field exists
  * @return {function(*)}
  */
 module.exports = (property, action) => {

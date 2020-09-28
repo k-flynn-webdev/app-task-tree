@@ -66,25 +66,25 @@ module.exports = {
     ],
     update: [
       resultToData,
-      ifHasProperty('data.is_done',
-        getPlan('result.plan')),
-      ifHasProperty('data.is_done',
-        getProject('result.project')),
-      ifHasProperty('data.is_done',
-        updatePlanProgress('plan.id')),
-      ifHasProperty('data.is_done',
-        updateProjectProgress('project.id')),
+      ifHasProperty('data.is_done', [
+        getPlan('result.plan'),
+        getProject('result.project'),
+      ]),
+      ifHasProperty('data.is_done', [
+        updatePlanProgress('plan.id'),
+        updateProjectProgress('project.id'),
+      ])
     ],
     patch: [
       resultToData,
-      ifHasProperty('data.is_done',
-        getPlan('result.plan')),
-      ifHasProperty('data.is_done',
-        getProject('result.project')),
-      ifHasProperty('data.is_done',
-        updatePlanProgress('plan.id')),
-      ifHasProperty('data.is_done',
-        updateProjectProgress('project.id')),
+      ifHasProperty('data.is_done', [
+        getPlan('result.plan'),
+        getProject('result.project'),
+      ]),
+      ifHasProperty('data.is_done', [
+        updatePlanProgress('plan.id'),
+        updateProjectProgress('project.id'),
+      ])
     ],
     remove: [
       getPlan('result.plan'),
