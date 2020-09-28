@@ -21,17 +21,17 @@ module.exports = (project) => {
 
     const paths = context.app.get('constants').path
 
-    const allPlans = await context.app.service(paths.plan)._find({
+    const allTasks = await context.app.service(paths.task)._find({
       query: { $limit: 0, project: projectId }
     })
-    const allDonePlans = await context.app.service(paths.plan)._find({
+    const allDoneTasks = await context.app.service(paths.task)._find({
       query: { $limit: 0, project: projectId, is_done: 1 }
     })
 
     let projectData = {
       updated_at: new Date(),
-      total: allPlans.total,
-      progress: allDonePlans.total
+      total: allTasks.total,
+      progress: allDoneTasks.total
     }
 
     if (projectData.total === projectData.progress &&
