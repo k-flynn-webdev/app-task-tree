@@ -1,12 +1,9 @@
 <template>
   <div class="is-flex">
-    <template v-for="item in TYPES">
-      <b-button v-if="item.store"
-                :disabled="disablePage(item)"
-                @click="loadPage(item)">
-        {{ item.store }}
-      </b-button>
-    </template>
+    <b-button :disabled="disablePage(TYPES.project)"
+              @click="loadPage(TYPES.project)">
+<!--      {{ item.store }}-->
+    </b-button>
   </div>
 
 </template>
