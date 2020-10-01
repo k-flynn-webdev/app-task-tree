@@ -1,8 +1,6 @@
 <template>
   <section class="container mx-1">
 
-    <select-bar />
-
     <div class="columns is-centered flex-wrap">
       <row-create :type="type" />
 
@@ -19,19 +17,17 @@
 </template>
 
 <script>
-import selectBar from '../components/selectBar'
 import rowCreate from '../components/rowCreate'
 import rowItem from '../components/rowItem'
 import { TYPES } from '../constants'
 import { get } from 'lodash-es'
 
 export default {
-  name: 'Items',
+  name: 'Projects',
 
   components: {
     rowItem,
     rowCreate,
-    selectBar,
   },
 
   data () {
@@ -61,12 +57,18 @@ export default {
 
   mounted () {
     this.$store.commit('mode', TYPES[this.type])
-    this.$store.commit('setOpened', this.$route.query)
+    this.$store.commit('setQuery', this.$route.query)
 
     return this.get()
     .then (() => {
-      if (this.mode.parent) {
-        // get parent item
+      const queryParam = Object.entries(this.$route.query)
+      if (queryParam.length) {
+        const keyType = queryParam[0][0]
+        this.$store.dispatch(`${TYPES[keyType].store}/getById`,
+            { id: queryParam[0][1] })
+        .then(({ data }) => {
+          this.$store.commit('setOpened', data.data)
+        })
       }
     })
   },

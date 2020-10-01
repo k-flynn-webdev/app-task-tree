@@ -46,11 +46,11 @@ module.exports = {
   after: {
     all: [],
     find: [],
-    get: [],
+    get: [ resultToData ],
     create: [ resultToData ],
     update: [ resultToData ],
     patch: [ resultToData ],
-    remove: []
+    remove: [ resultToData ]
   },
 
   error: {

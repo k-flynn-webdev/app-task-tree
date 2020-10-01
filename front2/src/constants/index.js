@@ -37,11 +37,15 @@ export const USER = {
 }
 
 export const PROJECT = {
+  index: 3,
   value: 'project',
   store: 'projects',
-  open: item => { return { name: 'plan', query: { project: item.id } } },
-  // open: item => { return { go: `/plans?project=${item.id}`, name: 'plan' } },
-  route: { name: 'project', path: '/projects' },
+  parent: null,
+  child: 'plan',
+  route: {
+    name: 'project',
+    path: '/projects',
+  },
   API: {
     GET: '/api/projects',
     POST: '/api/projects',
@@ -51,11 +55,15 @@ export const PROJECT = {
 }
 
 export const PLAN = {
+  index: 2,
   value: 'plan',
   store: 'plans',
-  open: item => { return { name: 'task', query: { plan: item.id } } },
-  // open: item => { return { go: `/tasks?plan=${item.id}`, name: 'task' } },
-  route: { name: 'plan', path: '/plans' },
+  parent: 'project',
+  child: 'task',
+  route: {
+    name: 'plan',
+    path: '/plans',
+  },
   API: {
     GET: '/api/plans',
     POST: '/api/plans',
@@ -65,10 +73,15 @@ export const PLAN = {
 }
 
 export const TASK = {
+  index: 1,
   value: 'task',
   store: 'tasks',
-  open: null,
-  route: { name: 'task', path: '/tasks' },
+  parent: 'plan',
+  child: null,
+  route: {
+    name: 'task',
+    path: '/tasks',
+  },
   API: {
     GET: '/api/tasks',
     POST: '/api/tasks',
@@ -80,7 +93,11 @@ export const TASK = {
 export const TYPES = {
   home: {
     value: 'Minitask',
-    title: 'Minitask'
+    title: 'Minitask',
+    route: {
+      name: 'home',
+      path: '/',
+    },
   },
   project: PROJECT,
   plan: PLAN,

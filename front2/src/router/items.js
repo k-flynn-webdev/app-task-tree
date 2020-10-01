@@ -7,7 +7,7 @@ export default [
     props: {
       type: 'project'
     },
-    component: () => import(/* webpackChunkName: "items" */ '../views/Items.vue')
+    component: () => import(/* webpackChunkName: "items" */ '../views/Projects.vue')
   },
   {
     path: PLAN.route.path,
@@ -15,7 +15,7 @@ export default [
     props: {
       type: 'plan'
     },
-    component: () => import(/* webpackChunkName: "items" */ '../views/Items.vue')
+    component: () => import(/* webpackChunkName: "items" */ '../views/Plans.vue')
   },
   {
     path: TASK.route.path,
@@ -23,6 +23,6 @@ export default [
     props: {
       type: 'task'
     },
-    component: () => import(/* webpackChunkName: "items" */ '../views/Items.vue')
+    component: () => import(/* webpackChunkName: "items" */ '../views/Tasks.vue')
   }
 ]

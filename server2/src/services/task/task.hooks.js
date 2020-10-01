@@ -56,7 +56,7 @@ module.exports = {
   after: {
     all: [],
     find: [],
-    get: [],
+    get: [ resultToData ],
     create: [
       resultToData,
       getPlan('data.plan'),
@@ -87,6 +87,7 @@ module.exports = {
       ])
     ],
     remove: [
+      resultToData,
       getPlan('result.plan'),
       getProject('result.project'),
       updatePlanProgress('plan.id'),

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import router from '../router'
-import { TASK } from '../constants'
+import { PROJECT, TASK } from '../constants';
 import HTTP from '../services/HttpService'
 import { get } from 'lodash-es'
 
@@ -110,6 +110,16 @@ export default {
         context.commit('set',
           get(res, 'data.data'))
       })
+    },
+    /**
+     * Get A Task via the API
+     *
+     * @param context
+     * @param {object} input    input query
+     * @return {Promise}
+     */
+    getById: function (context, input) {
+      return HTTP.get(TASK.API.GET + '/' + input.id)
     }
   }
 }

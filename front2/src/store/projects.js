@@ -110,6 +110,16 @@ export default {
         context.commit('set',
           get(res, 'data.data'))
       })
+    },
+    /**
+     * Get A Project via the API
+     *
+     * @param context
+     * @param {object} input    input query
+     * @return {Promise}
+     */
+    getById: function (context, input) {
+      return HTTP.get(PROJECT.API.GET + '/' + input.id)
     }
   }
 }
