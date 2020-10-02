@@ -1,14 +1,17 @@
 <template>
   <div class="is-flex">
     <b-button :disabled="!projectBtnRoute"
+              :loading="projectLoading"
               @click="loadPage(projectBtnRoute)">
       {{ TYPES.project.text }}
     </b-button>
     <b-button :disabled="!planBtnRoute"
+              :loading="planLoading"
               @click="loadPage(planBtnRoute)">
       {{ TYPES.plan.text }}
     </b-button>
     <b-button :disabled="!taskBtnRoute"
+              :loading="taskLoading"
               @click="loadPage(taskBtnRoute)">
       {{ TYPES.task.text }}
     </b-button>
@@ -54,6 +57,16 @@ export default {
     },
     isTask () {
       return (this.mode.value === TYPES.task.value)
+    },
+
+    projectLoading () {
+      return this.$store.state[TYPES.project.store].loading
+    },
+    planLoading () {
+      return this.$store.state[TYPES.plan.store].loading
+    },
+    taskLoading () {
+      return this.$store.state[TYPES.task.store].loading
     },
 
     projectBtnRoute () {

@@ -3,18 +3,6 @@
 
     <navbar />
 
-<!--    <div>-->
-<!--      <router-link :to="{ name: 'project' }" class="has-text-link">-->
-<!--        Projects-->
-<!--      </router-link>-->
-<!--      <router-link :to="{ name: 'plan' }" class="has-text-link">-->
-<!--        Plans-->
-<!--      </router-link>-->
-<!--      <router-link :to="{ name: 'task' }" class="has-text-link">-->
-<!--        Tasks-->
-<!--      </router-link>-->
-<!--    </div>-->
-
     <select-bar v-if="showSelectBar" />
 
     <router-view/>

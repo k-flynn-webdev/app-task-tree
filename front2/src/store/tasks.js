@@ -9,8 +9,12 @@ export default {
   state: {
     current: null,
     items: [],
+    loading: false
   },
   mutations: {
+    setLoading: function (state, input) {
+      state.loading = input
+    },
     /**
      * Sets the current selected Task
      *
@@ -62,6 +66,7 @@ export default {
      * @return {Promise}
      */
     post: function (context, input) {
+      context.commit('setLoading', true)
       return HTTP.post(TASK.API.POST, input)
         .then(res => {
           if (get(router.currentRoute, 'query.page')) return
@@ -69,6 +74,7 @@ export default {
           context.commit('post',
             get(res, 'data.data'))
         })
+        .finally(() => context.commit('setLoading', false))
     },
     /**
      * Patch a Task via the API
@@ -78,11 +84,13 @@ export default {
      * @return {Promise}
      */
     patch: function (context, input) {
+      context.commit('setLoading', true)
       return HTTP.patch(TASK.API.PATCH + '/' + input.id, input)
       .then(res => {
         context.commit('patch',
           get(res, 'data.data'))
       })
+      .finally(() => context.commit('setLoading', false))
     },
     /**
      * Remove a Task via the API
@@ -92,10 +100,12 @@ export default {
      * @return {Promise}
      */
     remove: function (context, id) {
+      context.commit('setLoading', true)
       return HTTP.remove(TASK.API.DELETE + '/' + id)
       .then(() => {
         context.dispatch('get', router.currentRoute)
       })
+      .finally(() => context.commit('setLoading', false))
     },
     /**
      * Get Tasks via the API
@@ -105,11 +115,13 @@ export default {
      * @return {Promise}
      */
     get: function (context, input) {
+      context.commit('setLoading', true)
       return HTTP.get(TASK.API.GET, { params: input.query })
       .then(res => {
         context.commit('set',
           get(res, 'data.data'))
       })
+      .finally(() => context.commit('setLoading', false))
     },
     /**
      * Get A Task via the API
@@ -119,7 +131,9 @@ export default {
      * @return {Promise}
      */
     getById: function (context, input) {
+      context.commit('setLoading', true)
       return HTTP.get(TASK.API.GET + '/' + input.id)
+      .finally(() => context.commit('setLoading', false))
     }
   }
 }
