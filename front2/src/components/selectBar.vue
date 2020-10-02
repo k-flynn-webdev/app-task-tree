@@ -1,8 +1,16 @@
 <template>
   <div class="is-flex">
-    <b-button :disabled="disablePage(TYPES.project)"
-              @click="loadPage(TYPES.project)">
-<!--      {{ item.store }}-->
+    <b-button :disabled="!projectBtnRoute"
+              @click="loadPage(projectBtnRoute)">
+      {{ TYPES.project.text }}
+    </b-button>
+    <b-button :disabled="!planBtnRoute"
+              @click="loadPage(planBtnRoute)">
+      {{ TYPES.plan.text }}
+    </b-button>
+    <b-button :disabled="!taskBtnRoute"
+              @click="loadPage(taskBtnRoute)">
+      {{ TYPES.task.text }}
     </b-button>
   </div>
 
@@ -25,7 +33,7 @@ export default {
     mode () {
       return this.$store.state.mode
     },
-    query () {
+    hasQuery () {
       return this.$store.state.query
     },
     opened () {
@@ -36,63 +44,92 @@ export default {
     },
     hasSelected () {
       return !!(this.current && this.current.id > 0)
-    }
+    },
+
+    isProject () {
+      return (this.mode.value === TYPES.project.value)
+    },
+    isPlan () {
+      return (this.mode.value === TYPES.plan.value)
+    },
+    isTask () {
+      return (this.mode.value === TYPES.task.value)
+    },
+
+    projectBtnRoute () {
+      if (this.isProject) {
+        return {
+          name: TYPES.project.route.name,
+        }
+      }
+
+      if (this.isPlan) {
+        return {
+          name: TYPES.project.route.name
+        }
+      }
+
+      if (this.isTask) {
+        return {
+          name: TYPES.project.route.name
+        }
+      }
+    },
+    planBtnRoute () {
+      if (this.isProject) {
+        if (this.hasSelected) {
+          return {
+            name: TYPES.plan.route.name,
+            query: { project: this.current.id }
+          }
+        }
+
+        return null
+      }
+
+      if (this.isPlan) {
+        return {
+          name: TYPES.plan.route.name,
+          query: this.query
+        }
+      }
+
+      if (this.isTask) {
+        return {
+          name: TYPES.plan.route.name,
+          query: { project: this.opened.project }
+        }
+      }
+    },
+    taskBtnRoute () {
+      if (this.isProject) {
+        return null
+      }
+
+      if (this.isPlan) {
+        if (this.hasSelected) {
+          return {
+            name: TYPES.task.route.name,
+            query: { plan: this.current.id }
+          }
+        }
+
+        return null
+      }
+
+      if (this.isTask) {
+        return {
+          name: TYPES.task.route.name,
+          query: this.query
+        }
+      }
+    },
   },
 
   methods: {
-
-    // thoughts : todo
-    // in order to go up to the parent. we take current query eg: /tasks? plan=9
-    // and get the plan[9].project so we can do a /plans? project=X
-    // perhaps store in the VueX for all each time a page load happens?
-
-    disablePage (item) {
-      const range = Math.abs(item.index - this.mode.index)
-      const isBelow = item.index < this.mode.index
-
-      if (isBelow) {
-        if (range > 1) return true
-
-        return !(this.hasSelected)
-      }
-
-      return false
-    },
-    // openPage (page) {
-    //   // if (!page.parent) {
-    //   //   this.loadPage(page)
-    //   // }
-    //   return this.$router.push(page.goto(), this.loadPage(page))
-    //   // const selectedItem = this.$store.state[page.store].current
-    //
-    //   // if (page.route.mustSelect && ) return
-    //
-    // },
     loadPage (page) {
-      console.log(page)
-
-      const routeTo = page.route.name
-      const routeFrom = this.$route.name
-
-      if (routeTo === routeFrom) return
-
-
-
-      this.$router.push({ name: page.route.name })
-      // console.log(page)
-      // this.$store.commit('mode', TYPES[page.value])
-      // this.$store.commit('setOpened', page.query)
-      // this.$store.dispatch(`${TYPES[page.name].store}/get`, page)
-    },
-    /**
-     * Opens Item of Type to be worked with
-     *    eg open a project to create plan items related to it ..
-     */
-    // onOpenItem () {
-    //   const openObj = TYPES[this.type].down(this.item)
-    //   this.$router.push(openObj,
-    //       this.loadPage(openObj))
-    // }
+      this.$router.push(page)
+    }
   }
 }
 </script>

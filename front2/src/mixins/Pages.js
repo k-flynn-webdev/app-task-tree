@@ -24,17 +24,27 @@ export default {
 
   mounted () {
     this.$store.commit('mode', TYPES[this.type])
-    this.$store.commit('setOpened', this.$route.query)
+    this.$store.commit('setQuery', this.$route.query)
 
     return this.getPageItems()
-    .then (() => {
-      if (this.pageMode.parent) {
-        // get parent item
-      }
-    })
+    .then (() => this.getOpenedItem())
   },
 
   methods: {
+    /**
+     * Add to store the opened query item
+     */
+    getOpenedItem () {
+      const queryParam = Object.entries(this.$route.query)[0]
+      if (queryParam && queryParam.length) {
+        const keyType = queryParam[0]
+        return this.$store.dispatch(`${TYPES[keyType].store}/getById`,
+          { id: queryParam[1] })
+        .then(({ data }) => {
+          this.$store.commit('setOpened', data.data)
+        })
+      }
+    },
     /**
      * Get Items via API
      *

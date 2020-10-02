@@ -38,6 +38,7 @@ export const USER = {
 
 export const PROJECT = {
   index: 3,
+  text: 'projects',
   value: 'project',
   store: 'projects',
   parent: null,
@@ -56,6 +57,7 @@ export const PROJECT = {
 
 export const PLAN = {
   index: 2,
+  text: 'plans',
   value: 'plan',
   store: 'plans',
   parent: 'project',
@@ -74,6 +76,7 @@ export const PLAN = {
 
 export const TASK = {
   index: 1,
+  text: 'tasks',
   value: 'task',
   store: 'tasks',
   parent: 'plan',
