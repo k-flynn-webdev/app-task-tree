@@ -99,11 +99,31 @@ body {
   align-self: flex-end;
 }
 
+.select-bar {
+  margin-bottom: 0.3rem;
+
+  button {
+    transition: $speed-slower;
+    padding: 0.1rem 0.3rem;
+    margin: 0.3rem;
+    font-weight: bolder;
+    text-transform: uppercase;
+
+    span {
+      transform: scale(1.05);
+    }
+  }
+}
+
 .row {
   &.is-active & {
     &__item {
       border: 1px solid $light;
     }
+  }
+
+  .word-break {
+    word-break: break-word;
   }
 
   &__content {

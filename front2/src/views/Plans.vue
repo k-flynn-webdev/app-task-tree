@@ -22,7 +22,7 @@ import rowItem from '../components/rowItem'
 import pagesMixin from '../mixins/Pages'
 
 export default {
-  name: 'Projects',
+  name: 'Plans',
 
   mixins: [pagesMixin],
 

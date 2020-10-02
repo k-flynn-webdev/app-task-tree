@@ -1,16 +1,19 @@
 <template>
-  <div class="is-flex">
-    <b-button :disabled="!projectBtnRoute"
+  <div class="is-flex select-bar">
+    <b-button :class="{ 'is-primary': isProject }"
+              :disabled="!projectBtnRoute"
               :loading="projectLoading"
               @click="loadPage(projectBtnRoute)">
       {{ TYPES.project.text }}
     </b-button>
-    <b-button :disabled="!planBtnRoute"
+    <b-button :class="{ 'is-primary': isPlan }"
+              :disabled="!planBtnRoute"
               :loading="planLoading"
               @click="loadPage(planBtnRoute)">
       {{ TYPES.plan.text }}
     </b-button>
-    <b-button :disabled="!taskBtnRoute"
+    <b-button :class="{ 'is-primary': isTask }"
+              :disabled="!taskBtnRoute"
               :loading="taskLoading"
               @click="loadPage(taskBtnRoute)">
       {{ TYPES.task.text }}

@@ -21,7 +21,7 @@
         </b-button>
 
         <span v-if="!isEdit"
-           class="pad has-border-transparent is-family-sans-serif">
+           class="pad has-border-transparent is-family-sans-serif word-break">
           {{ item.value }}
         </span>
         <b-input v-else

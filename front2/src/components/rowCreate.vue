@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import icAdd from '../assets/icons/ic_add'
+import icAdd from '../assets/icons/ic_tick'
 import { TYPES } from '../constants'
 import { get } from 'lodash-es'
 
