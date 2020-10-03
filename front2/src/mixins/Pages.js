@@ -59,13 +59,6 @@ export default {
           { query: this.$route.query })
         .then(res => {
           this.page.isLoading = false
-
-          this.$buefy.toast.open({
-            duration: 1500,
-            message: get(res, 'data.message', 'success'),
-            position: 'is-top',
-            type: 'is-success'
-          })
         })
         .catch(err => {
           this.page.isLoading = false
