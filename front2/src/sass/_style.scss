@@ -45,6 +45,18 @@ body {
   }
 }
 
+.navbar {
+  .navbar-item {
+    padding: 0.5rem 0;
+  }
+
+  &__title {
+    max-width: 70vw;
+    max-height: 2.25rem;
+    overflow: hidden;
+  }
+}
+
 .animate {
   transition: $speed-slow;
 }
