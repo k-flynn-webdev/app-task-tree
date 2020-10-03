@@ -68,6 +68,7 @@
 <script>
 import { mapState } from 'vuex'
 import btnLogout from '../components/btnLogout'
+import { TYPES, APP_VARS } from '../constants'
 
 export default {
   name: 'navbar',
@@ -77,8 +78,15 @@ export default {
   },
 
   computed: {
-    ...mapState({ title: state => state.title }),
-    ...mapState('user', ['isLoggedIn', 'user'])
+    ...mapState({ mode: state => state.mode }),
+    ...mapState('user', ['isLoggedIn', 'user']),
+    title () {
+      if (this.mode.value === TYPES.project.value) return APP_VARS.name
+      const storeOpened = this.$store.state.opened
+      if (!storeOpened.value) return APP_VARS.name
+
+      return storeOpened.value
+    }
   }
 
 }
