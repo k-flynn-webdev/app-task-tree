@@ -81,12 +81,12 @@ export default {
 
       this.isLoading = true
 
-      const opened = this.$store.state.opened
+      const query = this.$store.state.query
 
       return this.$store.dispatch(`${TYPES[this.type].store}/post`,
           {
             value: this.value,
-            ...opened
+            ...query
           })
         .then(res => {
           this.previous = this.value
