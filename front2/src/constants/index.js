@@ -46,6 +46,7 @@ export const PROJECT = {
   store: 'projects',
   parent: null,
   child: 'plan',
+  children: ['project', 'plan', 'task'],
   route: {
     name: 'project',
     path: '/projects',
@@ -65,6 +66,7 @@ export const PLAN = {
   store: 'plans',
   parent: 'project',
   child: 'task',
+  children: ['plan', 'task'],
   route: {
     name: 'plan',
     path: '/plans',
@@ -84,6 +86,7 @@ export const TASK = {
   store: 'tasks',
   parent: 'plan',
   child: null,
+  children: ['task'],
   route: {
     name: 'task',
     path: '/tasks',
@@ -99,7 +102,6 @@ export const TASK = {
 export const TYPES = {
   home: {
     value: 'Minitask',
-    title: 'Minitask',
     route: {
       name: 'home',
       path: '/',

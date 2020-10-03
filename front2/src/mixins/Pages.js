@@ -24,6 +24,11 @@ export default {
 
   mounted () {
     this.$store.commit('mode', TYPES[this.type])
+    // clear any modes lower ..
+    TYPES[this.type].children.forEach(item => {
+      this.$store.commit(`${TYPES[item].store}/setCurrent`, null)
+    })
+
     this.$store.commit('setQuery', this.$route.query)
 
     return this.getPageItems()

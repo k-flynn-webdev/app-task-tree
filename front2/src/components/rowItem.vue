@@ -136,7 +136,6 @@ export default {
       if (this.isEdit) return
       if(this.type === TYPES.task.value) return
 
-      this.$store.commit('title', this.item.value)
       return this.$store.commit(`${TYPES[this.type].store}/setCurrent`, this.item)
     },
     /**
