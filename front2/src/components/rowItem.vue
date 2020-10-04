@@ -9,16 +9,23 @@
            @click="onSelect"
            @dblclick="onDblClick">
 
-        <span v-if="showProgress"
-              class="row__content-progress">
-          {{ progress }}
-        </span>
-        <b-button v-else
+        <b-button v-if="isTask"
                   class="row__content-button"
                   :loading="isLoadingDone"
                   @click.stop="toggleDone">
           <ic-tick :class="tickButtonClass" />
         </b-button>
+
+        <div v-else class="row__content-pre">
+          <span v-if="showProgress"
+              class="row__content-progress">
+            {{ progress }}
+          </span>
+          <span v-else
+                class="row__content-button">
+            <ic-tick :class="tickButtonClass" />
+          </span>
+        </div>
 
         <span v-if="!isEdit"
            class="pad has-border-transparent is-family-sans-serif word-break">
@@ -106,8 +113,15 @@ export default {
   },
 
   computed: {
+    isTask () {
+      return this.type === TYPES.task.value
+    },
+    isComplete () {
+      return !!this.item.is_done
+    },
     showProgress () {
-      return this.type !== TYPES.task.value
+      if (this.isComplete) return false
+      return (!this.isTask)
     },
     progress () {
       if (!this.showProgress) return ''

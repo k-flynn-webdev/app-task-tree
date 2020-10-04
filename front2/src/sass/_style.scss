@@ -143,6 +143,10 @@ body {
   }
 
   &__content {
+    &-pre {
+      padding-top: 0.4rem;
+    }
+
     &-button,
     &-progress {
       margin: 0;
