@@ -1,5 +1,5 @@
 <template>
-  <b-navbar centered transparent class="mb-4 navbar">
+  <b-navbar centered transparent class="navbar">
     <template slot="brand">
       <b-navbar-item tag="router-link" :to="{ name: 'home' }">
 

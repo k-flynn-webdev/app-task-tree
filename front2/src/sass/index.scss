@@ -1,6 +1,8 @@
 // Import Bulma's core
 @import "~bulma/sass/utilities/_all";
 
+$navbar-height: 1.5rem;
+
 // Set your colors
 $primary: rgb(32, 173, 186);;
 $primary-invert: findColorInvert($primary);
@@ -61,5 +63,15 @@ $radius-large: 6px !default
 
   .fill-#{$color} {
     fill: nth($value, 1);
+  }
+}
+
+.navbar {
+  .navbar-burger {
+    height: $navbar-height + 0.5rem;
+    margin-right: 0.5rem;
+  }
+  .navbar-item {
+    padding: 0;
   }
 }
