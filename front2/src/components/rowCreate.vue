@@ -3,8 +3,10 @@
     <form @submit.prevent="submitForm">
       <b-field>
         <b-input class="is-expanded"
+                 ref="createInput"
                  v-model="value"
                  type="string"
+                 minLength="3"
                  maxlength="200"
                  :placeholder="placeHolder"
                  :hasCounter="false">
@@ -91,6 +93,8 @@ export default {
         .then(res => {
           this.previous = this.value
           this.reset()
+
+          this.$nextTick(() => this.$refs.createInput.blur())
 
           this.$buefy.toast.open({
             duration: 1500,
