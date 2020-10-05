@@ -1,5 +1,5 @@
 <template>
-  <section class="container mx-1">
+  <section class="container">
 
     <div class="columns is-centered flex-wrap">
       <row-create :type="type" />

@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="my-1 pb-3">
 
     <router-link :to="{ name: 'project' }" class="has-text-link">
       Projects

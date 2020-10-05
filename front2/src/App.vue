@@ -5,13 +5,16 @@
 
     <select-bar v-if="showSelectBar" />
 
-    <router-view/>
+    <router-view />
+
+    <page-footer></page-footer>
 
   </div>
 </template>
 
 <script>
 import selectBar from './components/selectBar'
+import pageFooter from './components/pageFooter'
 import navbar from './components/navbar'
 import { TYPES } from './constants'
 
@@ -20,7 +23,8 @@ export default {
 
   components: {
     selectBar,
-    navbar
+    navbar,
+    pageFooter
   },
 
   computed: {

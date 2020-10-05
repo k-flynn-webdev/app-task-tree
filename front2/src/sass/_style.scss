@@ -5,10 +5,30 @@ body {
   min-width: 100%;
 }
 
+$app-height: calc(100vh - 4rem);
+
+$footer-height: 2.5rem;
+$footer-margin: 1.5rem;
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: $app-height;
+}
+
+#footer {
+  @extend .is-flex;
+  @extend .is-flex.is-center;
+  @extend .v-align-center;
+
+  .icon {
+    width: 2.75rem;
+  }
+
+  margin-top: $footer-margin;
+  min-height: $footer-height;
+  background-color: $black;
 }
 
 .color-alpha {
@@ -85,6 +105,7 @@ body {
 
   &.start { align-items: flex-start; }
   &.end { align-items: flex-end; }
+  &.is-center { justify-content: center; }
 }
 
 .flex-grow {
