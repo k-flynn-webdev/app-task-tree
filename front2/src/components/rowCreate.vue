@@ -17,7 +17,7 @@
                     :disabled="!isValid"
                     :loading="isLoading"
                     @click="submitForm">
-            <ic-add class="mt-1 is-medium"
+            <ic-add class="v-align-center is-medium"
                     :class="createBtnClass" />
           </b-button>
         </p>
