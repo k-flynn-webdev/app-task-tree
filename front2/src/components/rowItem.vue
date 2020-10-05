@@ -27,10 +27,11 @@
           </span>
         </div>
 
-        <span v-if="!isEdit"
-           class="pad has-border-transparent is-family-sans-serif word-break">
+        <div v-if="!isEdit"
+             class="pad has-border-transparent is-family-sans-serif word-break flex-grow">
           {{ item.value }}
-        </span>
+        </div>
+
         <b-input v-else
                  class="flex-grow is-inline-block is-family-sans-serif"
                  v-model="value"
@@ -39,6 +40,12 @@
                  type="textarea"
                  customClass="row__content-input pad has-text-light">
         </b-input>
+
+        <div v-if="!isEdit"
+             class="pr-1 pt-2">
+          <small class="is-hidden-mobile">{{ item | itemDate }}</small>
+          <small class="is-hidden-tablet">{{ item | itemDate(true,true,false) }}</small>
+        </div>
       </div>
 
       <b-button class="mx-0 is-transparent"
