@@ -94,7 +94,8 @@ export default {
           this.previous = this.value
           this.reset()
 
-          this.$nextTick(() => this.$refs.createInput.$el.blur())
+          const inputEl = this.$refs.createInput.$el.getElementsByTagName("input")[0]
+          inputEl.blur()
 
           this.$buefy.toast.open({
             duration: 1500,
