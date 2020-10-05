@@ -1,7 +1,7 @@
 <template>
   <div class="column is-8 is-12-mobile px-0 mb-0">
     <form @submit.prevent="submitForm">
-      <b-field>
+      <b-field class="mx-1">
         <b-input class="is-expanded"
                  ref="createInput"
                  v-model="value"

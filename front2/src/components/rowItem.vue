@@ -1,5 +1,5 @@
 <template>
-  <div class="column is-8 is-12-mobile px-0 py-0 mb-2 row">
+  <div class="column is-8 is-12-mobile px-0 py-0 mb-2 ml-1 row">
 
     <div class="is-flex start">
 
