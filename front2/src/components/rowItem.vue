@@ -168,6 +168,8 @@ export default {
      */
     onDblClick () {
       if(this.type === TYPES.task.value) {
+        if (this.isEdit) return
+
         return this.toggleDone()
       }
 
