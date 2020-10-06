@@ -8,8 +8,9 @@
                  type="string"
                  minLength="3"
                  maxlength="200"
+                 :hasCounter="false"
                  :placeholder="placeHolder"
-                 :hasCounter="false">
+                 @focus="onClick">
         </b-input>
         <p class="control">
           <b-button native-type="submit"
@@ -75,6 +76,9 @@ export default {
     reset () {
       this.value = ''
       this.isLoading = false
+    },
+    onClick () {
+      this.$emit('click')
     },
     submitForm () {
       if (!this.isValid) return

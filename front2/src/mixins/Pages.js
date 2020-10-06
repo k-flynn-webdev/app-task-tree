@@ -5,6 +5,7 @@ const keyTypesAllowed = Object.keys(TYPES)
 export default {
   data () {
     return {
+      edit: -1,
       page: {
         isLoading: false
       }
@@ -37,6 +38,14 @@ export default {
   },
 
   methods: {
+    /**
+     * Sets current opened item to be edited
+     *
+     * @param {Number} input
+     */
+    onEdit (input) {
+      this.edit = input
+    },
     /**
      * Add to store the opened query item
      */

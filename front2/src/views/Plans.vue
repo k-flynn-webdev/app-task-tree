@@ -1,14 +1,15 @@
 <template>
   <section class="container">
     <div class="columns is-centered flex-wrap">
-      <row-create :type="type" />
+      <row-create :type="type" @click="onEdit(-1)" />
 
       <row-item v-for="item in pageItems"
                 :key="item.id"
                 :item="item"
                 :type="type"
+                :edit="edit"
                 :class="{ 'is-active': pageCurrentItem.id === item.id }"
-                @reload="getPageItems"
+                @onEdit="onEdit"
       />
 
       <div v-if="pageItems.length === 0"

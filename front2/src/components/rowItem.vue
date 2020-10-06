@@ -49,7 +49,7 @@
       </div>
 
       <b-button class="mx-0 is-transparent"
-                @click="onEdit">
+                @click="toggleEdit">
         <ic-option class="fill-light"
                    :class="{ 'color-alpha': isEdit }" />
       </b-button>
@@ -101,7 +101,6 @@ export default {
 
   data () {
     return {
-      isEdit: false,
       isLoadingDone: false,
       isLoading: false,
       value: null
@@ -116,10 +115,17 @@ export default {
     type: {
       type: String,
       default: ''
+    },
+    edit: {
+      type: Number,
+      default: -1
     }
   },
 
   computed: {
+    isEdit () {
+      return this.item.id === this.edit
+    },
     isTask () {
       return this.type === TYPES.task.value
     },
@@ -143,12 +149,26 @@ export default {
   },
 
   methods: {
+    /** Toggle open or close the edit state */
+    toggleEdit () {
+      if (this.isEdit) {
+        this.closeEdit()
+      } else {
+        this.onEdit()
+      }
+    },
     /**
      * Set Edit mode of value
      */
     onEdit () {
       this.value = this.item.value
-      this.isEdit = !this.isEdit
+      this.openEdit()
+    },
+    openEdit () {
+      this.$emit('onEdit', this.item.id)
+    },
+    closeEdit () {
+      this.$emit('onEdit', -1)
     },
     /**
      * Set current store with selected item
@@ -225,7 +245,7 @@ export default {
       return this.$store.dispatch(`${TYPES[this.type].store}/patch`,
           { id: this.item.id, value: this.value })
       .then(() => {
-        this.isEdit = false
+        this.closeEdit()
         this.isLoading = false
       })
       .catch(err => this.handleError(err))
@@ -241,7 +261,7 @@ export default {
       this.isLoading = true
       return this.$store.dispatch(`${TYPES[this.type].store}/remove`, this.item.id)
       .then(() => {
-        this.isEdit = false
+        this.closeEdit()
         this.isLoading = false
       })
       .catch(err => this.handleError(err))
