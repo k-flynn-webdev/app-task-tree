@@ -1,5 +1,5 @@
 <template>
-  <b-button class="flex-grow"
+  <b-button class="flex-grow is-size-7-tablet has-text-weight-bold"
     :loading="isLoading"
     @click="submitForm">
     Logout

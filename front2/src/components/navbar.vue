@@ -36,7 +36,7 @@
       <b-navbar-item tag="div">
         <div v-if="isLoggedIn"
              class="buttons is-right">
-          <b-button class="flex-grow"
+          <b-button class="flex-grow is-size-7-tablet has-text-weight-bold"
                     type="is-primary"
                     tag="router-link"
                     :to="{ name: 'user' }">
@@ -47,13 +47,13 @@
         </div>
         <div v-else
              class="buttons is-right">
-          <b-button class="flex-grow"
+          <b-button class="flex-grow is-size-7-tablet has-text-weight-bold"
                     type="is-primary"
                     tag="router-link"
                     :to="{ name: 'create' }">
             Sign up
           </b-button>
-          <b-button class="flex-grow"
+          <b-button class="flex-grow is-size-7-tablet has-text-weight-bold"
                     tag="router-link"
                     :to="{ name: 'login' }">
             Login
