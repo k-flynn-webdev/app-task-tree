@@ -1,5 +1,6 @@
 import { TYPES } from '../constants'
 import { get } from 'lodash-es'
+const keyTypesAllowed = Object.keys(TYPES)
 
 export default {
   data () {
@@ -40,15 +41,25 @@ export default {
      * Add to store the opened query item
      */
     getOpenedItem () {
-      const queryParam = Object.entries(this.$route.query)[0]
-      if (queryParam && queryParam.length) {
-        const keyType = queryParam[0]
-        return this.$store.dispatch(`${TYPES[keyType].store}/getById`,
-          { id: queryParam[1] })
-        .then(({ data }) => {
-          this.$store.commit('setOpened', data.data)
-        })
+      const queryKeys = Object.keys(this.$route.query)
+      const keyFound = queryKeys.filter(item => keyTypesAllowed.includes(item))
+
+      // clear if none allowed keys found
+      if (!keyFound || keyFound.length < 1) {
+        this.$store.commit('setOpened', {})
+        return
       }
+
+      const keyName = keyFound[0]
+      const keyValue = this.$route.query[keyName]
+
+      if (!keyValue) return
+
+      return this.$store.dispatch(`${TYPES[keyName].store}/getById`,
+        { id: keyValue })
+      .then(({ data }) => {
+        this.$store.commit('setOpened', data.data)
+      })
     },
     /**
      * Get Items via API

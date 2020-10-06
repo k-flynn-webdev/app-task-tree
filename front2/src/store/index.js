@@ -21,6 +21,9 @@ export default new Vuex.Store({
      * @param {object} input    opened item
      */
     setQuery: function(state, input) {
+      if (!input) {
+        input = {}
+      }
       state.query = input
     },
     /**
@@ -30,6 +33,9 @@ export default new Vuex.Store({
      * @param {object} input    opened item
      */
     setOpened: function(state, input) {
+      if (!input) {
+        input = {}
+      }
       state.opened = input
     },
     /**
