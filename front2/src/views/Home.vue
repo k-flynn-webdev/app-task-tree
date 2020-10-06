@@ -47,6 +47,7 @@ export default {
 
   created () {
     this.$store.commit('mode', TYPES['home'])
+    this.$store.commit('setOpened', {})
   }
 }
 </script>
