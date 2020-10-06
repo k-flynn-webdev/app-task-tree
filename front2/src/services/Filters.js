@@ -13,7 +13,7 @@ const ITEM_DATE = {
     const Year = newDate.getFullYear()
 
     if (day) { result.push(Day) }
-    if (month) { result.push(Month) }
+    if (month) { result.push(Month + 1) }
     if (year) { result.push(Year) }
 
     return result.join('/')

@@ -17,10 +17,10 @@
         </b-button>
 
         <div v-else class="row__content-pre">
-          <span v-if="showProgress"
+          <small v-if="showProgress"
               class="row__content-progress">
             {{ progress }}
-          </span>
+          </small>
           <span v-else
                 class="row__content-button">
             <ic-tick :class="tickButtonClass" />
