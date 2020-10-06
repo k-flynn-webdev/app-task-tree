@@ -17,6 +17,7 @@ const getPlan = require('../../hooks/get-plan')
 const getProject = require('../../hooks/get-project')
 const updatePlanProgress = require('../../hooks/update-plan-progress')
 const updateProjectProgress = require('../../hooks/update-project-progress')
+const updateTaskIsDone = require('../../hooks/update-task-is_done')
 
 module.exports = {
   before: {
@@ -41,14 +42,16 @@ module.exports = {
       cleanData(allowedQueries),
       itemValueValidate.update,
       itemIsDoneValidate,
-      timeStamp('updated_at')
+      timeStamp('updated_at'),
+      ifHasProperty('data.is_done', [ updateTaskIsDone ]),
     ],
     patch: [
       limitToOwner,
       // todo : allow ONLY [value & is_done] data property
       cleanData(allowedQueries),
       itemValueValidate.patch,
-      timeStamp('updated_at')
+      timeStamp('updated_at'),
+      ifHasProperty('data.is_done', [ updateTaskIsDone ]),
     ],
     remove: [ limitToOwner ]
   },
