@@ -1,22 +1,24 @@
 html,
 body {
-  background-color: $color-bg;
+  background-color: $black;
   width: 100%;
   min-width: 100%;
 }
 
 $array: (0, 1 ,2 ,3 ,4 ,5 ,6 ,7 ,8 ,9);
 
-$app-height: calc(100vh - 4rem);
+$app-height: calc(100vh - 2.5rem);
 
 $footer-height: 2.5rem;
-$footer-margin: 1.5rem;
+$app-pad-bottom: 1.5rem;
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: $app-height;
+  background-color: $color-bg;
+  padding-bottom: $app-pad-bottom;
 }
 
 .icon {
@@ -42,7 +44,7 @@ $footer-margin: 1.5rem;
     width: 2.75rem;
   }
 
-  margin-top: $footer-margin;
+  margin-top: 0;
   min-height: $footer-height;
   background-color: $black;
 }

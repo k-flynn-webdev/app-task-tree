@@ -2,7 +2,7 @@
 
   <div ref="parent">
 
-    <div ref="footer" id="footer" class="1is-flex 1is-center 1v-align-center 1mt-3 1py-2 1has-background-black">
+    <div ref="footer" id="footer" class="">
 
       <div class="is-flex has-text-light">
         Made with
