@@ -64,6 +64,7 @@
       </b-button>
       <b-button class="mx-3 mb-1 has-background-success has-border-transparent"
                 size="is-small"
+                :disabled="!allowEditSubmit"
                 @click="updateItem">
         <ic-tick class="fill-bg v-align-center is-large" />
       </b-button>
@@ -145,6 +146,9 @@ export default {
       if (this.isLoadingDone) return 'fill-transparent'
       if (this.item.is_done) return 'fill-success'
       return 'fill-bg'
+    },
+    allowEditSubmit () {
+      return (this.value !== this.item.value && this.value.length > 3)
     }
   },
 
@@ -240,6 +244,7 @@ export default {
      */
     updateItem () {
       if (this.isLoading) return
+      if (this.allowEditSubmit) return
 
       this.isLoading = true
       return this.$store.dispatch(`${TYPES[this.type].store}/patch`,
