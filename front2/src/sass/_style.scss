@@ -149,14 +149,14 @@ $footer-margin: 1.5rem;
 }
 
 .row {
+  &__item {
+    //line-height: 1.3;
+  }
+
   &.is-active & {
     &__item {
       border: 1px solid $light;
     }
-  }
-
-  &__item {
-    //line-height: 1.3;
   }
 
   .word-break {
