@@ -1,7 +1,7 @@
 
 exports.up = function(knex) {
   return knex.schema.table('task', function(table) {
-    table.integer('is_done').notNullable().alter()
+    table.integer('is_done').defaultTo(0).notNullable().alter()
   })
 };
 

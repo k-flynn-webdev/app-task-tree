@@ -11,4 +11,4 @@ pwd
 #done;
 #sleep 10;
 
-npx run knex migrate:latest;
+npx knex migrate:latest;
