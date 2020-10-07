@@ -1,25 +1,31 @@
 <template>
   <div class="is-flex select-bar">
-    <b-button class="is-size-7-tablet"
+    <b-button class="is-size-7-tablet z-index-3"
               :class="{ 'is-primary': isProject }"
               :disabled="!projectBtnRoute"
               :loading="projectLoading"
               @click="loadPage(projectBtnRoute)">
       {{ TYPES.project.text }}
+      <tri class="icon tri is-large"
+           :class="{ 'fill-primary': isProject }"/>
     </b-button>
-    <b-button class="is-size-7-tablet"
+    <b-button class="is-size-7-tablet extra-pad z-index-2"
               :class="{ 'is-primary': isPlan }"
               :disabled="!planBtnRoute"
               :loading="planLoading"
               @click="loadPage(planBtnRoute)">
       {{ TYPES.plan.text }}
+      <tri class="icon tri is-large"
+           :class="{ 'fill-primary': isPlan }"/>
     </b-button>
-    <b-button class="is-size-7-tablet"
+    <b-button class="is-size-7-tablet extra-pad z-index-1"
               :class="{ 'is-primary': isTask }"
               :disabled="!taskBtnRoute"
               :loading="taskLoading"
               @click="loadPage(taskBtnRoute)">
       {{ TYPES.task.text }}
+      <tri class="icon tri is-large"
+           :class="{ 'fill-primary': isTask }"/>
     </b-button>
   </div>
 
@@ -28,9 +34,14 @@
 <script>
 import { TYPES } from '../constants'
 import { get } from 'lodash-es'
+import tri from '../assets/icons/ic_right'
 
 export default {
   name: 'selectBar',
+
+  components: {
+    tri
+  },
 
   data () {
     return {
