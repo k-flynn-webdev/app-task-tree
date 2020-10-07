@@ -142,15 +142,15 @@ $footer-margin: 1.5rem;
 
 .select-bar {
   margin-left: 0.3rem;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
 
   button {
     outline: none;
     border: none;
-    border-radius: 0;
     position: relative;
     margin: 0;
     padding: 0;
+    padding-left: 0.5rem;
     font-weight: bolder;
     text-transform: uppercase;
     transition: $speed-slower;
@@ -167,7 +167,8 @@ $footer-margin: 1.5rem;
     }
 
     span {
-      transform: scale(1.05) translateX(0.23rem);
+      transition: $speed-slower;
+      transform: scale(1.05);
     }
   }
 
@@ -179,6 +180,10 @@ $footer-margin: 1.5rem;
   button.is-primary {
     background-color: $primary;
     .tri { fill: $primary; }
+
+    span {
+      transform: scale(1.15);
+    }
   }
 
   button[disabled] {
