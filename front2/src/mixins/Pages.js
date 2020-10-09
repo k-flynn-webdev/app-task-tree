@@ -24,20 +24,28 @@ export default {
     }
   },
 
-  mounted () {
-    this.$store.commit('mode', TYPES[this.type])
-    // clear any modes lower ..
-    TYPES[this.type].children.forEach(item => {
-      this.$store.commit(`${TYPES[item].store}/setCurrent`, null)
-    })
+  beforeRouteUpdate (to, from, next) {
+    this.getPageItemsQuery(to.query)
+    next()
+  },
 
-    this.$store.commit('setQuery', this.$route.query)
-
-    return this.getPageItems()
-    .then (() => this.getOpenedItem())
+  created () {
+    this.init()
   },
 
   methods: {
+    init () {
+      this.$store.commit('mode', TYPES[this.type])
+      // clear any modes lower ..
+      TYPES[this.type].children.forEach(item => {
+        this.$store.commit(`${TYPES[item].store}/setCurrent`, null)
+      })
+
+      // this.$store.commit('setQuery', this.$route.query)
+
+      return this.getPageItems()
+      .then (() => this.getOpenedItem())
+    },
     /**
      * Sets current opened item to be edited
      *
@@ -70,33 +78,40 @@ export default {
         this.$store.commit('setOpened', data.data)
       })
     },
+
+
     /**
      * Get Items via API
      *
      * @return {Promise}
      */
     getPageItems () {
+      return this.getPageItemsQuery(this.$route.query)
+    },
+    getPageItemsQuery (newQuery) {
       if (this.page.isLoading) return
 
       this.page.isLoading = true
 
+      this.$store.commit('setQuery', newQuery)
+
       return this.$store.dispatch(`${TYPES[this.type].store}/get`,
-          { query: this.$route.query })
-        .then(res => {
-          this.page.isLoading = false
-        })
-        .catch(err => {
-          this.page.isLoading = false
+        { query: newQuery })
+      .then(res => {
+        this.page.isLoading = false
+      })
+      .catch(err => {
+        this.page.isLoading = false
 
-          this.$buefy.toast.open({
-            duration: 5000,
-            message: get(err, 'response.data.message', 'error'),
-            position: 'is-top',
-            type: 'is-danger'
-          })
-
-          throw err
+        this.$buefy.toast.open({
+          duration: 5000,
+          message: get(err, 'response.data.message', 'error'),
+          position: 'is-top',
+          type: 'is-danger'
         })
+
+        throw err
+      })
     }
   }
 }

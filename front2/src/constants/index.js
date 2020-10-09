@@ -1,7 +1,8 @@
 // todo : Add default func objects in each object
 
 export const APP_VARS = {
-  name: 'Minitask'
+  name: 'Minitask',
+  pageLimit: 20,
 }
 
 export const LOGIN = {

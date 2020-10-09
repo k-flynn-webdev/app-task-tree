@@ -8,10 +8,14 @@ export default {
   namespaced: true,
   state: {
     current: null,
+    total: 0,
     items: [],
     loading: false
   },
   mutations: {
+    setTotal: function (state, input) {
+      state.total = input
+    },
     setLoading: function (state, input) {
       state.loading = input
     },
@@ -120,6 +124,8 @@ export default {
       .then(res => {
         context.commit('set',
           get(res, 'data.data'))
+        context.commit('setTotal',
+          get(res, 'data.total'))
       })
       .finally(() => context.commit('setLoading', false))
     },

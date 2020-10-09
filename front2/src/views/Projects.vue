@@ -12,6 +12,8 @@
                 :class="{ 'is-active': pageCurrentItem.id === item.id }"
                 @onEdit="onEdit"
       />
+      <page-controls :type="type"/>
+
     </div>
 
     <div v-if="pageItems.length === 0"
@@ -32,6 +34,7 @@
 import rowCreate from '../components/rowCreate'
 import rowItem from '../components/rowItem'
 import pagesMixin from '../mixins/Pages'
+import pageControls from '../components/pageControls'
 
 export default {
   name: 'Projects',
@@ -41,6 +44,7 @@ export default {
   components: {
     rowItem,
     rowCreate,
+    pageControls
   },
 
   data () {
