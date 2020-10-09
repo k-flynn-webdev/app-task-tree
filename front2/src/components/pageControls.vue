@@ -2,39 +2,15 @@
   <div v-if="showControls"
        class="column is-8 is-12-mobile px-0 mb-0">
 
-<!--      <b-button class="m-1"-->
-<!--                type="tag"-->
-<!--                :disabled="start.disabled"-->
-<!--                :to="start.url">-->
-<!--        Page 1-->
-<!--      </b-button>-->
-<!--      <b-button class="m-1"-->
-<!--                type="tag"-->
-<!--                :disabled="pre.disabled"-->
-<!--                :to="pre.url">-->
-<!--        {{ pre.value }}-->
-<!--      </b-button>-->
-<!--      <b-button class="m-1"-->
-<!--                type="tag"-->
-<!--                :disabled="post.disabled"-->
-<!--                :to="post.url">-->
-<!--        {{ post.value }}-->
-<!--      </b-button>-->
-    <router-link :to="start.url"
-                 :disabled="start.disabled">
-      {{ start.value }}
-    </router-link>
-    <router-link :to="pre.url"
-                 :disabled="pre.disabled">
-      {{ pre.value }}
-    </router-link>
-    <router-link :to="post.url"
-                 :disabled="post.disabled">
-      {{ post.value }}
-    </router-link>
-    <span class="has-text-light">
-      {{ itemTotal }}
-    </span>
+    <div class="mx-1 is-flex flex-space-between">
+      <button v-for="item in buttons"
+              :disabled="item.disabled"
+              :class="{ 'is-loading': item.loading }"
+              class="button is-size-7-tablet has-text-weight-bold"
+              @click="hasClicked(item)">
+        {{ item.value }}
+      </button>
+    </div>
 
   </div>
 </template>
@@ -45,8 +21,6 @@ import icLeft from '../assets/icons/ic_left'
 import icRight from '../assets/icons/ic_right'
 import { TYPES, APP_VARS } from '../constants'
 import { get } from 'lodash-es'
-const dbTypesAllowed = [ '$limit', '$skip' ]
-const keyTypesAllowed = [...Object.keys(TYPES), ...dbTypesAllowed]
 
 export default {
   name: 'pageControls',
@@ -59,20 +33,25 @@ export default {
 
   data () {
     return {
-      start: {
-        disabled: false,
-        value: 'Start',
-        url: {}
-      },
-      pre: {
-        disabled: false,
-        value: 'Pre',
-        url: {}
-      },
-      post: {
-        disabled: false,
-        value: 'Next',
-        url: {}
+      buttons: {
+        start: {
+          disabled: false,
+          value: 'Page 1',
+          url: {},
+          loading: false
+        },
+        pre: {
+          disabled: false,
+          value: 'Page x',
+          url: {},
+          loading: false
+        },
+        post: {
+          disabled: false,
+          value: 'Page x',
+          url: {},
+          loading: false
+        }
       }
     }
   },
@@ -101,25 +80,8 @@ export default {
       return this.$store.state.opened
     },
     showControls () {
-      return true
       return this.itemTotal > APP_VARS.pageLimit
-    },
-    // allowGoToStart () {
-    //   return (this.itemSkip > 0)
-    // },
-    // allowLeft () {},
-    // allowRight () {},
-    // goToStart () {
-    //   return Object.assign(this.itemQuery, { $skip: 0 })
-    // },
-    // goToLeft () {
-    //   const skipVal = Math.min(this.itemSkip - APP_VARS.pageLimit, 0)
-    //   return Object.assign(this.itemQuery, { $skip: skipVal })
-    // },
-    // goToRight () {
-    //   const skipVal = this.itemSkip + APP_VARS.pageLimit
-    //   return Object.assign(this.itemQuery, { $skip: skipVal })
-    // }
+    }
   },
 
   watch: {
@@ -147,9 +109,10 @@ export default {
 
       return tmp
     },
-    // goto(item) {
-    //   this.$router.push(item)
-    // },
+    hasClicked (item) {
+      item.loading = true
+      this.$router.push(item.url)
+    },
     rebuild () {
       const startTmp = this.buildQueryObj()
       delete startTmp.query['$skip']
@@ -161,16 +124,21 @@ export default {
       const postTmp = this.buildQueryObj()
       postTmp.query['$skip'] = this.itemSkip + APP_VARS.pageLimit
 
-      this.start.url = startTmp
-      this.pre.url = preTmp
-      this.post.url = postTmp
+      this.buttons.start.url = startTmp
+      this.buttons.pre.url = preTmp
+      this.buttons.post.url = postTmp
 
-      this.pre.value = `page ${Math.floor(preTmp.query['$skip'] / APP_VARS.pageLimit) + 1}`
-      this.post.value = `page ${Math.floor(postTmp.query['$skip'] / APP_VARS.pageLimit) + 1}`
+      this.buttons.start.loading = false
+      this.buttons.pre.loading = false
+      this.buttons.post.loading = false
 
-      this.start.disabled = (this.itemSkip === 0)
-      this.pre.disabled = (this.itemSkip < APP_VARS.pageLimit)
-      this.post.disabled = this.itemTotal - this.itemSkip <= 0
+      this.buttons.start.value = 'Page 1'
+      this.buttons.pre.value = `Page ${Math.floor(preTmp.query['$skip'] / APP_VARS.pageLimit) + 1}`
+      this.buttons.post.value = `Page ${Math.floor(postTmp.query['$skip'] / APP_VARS.pageLimit) + 1}`
+
+      this.buttons.start.disabled = (this.itemSkip === 0)
+      this.buttons.pre.disabled = (this.itemSkip < APP_VARS.pageLimit)
+      this.buttons.post.disabled = this.itemTotal - (this.itemSkip + APP_VARS.pageLimit) <= 0
     }
   }
 

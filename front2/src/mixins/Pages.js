@@ -93,12 +93,12 @@ export default {
 
       this.page.isLoading = true
 
-      this.$store.commit('setQuery', newQuery)
 
       return this.$store.dispatch(`${TYPES[this.type].store}/get`,
         { query: newQuery })
       .then(res => {
         this.page.isLoading = false
+        this.$store.commit('setQuery', newQuery)
       })
       .catch(err => {
         this.page.isLoading = false
