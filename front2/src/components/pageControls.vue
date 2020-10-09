@@ -95,6 +95,9 @@ export default {
   },
 
   methods: {
+    scrollToTop() {
+      document.getElementById('app').scrollIntoView({ behavior: "smooth" })
+    },
     buildQueryObj () {
       const tmp = {}
       const queryKeys = Object.keys(this.itemQuery)
@@ -112,6 +115,7 @@ export default {
     hasClicked (item) {
       item.loading = true
       this.$router.push(item.url)
+      this.scrollToTop()
     },
     rebuild () {
       const startTmp = this.buildQueryObj()
