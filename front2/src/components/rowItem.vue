@@ -28,6 +28,7 @@
         </div>
 
         <div v-if="!isEdit"
+             ref="rowItemText"
              class="pad has-border-transparent is-family-sans-serif word-break flex-grow">
           {{ item.value }}
         </div>
@@ -37,6 +38,7 @@
                  v-model="value"
                  :placeholder="value"
                  :readonly="!isEdit"
+                 :style="rowHeightStyle"
                  type="textarea"
                  customClass="row__content-input pad has-text-light">
         </b-input>
@@ -81,6 +83,8 @@ import icTick from '../assets/icons/ic_tick'
 import { TYPES } from '../constants'
 import { get } from 'lodash-es'
 
+const EXTRA_ROW_PAD = 5
+
 const defaultItem = () => {
   return {
     id: 0,
@@ -104,7 +108,10 @@ export default {
     return {
       isLoadingDone: false,
       isLoading: false,
-      value: null
+      value: null,
+      row: {
+        height: '16'
+      }
     }
   },
 
@@ -124,6 +131,9 @@ export default {
   },
 
   computed: {
+    rowHeightStyle () {
+      return { height: this.row.height + EXTRA_ROW_PAD + 'px' }
+    },
     isEdit () {
       return this.item.id === this.edit
     },
@@ -152,7 +162,14 @@ export default {
     }
   },
 
+  mounted () {
+    this.getRowHeight()
+  },
+
   methods: {
+    getRowHeight () {
+      this.row.height = this.$refs.rowItemText.clientHeight
+    },
     /** Toggle open or close the edit state */
     toggleEdit () {
       if (this.isEdit) {
