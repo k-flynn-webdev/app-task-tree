@@ -23,7 +23,7 @@
           </p>
 
           <p class="is-size-5">
-            A simple, fast, easy and shareable todo list.
+            A simple, fast, no-frills task manager.
           </p>
 
           <p class="is-size-6">
