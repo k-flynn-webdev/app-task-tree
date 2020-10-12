@@ -5,15 +5,40 @@ import tasks from './tasks.js'
 import plans from './plans.js'
 import projects from './projects.js'
 
+const SORT_BY = 'sortBy'
+
 Vue.use(Vuex)
+
+function initSortBy () {
+  const local = localStorage.getItem(SORT_BY)
+  if (local === undefined || local === 'undefined' || local === null) {
+    return null
+  }
+
+  return JSON.parse(local)
+}
 
 export default new Vuex.Store({
   state: {
     mode: {},
     query: {},
     opened: {},
+    sortBY: null
   },
   mutations: {
+    /**
+     * Sets the query sortBy field
+     *
+     * @param state
+     * @param {object} input    sort option { text: direction }
+     */
+    setSortBy: function(state, input) {
+      if (!input) {
+        input = null
+      }
+      state.sortBY = input
+      localStorage.setItem(SORT_BY, input)
+    },
     /**
      * Sets the query item
      *
