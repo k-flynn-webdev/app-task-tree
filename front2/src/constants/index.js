@@ -3,6 +3,10 @@
 export const APP_VARS = {
   name: 'Minitask',
   pageLimit: 20,
+  sort: {
+    direction: ['asc', 'desc'],
+    types: ['created_at']
+  }
 }
 
 export const LOGIN = {
