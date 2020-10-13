@@ -193,7 +193,7 @@ $app-pad-bottom: 1.5rem;
 
   button {
     outline: none;
-    //border: none;
+    border: none;
     position: relative;
     margin: 0;
     padding: 0;
@@ -245,7 +245,7 @@ $app-pad-bottom: 1.5rem;
 
   &.is-active & {
     &__item {
-      //border: 1px solid $light;
+      border: 1px solid $light;
     }
   }
 
@@ -268,7 +268,7 @@ $app-pad-bottom: 1.5rem;
 
     &-button {
       min-width: 1.5rem;
-      //border-color: transparent;
+      border-color: transparent;
       background-color: transparent;
 
       svg {
@@ -281,7 +281,7 @@ $app-pad-bottom: 1.5rem;
     }
 
     &-input {
-      //border-color: transparent;
+      border-color: transparent;
       background-color: transparent;
 
       &.textarea {
