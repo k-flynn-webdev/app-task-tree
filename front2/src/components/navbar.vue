@@ -33,6 +33,9 @@
     </template>
 
     <template slot="end">
+
+      <navMenu />
+
       <b-navbar-item tag="div">
         <div v-if="isLoggedIn"
              class="buttons is-right">
@@ -69,12 +72,14 @@
 import { mapState } from 'vuex'
 import btnLogout from '../components/btnLogout'
 import { TYPES, APP_VARS } from '../constants'
+import navMenu from '../components/navMenu'
 
 export default {
   name: 'navbar',
 
   components: {
-    btnLogout
+    btnLogout,
+    navMenu
   },
 
   computed: {
