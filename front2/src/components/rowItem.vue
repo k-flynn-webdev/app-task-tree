@@ -261,7 +261,7 @@ export default {
      */
     updateItem () {
       if (this.isLoading) return
-      if (this.allowEditSubmit) return
+      if (!this.allowEditSubmit) return
 
       this.isLoading = true
       return this.$store.dispatch(`${TYPES[this.type].store}/patch`,
