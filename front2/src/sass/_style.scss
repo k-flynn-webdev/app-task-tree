@@ -78,6 +78,42 @@ $app-pad-bottom: 1.5rem;
 }
 
 .navbar {
+  $navbar-icon-width: 3rem;
+  $navbar-btn-width: 3rem;
+  $navbar-btn-margin: 0.3rem;
+
+  &-brand {
+    width: 100%;
+    max-width: 100%;
+    align-items: center;
+    //align-content: space-between;
+  }
+
+  .app-icon {
+    display: inline-block;
+    width: $navbar-icon-width;
+  }
+
+  &__main {
+    flex-grow: 1;
+    overflow: hidden;
+    display: inline-block;
+    max-width: calc(100% - #{$navbar-btn-width} - #{$navbar-btn-margin} - #{$navbar-icon-width});
+
+    &-title {
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+
+  &__btn {
+    display: inline-block;
+    margin-right: $navbar-btn-margin;
+    margin-top: $navbar-btn-margin;
+    flex-grow: 0;
+    width: $navbar-btn-width;
+  }
+
   .navbar-menu.is-active {
     border-radius: $radius;
     background-color: $light;
@@ -89,9 +125,9 @@ $app-pad-bottom: 1.5rem;
   }
 
   &__title {
-    max-width: 70vw;
+    //max-width: 70vw;
     max-height: 2.25rem;
-    overflow: hidden;
+    //overflow: hidden;
   }
 
   .navmenu {
