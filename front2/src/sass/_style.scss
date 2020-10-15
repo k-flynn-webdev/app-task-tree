@@ -114,49 +114,43 @@ $app-pad-bottom: 1.5rem;
     width: $navbar-btn-width;
   }
 
-  .navbar-menu.is-active {
-    border-radius: $radius;
-    background-color: $light;
-    margin: 1rem 0.25rem;
-  }
-
-  .navbar-item {
-    padding: 0.5rem 0;
-  }
-
   &__title {
     //max-width: 70vw;
     max-height: 2.25rem;
     //overflow: hidden;
   }
 
-  .navmenu {
-    &__holder {
-      &__main {
-        margin: 0.3rem;
-        padding: 0.5rem 1rem;
-        display: none;
-        position: fixed;
-        top: 1rem;
-        right: 1rem;
-        z-index: 100;
-        min-width: 20rem;
-        min-height: 20rem;
-        border-radius: $radius;
-        color: $dark;
-        background-color: $light;
+  &__holder {
+    margin: 0.3rem;
+    padding: 0.5rem 1rem;
+    display: none;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+    min-width: 20rem;
+    min-height: 20rem;
+    border-radius: $radius;
+    color: $dark;
+    background-color: $light;
 
-        &.is-active {
-          display: block;
-        }
-
-        @include touch() {
-          top: 0;
-          left: 0;
-          right: 0;
-        }
-      }
+    &.is-active {
+      display: block;
     }
+
+    @include touch () {
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+
+  .navbar-menu.is-active {
+    display: none;
+  }
+
+  .navbar-item {
+    padding: 0.5rem 0;
   }
 }
 

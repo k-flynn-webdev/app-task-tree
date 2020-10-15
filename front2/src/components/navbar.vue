@@ -34,11 +34,14 @@
       </b-button>
 
 
-
+      <div class="navbar__holder"
+           :class="{ 'is-active': isOpen }">
+        test
+      </div>
 <!--      <navMenu />-->
 
     </template>
-    <template slot="start">
+<!--    <template slot="start">-->
 
 
 <!--      <b-navbar-item href="#">-->
@@ -55,9 +58,10 @@
 <!--          Contact-->
 <!--        </b-navbar-item>-->
 <!--      </b-navbar-dropdown>-->
-    </template>
+<!--    </template>-->
 
-    <template slot="end">
+<!--    <template slot="end">-->
+
 
 
 
@@ -89,7 +93,7 @@
 <!--        </div>-->
 
 <!--      </b-navbar-item>-->
-    </template>
+<!--    </template>-->
   </b-navbar>
 </template>
 
