@@ -33,12 +33,8 @@
         <icOption class="fill-light" />
       </b-button>
 
-
-      <div class="navbar__holder"
-           :class="{ 'is-active': isOpen }">
-        test
-      </div>
-<!--      <navMenu />-->
+      <navMenu :class="{ 'is-active': isOpen }">
+      </navMenu>
 
     </template>
 <!--    <template slot="start">-->

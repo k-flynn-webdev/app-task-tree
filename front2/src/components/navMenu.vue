@@ -1,22 +1,16 @@
 <template>
 
-  <div class="navmenu__holder">
-    <button class="button"
-            @click="isActive = !isActive">
-      O
-    </button>
+  <div class="navbar__options">
 
-    <div class="navmenu__holder__main"
-         :class="{ 'is-active': isActive }">
-      menu content here in corner
+    <div class="navbar__options__user">
+      <div class="option">
+        <p class="title">User</p>
+        <div></div>
+
+      </div>
     </div>
-  </div>
 
-<!--  <div class="has-background-light">-->
-<!--    content here-->
-<!--    <br>-->
-<!--    and here-->
-<!--  </div>-->
+  </div>
 
 </template>
 
@@ -31,7 +25,6 @@ export default {
 
   data () {
     return {
-      isActive: false
     }
   },
 
