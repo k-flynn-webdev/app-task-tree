@@ -33,7 +33,8 @@
         <icOption class="fill-light" />
       </b-button>
 
-      <navMenu :class="{ 'is-active': isOpen }">
+      <navMenu :class="{ 'is-active': isOpen }"
+               @close="isOpen = !isOpen">
       </navMenu>
 
     </template>
@@ -124,6 +125,12 @@ export default {
       if (!storeOpened.value) return APP_VARS.name
 
       return storeOpened.value
+    }
+  },
+
+  watch: {
+    '$route'() {
+      this.isOpen = false
     }
   },
 

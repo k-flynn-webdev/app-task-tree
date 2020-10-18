@@ -4,18 +4,23 @@ import user from './user.js'
 import tasks from './tasks.js'
 import plans from './plans.js'
 import projects from './projects.js'
+import { APP_VARS } from '../constants';
 
-const SORT_BY = 'sortBy'
+const SORT_TYPE = 'sortType'
+const SORT_DIRECTION = 'sortDirection'
 
 Vue.use(Vuex)
 
-function initSortBy () {
-  const local = localStorage.getItem(SORT_BY)
-  if (local === undefined || local === 'undefined' || local === null) {
-    return null
-  }
+function initSort () {
+  const sortType = localStorage.getItem(SORT_TYPE) ||
+    APP_VARS.sort.types[0].value
+  const sortDirection = localStorage.getItem(SORT_DIRECTION) ||
+    APP_VARS.sort.direction[0].value
 
-  return JSON.parse(local)
+  return {
+    type: sortType,
+    direction: sortDirection
+  }
 }
 
 export default new Vuex.Store({
@@ -23,21 +28,36 @@ export default new Vuex.Store({
     mode: {},
     query: {},
     opened: {},
-    sortBY: null
+    sort: initSort()
   },
   mutations: {
     /**
-     * Sets the query sortBy field
+     * Sets the query sortType field
      *
      * @param state
      * @param {object} input    sort option { text: direction }
      */
-    setSortBy: function(state, input) {
+    setSortType: function(state, input) {
       if (!input) {
         input = null
       }
-      state.sortBY = input
-      localStorage.setItem(SORT_BY, input)
+
+      Vue.set(state.sort, 'type', input)
+      localStorage.setItem(SORT_TYPE, input)
+    },
+    /**
+     * Sets the query sortDirection field
+     *
+     * @param state
+     * @param {object} input    sort option { text: direction }
+     */
+    setSortDirection: function(state, input) {
+      if (!input) {
+        input = null
+      }
+
+      Vue.set(state.sort, 'direction', input)
+      localStorage.setItem(SORT_DIRECTION, input)
     },
     /**
      * Sets the query item
@@ -73,7 +93,24 @@ export default new Vuex.Store({
       Vue.set(state, 'mode', input)
     },
   },
-  actions: {
+  getters: {
+    /**
+     * Returns a sort object to return to the API
+     *
+     * @param state
+     * @param getters
+     * @return {{$sort: {}}}
+     */
+    getSortObj: (state, getters) => {
+      const srtType = state.sort.type
+      const srtDirection = state.sort.direction
+
+      return {
+        '$sort': {
+          [srtType]: srtDirection
+        }
+      }
+    }
   },
   modules: {
     user,

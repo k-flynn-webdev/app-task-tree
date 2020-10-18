@@ -4,8 +4,15 @@ export const APP_VARS = {
   name: 'Minitask',
   pageLimit: 20,
   sort: {
-    direction: ['asc', 'desc'],
-    types: ['created_at']
+    direction: [
+      { name: 'asc', value: 1 },
+      { name: 'desc', value: -1 }
+      ],
+    types: [
+      { name: 'created', value: 'created_at' },
+      { name: 'updated', value: 'updated_at' },
+      { name: 'done', value: 'done_at' },
+    ]
   }
 }
 
@@ -15,6 +22,14 @@ export const LOGIN = {
   API: {
     POST: '/api/authentication',
     DELETE: '/api/authentication'
+  }
+}
+
+export const CREATE = {
+  value: 'create',
+  route: { name: 'create', path: '/create' },
+  API: {
+    POST: '/api/users'
   }
 }
 

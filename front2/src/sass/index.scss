@@ -4,7 +4,7 @@
 $navbar-height: 1.5rem;
 
 // Set your colors
-$primary: rgb(32, 173, 186);;
+$primary: rgb(32, 173, 186);
 $primary-invert: findColorInvert($primary);
 $twitter: #4099FF;
 $twitter-invert: findColorInvert($twitter);
@@ -22,8 +22,11 @@ $color-waiting: rgb(189, 173, 99);
 //$success: rgb(122, 231, 66);
 $success: $primary;
 $color-error: rgb(212, 151, 125);
-$color-fore: rgb(234, 233, 218);
+$color-fore: rgb(252, 252, 240);
 $color-select: rgb(9, 161, 131);
+
+$light: $color-fore;
+$white: $color-fore;
 
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: (
@@ -47,9 +50,9 @@ $link: $primary;
 $link-invert: $primary-invert;
 $link-focus-border: $primary;
 
-$radius-small: 2px !default
-$radius: 4px !default
-$radius-large: 6px !default
+$radius-small: 2px !default;
+$radius: 4px !default;
+$radius-large: 6px !default;
 
 // Import Bulma and Buefy styles
 @import "~bulma";
@@ -64,6 +67,11 @@ $radius-large: 6px !default
   .fill-#{$color} {
     fill: nth($value, 1);
   }
+}
+
+.input,
+.box {
+  background-color: $white;
 }
 
 .navbar {

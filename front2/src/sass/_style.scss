@@ -39,7 +39,7 @@ $app-pad-bottom: 1.5rem;
 
 #footer {
   @extend .is-flex;
-  @extend .is-flex.is-center;
+  @extend .is-flex.center;
   @extend .v-align-center;
 
   .icon {
@@ -121,15 +121,15 @@ $app-pad-bottom: 1.5rem;
   }
 
   &__options {
-    margin: 0.3rem;
+    margin: 0.5rem;
     padding: 0.5rem 1rem;
     display: none;
     position: fixed;
-    top: 1rem;
-    right: 1rem;
+    top: 0;
+    right: 0;
     z-index: 100;
     min-width: 20rem;
-    min-height: 20rem;
+    min-height: 15rem;
     border-radius: $radius;
     color: $dark;
     background-color: $light;
@@ -138,27 +138,55 @@ $app-pad-bottom: 1.5rem;
       display: block;
     }
 
+    $topleft: 0.2rem;
+
+    &-close {
+      position: absolute;
+      top: $topleft;
+      right: $topleft;
+      z-index: 10;
+      fill: $color-bg;
+    }
+
     @include touch () {
       top: 0;
       left: 0;
       right: 0;
+      min-width: 15rem;
     }
 
     .option {
       position: relative;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: solid 1px rgba($color-mid, $color-alpha);
 
-      .title {
-        float: left;
-        font-weight: bolder;
-        font-size: 1.5rem;
+      &:last-of-type {
+        border-bottom: none;
+      }
 
-        & + div {
-          position: relative;
-          right: 0;
-          width: 100%;
-          height: 1px;
-          border-bottom: 1px solid grey;
+      .field {
+        margin-left: 0.5rem;
+
+        .label {
+          float: left;
+          min-width: 5rem;
+          margin-right: 0.5rem;
         }
+      }
+
+      .button,
+      .title,
+      .name {
+        font-weight: bolder;
+      }
+      .title {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+      }
+      .name {
+        font-size: 1rem;
       }
     }
   }
@@ -200,7 +228,8 @@ $app-pad-bottom: 1.5rem;
 
   &.start { align-items: flex-start; }
   &.end { align-items: flex-end; }
-  &.is-center { justify-content: center; }
+  &.center { justify-content: center; }
+  &.column { flex-direction: column; }
 }
 
 .flex-space-between {
