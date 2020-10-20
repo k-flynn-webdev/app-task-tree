@@ -1,6 +1,8 @@
 import router from '../router'
 import store from '../store'
 import axios from 'axios'
+const qs = require('qs')
+
 // import Paths from '../constants/paths.js'
 // import status from '../constants/status'
 
@@ -8,6 +10,10 @@ const USER_TOKEN = 'accessToken'
 
 axios.defaults.headers.common['Accept-Version'] = 'v1'
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+axios.defaults.paramsSerializer = function(params) {
+  return qs.stringify(params,
+  { encode: false })
+};
 
 ;(function init () {
   const token = localStorage.getItem(USER_TOKEN)
@@ -52,7 +58,7 @@ function httpError (err) {
 
     setTimeout(function() {
       router.push({ name: 'login' })
-    }, 1 *1000)
+    }, 0.5 * 1000)
 
   //   const isAnon = store.getters['user/isAnon']
   //   const signOut = isAnon

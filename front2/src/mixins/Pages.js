@@ -1,5 +1,6 @@
 import { TYPES } from '../constants'
 import { get } from 'lodash-es'
+
 const keyTypesAllowed = Object.keys(TYPES)
 
 export default {
@@ -86,13 +87,17 @@ export default {
      * @return {Promise}
      */
     getPageItems () {
-      return this.getPageItemsQuery(this.$route.query)
+      const APISort = this.$store.getters['getSortObj']
+      const skip = get(this.$route, 'query.$skip')
+      const routeQuery = this.$route.query
+      const APIObj = Object.assign({ $skip: skip, $sort: APISort }, routeQuery)
+
+      return this.getPageItemsQuery(APIObj)
     },
     getPageItemsQuery (newQuery) {
       if (this.page.isLoading) return
 
       this.page.isLoading = true
-
 
       return this.$store.dispatch(`${TYPES[this.type].store}/get`,
         { query: newQuery })

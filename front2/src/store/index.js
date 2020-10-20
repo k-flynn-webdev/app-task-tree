@@ -19,7 +19,7 @@ function initSort () {
 
   return {
     type: sortType,
-    direction: sortDirection
+    direction: Number(sortDirection)
   }
 }
 
@@ -102,14 +102,10 @@ export default new Vuex.Store({
      * @return {{$sort: {}}}
      */
     getSortObj: (state, getters) => {
-      const srtType = state.sort.type
-      const srtDirection = state.sort.direction
+      const obj = {}
+      obj[state.sort.type] = state.sort.direction
 
-      return {
-        '$sort': {
-          [srtType]: srtDirection
-        }
-      }
+      return obj
     }
   },
   modules: {
