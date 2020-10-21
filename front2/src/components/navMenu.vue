@@ -7,14 +7,12 @@
       <icClose class="is-medium" />
     </b-button>
 
-    <div class="option">
+    <div class="option user">
         <p class="title">User</p>
 
-        <b-field>
-          <div v-if="isLoggedIn">
-            <btnLogout />
-          </div>
-          <div v-else>
+        <div class="control">
+          <btnLogout v-if="isLoggedIn" />
+          <template v-else>
             <b-button class="mb-2"
                       expanded
                       type="is-primary"
@@ -28,11 +26,11 @@
                       :to="{ name: 'login' }">
               Login
             </b-button>
-          </div>
-        </b-field>
+          </template>
+        </div>
       </div>
 
-    <div class="option">
+    <div class="option sort">
       <p class="title">Sort</p>
 
       <b-field label="Direction">

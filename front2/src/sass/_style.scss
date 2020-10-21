@@ -146,6 +146,12 @@ $app-pad-bottom: 1.5rem;
       right: $topleft;
       z-index: 10;
       fill: $color-bg;
+      transition: $speed-slow;
+
+      &:focus,
+      &:hover {
+        transform: scale(1.2);
+      }
     }
 
     @include touch () {
@@ -166,6 +172,7 @@ $app-pad-bottom: 1.5rem;
         border-bottom: none;
       }
 
+      .control,
       .field {
         margin-left: 0.5rem;
 
@@ -173,6 +180,13 @@ $app-pad-bottom: 1.5rem;
           float: left;
           min-width: 5rem;
           margin-right: 0.5rem;
+        }
+      }
+
+      &.user .control {
+        .button {
+          margin: 0 auto;
+          width: 80%;
         }
       }
 
