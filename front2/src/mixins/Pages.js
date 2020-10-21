@@ -42,8 +42,6 @@ export default {
         this.$store.commit(`${TYPES[item].store}/setCurrent`, null)
       })
 
-      // this.$store.commit('setQuery', this.$route.query)
-
       return this.getPageItems()
       .then (() => this.getOpenedItem())
     },
@@ -55,31 +53,43 @@ export default {
     onEdit (input) {
       this.edit = input
     },
+    getItemFromRoute () {
+      const queryKeys = Object.keys(this.$route.query)
+      const keyFound = queryKeys.filter(item => keyTypesAllowed.includes(item))
+
+      if (!keyFound || keyFound.length < 1) { return }
+
+      const keyValue = this.$route.query[keyFound[0]]
+
+      if (!keyValue) { return }
+
+      const queryItem = {}
+      queryItem[keyFound[0]] = keyValue
+
+      return queryItem
+    },
     /**
      * Add to store the opened query item
      */
     getOpenedItem () {
-      const queryKeys = Object.keys(this.$route.query)
-      const keyFound = queryKeys.filter(item => keyTypesAllowed.includes(item))
+      const openItem = this.getItemFromRoute()
 
       // clear if none allowed keys found
-      if (!keyFound || keyFound.length < 1) {
-        this.$store.commit('setOpened', {})
+      if (!openItem) {
+        this.$store.commit('setOpened', null)
+        this.$store.commit('setQuery', null)
         return
       }
 
-      const keyName = keyFound[0]
-      const keyValue = this.$route.query[keyName]
-
-      if (!keyValue) return
+      const keyName = Object.keys(openItem)[0]
 
       return this.$store.dispatch(`${TYPES[keyName].store}/getById`,
-        { id: keyValue })
+        { id: openItem[keyName] })
       .then(({ data }) => {
+        this.$store.commit('setQuery', openItem)
         this.$store.commit('setOpened', data.data)
       })
     },
-
 
     /**
      * Get Items via API
@@ -87,10 +97,11 @@ export default {
      * @return {Promise}
      */
     getPageItems () {
-      const APISort = this.$store.getters['getSortObj']
+      const sort = this.$store.getters['getSortObj']
       const skip = get(this.$route, 'query.$skip')
-      const routeQuery = this.$route.query
-      const APIObj = Object.assign({ $skip: skip, $sort: APISort }, routeQuery)
+      const relatedItem = this.getItemFromRoute()
+
+      const APIObj = Object.assign({ $skip: skip, $sort: sort }, relatedItem)
 
       return this.getPageItemsQuery(APIObj)
     },
@@ -101,10 +112,6 @@ export default {
 
       return this.$store.dispatch(`${TYPES[this.type].store}/get`,
         { query: newQuery })
-      .then(res => {
-        this.page.isLoading = false
-        this.$store.commit('setQuery', newQuery)
-      })
       .catch(err => {
         this.page.isLoading = false
 
@@ -117,6 +124,10 @@ export default {
 
         throw err
       })
+      .finally(res => {
+        this.page.isLoading = false
+      })
+
     }
   }
 }

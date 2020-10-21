@@ -87,12 +87,12 @@ export default {
 
       this.isLoading = true
 
-      const query = this.$store.state.query
+      const relatedItem = this.$store.state.query
 
       return this.$store.dispatch(`${TYPES[this.type].store}/post`,
           {
             value: this.value,
-            ...query
+            ...relatedItem
           })
         .then(res => {
           this.previous = this.value

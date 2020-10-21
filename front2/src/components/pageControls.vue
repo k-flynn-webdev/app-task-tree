@@ -71,7 +71,7 @@ export default {
       return this.$store.state[TYPES[this.type].store].total
     },
     itemSkip () {
-      return Number(get(this.itemQuery, '$skip', 0))
+      return Number(get(this.$route.query, '$skip', 0))
     },
     itemQuery () {
       return this.$store.state.query
