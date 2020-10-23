@@ -68,23 +68,14 @@
 import { mapState } from 'vuex'
 import icClose from '../assets/icons/ic_cross'
 import btnLogout from '../components/btnLogout'
-// import navSortBy from '../components/navSortBy'
 import { APP_VARS } from '../constants'
 
 export default {
   name: 'navMenu',
 
-  // data () {
-  //   return {
-  //     // sortOrder: null,
-  //     // sortType: null
-  //   }
-  // },
-
   components: {
     icClose,
     btnLogout,
-    // navSortBy
   },
 
   computed: {

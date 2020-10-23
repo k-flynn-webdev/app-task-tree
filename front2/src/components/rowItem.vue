@@ -270,6 +270,7 @@ export default {
         this.closeEdit()
         this.isLoading = false
       })
+      .then(() => this.getRowHeight())
       .catch(err => this.handleError(err))
     },
     /**
