@@ -49,7 +49,7 @@ import { mapState } from 'vuex'
 import { TYPES, APP_VARS } from '../constants'
 import navMenu from '../components/navMenu'
 import icOption from '../assets/icons/ic_option'
-import btnLogout1 from '../components/btnLogout'
+
 
 export default {
   name: 'navbar',
@@ -87,7 +87,10 @@ export default {
   methods: {
     closeNavBar (input) {
       if (this.isOpen && !input) {
-        this.isOpen = false
+        let self = this
+        setTimeout(function () {
+          self.isOpen = false
+        }, 300)
       }
     }
   }

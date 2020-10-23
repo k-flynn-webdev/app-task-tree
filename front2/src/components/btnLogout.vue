@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { LOGIN } from '../constants'
+import { LOGIN, HOME } from '../constants'
 import HTTP from '../services/HttpService'
 import { get } from 'lodash-es'
 
@@ -39,6 +39,8 @@ export default {
           position: 'is-top',
           type: 'is-success'
         })
+
+        this.$router.push(HOME.route)
       })
       .catch(err => {
         this.isLoading = false

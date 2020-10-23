@@ -119,14 +119,16 @@ export const TASK = {
   }
 }
 
+export const HOME = {
+  value: 'Minitask',
+  route: {
+    name: 'home',
+    path: '/',
+  }
+}
+
 export const TYPES = {
-  home: {
-    value: 'Minitask',
-    route: {
-      name: 'home',
-      path: '/',
-    },
-  },
+  home: HOME,
   project: PROJECT,
   plan: PLAN,
   task: TASK
