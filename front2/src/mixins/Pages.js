@@ -22,6 +22,15 @@ export default {
     },
     pageMode () {
       return TYPES[this.type]
+    },
+    pageSort () {
+      return this.$store.getters['getSortObj']
+    }
+  },
+
+  watch: {
+    pageSort () {
+      return this.getPageItems()
     }
   },
 
@@ -97,11 +106,11 @@ export default {
      * @return {Promise}
      */
     getPageItems () {
-      const sort = this.$store.getters['getSortObj']
       const skip = get(this.$route, 'query.$skip')
       const relatedItem = this.getItemFromRoute()
 
-      const APIObj = Object.assign({ $skip: skip, $sort: sort }, relatedItem)
+      const APIObj = Object.assign({ $skip: skip, $sort: this.pageSort },
+        relatedItem)
 
       return this.getPageItemsQuery(APIObj)
     },
