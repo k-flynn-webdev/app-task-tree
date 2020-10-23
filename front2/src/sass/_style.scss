@@ -326,8 +326,11 @@ $app-pad-bottom: 1.5rem;
   }
 
   button.is-primary {
-    background-color: $primary;
-    .tri { fill: $primary; }
+    pointer-events: none;
+    .tri {
+      fill: $primary;
+      pointer-events: none;
+    }
 
     span {
       transform: scale(1.15);

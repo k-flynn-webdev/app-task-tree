@@ -70,6 +70,9 @@ export default {
     itemTotal () {
       return this.$store.state[TYPES[this.type].store].total
     },
+    itemLoading () {
+      return this.$store.state[TYPES[this.type].store].loading
+    },
     itemSkip () {
       return Number(get(this.$route.query, '$skip', 0))
     },
@@ -85,13 +88,19 @@ export default {
   },
 
   watch: {
-    itemTotal: {
-      handler: 'rebuild'
+    itemTotal () {
+      this.rebuild(this.itemLoading)
     },
-    itemQuery: {
-      immediate: true,
-      handler: 'rebuild'
+    itemLoading () {
+      this.rebuild(this.itemLoading)
+    },
+    itemQuery () {
+      this.rebuild(this.itemLoading)
     }
+  },
+
+  mounted () {
+    this.rebuild(this.itemLoading)
   },
 
   methods: {
@@ -114,10 +123,9 @@ export default {
     },
     hasClicked (item) {
       item.loading = true
-      this.$router.push(item.url)
-      this.scrollToTop()
+      this.$router.push(item.url, this.scrollToTop)
     },
-    rebuild () {
+    rebuild (isLoading) {
       const startTmp = this.buildQueryObj()
       delete startTmp.query['$skip']
 
@@ -132,9 +140,11 @@ export default {
       this.buttons.pre.url = preTmp
       this.buttons.post.url = postTmp
 
-      this.buttons.start.loading = false
-      this.buttons.pre.loading = false
-      this.buttons.post.loading = false
+      if (!isLoading) {
+        this.buttons.start.loading = false
+        this.buttons.pre.loading = false
+        this.buttons.post.loading = false
+      }
 
       this.buttons.start.value = 'Page 1'
       this.buttons.pre.value = `Page ${Math.floor(preTmp.query['$skip'] / APP_VARS.pageLimit) + 1}`
