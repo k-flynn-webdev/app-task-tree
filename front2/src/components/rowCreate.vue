@@ -8,6 +8,7 @@
                  type="string"
                  minLength="3"
                  maxlength="200"
+                 :disabled="!canCreate"
                  :hasCounter="false"
                  :placeholder="placeHolder"
                  @focus="onClick">
@@ -65,6 +66,10 @@ export default {
       if (this.isLoading) return 'fill-transparent'
       if (this.isValid) return 'fill-bg'
       return 'fill-bg'
+    },
+    canCreate () {
+      if (this.type === TYPES['project'].value) return true
+      return get(this.$store, 'state.opened.value')
     }
   },
 

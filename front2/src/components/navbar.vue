@@ -6,7 +6,7 @@
               :active="isOpen"
               :class="{ 'is-active': isOpen }"
               :mobileBurger="false"
-              @update:active="closeNavBar">
+              @update:active1="closeNavBar">
       <template slot="brand">
 
         <b-navbar-item
@@ -68,7 +68,6 @@ export default {
 
   computed: {
     ...mapState({ mode: state => state.mode }),
-    // ...mapState('user', ['isLoggedIn', 'user']),
     title () {
       if (this.mode.value === TYPES.project.value) return APP_VARS.name
       const storeOpened = this.$store.state.opened
@@ -80,13 +79,17 @@ export default {
 
   watch: {
     '$route'() {
-      this.isOpen = false
+      this.closeNavBar()
+    },
+    '$store.state.sort': {
+      handler: 'closeNavBar',
+      deep: true
     }
   },
 
   methods: {
-    closeNavBar (input) {
-      if (this.isOpen && !input) {
+    closeNavBar () {
+      if (this.isOpen) {
         let self = this
         setTimeout(function () {
           self.isOpen = false
