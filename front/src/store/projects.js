@@ -1,217 +1,165 @@
 import Vue from 'vue'
-import general from '../constants/general'
-import ProjectService from '../services/ProjectService.js'
+import router from '../router'
+import { PROJECT } from '../constants'
+import HTTP from '../services/HttpService'
+import { get } from 'lodash-es'
 
 export default {
   namespaced: true,
   state: {
-    projects: [],
-    current: general.DEFAULT_PROJECT(),
-    history: general.DEFAULT_PROJECT_HISTORY()
-  },
-  getters: {
-    /**
-     * Returns current project
-     *
-     * @param state
-     * @returns {object}
-     */
-    current: (state) => state.current,
-    projectHistory: (state) => state.history,
-    /**
-     * Returns all projects
-     *
-     * @param state
-     * @returns {Array}
-     */
-    projects: (state) => state.projects,
-    projectsDone: (state) => state.projects.filter(item => item.doneDate && item.doneDate.length > 5),
-    projectsNotDone: (state) => state.projects.filter(item => !item.doneDate),
-    /**
-     * Returns a function to find a Project by ID
-     *
-     * @param {object}      state
-     * @param {string}      id
-     * @returns {function}
-     */
-    findProject: (state) => (id) => {
-      return state.projects.find(project => project.id === id)
-    }
+    current: null,
+    total: 0,
+    items: [],
+    loading: false
   },
   mutations: {
-    projectHistory: (state, input) => {
-      if (input.user !== undefined) {
-        state.history.user = input.user
-      }
-      if (input.showDone !== undefined) {
-        state.history.showDone = input.showDone
-      }
+    setTotal: function (state, input) {
+      state.total = input
+    },
+    setLoading: function (state, input) {
+      state.loading = input
     },
     /**
-     * Sets current project selected
+     * Sets the current selected project
      *
-     * @param           state
-     * @param {object}  input   project object
-     * @returns {object}
+     * @param state
+     * @param {object} input    project to set
      */
-    projectCurrent: (state, input) => {
-      Vue.set(state, 'current', input)
+    setCurrent: function(state, input) {
+        state.current = input
     },
     /**
-     * Add a new project to the store
+     * Sets the Projects
      *
-     * @param {object}    state
-     * @param {object}    input project obj
-     * @returns {object}  new project
+     * @param state
+     * @param {array} input   list of projects
      */
-    projectAdd: function (state, input) {
-      state.projects.unshift(input)
-      return input
+    set: function (state, input) {
+      Vue.set(state, 'items', input)
     },
     /**
-     * Updates a project item with an updated version
+     * Add a Project
      *
-     * @param {object}    state
-     * @param {object}    input project
-     * @returns {object}  new project
+     * @param state
+     * @param {object} input   project
      */
-    projectPatch: function (state, input) {
-      for (let i = 0, max = state.projects.length; i < max; i++) {
-        if (state.projects[i].id === input.id) {
-          const newObj = Object.assign(state.projects[i], input)
-          state.projects.splice(i, 1, newObj)
-          return state.projects[i]
+    post: function (state, input) {
+      state.items.unshift(input)
+    },
+    /**
+     * Patch a Project via the id
+     *
+     * @param state
+     * @param {object} input   project
+     */
+    patch: function (state, input) {
+      for (let i = 0; i < state.items.length; i++) {
+        if (state.items[i].id === input.id) {
+          Vue.set(state.items, i, input)
+          return
         }
       }
-    },
-    /**
-     * Replace a project item with an updated version
-     *
-     * @param {object}    state
-     * @param {object}    input project
-     * @returns {object}  new project
-     */
-    projectReplace: function (state, input) {
-      for (let i = 0, max = state.projects.length; i < max; i++) {
-        if (state.projects[i].id === input.id) {
-          state.projects.splice(i, 1, input)
-          return state.projects[i]
-        }
-      }
-    },
-    /**
-     * Remove a project item
-     *
-     * @param {object}    state
-     * @param {object}    input project
-     * @returns {object}  project removed
-     */
-    projectRemove: function (state, input) {
-      for (let i = 0, max = state.projects.length; i < max; i++) {
-        if (state.projects[i].id === input.id) {
-          state.projects.splice(i, 1)
-          return input
-        }
-      }
-    },
-    /**
-     * Sets all project items
-     *
-     * @param {object}    state
-     * @param {array}     input projects
-     */
-    projectSet: function (state, input) {
-      Vue.set(state, 'projects', input)
     }
   },
   actions: {
     /**
-     * Creates a project and adds to store
+     * Create a Project via the API
      *
-     * @param {object}    context
-     * @param {object}    input project info
-     * @returns {promise} new project
+     * @param context
+     * @param {object} input
+     * @return {Promise}
      */
-    create: function (context, input) {
-      return ProjectService.create(input)
+    post: function (context, input) {
+      context.commit('setLoading', true)
+      return HTTP.post(PROJECT.API.POST, input)
         .then(res => {
-          context.commit('projectAdd', res.data.data.project)
-          context.commit('projectCurrent', res.data.data.project)
-          return res.data.data.project
+          if (get(router.currentRoute, 'query.page')) return
+
+          context.commit('post',
+            get(res, 'data.data'))
         })
+        .finally(() => context.commit('setLoading', false))
     },
     /**
-     * Update a project and store
+     * Patch a Project via the API
      *
-     * @param {object}    context
-     * @param {object}    input project obj
-     * @returns {promise} updated project
+     * @param context
+     * @param {object} input
+     * @return {Promise}
      */
-    update: function (context, input) {
-      return ProjectService.update(input)
-        .then(res => {
-          // todo this is a horrible way to handle it
-          if (!res.data) return
-          context.commit('projectReplace', res.data.data.project)
-          if (context.getters.current.id !== input.id) return
-          context.commit('projectCurrent', res.data.data.project)
-          return res.data.data.project
-        })
+    patch: function (context, input) {
+      context.commit('setLoading', true)
+      return HTTP.patch(PROJECT.API.PATCH + '/' + input.id, input)
+      .then(res => {
+        context.commit('patch',
+          get(res, 'data.data'))
+      })
+      .finally(() => context.commit('setLoading', false))
     },
     /**
-     * Remove a project and remove from store
-     *  and reset the current project ..
+     * Remove a Project via the API
      *
-     * @param {object}    context
-     * @param {object}    input project obj
-     * @returns {promise} updated project
+     * @param context
+     * @param {number} id
+     * @return {Promise}
      */
-    remove: function (context, input) {
-      return ProjectService.remove(input)
-        .then(() => {
-          context.commit('projectRemove', input)
-          if (context.getters.current.id !== input.id) return
-          return context.commit('projectCurrent', context.getters.projects[0])
-        })
+    remove: function (context, id) {
+      context.commit('setLoading', true)
+      return HTTP.remove(PROJECT.API.DELETE + '/' + id)
+      .then(() => {
+        context.dispatch('get', router.currentRoute)
+      })
+      .finally(() => context.commit('setLoading', false))
     },
     /**
-     * Get a project by the an ID and
-     *    update the store data
+     * Get Projects via the API
      *
-     * @param {object}    context
-     * @param {object}    input params
-     * @returns {promise} all tasks
+     * @param context
+     * @param {object} input    input query
+     * @return {Promise}
      */
-    getProjectById: function (context, input) {
-      return ProjectService.get(input)
-        .then(res => {
-          context.commit('projectReplace', res.data.data.project)
-          if (context.getters.current.id !== input.id) return
-          context.commit('projectCurrent', res.data.data.project)
-          return res.data.data.project
-        })
+    get: function (context, input) {
+      context.commit('setLoading', true)
+      return HTTP.get(PROJECT.API.GET, { params: input.query })
+      .then(res => {
+        context.commit('set',
+          get(res, 'data.data'))
+        context.commit('setTotal',
+          get(res, 'data.total'))
+      })
+      .finally(() => context.commit('setLoading', false))
     },
     /**
-     * Get all projects created by the user ID
-     *      if no projects, will create a basic
-     *      anon project via api and return
+     * Get A Project via the API
      *
-     * @param {object}    context
-     * @param {object}    input params
-     * @returns {promise} all tasks
+     * @param context
+     * @param {object} input    input query
+     * @return {Promise}
      */
-    getProjectsByUserId: function (context, input) {
-      return ProjectService.all(input)
-        .then(res => {
-          if (res.data.data.projects.length > 0) {
-            context.commit('projectHistory', {
-              user: res.data.data.projects[0].user
-            })
-            context.commit('projectSet', res.data.data.projects)
-          }
-          return res
-        })
+    getById: function (context, input) {
+      context.commit('setLoading', true)
+      return HTTP.get(PROJECT.API.GET + '/' + input.id)
+        .finally(() => context.commit('setLoading', false))
     }
-    // for delayed/time consuming actions
   }
 }
+
+/**
+ * @typedef {object} Meta
+ *
+ * @property {date}     [created]     Date User was created
+ * @property {date}     [updated]     Date Users details last changed
+ * @property {date}     [login]       Date User logged in
+ * @property {boolean}  [verified]    If User has verified email
+ */
+
+/**
+ * @typedef {object} User
+ *
+ * @property {number}   [id]          Unique ID
+ * @property {string}   name          Name
+ * @property {string}   email         Email
+ * @property {string}   [password]    (Only used on creation)
+ * @property {string}   [role]        Role [anon | user | admin]
+ * @property {Meta}     [meta]        User meta details
+ */

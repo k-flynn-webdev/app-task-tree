@@ -1,68 +1,53 @@
 <template>
-  <div class="relative">
+  <section class="my-1 pb-3">
 
-    <Header
-      :mode="mode"
-      :user="user"
-      :valid-user="validUser" />
+    <router-link :to="{ name: 'project' }" class="has-text-link">
+      Projects
+    </router-link>
+    <router-link :to="{ name: 'plan' }" class="has-text-link">
+      Plans
+    </router-link>
+    <router-link :to="{ name: 'task' }" class="has-text-link">
+      Tasks
+    </router-link>
 
-    <router-view />
 
-  </div>
+    <div class="container">
+
+      <div class="columns is-centered">
+
+        <div class="column is-8 has-text-light has-text-centered">
+
+          <p class="is-size-4 has-text-weight-bold is-uppercase">
+            Welcome to Minitask
+          </p>
+
+          <p class="is-size-5">
+            A simple, fast, no-frills task manager.
+          </p>
+
+          <p class="is-size-6">
+            To get started, choose a option from below.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
 </template>
 
 <script>
-import modes from '../constants/modes'
-import Header from '../components/Header'
+import { TYPES } from '../constants'
 
 export default {
   name: 'Home',
-  components: {
-    Header
-  },
-  props: {
-    mode: {
-      type: String,
-      default: modes.CLEAR
-    },
-    project: {
-      type: Number,
-      default: -1
-    }
-  },
-  computed: {
-    ready: function () {
-      return this.$store.getters.ready
-    },
-    user: function () {
-      return this.$store.getters['user/user']
-    },
-    validUser: function () {
-      return !(this.user.id === null || this.user.id < 0)
-    }
-  },
-  watch: {
-    ready: function (input) {
-      if (input) this.setProjectName()
-    }
-  },
-  mounted () {
-    if (!this.ready) return
-    if (this.mode === modes.CLEAR) return
-    return this.setProjectName()
-  },
-  methods: {
-    setProjectName: function () {
-      if (!this.project) return
-      const projectStore = this.$store.getters['projects/current']
-      if (!this.projectStore) return
-      if (projectStore.id !== this.project) {
-        const projectFound =
-          this.$store.getters['projects/findProject'](this.project)
-        if (!projectFound || projectFound.id < 0) return
-        this.$store.commit('projects/projectCurrent', projectFound)
-      }
-    }
+
+  created () {
+    this.$store.commit('mode', TYPES['home'])
+    this.$store.commit('setOpened', {})
   }
 }
 </script>

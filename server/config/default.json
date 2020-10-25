@@ -1,0 +1,58 @@
+{
+  "host": "APP_IP",
+  "port": "APP_PORT",
+  "public": "../public/",
+  "apiPath": "/api",
+  "paginate": {
+    "default": 20,
+    "max": 50
+  },
+  "authentication": {
+    "entity": "user",
+    "service": "api/users",
+    "secret": "APP_SECRET",
+    "authStrategies": [
+      "jwt",
+      "local"
+    ],
+    "jwtOptions": {
+      "header": {
+        "typ": "access"
+      },
+      "audience": "WEB_ADDRESS",
+      "issuer": "WEB_NAME",
+      "algorithm": "HS256",
+      "expiresIn": "1d"
+    },
+    "local": {
+      "hashSize": 10,
+      "usernameField": "email",
+      "passwordField": "password"
+    }
+  },
+  "mysql": {
+    "client": "mysql2",
+    "connection": {
+      "host": "DATABASE_HOST",
+      "port": "DATABASE_PORT",
+      "user": "DATABASE_USER",
+      "password": "DATABASE_PASS",
+      "database": "DATABASE_NAME"
+    }
+  },
+  "web": {
+    "name": "WEB_NAME",
+    "address": "WEB_ADDRESS",
+    "twitter": {
+      "name": "WEB_TWITTER_NAME",
+      "address": "WEB_TWITTER_URL"
+    }
+  },
+  "mail": {
+    "active": "MAIL_ACTIVE",
+    "from": "MAIL_FROM",
+    "host": "MAIL_HOST",
+    "domain": "MAIL_DOMAIN",
+    "api": "MAIL_API"
+  }
+}
