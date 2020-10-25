@@ -1,4 +1,4 @@
-# app-daytask-front
+# front
 
 ## Project setup
 ```

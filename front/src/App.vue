@@ -1,46 +1,35 @@
 <template>
-  <div
-    id="app"
-    class="task"
-    :class="{ 'show-toast': hasToast, 'show-settings': displaySettings }">
+  <div id="app">
 
-    <ToastHolder />
-    <AppSettings v-model="displaySettings" />
-    <StatusBar class="top" :status="appStatus" />
+    <navbar />
+
+    <select-bar v-if="showSelectBar" />
 
     <router-view />
 
-    <Footer />
+    <page-footer></page-footer>
 
   </div>
 </template>
 
 <script>
-import ToastHolder from './components/general/ToastHolder'
-import AppSettings from './components/AppSettings'
-import StatusBar from './components/general/StatusBar'
-import Footer from './components/general/Footer'
-import { mapState } from 'vuex'
+import selectBar from './components/selectBar'
+import pageFooter from './components/pageFooter'
+import navbar from './components/navbar'
+import { TYPES } from './constants'
 
 export default {
   name: 'App',
+
   components: {
-    AppSettings,
-    ToastHolder,
-    StatusBar,
-    Footer
+    selectBar,
+    navbar,
+    pageFooter
   },
-  data () {
-    return {
-      displaySettings: false
-    }
-  },
+
   computed: {
-    ...mapState({
-      appStatus: state => state.status
-    }),
-    hasToast: function () {
-      return this.$store.state.toasts.toasts.length > 0
+    showSelectBar () {
+      return !!(TYPES[this.$route.name] && TYPES[this.$route.name].store)
     }
   }
 }

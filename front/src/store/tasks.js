@@ -1,201 +1,165 @@
 import Vue from 'vue'
-import TaskService from '../services/TaskService.js'
-import general from '../constants/general'
-import helpers from '../services/Helpers'
-
-const allowedKeys = general.DEFAULT_TASK_HISTORY()
+import router from '../router'
+import { PROJECT, TASK } from '../constants';
+import HTTP from '../services/HttpService'
+import { get } from 'lodash-es'
 
 export default {
   namespaced: true,
   state: {
-    /** Current selected Task */
-    task: general.DEFAULT_TASK(-1),
-    /** Task array */
-    tasks: [], // todo: future freeze arrays of large size
-    /** Last API request config */
-    history: general.DEFAULT_TASK_HISTORY()
-  },
-  getters: {
-    /**
-     * Returns all finished tasks
-     *
-     * @param state
-     * @returns {Project[]}
-     */
-    tasksDone: (state) => state.tasks.filter(item => item.doneDate && item.doneDate.length > 5),
-    /**
-     * Returns all unfinished tasks
-     *
-     * @param state
-     * @returns {Project[]}
-     */
-    tasksNotDone: (state) => state.tasks.filter(item => !item.doneDate),
-    /**
-     * Returns a function to find a Task by ID
-     *
-     * @param {object}      state
-     * @param {number}      id
-     * @returns {function}
-     */
-    findTask: (state) => (id) => {
-      return state.tasks.find(item => item.id === id)
-    }
+    current: null,
+    total: 0,
+    items: [],
+    loading: false
   },
   mutations: {
+    setTotal: function (state, input) {
+      state.total = input
+    },
+    setLoading: function (state, input) {
+      state.loading = input
+    },
     /**
-     * Set the API request config
+     * Sets the current selected Task
      *
      * @param state
-     * @param {TaskHistory} input
+     * @param {object} input    task to set
      */
-    setHistory: (state, input) => {
-      if (!input) input = general.DEFAULT_TASK_HISTORY()
-
-      Object.entries(input).forEach(([key, value]) => {
-        if (allowedKeys[key] !== undefined) {
-          Vue.set(state.history, key, value)
-        }
-      })
+    setCurrent: function(state, input) {
+        state.current = input
     },
     /**
-     * Set the current Task
+     * Sets the Tasks
      *
      * @param state
-     * @param {Task}  input   task object
+     * @param {array} input   list of tasks
      */
-    setTask: (state, input) => {
-      Vue.set(state, 'task', input)
+    set: function (state, input) {
+      Vue.set(state, 'items', input)
     },
     /**
-     * Add a new task to the store
+     * Add a Task
      *
-     * @param {object}    state
-     * @param {Task}      input task obj
-     * @returns {Task}    new task
+     * @param state
+     * @param {object} input   project
      */
-    addTask: function (state, input) {
-      state.tasks.unshift(input)
-      return input
+    post: function (state, input) {
+      state.items.unshift(input)
     },
     /**
-     * Update a task item with an updated version
+     * Patch a Task via the id
      *
-     * @param {object}    state
-     * @param {Task}      input task
-     * @returns {Task}    new task
+     * @param state
+     * @param {object} input   task
      */
-    patchTask: function (state, input) {
-      for (let i = 0, max = state.tasks.length; i < max; i++) {
-        if (state.tasks[i].id === input.id) {
-          const newObj = Object.assign(state.tasks[i], input)
-          state.tasks.splice(i, 1, newObj)
-          return state.tasks[i]
+    patch: function (state, input) {
+      for (let i = 0; i < state.items.length; i++) {
+        if (state.items[i].id === input.id) {
+          Vue.set(state.items, i, input)
+          return
         }
       }
-    },
-    /**
-     * Replace a task item with an updated version
-     *
-     * @param {object}    state
-     * @param {Task}      input task
-     * @returns {Task}    new task
-     */
-    replaceTask: function (state, input) {
-      for (let i = 0, max = state.tasks.length; i < max; i++) {
-        if (state.tasks[i].id === input.id) {
-          state.tasks.splice(i, 1, input)
-          return state.tasks[i]
-        }
-      }
-
-      state.tasks.unshift(input)
-    },
-    /**
-     * Remove a task item
-     *
-     * @param {object}    state
-     * @param {Task}      input task
-     * @returns {Task}    task removed
-     */
-    removeTask: function (state, input) {
-      for (let i = 0, max = state.tasks.length; i < max; i++) {
-        if (state.tasks[i].id === input.id) {
-          state.tasks.splice(i, 1)
-          return input
-        }
-      }
-    },
-    /**
-     * Set tasks array
-     *
-     * @param {object}      state
-     * @param {Task[]}      input tasks
-     */
-    setTasks: function (state, input) {
-      if (!input) input = []
-      Vue.set(state, 'tasks', input)
     }
   },
   actions: {
     /**
-     * Creates a task item and adds to store
+     * Create a Task via the API
      *
-     * @param {object}      context
-     * @param {Task}        input task info
-     * @returns {promise}   new task
+     * @param context
+     * @param {object} input
+     * @return {Promise}
      */
-    create: function (context, input) {
-      return TaskService.create(input)
+    post: function (context, input) {
+      context.commit('setLoading', true)
+      return HTTP.post(TASK.API.POST, input)
         .then(res => {
-          return context.commit('addTask', res.data.data.task)
+          if (get(router.currentRoute, 'query.page')) return
+
+          context.commit('post',
+            get(res, 'data.data'))
         })
+        .finally(() => context.commit('setLoading', false))
     },
     /**
-     * Update a task item and store
+     * Patch a Task via the API
      *
-     * @param {object}      context
-     * @param {Task}        input task obj
-     * @returns {promise}   updated task
+     * @param context
+     * @param {object} input
+     * @return {Promise}
      */
-    update: function (context, input) {
-      return TaskService.update(input)
-        .then(res => {
-          let delayTime = 0
-          if (input.isDone !== undefined) delayTime = general.DELAY_SUCCESS
-          helpers.timeDelay(() => {
-            context.commit('replaceTask', res.data.data.task)
-          }, delayTime)
-        })
+    patch: function (context, input) {
+      context.commit('setLoading', true)
+      return HTTP.patch(TASK.API.PATCH + '/' + input.id, input)
+      .then(res => {
+        context.commit('patch',
+          get(res, 'data.data'))
+      })
+      .finally(() => context.commit('setLoading', false))
     },
     /**
-     * Remove a task item and remove from store
+     * Remove a Task via the API
      *
-     * @param {object}      context
-     * @param {Task}        input task obj
-     * @returns {promise}   removed task
+     * @param context
+     * @param {number} id
+     * @return {Promise}
      */
-    remove: function (context, input) {
-      return TaskService.remove(input)
-        .then(() => {
-          return context.commit('removeTask', input)
-        })
+    remove: function (context, id) {
+      context.commit('setLoading', true)
+      return HTTP.remove(TASK.API.DELETE + '/' + id)
+      .then(() => {
+        context.dispatch('get', router.currentRoute)
+      })
+      .finally(() => context.commit('setLoading', false))
     },
     /**
-     * Get all task items related to a project ID
+     * Get Tasks via the API
      *
-     * @param {object}    context
-     * @param {object}    input project id
-     * @returns {promise} all tasks
+     * @param context
+     * @param {object} input    input query
+     * @return {Promise}
      */
-    getTasksByProjectId: function (context, input) {
-      return TaskService.all(input)
-        .then(res => {
-          if (res.data.data.tasks.length > 0) {
-            context.commit('setTasks', res.data.data.tasks)
-          }
-          return res.data.data.tasks
-        })
+    get: function (context, input) {
+      context.commit('setLoading', true)
+      return HTTP.get(TASK.API.GET, { params: input.query })
+      .then(res => {
+        context.commit('set',
+          get(res, 'data.data'))
+        context.commit('setTotal',
+          get(res, 'data.total'))
+      })
+      .finally(() => context.commit('setLoading', false))
+    },
+    /**
+     * Get A Task via the API
+     *
+     * @param context
+     * @param {object} input    input query
+     * @return {Promise}
+     */
+    getById: function (context, input) {
+      context.commit('setLoading', true)
+      return HTTP.get(TASK.API.GET + '/' + input.id)
+      .finally(() => context.commit('setLoading', false))
     }
-    // for delayed/time consuming actions
   }
 }
+
+/**
+ * @typedef {object} Meta
+ *
+ * @property {date}     [created]     Date User was created
+ * @property {date}     [updated]     Date Users details last changed
+ * @property {date}     [login]       Date User logged in
+ * @property {boolean}  [verified]    If User has verified email
+ */
+
+/**
+ * @typedef {object} User
+ *
+ * @property {number}   [id]          Unique ID
+ * @property {string}   name          Name
+ * @property {string}   email         Email
+ * @property {string}   [password]    (Only used on creation)
+ * @property {string}   [role]        Role [anon | user | admin]
+ * @property {Meta}     [meta]        User meta details
+ */

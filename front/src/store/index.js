@@ -1,61 +1,117 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import user from './user.js'
-import toasts from './toasts.js'
 import tasks from './tasks.js'
+import plans from './plans.js'
 import projects from './projects.js'
-import status from '../constants/status'
-import helpers from '../services/Helpers'
-import general from '../constants/general'
+import { APP_VARS } from '../constants';
+
+const SORT_TYPE = 'sortType'
+const SORT_DIRECTION = 'sortDirection'
 
 Vue.use(Vuex)
 
+function initSort () {
+  const sortType = localStorage.getItem(SORT_TYPE) ||
+    APP_VARS.sort.types[0].value
+  const sortDirection = localStorage.getItem(SORT_DIRECTION) ||
+    APP_VARS.sort.direction[0].value
+
+  return {
+    type: sortType,
+    direction: Number(sortDirection)
+  }
+}
+
 export default new Vuex.Store({
   state: {
-    /**
-     * Status of the app ready state
-     * @returns {boolean}
-     */
-    ready: false,
-    /**
-     * Status of the app, eg success , error or loading/waiting on a API
-     * @returns {string}
-     */
-    status: status.CLEAR
-  },
-  getters: {
+    mode: {},
+    query: {},
+    opened: {},
+    sort: initSort()
   },
   mutations: {
     /**
-     * Sets current app ready state
+     * Sets the query sortType field
      *
-     * @param           state
-     * @param {boolean} input   app status
+     * @param state
+     * @param {object} input    sort option { text: direction }
      */
-    setReady: (state, input) => {
-      state.ready = input
+    setSortType: function(state, input) {
+      if (!input) {
+        input = null
+      }
+
+      Vue.set(state.sort, 'type', input)
+      localStorage.setItem(SORT_TYPE, input)
     },
     /**
-     * Sets current app loading bar status
+     * Sets the query sortDirection field
      *
-     * @param           state
-     * @param {string}  input   app status [WAITING,SUCCESS,ERROR]
+     * @param state
+     * @param {object} input    sort option { text: direction }
      */
-    setStatus: (state, input) => {
-      state.status = input
-      if (input !== status.CLEAR) {
-        helpers.timeDelay(() => {
-          state.status = status.CLEAR
-        }, general.DELAY_SUCCESS * 1.1)
+    setSortDirection: function(state, input) {
+      if (!input) {
+        input = null
       }
+
+      Vue.set(state.sort, 'direction', input)
+      localStorage.setItem(SORT_DIRECTION, input)
+    },
+    /**
+     * Sets the query item
+     *
+     * @param state
+     * @param {object} input    opened item
+     */
+    setQuery: function(state, input) {
+      if (!input) {
+        input = {}
+      }
+      state.query = input
+    },
+    /**
+     * Sets the opened item
+     *
+     * @param state
+     * @param {object} input    opened item
+     */
+    setOpened: function(state, input) {
+      if (!input) {
+        input = {}
+      }
+      state.opened = input
+    },
+    /**
+     * Set the current mode via index
+     *
+     * @param state
+     * @param {object} input
+     */
+    mode: function (state, input) {
+      Vue.set(state, 'mode', input)
+    },
+  },
+  getters: {
+    /**
+     * Returns a sort object to return to the API
+     *
+     * @param state
+     * @param getters
+     * @return {{$sort: {}}}
+     */
+    getSortObj: (state, getters) => {
+      const obj = {}
+      obj[state.sort.type] = state.sort.direction
+
+      return obj
     }
   },
-  actions: {
-  },
   modules: {
-    toasts,
     user,
     tasks,
+    plans,
     projects
   }
 })

@@ -1,31 +1,21 @@
 import Vue from 'vue'
 import App from './App.vue'
-import store from './store'
 import router from './router'
-import status from './constants/status'
-import './styles/index.scss'
+import store from './store'
+import Buefy from 'buefy'
+import 'buefy/dist/buefy.css'
+import './sass/index.scss'
+import Filters from './services/Filters'
 
-Vue.config.productionTip = true
+Vue.config.productionTip = false
+
+Filters(Vue)
+Vue.use(Buefy)
 
 new Vue({
   router,
   store,
-  render: h => h(App),
-  created () {
-    const userFound = this.$store.state.user.user
-    if (userFound.id < 0) return
-
-    let getUserAnonToken = Promise.resolve()
-    if (userFound.role === status.ANON) {
-      getUserAnonToken = this.$store.dispatch('user/getAnonToken')
-    }
-
-    // get latest data of user
-    return getUserAnonToken
-      .then(() => this.$store.dispatch('user/get'))
-      .then(() => {
-        this.$store.commit('setReady', true)
-      })
-      .catch(err => this.$store.commit('toasts/addToast', err))
-  }
+  render: h => h(App)
 }).$mount('#app')
+
+
