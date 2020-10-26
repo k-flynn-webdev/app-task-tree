@@ -22,7 +22,8 @@ const DATA = [
   'value',
   'is_done',
   'total',
-  'progress'
+  'progress',
+  'email'
 ]
 
 /**
