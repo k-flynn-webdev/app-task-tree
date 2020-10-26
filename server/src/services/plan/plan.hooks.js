@@ -16,6 +16,7 @@ const getPlan = require('../../hooks/get-plan')
 const getProject = require('../../hooks/get-project')
 const updatePlanProgress = require('../../hooks/update-plan-progress')
 const updateProjectProgress = require('../../hooks/update-project-progress')
+const onPlanDelete = require('../../hooks/on-plan-delete')
 
 module.exports = {
   before: {
@@ -84,7 +85,8 @@ module.exports = {
       //   updateProjectProgress('project.id')),
     ],
     remove: [
-      resultToData
+      resultToData,
+      onPlanDelete
       // getPlan('result.plan'),
       // getProject('result.project'),
       // updatePlanProgress('plan.id'),
