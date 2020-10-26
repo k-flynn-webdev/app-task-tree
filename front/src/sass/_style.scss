@@ -126,12 +126,15 @@ $app-pad-bottom: 1.5rem;
     //overflow: hidden;
   }
 
+  $topleft: 0.2rem;
+
   &__options {
-    margin: 0.5rem;
+    margin: 0 0.5rem;
+    margin-bottom: 1rem;
     padding: 0.5rem 1rem;
     display: none;
     position: fixed;
-    top: 0;
+    top: 0.5rem;
     right: 0;
     z-index: 100;
     min-width: 20rem;
@@ -148,8 +151,6 @@ $app-pad-bottom: 1.5rem;
       display: block;
     }
 
-    $topleft: 0.2rem;
-
     &-close {
       position: absolute;
       top: $topleft;
@@ -165,7 +166,7 @@ $app-pad-bottom: 1.5rem;
     }
 
     @include touch () {
-      top: 0;
+      top: 0.5rem;
       left: 0;
       right: 0;
       min-width: 15rem;
