@@ -50,7 +50,7 @@
         </div>
       </div>
 
-      <b-button class="mx-0 is-transparent"
+      <b-button class="mx-0 is-transparent hover"
                 @click="toggleEdit">
         <ic-option class="fill-light"
                    :class="{ 'color-alpha': isEdit }" />
@@ -59,12 +59,12 @@
     </div>
 
     <div v-if="isEdit" class="mt-2">
-      <b-button class="mx-3 mb-1 has-background-danger has-border-transparent"
+      <b-button class="mx-3 mb-1 has-background-danger has-border-transparent hover"
                 size="is-small"
                 @click="removeItem">
         <ic-delete class="fill-bg v-align-center is-large" />
       </b-button>
-      <b-button class="mx-3 mb-1 has-background-success has-border-transparent"
+      <b-button class="mx-3 mb-1 has-background-success has-border-transparent hover"
                 size="is-small"
                 :disabled="!allowEditSubmit"
                 @click="updateItem">

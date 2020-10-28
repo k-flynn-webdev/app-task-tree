@@ -30,7 +30,7 @@
 
         </b-navbar-item>
 
-        <b-button class="navbar__btn is-transparent"
+        <b-button class="navbar__btn is-transparent hover"
                   @click="isOpen = !isOpen">
           <icOption class="fill-light" />
         </b-button>

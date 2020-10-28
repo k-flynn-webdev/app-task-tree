@@ -2,7 +2,7 @@
 
   <div class="navbar__options">
 
-    <b-button class="navbar__options-close is-transparent"
+    <b-button class="navbar__options-close is-transparent hover"
               @click="onClose">
       <icClose class="is-medium" />
     </b-button>

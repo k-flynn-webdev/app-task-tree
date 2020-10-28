@@ -50,6 +50,8 @@ $link: $primary;
 $link-invert: $primary-invert;
 $link-focus-border: $primary;
 
+$border-size: 1rem/9;
+
 $radius-small: 2px !default;
 $radius: 4px !default;
 $radius-large: 6px !default;
@@ -61,7 +63,7 @@ $radius-large: 6px !default;
 
 @each $color, $value in $colors {
   .has-border-#{$color} {
-    border: 1px solid nth($value, 1);
+    border: $border-size solid nth($value, 1);
   }
 
   .fill-#{$color} {
@@ -72,6 +74,11 @@ $radius-large: 6px !default;
 .input,
 .box {
   background-color: $white;
+}
+
+button,
+.button {
+  border-width: $border-size;
 }
 
 .navbar {
