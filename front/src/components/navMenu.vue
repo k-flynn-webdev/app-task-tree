@@ -11,7 +11,16 @@
         <p class="title">User</p>
 
         <div class="control">
-          <btnLogout v-if="isLoggedIn" />
+          <template v-if="isLoggedIn">
+            <b-button class="mb-2"
+                      expanded
+                      type="is-secondary1"
+                      tag="router-link"
+                      :to="{ name: 'user' }">
+              User
+            </b-button>
+            <btnLogout/>
+          </template>
           <template v-else>
             <b-button class="mb-2"
                       expanded

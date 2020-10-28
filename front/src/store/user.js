@@ -1,9 +1,35 @@
 import Vue from 'vue'
+import { get } from 'lodash-es'
+import { USER } from '../constants';
+import HTTP from '../services/HttpService'
+
+const USER_LOCAL = 'user'
+
+/**
+ * Creates a default User Obj
+ *
+ * @return {User}
+ */
+const defaultUserObj = () => {
+  return {
+    id: -1,
+    name: null,
+    email: null,
+    role: null,
+    meta: null
+  }
+}
+
+function initGetUser () {
+  const userObj = localStorage.getItem(USER_LOCAL)
+  if (!userObj) return defaultUserObj()
+  return JSON.parse(userObj)
+}
 
 export default {
   namespaced: true,
   state: {
-    user: null,
+    user: initGetUser(),
     isLoggedIn: false
   },
   mutations: {
@@ -22,15 +48,27 @@ export default {
      * @param state
      * @param {object} input
      */
-    user: function (state, input) {
+    set: function (state, input) {
       Object.entries(input).forEach(([key, value]) => {
         Vue.set(state.user, key, value)
       })
+
+      localStorage.setItem(USER_LOCAL, JSON.stringify(state.user))
     },
   },
   actions: {
-  },
-  modules: {
+    /**
+     * Get User details via API
+     *
+     * @param context
+     * @return {Promise}
+     */
+    get: function (context) {
+      return HTTP.get(USER.API.GET)
+      .then(({ data }) => {
+        context.commit('set', data.user)
+      })
+    }
   }
 }
 

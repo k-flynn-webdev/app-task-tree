@@ -397,3 +397,9 @@ $app-pad-bottom: 1.5rem;
     }
   }
 }
+
+.user {
+  input[readonly] {
+    border-color: transparent;
+  }
+}

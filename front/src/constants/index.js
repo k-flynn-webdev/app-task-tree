@@ -50,6 +50,7 @@ export const RECOVER = {
 
 export const USER = {
   value: 'user',
+  store: 'user',
   route: { name: 'user', path: '/user' },
   API: {
     GET: '/api/users/me',

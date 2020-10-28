@@ -6,7 +6,7 @@ echo $script_location
 cd $script_location
 pwd
 
-rm -rf ../server2/public/*
+rm -rf ../server/public/*
 
-cp -R ./dist/ ../server2/public
+cp -R ./dist/ ../server/public
 
