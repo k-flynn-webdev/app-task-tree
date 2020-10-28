@@ -17,7 +17,7 @@
               <b-input v-model="input.email"
                        type="email"
                        minLength="5"
-                       :readonly="!isEdit"
+                       :disabled="!isEdit"
                        @input="updateEmail">
               </b-input>
             </b-field>
@@ -27,7 +27,7 @@
                        type="password"
                        minlength="8"
                        placeholder="********"
-                       :readonly="!isEdit"
+                       :disabled="!isEdit"
                        @input="updatePassword">
               </b-input>
             </b-field>
