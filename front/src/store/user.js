@@ -68,6 +68,19 @@ export default {
       .then(({ data }) => {
         context.commit('set', data.user)
       })
+    },
+    /**
+     * Patch User details via API
+     *
+     * @param context
+     * @param {object} input    object of changes
+     * @return {Promise}
+     */
+    patch: function (context, input) {
+      return HTTP.patch(`${USER.API.PATCH}/${context.state.user.id}`, input)
+      .then(({ data }) => {
+        context.commit('set', data.user)
+      })
     }
   }
 }

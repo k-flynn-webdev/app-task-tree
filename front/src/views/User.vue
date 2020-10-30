@@ -83,68 +83,6 @@
       </div>
     </div>
 
-    <!--    <div class="columns is-centered">-->
-
-<!--      <div class="column is-8 has-text-left">-->
-
-<!--        <div class="box">-->
-
-<!--          <p class="is-size-4 has-text-centered has-text-weight-bold">-->
-<!--            User-->
-<!--          </p>-->
-
-<!--          <div> {{ user }}</div>-->
-
-<!--          <form @submit.prevent="submitForm">-->
-
-<!--            <b-field label="Email"-->
-<!--                     :type="{ 'is-danger': email.errors.length > 0 }"-->
-<!--                     :message="email.errors">-->
-<!--              <b-input v-model="email.value"-->
-<!--                       type="email"-->
-<!--                       minLength="5"-->
-<!--                       @input="inputUpdate">-->
-<!--              </b-input>-->
-<!--            </b-field>-->
-
-<!--            <b-field label="Password"-->
-<!--                     :type="{ 'is-danger': password.errors.length > 0 }"-->
-<!--                     :message="password.errors">-->
-<!--              <b-input type="password"-->
-<!--                       minlength="8"-->
-<!--                       v-model="password.value"-->
-<!--                       @input="inputUpdate">-->
-<!--              </b-input>-->
-<!--            </b-field>-->
-
-<!--            <div class="columns is-gapless is-mobile is-vbottom">-->
-
-<!--              <div class="column">-->
-<!--                <router-link :to="{ name: 'login' }" class="has-text-link">-->
-<!--                  Login..-->
-<!--                </router-link>-->
-<!--              </div>-->
-
-<!--              <div class="column is-narrow">-->
-<!--                <b-button native-type="submit"-->
-<!--                          type="is-primary"-->
-<!--                          :disabled="isDisabled"-->
-<!--                          :loading="isLoading"-->
-<!--                          @click="submitForm">-->
-<!--                  Create-->
-<!--                </b-button>-->
-<!--              </div>-->
-
-<!--            </div>-->
-
-<!--          </form>-->
-
-<!--        </div>-->
-
-
-<!--      </div>-->
-<!--    </div>-->
-
   </section>
 </template>
 
@@ -212,7 +150,28 @@ export default {
       if (!this.isEdit) return
       if (!this.allowedEdit) return
       if (!this.hasChanges) return
+      if (this.isLoading) return
 
+      const newUser = {}
+      if (this.emailAllowed) newUser['email'] = this.input.email
+      if (this.passwordAllowed) newUser['password'] = this.input.password
+
+      this.isLoading = true
+
+      this.$store.dispatch(`${USER.store}/patch`, newUser)
+      .then(res => {
+        this.onEdit()
+        this.isEdit = false
+
+        this.$buefy.toast.open({
+          duration: 1500,
+          message: get(res, 'data.message', 'success'),
+          position: 'is-top',
+          type: 'is-success'
+        })
+      })
+      .catch(err => this.handleError(err))
+      .finally(() => this.isLoading = false)
     },
     getUser () {
       return this.$store.dispatch(`${USER.store}/get`)

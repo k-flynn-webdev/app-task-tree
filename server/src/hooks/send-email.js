@@ -4,7 +4,7 @@ const { BadRequest } = require('@feathersjs/errors');
 
 const createEmail = require('../templates/user-create-email')
 const recoverEmail = require('../templates/user-recover-email')
-const verifyEmail = require('../templates/user-recover-email')
+const verifyEmail = require('../templates/user-verify-email')
 
 const TEMPLATES = {
   create: createEmail,
