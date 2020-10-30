@@ -47,12 +47,12 @@ module.exports = {
   after: {
     all: [],
     find: [],
-    get: [ resultToData ],
-    create: [ resultToData ],
-    update: [ resultToData ],
-    patch: [ resultToData ],
+    get: [ resultToData() ],
+    create: [ resultToData() ],
+    update: [ resultToData() ],
+    patch: [ resultToData() ],
     remove: [
-      resultToData,
+      resultToData(),
       onProjectDelete
     ]
   },

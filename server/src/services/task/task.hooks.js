@@ -62,14 +62,14 @@ module.exports = {
     find: [],
     get: [ resultToData ],
     create: [
-      resultToData,
+      resultToData(),
       getPlan('data.plan'),
       getProject('plan.project'),
       updatePlanProgress('plan.id'),
       updateProjectProgress('project.id'),
     ],
     update: [
-      resultToData,
+      resultToData(),
       ifHasProperty('data.is_done', [
         getPlan('result.plan'),
         getProject('result.project'),
@@ -80,7 +80,7 @@ module.exports = {
       ])
     ],
     patch: [
-      resultToData,
+      resultToData(),
       ifHasProperty('data.is_done', [
         getPlan('result.plan'),
         getProject('result.project'),
@@ -91,7 +91,7 @@ module.exports = {
       ])
     ],
     remove: [
-      resultToData,
+      resultToData(),
       getPlan('result.plan'),
       getProject('result.project'),
       updatePlanProgress('plan.id'),

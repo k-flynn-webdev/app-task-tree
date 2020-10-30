@@ -4,13 +4,14 @@
 /**
  *  Add a data [propName] object to the payload
  *
- * @param {string} propName   Name of object data to be sent
+ * @param {string}  propName      Name of object data to be sent
+ * @param {boolean} clearResult   Clear previous result obj
  * @return {function(*): *}
  */
-module.exports = (propName= 'data') => {
+module.exports = (propName= 'data', clearResult = false) => {
   return context => {
     const dataObj = JSON.parse(JSON.stringify(context.result))
-    context.result = {}
+    if (clearResult) context.result = {}
     context.dispatch = {}
     context.dispatch[propName] = dataObj
 
