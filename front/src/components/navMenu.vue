@@ -17,7 +17,7 @@
                       type="is-secondary1"
                       tag="router-link"
                       :to="{ name: 'user' }">
-              User
+              {{ userName }}
             </b-button>
             <btnLogout/>
           </template>
@@ -79,6 +79,8 @@ import icClose from '../assets/icons/ic_cross'
 import btnLogout from '../components/btnLogout'
 import { APP_VARS } from '../constants'
 
+const maxNameLength = 15
+
 export default {
   name: 'navMenu',
 
@@ -100,6 +102,11 @@ export default {
     ...mapState('user',
         ['isLoggedIn', 'user']
     ),
+    userName () {
+      if (!this.user) return 'user'
+      const name = this.user.email.split('@')[0]
+      return name.length < maxNameLength ? name : name.slice(0,maxNameLength)
+    }
   },
 
   methods: {
