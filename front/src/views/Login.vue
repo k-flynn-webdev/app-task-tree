@@ -70,8 +70,7 @@
 </template>
 
 <script>
-import { LOGIN } from '../constants'
-import HTTP from '../services/HttpService'
+import { USER } from '../constants'
 import { get } from 'lodash-es'
 
 export default {
@@ -106,17 +105,19 @@ export default {
 
       this.isLoading = true
 
-      return HTTP.post(LOGIN.API.POST, {
+      const loginObj = {
         strategy: 'local',
         email: this.email.value,
         password: this.password.value
-      })
-      .then(res => {
+      }
+
+      return this.$store.dispatch(`${USER.store}/login`, loginObj)
+      .then(data => {
         this.isLoading = false
 
         this.$buefy.toast.open({
           duration: 1500,
-          message: get(res, 'data.message', 'success'),
+          message: get(data, 'message', 'success'),
           position: 'is-top',
           type: 'is-success'
         })
