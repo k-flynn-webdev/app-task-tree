@@ -77,6 +77,14 @@ $radius-large: 8px !default;
   border-radius: $radius;
 }
 
+.field {
+  .input[disabled],
+  input[disabled] {
+    background-color: white;
+    color: rgb(35, 35, 35) !important;
+  }
+}
+
 button,
 .button {
   border-width: $border-size;

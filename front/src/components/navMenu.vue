@@ -14,6 +14,7 @@
           <template v-if="isLoggedIn">
             <b-button class="mb-2"
                       expanded
+                      type="is-primary"
                       tag="router-link"
                       :to="{ name: 'user' }">
               {{ user.name }}
@@ -26,15 +27,16 @@
                       expanded
                       type="is-primary"
                       tag="router-link"
-                      :to="{ name: 'create' }">
-              Sign up
-            </b-button>
-            <b-button class="mb-2"
-                      expanded
-                      tag="router-link"
                       :to="{ name: 'login' }">
               Login
               <component v-bind:is="iconType" />
+            </b-button>
+
+            <b-button class="mb-2"
+                      expanded
+                      tag="router-link"
+                      :to="{ name: 'create' }">
+              Sign up
             </b-button>
           </template>
         </div>
