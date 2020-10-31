@@ -52,9 +52,9 @@ $link-focus-border: $primary;
 
 $border-size: 1rem/9;
 
-$radius-small: 2px !default;
-$radius: 4px !default;
-$radius-large: 6px !default;
+$radius-small: 3px !default;
+$radius: 6px !default;
+$radius-large: 8px !default;
 
 // Import Bulma and Buefy styles
 @import "~bulma";
@@ -74,6 +74,7 @@ $radius-large: 6px !default;
 .input,
 .box {
   background-color: $white;
+  border-radius: $radius;
 }
 
 button,
