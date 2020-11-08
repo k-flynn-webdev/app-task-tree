@@ -16,6 +16,7 @@ const getPlan = require('../../hooks/get-plan')
 const getProject = require('../../hooks/get-project')
 const updatePlanProgress = require('../../hooks/update-plan-progress')
 const updateProjectProgress = require('../../hooks/update-project-progress')
+const onPlanDelete = require('../../hooks/on-plan-delete')
 
 module.exports = {
   before: {
@@ -53,16 +54,16 @@ module.exports = {
   after: {
     all: [],
     find: [],
-    get: [ resultToData ],
+    get: [ resultToData() ],
     create: [
-      resultToData,
+      resultToData(),
       // getPlan('result.plan'),
       // getProject('result.project'),
       // updatePlanProgress('plan.id'),
       // updateProjectProgress('project.id'),
     ],
     update: [
-      resultToData,
+      resultToData(),
       // ifHasProperty('data.is_done',
       //   getPlan('result.plan')),
       // ifHasProperty('data.is_done',
@@ -73,7 +74,7 @@ module.exports = {
       //   updateProjectProgress('project.id')),
     ],
     patch: [
-      resultToData,
+      resultToData(),
       // ifHasProperty('data.is_done',
       //   getPlan('result.plan')),
       // ifHasProperty('data.is_done',
@@ -84,7 +85,8 @@ module.exports = {
       //   updateProjectProgress('project.id')),
     ],
     remove: [
-      resultToData
+      resultToData(),
+      onPlanDelete
       // getPlan('result.plan'),
       // getProject('result.project'),
       // updatePlanProgress('plan.id'),

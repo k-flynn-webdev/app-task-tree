@@ -1,6 +1,5 @@
 <template>
   <b-button class="mb-2"
-            type="is-primary"
             expanded
             :loading="isLoading"
             @click="submitForm">

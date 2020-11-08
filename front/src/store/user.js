@@ -1,9 +1,36 @@
 import Vue from 'vue'
+import { get } from 'lodash-es'
+import { USER, LOGIN } from '../constants';
+import HTTP from '../services/HttpService'
+
+const USER_LOCAL = 'user'
+const NAME_MAX_LENGTH = 15
+
+/**
+ * Creates a default User Obj
+ *
+ * @return {User}
+ */
+const defaultUserObj = () => {
+  return {
+    id: -1,
+    name: null,
+    email: null,
+    role: null,
+    meta: null
+  }
+}
+
+function initGetUser () {
+  const userObj = localStorage.getItem(USER_LOCAL)
+  if (!userObj) return defaultUserObj()
+  return JSON.parse(userObj)
+}
 
 export default {
   namespaced: true,
   state: {
-    user: null,
+    user: initGetUser(),
     isLoggedIn: false
   },
   mutations: {
@@ -22,34 +49,67 @@ export default {
      * @param state
      * @param {object} input
      */
-    user: function (state, input) {
+    set: function (state, input) {
       Object.entries(input).forEach(([key, value]) => {
         Vue.set(state.user, key, value)
       })
+
+      if (input.email) {
+        let name = input.email.split('@')[0]
+        name = name.length < NAME_MAX_LENGTH ?
+          name : (name.slice(0,NAME_MAX_LENGTH - 2) + '..')
+        Vue.set(state.user, 'name', name)
+      }
+
+      localStorage.setItem(USER_LOCAL, JSON.stringify(state.user))
     },
   },
   actions: {
-  },
-  modules: {
+    /**
+     * Login User via API
+     *
+     * @param context
+     * @param {Login}    input   login details
+     * @return {Promise}
+     */
+    login: function (context, input) {
+      return HTTP.post(LOGIN.API.POST, input)
+      .then(({ data }) => {
+        context.commit('set', data.user)
+      })
+    },
+    /**
+     * Get User details via API
+     *
+     * @param context
+     * @return {Promise}
+     */
+    get: function (context) {
+      return HTTP.get(USER.API.GET)
+      .then(({ data }) => {
+        context.commit('set', data.user)
+      })
+    },
+    /**
+     * Patch User details via API
+     *
+     * @param context
+     * @param {object} input    object of changes
+     * @return {Promise}
+     */
+    patch: function (context, input) {
+      return HTTP.patch(`${USER.API.PATCH}/${context.state.user.id}`, input)
+      .then(({ data }) => {
+        context.commit('set', data.user)
+      })
+    }
   }
 }
 
 /**
- * @typedef {object} Meta
+ * @typedef {object} Login
  *
- * @property {date}     [created]     Date User was created
- * @property {date}     [updated]     Date Users details last changed
- * @property {date}     [login]       Date User logged in
- * @property {boolean}  [verified]    If User has verified email
- */
-
-/**
- * @typedef {object} User
- *
- * @property {number}   [id]          Unique ID
- * @property {string}   name          Name
- * @property {string}   email         Email
- * @property {string}   [password]    (Only used on creation)
- * @property {string}   [role]        Role [anon | user | admin]
- * @property {Meta}     [meta]        User meta details
+ * @property {string}   strategy
+ * @property {string}   email
+ * @property {string}   password
  */

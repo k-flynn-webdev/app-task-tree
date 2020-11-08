@@ -10,7 +10,7 @@ const { BadRequest } = require('@feathersjs/errors')
  */
 const limitToOwner = (context) => {
 
-  if (context.params.user && context.id) {
+  if (context.params.user) {
 
     const userIsAdmin = context.params.user.role === 'admin'
     const userIdMatches = Number(context.id) === context.params.user.id

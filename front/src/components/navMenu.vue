@@ -2,7 +2,7 @@
 
   <div class="navbar__options">
 
-    <b-button class="navbar__options-close is-transparent"
+    <b-button class="navbar__options-close is-transparent hover"
               @click="onClose">
       <icClose class="is-medium" />
     </b-button>
@@ -11,20 +11,32 @@
         <p class="title">User</p>
 
         <div class="control">
-          <btnLogout v-if="isLoggedIn" />
+          <template v-if="isLoggedIn">
+            <b-button class="mb-2"
+                      expanded
+                      type="is-primary"
+                      tag="router-link"
+                      :to="{ name: 'user' }">
+              {{ user.name }}
+              <component v-bind:is="iconType" />
+            </b-button>
+            <btnLogout/>
+          </template>
           <template v-else>
             <b-button class="mb-2"
                       expanded
                       type="is-primary"
                       tag="router-link"
-                      :to="{ name: 'create' }">
-              Sign up
+                      :to="{ name: 'login' }">
+              Login
+              <component v-bind:is="iconType" />
             </b-button>
+
             <b-button class="mb-2"
                       expanded
                       tag="router-link"
-                      :to="{ name: 'login' }">
-              Login
+                      :to="{ name: 'create' }">
+              Sign up
             </b-button>
           </template>
         </div>
@@ -66,6 +78,9 @@
 
 <script>
 import { mapState } from 'vuex'
+import icUser from '../assets/icons/ic_user'
+import icUserAnon from '../assets/icons/ic_user_anon'
+import icUserNone from '../assets/icons/ic_user_none'
 import icClose from '../assets/icons/ic_cross'
 import btnLogout from '../components/btnLogout'
 import { APP_VARS } from '../constants'
@@ -74,11 +89,21 @@ export default {
   name: 'navMenu',
 
   components: {
+    icUser,
+    icUserAnon,
+    icUserNone,
     icClose,
     btnLogout,
   },
 
   computed: {
+    iconType () {
+      if (!this.isLoggedIn) return icUserNone
+      if (this.user.role === 'user') return icUser
+      if (this.user.role === 'anon') return icUserNone
+
+      return null
+    },
     appVars() { return APP_VARS },
     sortType: {
       get () { return this.$store.state.sort.type },
@@ -90,7 +115,7 @@ export default {
     },
     ...mapState('user',
         ['isLoggedIn', 'user']
-    ),
+    )
   },
 
   methods: {

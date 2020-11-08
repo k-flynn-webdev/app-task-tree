@@ -11,6 +11,7 @@ const setProjectFromPlan = require('../../hooks/set-project-from-plan')
 const timeStamp = require('../../hooks/time-stamp')
 const cleanData = require('../../hooks/clean-data')
 const ifHasProperty = require('../../hooks/if-has-property')
+const ifNotHasProperty = require('../../hooks/if-not-has-property')
 const allowedQueries = require('../../../constants/allowed-queries')
 
 const getPlan = require('../../hooks/get-plan')
@@ -42,7 +43,7 @@ module.exports = {
       cleanData(allowedQueries),
       itemValueValidate.update,
       itemIsDoneValidate,
-      timeStamp('updated_at'),
+      ifNotHasProperty('data.is_done', timeStamp('updated_at')),
       ifHasProperty('data.is_done', [ updateTaskIsDone ]),
     ],
     patch: [
@@ -50,7 +51,7 @@ module.exports = {
       // todo : allow ONLY [value & is_done] data property
       cleanData(allowedQueries),
       itemValueValidate.patch,
-      timeStamp('updated_at'),
+      ifNotHasProperty('data.is_done', timeStamp('updated_at')),
       ifHasProperty('data.is_done', [ updateTaskIsDone ]),
     ],
     remove: [ limitToOwner ]
@@ -61,14 +62,14 @@ module.exports = {
     find: [],
     get: [ resultToData ],
     create: [
-      resultToData,
+      resultToData(),
       getPlan('data.plan'),
       getProject('plan.project'),
       updatePlanProgress('plan.id'),
       updateProjectProgress('project.id'),
     ],
     update: [
-      resultToData,
+      resultToData(),
       ifHasProperty('data.is_done', [
         getPlan('result.plan'),
         getProject('result.project'),
@@ -79,7 +80,7 @@ module.exports = {
       ])
     ],
     patch: [
-      resultToData,
+      resultToData(),
       ifHasProperty('data.is_done', [
         getPlan('result.plan'),
         getProject('result.project'),
@@ -90,7 +91,7 @@ module.exports = {
       ])
     ],
     remove: [
-      resultToData,
+      resultToData(),
       getPlan('result.plan'),
       getProject('result.project'),
       updatePlanProgress('plan.id'),

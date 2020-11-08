@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section class="container user">
 
     <div class="columns is-centered">
 
@@ -11,54 +11,74 @@
             User
           </p>
 
-          <div> {{ user }}</div>
+          <form @submit.prevent="submitUser">
 
-<!--          <form @submit.prevent="submitForm">-->
+            <b-field label="Email">
+              <b-input v-model="input.email"
+                       type="email"
+                       minLength="5"
+                       :disabled="!isEdit"
+                       @input="updateEmail">
+              </b-input>
+            </b-field>
 
-<!--            <b-field label="Email"-->
-<!--                     :type="{ 'is-danger': email.errors.length > 0 }"-->
-<!--                     :message="email.errors">-->
-<!--              <b-input v-model="email.value"-->
-<!--                       type="email"-->
-<!--                       minLength="5"-->
-<!--                       @input="inputUpdate">-->
-<!--              </b-input>-->
-<!--            </b-field>-->
+            <b-field label="Password">
+              <b-input v-model="input.password"
+                       type="password"
+                       minlength="8"
+                       placeholder="********"
+                       :disabled="!isEdit"
+                       @input="updatePassword">
+              </b-input>
+            </b-field>
 
-<!--            <b-field label="Password"-->
-<!--                     :type="{ 'is-danger': password.errors.length > 0 }"-->
-<!--                     :message="password.errors">-->
-<!--              <b-input type="password"-->
-<!--                       minlength="8"-->
-<!--                       v-model="password.value"-->
-<!--                       @input="inputUpdate">-->
-<!--              </b-input>-->
-<!--            </b-field>-->
+            <div class="columns is-mobile">
+              <div class="column is-narrow">
+                <p>Role:</p>
+                <p>Created:</p>
+                <p>Updated:</p>
+                <p>Login:</p>
+              </div>
+              <div class="column">
+                <p>{{ user.role }}</p>
+                <p>{{ user | itemDate }}</p>
+                <p>{{ user | itemUpdate }}</p>
+                <p>{{ user | itemLogin }}</p>
+              </div>
+            </div>
 
-<!--            <div class="columns is-gapless is-mobile is-vbottom">-->
+            <br>
 
-<!--              <div class="column">-->
-<!--                <router-link :to="{ name: 'login' }" class="has-text-link">-->
-<!--                  Login..-->
-<!--                </router-link>-->
-<!--              </div>-->
+            <div class="columns is-gapless is-mobile is-vbottom">
+              <div class="column">
+                <b-button native-type="submit"
+                          type="is-primary"
+                          :disabled="!allowedEdit"
+                          @click="onEdit">
+                  Edit
+                </b-button>
+              </div>
+              <div class="column is-narrow">
+                <b-button native-type="submit"
+                          type="is-primary"
+                          :disabled="!hasChanges"
+                          :loading="isLoading"
+                          @click="submitUser">
+                  Update
+                </b-button>
+              </div>
+            </div>
 
-<!--              <div class="column is-narrow">-->
-<!--                <b-button native-type="submit"-->
-<!--                          type="is-primary"-->
-<!--                          :disabled="isDisabled"-->
-<!--                          :loading="isLoading"-->
-<!--                          @click="submitForm">-->
-<!--                  Create-->
-<!--                </b-button>-->
-<!--              </div>-->
-
-<!--            </div>-->
-
-<!--          </form>-->
+          </form>
 
         </div>
 
+        <div v-if="showResendVerify">
+          <b-button class="resend-link"
+                    @click="submitResendLink">
+            Resend verify email
+          </b-button>
+        </div>
 
       </div>
     </div>
@@ -67,40 +87,99 @@
 </template>
 
 <script>
-import { USER } from '../constants'
 import HTTP from '../services/HttpService'
+import { USER, VERIFY } from '../constants'
 import { get } from 'lodash-es'
+import { mapState } from 'vuex'
 
 export default {
   name: 'User',
 
   data () {
     return {
-      user: null,
-      isLoading: false
+      isEdit: false,
+      isLoading: false,
+      input : {
+        email: '',
+        password: ''
+      }
     }
   },
 
-  mounted () {
+  computed: {
+    showResendVerify () {
+      return !!(this.user.verify && this.user.role !== 'anon')
+    },
+    allowedEdit () {
+      return !!(!this.user.verify && this.user.role !== 'anon')
+    },
+    emailAllowed () {
+      return (this.input.email.length > 1 &&
+          this.input.email !== this.user.email)
+    },
+    passwordAllowed () {
+      return (this.input.password.length > 8)
+    },
+    hasChanges () {
+      return (this.emailAllowed || this.passwordAllowed)
+    },
+    ...mapState( USER.store,
+        { user: state => state.user })
+  },
+
+  created () {
     return this.getUser()
   },
 
   methods: {
-    getUser () {
-      return HTTP.get(USER.API.GET)
-        .then(res => this.user = res.data.user)
-        .catch(err => {
-          this.isLoading = false
+    onEdit () {
+      this.isEdit = !this.isEdit
+      this.input.email = this.user.email
+      this.input.password = ''
+    },
+    updateEmail (input) {
+      this.input.email = input
+    },
+    updatePassword (input) {
+      this.input.password = input
+    },
+    submitResendLink () {
+      return HTTP.get(VERIFY.API.GET + '?email=' + this.user.email)
+    },
+    submitUser () {
+      if (!this.isEdit) return
+      if (!this.allowedEdit) return
+      if (!this.hasChanges) return
+      if (this.isLoading) return
 
-          this.$buefy.toast.open({
-            duration: 5000,
-            message: get(err, 'response.data.message', 'error'),
-            position: 'is-top',
-            type: 'is-danger'
-          })
+      const newUser = {}
+      if (this.emailAllowed) newUser['email'] = this.input.email
+      if (this.passwordAllowed) newUser['password'] = this.input.password
 
-          throw err
+      this.isLoading = true
+
+      this.$store.dispatch(`${USER.store}/patch`, newUser)
+      .then(res => {
+        this.onEdit()
+        this.isEdit = false
+
+        this.$buefy.toast.open({
+          duration: 1500,
+          message: get(res, 'data.message', 'success'),
+          position: 'is-top',
+          type: 'is-success'
         })
+      })
+      .catch(err => this.handleError(err))
+      .finally(() => this.isLoading = false)
+    },
+    getUser () {
+      return this.$store.dispatch(`${USER.store}/get`)
+      .then(() => {
+        this.onEdit()
+        this.isEdit = false
+      })
+      .catch(err => this.handleError(err))
     },
     // inputUpdate () {
     //   this.isDisabled = true
@@ -109,43 +188,44 @@ export default {
     //
     //   this.isDisabled = false
     // },
-    submitForm () {
-      if (this.isDisabled) return
-      if (this.isLoading) return
+    // submitForm () {
+    //   if (this.isDisabled) return
+    //   if (this.isLoading) return
+    //
+    //   this.isLoading = true
+    //
+    //   return HTTP.post(USER.API.POST, {
+    //     email: this.email.value,
+    //     password: this.password.value
+    //   })
+    //   .then(res => {
+    //     this.isLoading = false
+    //
+    //     this.$buefy.toast.open({
+    //       duration: 1500,
+    //       message: get(res, 'data.message', 'success'),
+    //       position: 'is-top',
+    //       type: 'is-success'
+    //     })
+    //
+    //     // let self = this
+    //     // setTimeout(function () {
+    //     //   self.$router.push({ name: 'home' })
+    //     // }, 1.5 * 1000)
+    //   })
+    //   .catch(err => this.handleError(err))
+    // },
+    handleError (err) {
+      this.isLoading = false
 
-      this.isLoading = true
-
-      return HTTP.post(USER.API.POST, {
-        email: this.email.value,
-        password: this.password.value
+      this.$buefy.toast.open({
+        duration: 5000,
+        message: get(err, 'response.data.message', 'error'),
+        position: 'is-top',
+        type: 'is-danger'
       })
-      .then(res => {
-        this.isLoading = false
 
-        this.$buefy.toast.open({
-          duration: 1500,
-          message: get(res, 'data.message', 'success'),
-          position: 'is-top',
-          type: 'is-success'
-        })
-
-        // let self = this
-        // setTimeout(function () {
-        //   self.$router.push({ name: 'home' })
-        // }, 1.5 * 1000)
-      })
-      .catch(err => {
-        this.isLoading = false
-
-        this.$buefy.toast.open({
-          duration: 5000,
-          message: get(err, 'response.data.message', 'error'),
-          position: 'is-top',
-          type: 'is-danger'
-        })
-
-        throw err
-      })
+      throw err
     }
   }
 }

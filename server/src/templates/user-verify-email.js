@@ -7,7 +7,7 @@ const path = require('path')
 const templatePath = path.join(__dirname, '..', 'templates','dist','t_verify.html')
 const pugFn = pug.compileFile(templatePath)
 
-const getSubject = (ctx) => { return `Recently updated your account at updated your account at ${ctx.app.get('web').name}` }
+const getSubject = (ctx) => { return `Recently updated your account at ${ctx.app.get('web').name}` }
 const getLinkURL = (ctx, userData) => { return `${ctx.app.get('web').address}/verify/${userData.verify}` }
 const getEmailText = (ctx) => { return `Hello you've recently updated your account details at ${ctx.app.get('web').name}, to verify the changes visit the link.` }
 const getTextOnly = (ctx, userData) => { return `Hello you've recently updated your account details at ${ctx.app.get('web').name}, to verify the changes visit ${ctx.app.get('web').address}/verify/${userData.verify}` }

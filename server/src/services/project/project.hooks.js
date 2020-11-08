@@ -10,6 +10,7 @@ const setOwnerFromUser = require('../../hooks/set-owner-from-user')
 const timeStamp = require('../../hooks/time-stamp')
 const cleanData = require('../../hooks/clean-data')
 const allowedQueries = require('../../../constants/allowed-queries')
+const onProjectDelete = require('../../hooks/on-project-delete')
 
 module.exports = {
   before: {
@@ -46,11 +47,14 @@ module.exports = {
   after: {
     all: [],
     find: [],
-    get: [ resultToData ],
-    create: [ resultToData ],
-    update: [ resultToData ],
-    patch: [ resultToData ],
-    remove: [ resultToData ]
+    get: [ resultToData() ],
+    create: [ resultToData() ],
+    update: [ resultToData() ],
+    patch: [ resultToData() ],
+    remove: [
+      resultToData(),
+      onProjectDelete
+    ]
   },
 
   error: {

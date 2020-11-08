@@ -17,6 +17,7 @@ const userPostGetMe = require('../../hooks/user-post-get-me')
 const userIsVerified = require('../../hooks/user-is-verified')
 const userIsAnonRenewToken = require('../../hooks/user-is-anon-renew-token')
 const addMessage = require('../../hooks/add-message')
+const resultToData = require('../../hooks/result-to-data')
 
 module.exports = {
   before: {
@@ -76,12 +77,14 @@ module.exports = {
       addMessage('create')
     ],
     update: [
+      resultToData('user'),
       ifHasProperty('data.email', sendEmail('verify')),
-      addMessage('update', true)
+      addMessage('update')
     ],
     patch: [
+      resultToData('user'),
       ifHasProperty('data.email', sendEmail('verify')),
-      addMessage('update', true)
+      addMessage('update' ),
     ],
     remove: []
   },

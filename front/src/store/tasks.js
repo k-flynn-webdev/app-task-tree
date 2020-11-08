@@ -143,23 +143,3 @@ export default {
     }
   }
 }
-
-/**
- * @typedef {object} Meta
- *
- * @property {date}     [created]     Date User was created
- * @property {date}     [updated]     Date Users details last changed
- * @property {date}     [login]       Date User logged in
- * @property {boolean}  [verified]    If User has verified email
- */
-
-/**
- * @typedef {object} User
- *
- * @property {number}   [id]          Unique ID
- * @property {string}   name          Name
- * @property {string}   email         Email
- * @property {string}   [password]    (Only used on creation)
- * @property {string}   [role]        Role [anon | user | admin]
- * @property {Meta}     [meta]        User meta details
- */

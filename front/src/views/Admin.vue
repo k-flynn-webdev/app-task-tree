@@ -8,7 +8,7 @@
         <div class="box">
 
           <p class="is-size-4 has-text-centered has-text-weight-bold">
-            Login
+            Admin
           </p>
 
           <form @submit.prevent="submitForm">
@@ -74,7 +74,7 @@ import { USER } from '../constants'
 import { get } from 'lodash-es'
 
 export default {
-  name: 'Login',
+  name: 'Admin',
 
   data () {
     return {
