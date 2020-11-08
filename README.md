@@ -17,7 +17,7 @@ Aiming for easy sharing of projects and tasks among users and anon accounts via 
 - Simplified folder setup to help with `soc` choices.
 
 
-### Images:
+### Images (still wip):
 ![main](./docs/main.png?raw=true "main")
 ![options](./docs/options.png?raw=true "options")
 ![projects](./docs/projects.png?raw=true "projects")
