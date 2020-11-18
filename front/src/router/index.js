@@ -4,8 +4,10 @@ import userRoutes from './user'
 import itemRoutes from './items'
 import Home from '../views/Home.vue'
 
+import isAdminAPI from '@/services/isAdmin';
 import store from '../store/index'
 import { get } from 'lodash-es'
+
 
 Vue.use(VueRouter)
 
@@ -24,11 +26,13 @@ Vue.use(VueRouter)
     path: '/admin',
     name: 'admin',
     beforeEnter: (to, from, next) => {
-      if (get(store, 'state.user.user.role', 'none') === 'admin') {
-        next()
-      } else {
+      return isAdminAPI()
+      .then(isAdmin => {
+        if (isAdmin) return next()
+
         next ({ name: 'home' })
-      }
+      })
+      .catch(() => next({ name: 'home' }))
     },
     component: () => import(/* webpackChunkName: "admin" */ '../views/Admin.vue')
   },

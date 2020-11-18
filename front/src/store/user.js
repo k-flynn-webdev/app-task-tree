@@ -88,6 +88,7 @@ export default {
       return HTTP.get(USER.API.GET)
       .then(({ data }) => {
         context.commit('set', data.user)
+        return data.user
       })
     },
     /**
