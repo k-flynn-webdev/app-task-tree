@@ -1,11 +1,13 @@
 const assert = require('assert');
 const app = require('../src/app');
+const API_PREFIX = '/api/'
+
 
 describe('authentication', () => {
   it('registered the authentication service', () => {
-    assert.ok(app.service('authentication'));
+    assert.ok(app.service(API_PREFIX + 'authentication'));
   });
-  
+
   describe('local strategy', () => {
     const userInfo = {
       email: 'someone@example.com',
@@ -14,18 +16,18 @@ describe('authentication', () => {
 
     before(async () => {
       try {
-        await app.service('users').create(userInfo);
+        await app.service(API_PREFIX + 'users').create(userInfo);
       } catch (error) {
         // Do nothing, it just means the user already exists and can be tested
       }
     });
 
     it('authenticates user and creates accessToken', async () => {
-      const { user, accessToken } = await app.service('authentication').create({
+      const { user, accessToken } = await app.service(API_PREFIX + 'authentication').create({
         strategy: 'local',
         ...userInfo
       });
-      
+
       assert.ok(accessToken, 'Created access token for user');
       assert.ok(user, 'Includes user in authentication data');
     });

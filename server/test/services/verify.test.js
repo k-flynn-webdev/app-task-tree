@@ -1,14 +1,15 @@
 const { expect } = require('chai')
 const app = require('../../src/app')
+const API_PREFIX = '/api/'
 
 describe('\'verify\' service', () => {
   it('registered the service', () => {
-    const service = app.service('verify')
+    const service = app.service(API_PREFIX + 'verify')
 
     expect(service).to.not.be.undefined
   })
   it('should throw an error when the verify token mis-matches the users', () => {
-    const service = app.service('verify')
+    const service = app.service(API_PREFIX + 'verify')
     const verifyToken = 'tokenHere'
     const userObj = { id: 11, role: 'user', verify: 'longStringHere' }
 
@@ -21,7 +22,7 @@ describe('\'verify\' service', () => {
       })
   })
   it('should throw an error when user is already verified', () => {
-    const service = app.service('verify')
+    const service = app.service(API_PREFIX + 'verify')
     const verifyToken = 'tokenHere'
     const userObj = { id: 11, role: 'user', verify: null }
 
@@ -34,7 +35,7 @@ describe('\'verify\' service', () => {
       })
   })
   it('should error updating a user that doesnt exist', () => {
-    const service = app.service('verify')
+    const service = app.service(API_PREFIX + 'verify')
     const verifyToken = 'tokenHere'
     const userObj = { id: 11, role: 'user', verify: verifyToken }
 

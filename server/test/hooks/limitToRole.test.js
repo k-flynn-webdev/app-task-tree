@@ -1,10 +1,10 @@
 const { expect } = require('chai');
-const limitByRole = require('../../src/hooks/limit-by-role');
+const limitToRole = require('../../src/hooks/limit-to-role');
 
 
-describe('\'limit by role\' hook', () => {
+describe('\'limit to role\' hook', () => {
   it('Should not throw an error when the `context.params.user.role` matches', () => {
-    const hookTest = limitByRole('testRole');
+    const hookTest = limitToRole('testRole');
     const testCtx = { params: { user: { role: 'testRole' } }};
 
     const test = hookTest(testCtx);
@@ -12,7 +12,7 @@ describe('\'limit by role\' hook', () => {
     expect(test.errors).to.be.undefined;
   });
   it('Should throw an error when the `context.params.user.role` mis-matches', () => {
-    const hookTest = limitByRole('testRole');
+    const hookTest = limitToRole('testRole');
     const testCtx = { params: { user: { role: 'anotherRole' } }};
 
     const test = hookTest(testCtx);
