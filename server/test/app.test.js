@@ -30,7 +30,7 @@ describe('Feathers application tests', () => {
   });
 
   describe('404', function() {
-    it('shows a 404 HTML page', async () => {
+    it.skip('shows a 404 HTML page', async () => {
       try {
         await axios.get(getUrl('path/to/nowhere'), {
           headers: {
@@ -46,7 +46,7 @@ describe('Feathers application tests', () => {
       }
     });
 
-    it('shows a 404 JSON error without stack trace', async () => {
+    it.skip('shows a 404 JSON error without stack trace', async () => {
       try {
         await axios.get(getUrl('path/to/nowhere'), {
           json: true
