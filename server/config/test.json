@@ -1,4 +1,17 @@
 {
   "host": "127.0.0.2",
-  "port": "8601"
+  "port": "8601",
+  "mysql": {
+    "client": "mysql2",
+    "connection": {
+      "host": "DATABASE_HOST",
+      "port": "DATABASE_PORT",
+      "user": "DATABASE_USER_TEST",
+      "password": "DATABASE_PASS_TEST",
+      "database": "DATABASE_NAME_TEST"
+    }
+  },
+  "mail": {
+    "active": false
+  }
 }
