@@ -60,6 +60,18 @@ export const USER = {
   }
 }
 
+export const ADMIN = {
+  value: 'admin',
+  store: 'admin',
+  route: { name: 'admin', path: '/admin' },
+  API: {
+    GET: '/api/admin/me',
+    POST: '/api/admin',
+    PATCH: '/api/admin',
+    DELETE: '/api/admin',
+  }
+}
+
 export const PROJECT = {
   index: 3,
   text: 'projects',
@@ -135,3 +147,16 @@ export const TYPES = {
   task: TASK
 }
 
+export const ALL = {
+  LOGIN,
+  CREATE,
+  VERIFY,
+  RECOVER,
+  USER,
+  ADMIN,
+  PROJECT,
+  PLAN,
+  TASK,
+  HOME,
+  TYPES
+}

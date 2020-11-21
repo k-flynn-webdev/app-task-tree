@@ -7,14 +7,15 @@ import Home from '../views/Home.vue'
 import isAdminAPI from '@/services/isAdmin';
 import store from '../store/index'
 import { get } from 'lodash-es'
+import { ALL } from '../constants'
 
 
 Vue.use(VueRouter)
 
   const routes = [
   {
-    path: '/',
-    name: 'home',
+    path: ALL.HOME.route.path,
+    name: ALL.HOME.route.name,
     component: Home
   },
   {
@@ -23,16 +24,13 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/admin',
-    name: 'admin',
+    path: ALL.ADMIN.route.path,
+    name: ALL.ADMIN.route.name,
     beforeEnter: (to, from, next) => {
-      return isAdminAPI()
-      .then(isAdmin => {
-        if (isAdmin) return next()
+      const success = () => next()
+      const fail = () => next ({ name: ALL.HOME.route.name })
 
-        next ({ name: 'home' })
-      })
-      .catch(() => next({ name: 'home' }))
+      return isAdminAPI(success, fail)
     },
     component: () => import(/* webpackChunkName: "admin" */ '../views/Admin.vue')
   },

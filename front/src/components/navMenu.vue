@@ -18,7 +18,7 @@
                       tag="router-link"
                       :to="{ name: 'user' }">
               {{ user.name }}
-              <component v-bind:is="iconType" />
+              <component :is="iconType" />
             </b-button>
             <btnLogout/>
           </template>
@@ -29,7 +29,7 @@
                       tag="router-link"
                       :to="{ name: 'login' }">
               Login
-              <component v-bind:is="iconType" />
+              <component :is="iconType" />
             </b-button>
 
             <b-button class="mb-2"
@@ -83,7 +83,7 @@ import icUserAnon from '../assets/icons/ic_user_anon'
 import icUserNone from '../assets/icons/ic_user_none'
 import icClose from '../assets/icons/ic_cross'
 import btnLogout from '../components/btnLogout'
-import { APP_VARS } from '../constants'
+import { APP_VARS, USER, ADMIN } from '../constants'
 
 export default {
   name: 'navMenu',
@@ -99,7 +99,8 @@ export default {
   computed: {
     iconType () {
       if (!this.isLoggedIn) return icUserNone
-      if (this.user.role === 'user') return icUser
+      if (this.user.role === ADMIN.value) return icUserAnon
+      if (this.user.role === USER.value) return icUser
       if (this.user.role === 'anon') return icUserNone
 
       return null
@@ -119,6 +120,9 @@ export default {
   },
 
   methods: {
+    /**
+     * Emit close event
+     */
     onClose () {
       this.$emit('close')
     }
