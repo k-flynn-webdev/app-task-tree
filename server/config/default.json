@@ -2,7 +2,7 @@
   "host": "APP_IP",
   "port": "APP_PORT",
   "public": "../public/",
-  "apiPath": "/api",
+  "apiPrefix": "APP_API_PREFIX",
   "paginate": {
     "default": 20,
     "max": 50
