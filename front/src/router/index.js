@@ -5,8 +5,6 @@ import itemRoutes from './items'
 import Home from '../views/Home.vue'
 
 import isAdminAPI from '@/services/isAdmin';
-import store from '../store/index'
-import { get } from 'lodash-es'
 import { ALL } from '../constants'
 
 
