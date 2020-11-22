@@ -11,6 +11,15 @@
             Admin
           </p>
 
+          <div>
+            Projects: {{ totalProjects }}
+          </div>
+          <div>
+            Plans: {{ totalPlans }}
+          </div>
+          <div>
+            Tasks: {{ totalTasks }}
+          </div>
         </div>
 
       </div>
@@ -20,7 +29,8 @@
 </template>
 
 <script>
-import { ADMIN } from '../constants'
+import { ADMIN, PROJECT, PLAN, TASK } from '../constants'
+import HTTP from '../services/HttpService'
 import { get } from 'lodash-es'
 
 export default {
@@ -28,10 +38,41 @@ export default {
 
   data () {
     return {
+      totals: {
+        projects: 0,
+        plans: 0,
+        tasks: 0,
+      }
     }
   },
 
+  computed: {
+    totalProjects () {
+      return this.totals.projects
+    },
+    totalPlans () {
+      return this.totals.plans
+    },
+    totalTasks () {
+      return this.totals.tasks
+    },
+
+  },
+
+  created () {
+    return this.getTotals()
+  },
+
   methods: {
+    getTotals () {
+      const query = { params: { $limit: 0, showAll: true } }
+      ;[PROJECT, PLAN, TASK].forEach(item => {
+        return HTTP.get(item.API.GET, query)
+        .then(({ data }) => {
+          this.totals[item.text] = data.total
+        })
+      })
+    }
   }
 }
 </script>

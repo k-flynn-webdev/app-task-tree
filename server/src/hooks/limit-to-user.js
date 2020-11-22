@@ -8,7 +8,7 @@ const { BadRequest } = require('@feathersjs/errors')
  *
  * @return {function(*): *}
  */
-const limitToOwner = (context) => {
+const limitToUser = (context) => {
 
   if (context.params.user) {
 
@@ -27,4 +27,4 @@ const limitToOwner = (context) => {
   return context
 }
 
-module.exports = limitToOwner
+module.exports = limitToUser

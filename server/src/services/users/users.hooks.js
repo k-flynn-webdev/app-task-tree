@@ -6,7 +6,7 @@ const ifHasProperty = require('../../hooks/if-has-property')
 const sendEmail = require('../../hooks/send-email')
 const timeStamp = require('../../hooks/time-stamp')
 const limitToRole = require('../../hooks/limit-to-role')
-const limitToOwner = require('../../hooks/limit-to-owner')
+const limitToUser = require('../../hooks/limit-to-user')
 const createNanoId = require('../../hooks/create-nano-id')
 const emailIsUnique = require('../../hooks/email-is-unique')
 const userValidate = require('../../hooks/user-validate')
@@ -29,7 +29,7 @@ module.exports = {
     get: [
       authenticate('jwt'),
       userPreGetMe,
-      limitToOwner
+      limitToUser
     ],
     create: [
       userValidate.create,
@@ -42,7 +42,7 @@ module.exports = {
     update: [
       userValidate.create,
       authenticate('jwt'),
-      limitToOwner,
+      limitToUser,
       userIsVerified,
       hashPassword('password'),
       timeStamp('updated_at'),
@@ -51,7 +51,7 @@ module.exports = {
     patch: [
       userValidate.patch,
       authenticate('jwt'),
-      limitToOwner,
+      limitToUser,
       userIsVerified,
       hashPassword('password'),
       timeStamp('updated_at'),
@@ -59,7 +59,7 @@ module.exports = {
     ],
     remove: [
       authenticate('jwt'),
-      limitToOwner
+      limitToUser
     ]
   },
 

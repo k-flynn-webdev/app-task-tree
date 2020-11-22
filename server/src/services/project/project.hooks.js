@@ -1,6 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
 
-const limitToOwner = require('../../hooks/limit-to-project-owner')
+const queryOwnerFromUser = require('../../hooks/query-owner-from-user')
 const itemValueValidate = require('../../hooks/item-value-validate')
 const resultToData = require('../../hooks/result-to-data')
 const setOwnerFromUser = require('../../hooks/set-owner-from-user')
@@ -13,10 +13,10 @@ module.exports = {
   before: {
     all: [ authenticate('jwt') ],
     find: [
-      limitToOwner,
+      queryOwnerFromUser,
     ],
     get: [
-      limitToOwner,
+      queryOwnerFromUser,
     ],
     create: [
       cleanData(allowedQueries),
@@ -26,19 +26,19 @@ module.exports = {
     ],
     update: [
       // todo : allow ONLY value data property
-      limitToOwner,
+      queryOwnerFromUser,
       cleanData(allowedQueries),
       itemValueValidate.update,
       timeStamp('updated_at')
     ],
     patch: [
       // todo : allow ONLY value data property
-      limitToOwner,
+      queryOwnerFromUser,
       cleanData(allowedQueries),
       itemValueValidate.patch,
       timeStamp('updated_at')
     ],
-    remove: [ limitToOwner ]
+    remove: [ queryOwnerFromUser ]
   },
 
   after: {

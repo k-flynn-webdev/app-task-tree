@@ -10,7 +10,8 @@ const SPECIALS = [
   '$gt',
   '$gte',
   '$ne',
-  '$or'
+  '$or',
+  'showAll'
 ]
 
 const DATA = [
