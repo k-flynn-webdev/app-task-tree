@@ -20,6 +20,9 @@
           <div>
             Tasks: {{ totalTasks }}
           </div>
+          <div>
+            Users: {{ totalUsers }}
+          </div>
         </div>
 
       </div>
@@ -42,6 +45,7 @@ export default {
         projects: 0,
         plans: 0,
         tasks: 0,
+        users: 0
       }
     }
   },
@@ -56,7 +60,9 @@ export default {
     totalTasks () {
       return this.totals.tasks
     },
-
+    totalUsers () {
+      return this.totals.users
+    },
   },
 
   created () {
@@ -66,7 +72,8 @@ export default {
   methods: {
     getTotals () {
       const query = { params: { $limit: 0, showAll: true } }
-      ;[PROJECT, PLAN, TASK].forEach(item => {
+      const USER = { API: { GET: '/api/users' }, text: 'users' }
+      ;[PROJECT, PLAN, TASK, USER].forEach(item => {
         return HTTP.get(item.API.GET, query)
         .then(({ data }) => {
           this.totals[item.text] = data.total

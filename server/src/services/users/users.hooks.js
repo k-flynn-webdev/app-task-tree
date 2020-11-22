@@ -2,6 +2,7 @@ const { authenticate } = require('@feathersjs/authentication').hooks
 const { hashPassword, protect
 } = require('@feathersjs/authentication-local').hooks
 
+const queryOwnerFromUser = require('../../hooks/query-owner-from-user')
 const ifHasProperty = require('../../hooks/if-has-property')
 const sendEmail = require('../../hooks/send-email')
 const timeStamp = require('../../hooks/time-stamp')
@@ -24,7 +25,8 @@ module.exports = {
     all: [],
     find: [
       authenticate('jwt'),
-      limitToRole('admin')
+      limitToRole('admin'),
+      queryOwnerFromUser,
     ],
     get: [
       authenticate('jwt'),
