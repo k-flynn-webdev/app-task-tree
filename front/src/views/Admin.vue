@@ -11,18 +11,13 @@
             Admin
           </p>
 
-          <div>
-            Projects: {{ totalProjects }}
+          <div class="is-flex flex-space-around">
+              <p>Projects ({{ totalProjects }})</p>
+              <p>Plans ({{ totalPlans }})</p>
+              <p>Tasks ({{ totalTasks }})</p>
+              <p>Users ({{ totalUsers }})</p>
           </div>
-          <div>
-            Plans: {{ totalPlans }}
-          </div>
-          <div>
-            Tasks: {{ totalTasks }}
-          </div>
-          <div>
-            Users: {{ totalUsers }}
-          </div>
+
         </div>
 
       </div>
