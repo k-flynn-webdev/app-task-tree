@@ -12,9 +12,38 @@
           </p>
 
           <b-tabs
+              v-model="tab"
               type="is-toggle"
               expanded>
-            <b-tab-item :label="usersLabel"></b-tab-item>
+            <b-tab-item :label="usersLabel">
+
+              <table style="width: 100%;">
+                <thead>
+                <tr>
+                  <td>ID</td>
+                  <td>Role</td>
+                  <td>Email</td>
+                  <td>Login_at</td>
+                  <td>Created_at</td>
+                  <td>Updated_at</td>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in users"
+                      :key="item.id">
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.role }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item | itemLogin(true,true,true) }}</td>
+                    <td>{{ item | itemDate(true,true,true) }}</td>
+                    <td>{{ item | itemUpdate(true,true,true) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+<!--              <user-edit />-->
+
+            </b-tab-item>
             <b-tab-item :label="projectsLabel"></b-tab-item>
             <b-tab-item :label="plansLabel"></b-tab-item>
             <b-tab-item :label="tasksLabel"></b-tab-item>
@@ -29,6 +58,7 @@
 </template>
 
 <script>
+import userEdit from '../components/admin/userEdit'
 import { ADMIN, PROJECT, PLAN, TASK } from '../constants'
 import HTTP from '../services/HttpService'
 import { get } from 'lodash-es'
@@ -36,46 +66,60 @@ import { get } from 'lodash-es'
 export default {
   name: 'Admin',
 
+  components: {
+    userEdit
+  },
+
   data () {
     return {
-      tab: null,
+      tab: undefined,
       totals: {
         projects: 0,
         plans: 0,
         tasks: 0,
         users: 0
-      }
+      },
+      users: []
     }
   },
 
   computed: {
     projectsLabel () {
-      return `Projects ${this.totals.projects}`
+      return `Projects (${this.totals.projects})`
     },
     plansLabel () {
-      return `Plans ${this.totals.plans}`
+      return `Plans (${this.totals.plans})`
     },
     tasksLabel () {
-      return `Tasks ${this.totals.tasks}`
+      return `Tasks (${this.totals.tasks})`
     },
     usersLabel () {
-      return `Users ${this.totals.users}`
+      return `Users (${this.totals.users})`
     },
   },
 
   created () {
-    return this.getTotals()
+    return this.getUsers()
+    .then(() => this.getTotals())
   },
 
   methods: {
     getTotals () {
-      const query = { params: { $limit: 0, showAll: true } }
       const USER = { API: { GET: '/api/users' }, text: 'users' }
+      const query = { params: { $limit: 0, showAll: true } }
       ;[PROJECT, PLAN, TASK, USER].forEach(item => {
         return HTTP.get(item.API.GET, query)
         .then(({ data }) => {
           this.totals[item.text] = data.total
         })
+      })
+    },
+    getUsers () {
+      const USER = { API: { GET: '/api/users' }, text: 'users' }
+      const query = { params: { $limit: 20, showAll: true } }
+      return HTTP.get(USER.API.GET, query)
+      .then(({ data }) => {
+        this.users = data.data
       })
     }
   }
