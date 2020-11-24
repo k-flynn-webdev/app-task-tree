@@ -11,12 +11,14 @@
             Admin
           </p>
 
-          <div class="is-flex flex-space-around">
-              <p>Projects ({{ totalProjects }})</p>
-              <p>Plans ({{ totalPlans }})</p>
-              <p>Tasks ({{ totalTasks }})</p>
-              <p>Users ({{ totalUsers }})</p>
-          </div>
+          <b-tabs
+              type="is-toggle"
+              expanded>
+            <b-tab-item :label="usersLabel"></b-tab-item>
+            <b-tab-item :label="projectsLabel"></b-tab-item>
+            <b-tab-item :label="plansLabel"></b-tab-item>
+            <b-tab-item :label="tasksLabel"></b-tab-item>
+          </b-tabs>
 
         </div>
 
@@ -36,6 +38,7 @@ export default {
 
   data () {
     return {
+      tab: null,
       totals: {
         projects: 0,
         plans: 0,
@@ -46,17 +49,17 @@ export default {
   },
 
   computed: {
-    totalProjects () {
-      return this.totals.projects
+    projectsLabel () {
+      return `Projects ${this.totals.projects}`
     },
-    totalPlans () {
-      return this.totals.plans
+    plansLabel () {
+      return `Plans ${this.totals.plans}`
     },
-    totalTasks () {
-      return this.totals.tasks
+    tasksLabel () {
+      return `Tasks ${this.totals.tasks}`
     },
-    totalUsers () {
-      return this.totals.users
+    usersLabel () {
+      return `Users ${this.totals.users}`
     },
   },
 

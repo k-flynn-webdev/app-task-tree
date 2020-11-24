@@ -13,10 +13,10 @@ module.exports = {
   before: {
     all: [ authenticate('jwt') ],
     find: [
-      queryOwnerFromUser,
+      queryOwnerFromUser(true),
     ],
     get: [
-      queryOwnerFromUser,
+      queryOwnerFromUser(true),
     ],
     create: [
       cleanData(allowedQueries),
@@ -26,19 +26,19 @@ module.exports = {
     ],
     update: [
       // todo : allow ONLY value data property
-      queryOwnerFromUser,
+      queryOwnerFromUser(true),
       cleanData(allowedQueries),
       itemValueValidate.update,
       timeStamp('updated_at')
     ],
     patch: [
       // todo : allow ONLY value data property
-      queryOwnerFromUser,
+      queryOwnerFromUser(true),
       cleanData(allowedQueries),
       itemValueValidate.patch,
       timeStamp('updated_at')
     ],
-    remove: [ queryOwnerFromUser ]
+    remove: [ queryOwnerFromUser(true) ]
   },
 
   after: {

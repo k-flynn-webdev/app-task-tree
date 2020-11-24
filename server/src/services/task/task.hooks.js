@@ -23,10 +23,10 @@ module.exports = {
   before: {
     all: [ authenticate('jwt') ],
     find: [
-      queryOwnerFromUser,
+      queryOwnerFromUser(true),
     ],
     get: [
-      queryOwnerFromUser,
+      queryOwnerFromUser(true),
     ],
     create: [
       cleanData(allowedQueries),
@@ -37,7 +37,7 @@ module.exports = {
       timeStamp('created_at')
     ],
     update: [
-      queryOwnerFromUser,
+      queryOwnerFromUser(true),
       // todo : allow ONLY [value & is_done] data property
       cleanData(allowedQueries),
       itemValueValidate.update,
@@ -46,14 +46,14 @@ module.exports = {
       ifHasProperty('data.is_done', [ updateTaskIsDone ]),
     ],
     patch: [
-      queryOwnerFromUser,
+      queryOwnerFromUser(true),
       // todo : allow ONLY [value & is_done] data property
       cleanData(allowedQueries),
       itemValueValidate.patch,
       ifNotHasProperty('data.is_done', timeStamp('updated_at')),
       ifHasProperty('data.is_done', [ updateTaskIsDone ]),
     ],
-    remove: [ queryOwnerFromUser ]
+    remove: [ queryOwnerFromUser(true) ]
   },
 
   after: {

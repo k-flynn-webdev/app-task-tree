@@ -26,7 +26,7 @@ module.exports = {
     find: [
       authenticate('jwt'),
       limitToRole('admin'),
-      queryOwnerFromUser,
+      queryOwnerFromUser(false),
     ],
     get: [
       authenticate('jwt'),
