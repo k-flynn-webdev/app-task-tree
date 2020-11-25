@@ -17,29 +17,35 @@
               expanded>
             <b-tab-item :label="usersLabel">
 
-              <table style="width: 100%;">
-                <thead>
-                <tr>
-                  <td>ID</td>
-                  <td>Role</td>
-                  <td>Email</td>
-                  <td>Login_at</td>
-                  <td>Created_at</td>
-                  <td>Updated_at</td>
-                </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in users"
-                      :key="item.id">
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.role }}</td>
-                    <td>{{ item.email }}</td>
-                    <td>{{ item | itemLogin(true,true,true) }}</td>
-                    <td>{{ item | itemDate(true,true,true) }}</td>
-                    <td>{{ item | itemUpdate(true,true,true) }}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <b-table
+                  :data="users.data"
+                  :columns="users.columns"
+                  focusable>
+              </b-table>
+
+<!--              <table style="width: 100%;">-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                  <td>ID</td>-->
+<!--                  <td>Role</td>-->
+<!--                  <td>Email</td>-->
+<!--                  <td>Login_at</td>-->
+<!--                  <td>Created_at</td>-->
+<!--                  <td>Updated_at</td>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                  <tr v-for="item in users"-->
+<!--                      :key="item.id">-->
+<!--                    <td>{{ item.id }}</td>-->
+<!--                    <td>{{ item.role }}</td>-->
+<!--                    <td>{{ item.email }}</td>-->
+<!--                    <td>{{ item | itemLogin(true,true,true) }}</td>-->
+<!--                    <td>{{ item | itemDate(true,true,true) }}</td>-->
+<!--                    <td>{{ item | itemUpdate(true,true,true) }}</td>-->
+<!--                  </tr>-->
+<!--                </tbody>-->
+<!--              </table>-->
 
 <!--              <user-edit />-->
 
@@ -79,7 +85,17 @@ export default {
         tasks: 0,
         users: 0
       },
-      users: []
+      users: {
+        data: [],
+        columns: [
+          { field: 'id', label: 'ID' },
+          { field: 'role', label: 'Role' },
+          { field: 'email', label: 'Email' },
+          { field: 'login_at', label: 'Login' },
+          { field: 'created_at', label: 'Created' },
+          { field: 'updated_at', label: 'Updated' },
+        ]
+      }
     }
   },
 
@@ -119,7 +135,7 @@ export default {
       const query = { params: { $limit: 20, showAll: true } }
       return HTTP.get(USER.API.GET, query)
       .then(({ data }) => {
-        this.users = data.data
+        this.users.data = data.data
       })
     }
   }
