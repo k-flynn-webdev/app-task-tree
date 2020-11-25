@@ -18,6 +18,9 @@
             <b-tab-item :label="usersLabel">
 
               <b-table
+                  striped
+                  narrowed
+                  scrollable
                   :data="users.data"
                   :columns="users.columns"
                   focusable>
