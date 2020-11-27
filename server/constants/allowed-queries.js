@@ -16,6 +16,7 @@ const SPECIALS = [
 
 const DATA = [
   'id',
+  'role',
   'owner',
   'project',
   'plan',

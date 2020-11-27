@@ -15,47 +15,41 @@
               v-model="tab"
               type="is-toggle"
               expanded>
-            <b-tab-item :label="usersLabel">
+            <b-tab-item :label="usersLabel"
+                        :value="tabs[0]">
+
+              <div class="is-flex flex-space-between mb-2">
+                <span>Selected id: {{ users.selected ? users.selected.id : 'none' }}</span>
+
+                <label>
+                  JSON:
+                  <input type="text"
+                         v-model="users.query"
+                         @change="getUsers">
+                </label>
+
+                <div class="buttons">
+                  <b-button size="is-small" :disabled="!users.selected">
+                    Edit
+                  </b-button>
+                </div>
+              </div>
 
               <b-table
                   striped
-                  narrowed
                   scrollable
                   :data="users.data"
                   :columns="users.columns"
-                  focusable>
-              </b-table>
-
-<!--              <table style="width: 100%;">-->
-<!--                <thead>-->
-<!--                <tr>-->
-<!--                  <td>ID</td>-->
-<!--                  <td>Role</td>-->
-<!--                  <td>Email</td>-->
-<!--                  <td>Login_at</td>-->
-<!--                  <td>Created_at</td>-->
-<!--                  <td>Updated_at</td>-->
-<!--                </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                  <tr v-for="item in users"-->
-<!--                      :key="item.id">-->
-<!--                    <td>{{ item.id }}</td>-->
-<!--                    <td>{{ item.role }}</td>-->
-<!--                    <td>{{ item.email }}</td>-->
-<!--                    <td>{{ item | itemLogin(true,true,true) }}</td>-->
-<!--                    <td>{{ item | itemDate(true,true,true) }}</td>-->
-<!--                    <td>{{ item | itemUpdate(true,true,true) }}</td>-->
-<!--                  </tr>-->
-<!--                </tbody>-->
-<!--              </table>-->
-
-<!--              <user-edit />-->
+                  :selected.sync="users.selected"
+              />
 
             </b-tab-item>
-            <b-tab-item :label="projectsLabel"></b-tab-item>
-            <b-tab-item :label="plansLabel"></b-tab-item>
-            <b-tab-item :label="tasksLabel"></b-tab-item>
+            <b-tab-item :label="projectsLabel"
+                        :value="tabs[1]"></b-tab-item>
+            <b-tab-item :label="plansLabel"
+                        :value="tabs[2]"></b-tab-item>
+            <b-tab-item :label="tasksLabel"
+                        :value="tabs[3]"></b-tab-item>
           </b-tabs>
 
         </div>
@@ -82,6 +76,7 @@ export default {
   data () {
     return {
       tab: undefined,
+      tabs: ['users', 'projects', 'plans', 'tasks'],
       totals: {
         projects: 0,
         plans: 0,
@@ -89,6 +84,9 @@ export default {
         users: 0
       },
       users: {
+        loading: false,
+        query: '',
+        selected: null,
         data: [],
         columns: [
           { field: 'id', label: 'ID' },
@@ -117,12 +115,23 @@ export default {
     },
   },
 
+  watch: {
+    'tab': {
+      handler: 'getItems',
+      immediate: true
+    }
+  },
+
   created () {
-    return this.getUsers()
-    .then(() => this.getTotals())
+    return this.getTotals()
   },
 
   methods: {
+    getItems () {
+      if (this.tab === this.tabs[0] || !this.tab) {
+        return this.getUsers()
+      }
+    },
     getTotals () {
       const USER = { API: { GET: '/api/users' }, text: 'users' }
       const query = { params: { $limit: 0, showAll: true } }
@@ -134,12 +143,31 @@ export default {
       })
     },
     getUsers () {
+      if (this.users.loading) return
+
       const USER = { API: { GET: '/api/users' }, text: 'users' }
       const query = { params: { $limit: 20, showAll: true } }
+
+      if (this.users.query.toString().length > 0) {
+        query.params = Object.assign(query.params, JSON.parse(this.users.query))
+      }
+
+      this.users.loading = true
+
       return HTTP.get(USER.API.GET, query)
       .then(({ data }) => {
-        this.users.data = data.data
+        this.users.data = data.data.reduce((acc, current) => {
+          current.login_at = this.$options.filters.itemLogin(current, true,true,true)
+          current.created_at = this.$options.filters.itemDate(current, true,true,true)
+          current.updated_at = this.$options.filters.itemUpdate(current, true,true,true)
+
+          acc.push(current)
+
+          return acc
+        }, [])
+        this.users.loading = false
       })
+      .finally(() => this.users.loading = false)
     }
   }
 }
