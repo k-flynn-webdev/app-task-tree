@@ -3,7 +3,7 @@
 
     <div class="columns is-centered">
 
-      <div class="column is-8 has-text-left">
+      <div class="column is-12 has-text-left">
 
         <div class="box">
 
@@ -145,6 +145,13 @@
             </b-tab-item>
           </b-tabs>
 
+          <b-pagination
+              v-model="current"
+              simple
+              :total="pageTotal"
+              :per-page="perPage"
+          />
+
         </div>
 
       </div>
@@ -172,6 +179,8 @@ export default {
     return {
       tab: undefined,
       tabs: ['users', 'projects', 'plans', 'tasks'],
+      perPage: 20,
+      skip: 0,
       totals: {
         projects: 0,
         plans: 0,
@@ -247,6 +256,9 @@ export default {
   },
 
   computed: {
+    pageTotal () {
+      return this.totals[this.tab]
+    },
     projectsLabel () {
       return `Projects (${this.totals.projects})`
     },
@@ -263,7 +275,10 @@ export default {
 
   watch: {
     'tab': {
-      handler: 'getItems',
+      handler: function () {
+        this.skip = 0
+        return this.getItems()
+      },
       immediate: true
     }
   },
