@@ -19,17 +19,20 @@
                         :value="tabs[0]">
 
               <div class="is-flex flex-space-between mb-2">
-                <span>Selected id: {{ users.selected ? users.selected.id : 'none' }}</span>
+                <span>Selected id:
+                  {{ users.selected ? users.selected.id : 'none' }}
+                </span>
 
                 <label>
                   JSON:
                   <input type="text"
                          v-model="users.query"
-                         @change="getUsers">
+                         @change="getItems">
                 </label>
 
                 <div class="buttons">
-                  <b-button size="is-small" :disabled="!users.selected">
+                  <b-button size="is-small"
+                            :disabled="!users.selected">
                     Edit
                   </b-button>
                 </div>
@@ -45,11 +48,101 @@
 
             </b-tab-item>
             <b-tab-item :label="projectsLabel"
-                        :value="tabs[1]"></b-tab-item>
+                        :value="tabs[1]">
+
+              <div class="is-flex flex-space-between mb-2">
+                <span>Selected id:
+                  {{ projects.selected ? projects.selected.id : 'none' }}
+                </span>
+
+                <label>
+                  JSON:
+                  <input type="text"
+                         v-model="projects.query"
+                         @change="getItems">
+                </label>
+
+                <div class="buttons">
+                  <b-button size="is-small"
+                            :disabled="!projects.selected">
+                    Edit
+                  </b-button>
+                </div>
+              </div>
+
+              <b-table
+                  striped
+                  scrollable
+                  :data="projects.data"
+                  :columns="projects.columns"
+                  :selected.sync="projects.selected"
+              />
+
+            </b-tab-item>
             <b-tab-item :label="plansLabel"
-                        :value="tabs[2]"></b-tab-item>
+                        :value="tabs[2]">
+
+              <div class="is-flex flex-space-between mb-2">
+                <span>Selected id:
+                  {{ plans.selected ? plans.selected.id : 'none' }}
+                </span>
+
+                <label>
+                  JSON:
+                  <input type="text"
+                         v-model="plans.query"
+                         @change="getItems">
+                </label>
+
+                <div class="buttons">
+                  <b-button size="is-small"
+                            :disabled="!plans.selected">
+                    Edit
+                  </b-button>
+                </div>
+              </div>
+
+              <b-table
+                  striped
+                  scrollable
+                  :data="plans.data"
+                  :columns="plans.columns"
+                  :selected.sync="plans.selected"
+              />
+
+            </b-tab-item>
             <b-tab-item :label="tasksLabel"
-                        :value="tabs[3]"></b-tab-item>
+                        :value="tabs[3]">
+
+              <div class="is-flex flex-space-between mb-2">
+                <span>Selected id:
+                  {{ tasks.selected ? tasks.selected.id : 'none' }}
+                </span>
+
+                <label>
+                  JSON:
+                  <input type="text"
+                         v-model="tasks.query"
+                         @change="getItems">
+                </label>
+
+                <div class="buttons">
+                  <b-button size="is-small"
+                            :disabled="!tasks.selected">
+                    Edit
+                  </b-button>
+                </div>
+              </div>
+
+              <b-table
+                  striped
+                  scrollable
+                  :data="tasks.data"
+                  :columns="tasks.columns"
+                  :selected.sync="tasks.selected"
+              />
+
+            </b-tab-item>
           </b-tabs>
 
         </div>
@@ -63,6 +156,8 @@
 <script>
 import userEdit from '../components/admin/userEdit'
 import { ADMIN, PROJECT, PLAN, TASK } from '../constants'
+const USER = { API: { GET: '/api/users' }, text: 'users' }
+
 import HTTP from '../services/HttpService'
 import { get } from 'lodash-es'
 
@@ -82,6 +177,57 @@ export default {
         plans: 0,
         tasks: 0,
         users: 0
+      },
+      projects: {
+        loading: false,
+        query: '',
+        data: [],
+        columns: [
+          { field: 'id', label: 'ID' },
+          { field: 'owner', label: 'Owner' },
+          { field: 'progress', label: 'Progress' },
+          { field: 'total', label: 'Total' },
+          { field: 'is_done', label: 'isDone' },
+          { field: 'done_at', label: 'Done' },
+          { field: 'created_at', label: 'Created' },
+          { field: 'updated_at', label: 'Updated' },
+          { field: 'value', label: 'Value' },
+        ]
+      },
+      plans: {
+        loading: false,
+        query: '',
+        data: [],
+        columns: [
+          { field: 'id', label: 'ID' },
+          { field: 'owner', label: 'Owner' },
+          { field: 'project', label: 'Project' },
+          { field: 'progress', label: 'Progress' },
+          { field: 'total', label: 'Total' },
+          { field: 'is_done', label: 'isDone' },
+          { field: 'done_at', label: 'Done' },
+          { field: 'created_at', label: 'Created' },
+          { field: 'updated_at', label: 'Updated' },
+          { field: 'value', label: 'Value' },
+        ]
+      },
+      tasks: {
+        loading: false,
+        query: '',
+        data: [],
+        columns: [
+          { field: 'id', label: 'ID' },
+          { field: 'owner', label: 'Owner' },
+          { field: 'project', label: 'Project' },
+          { field: 'plan', label: 'Plan' },
+          { field: 'progress', label: 'Progress' },
+          { field: 'total', label: 'Total' },
+          { field: 'is_done', label: 'isDone' },
+          { field: 'done_at', label: 'Done' },
+          { field: 'created_at', label: 'Created' },
+          { field: 'updated_at', label: 'Updated' },
+          { field: 'value', label: 'Value' },
+        ]
       },
       users: {
         loading: false,
@@ -128,12 +274,19 @@ export default {
 
   methods: {
     getItems () {
-      if (this.tab === this.tabs[0] || !this.tab) {
-        return this.getUsers()
+      if (this.tab === this.tabs[1]) {
+        return this.getWrapper(PROJECT)
       }
+      if (this.tab === this.tabs[2]) {
+        return this.getWrapper(PLAN)
+      }
+      if (this.tab === this.tabs[3]) {
+        return this.getWrapper(TASK)
+      }
+
+      return this.getWrapper(USER)
     },
     getTotals () {
-      const USER = { API: { GET: '/api/users' }, text: 'users' }
       const query = { params: { $limit: 0, showAll: true } }
       ;[PROJECT, PLAN, TASK, USER].forEach(item => {
         return HTTP.get(item.API.GET, query)
@@ -142,32 +295,44 @@ export default {
         })
       })
     },
-    getUsers () {
-      if (this.users.loading) return
+    /**
+     * A simple wrapper to do the API call and update local data for a [type]
+     *
+     * @param {object} type     Type obj containing API and value
+     * @return {Promise<boolean>|void}
+     */
+    getWrapper (type) {
+      if (this[type.text].loading) return
 
-      const USER = { API: { GET: '/api/users' }, text: 'users' }
       const query = { params: { $limit: 20, showAll: true } }
 
-      if (this.users.query.toString().length > 0) {
-        query.params = Object.assign(query.params, JSON.parse(this.users.query))
+      if (this[type.text].query.toString().length > 0) {
+        query.params = Object.assign(query.params, JSON.parse(this[type.text].query))
       }
 
-      this.users.loading = true
+      this[type.text].loading = true
 
-      return HTTP.get(USER.API.GET, query)
+      return HTTP.get(type.API.GET, query)
       .then(({ data }) => {
-        this.users.data = data.data.reduce((acc, current) => {
-          current.login_at = this.$options.filters.itemLogin(current, true,true,true)
-          current.created_at = this.$options.filters.itemDate(current, true,true,true)
-          current.updated_at = this.$options.filters.itemUpdate(current, true,true,true)
-
+        this[type.text].data = data.data.reduce((acc, current) => {
+          if (current.login_at) {
+            current.login_at = this.$options.filters.itemLogin(current, true,true,true)
+          }
+          if (current.created_at) {
+            current.created_at = this.$options.filters.itemDate(current, true,true,true)
+          }
+          if (current.updated_at) {
+            current.updated_at = this.$options.filters.itemUpdate(current, true,true,true)
+          }
+          if (current.done_at) {
+            current.done_at = this.$options.filters.itemDone(current, true,true,true)
+          }
           acc.push(current)
 
           return acc
         }, [])
-        this.users.loading = false
       })
-      .finally(() => this.users.loading = false)
+      .finally(() => this[type.text].loading = false)
     }
   }
 }
