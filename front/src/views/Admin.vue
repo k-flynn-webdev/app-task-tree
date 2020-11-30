@@ -146,11 +146,24 @@
           </b-tabs>
 
           <b-pagination
-              v-model="current"
+              v-model="pageCurrent"
               simple
-              :total="pageTotal"
+              :total="pageTotals"
               :per-page="perPage"
-          />
+          >
+            <b-button slot="previous"
+                      class="previous"
+                      :disabled="pageCurrent <= 1"
+                      @click="pageCurrent = pageCurrent - 1">
+              <
+            </b-button>
+            <b-button slot="next"
+                      class="next"
+                      :disabled="pageCurrent + 1 >= pageMax"
+                      @click="pageCurrent = pageCurrent + 1">
+              >
+            </b-button>
+          </b-pagination>
 
         </div>
 
@@ -177,7 +190,7 @@ export default {
 
   data () {
     return {
-      tab: undefined,
+      tab: 'users',
       tabs: ['users', 'projects', 'plans', 'tasks'],
       perPage: 20,
       skip: 0,
@@ -190,6 +203,7 @@ export default {
       projects: {
         loading: false,
         query: '',
+        page: 1,
         data: [],
         columns: [
           { field: 'id', label: 'ID' },
@@ -206,6 +220,7 @@ export default {
       plans: {
         loading: false,
         query: '',
+        page: 1,
         data: [],
         columns: [
           { field: 'id', label: 'ID' },
@@ -223,6 +238,7 @@ export default {
       tasks: {
         loading: false,
         query: '',
+        page: 1,
         data: [],
         columns: [
           { field: 'id', label: 'ID' },
@@ -241,6 +257,7 @@ export default {
       users: {
         loading: false,
         query: '',
+        page: 1,
         selected: null,
         data: [],
         columns: [
@@ -256,8 +273,19 @@ export default {
   },
 
   computed: {
-    pageTotal () {
+    pageTotals () {
       return this.totals[this.tab]
+    },
+    pageCurrent: {
+      get: function () {
+        return this[this.tab].page
+      },
+      set: function (value) {
+        this[this.tab].page = value
+      }
+    },
+    pageMax () {
+      return Math.floor(this.totals[this.tab] / this.perPage)
     },
     projectsLabel () {
       return `Projects (${this.totals.projects})`
@@ -277,9 +305,13 @@ export default {
     'tab': {
       handler: function () {
         this.skip = 0
+        this.pageCurrent = 1
         return this.getItems()
       },
       immediate: true
+    },
+    pageCurrent () {
+      return this.getItems()
     }
   },
 
@@ -313,13 +345,19 @@ export default {
     /**
      * A simple wrapper to do the API call and update local data for a [type]
      *
-     * @param {object} type     Type obj containing API and value
+     * @param {Object} type     Type obj containing API and value
      * @return {Promise<boolean>|void}
      */
     getWrapper (type) {
       if (this[type.text].loading) return
 
-      const query = { params: { $limit: 20, showAll: true } }
+      const query = {
+        params: {
+          $limit: 20,
+          $skip: (this.pageCurrent - 1) * this.perPage,
+          showAll: true
+        }
+      }
 
       if (this[type.text].query.toString().length > 0) {
         query.params = Object.assign(query.params, JSON.parse(this[type.text].query))
