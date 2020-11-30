@@ -159,7 +159,7 @@
             </b-button>
             <b-button slot="next"
                       class="next"
-                      :disabled="pageCurrent + 1 >= pageMax"
+                      :disabled="pageCurrent > pageMax"
                       @click="pageCurrent = pageCurrent + 1">
               >
             </b-button>
