@@ -44,6 +44,10 @@ module.exports = (project) => {
     }
 
     context.app.service(paths.project)._patch(projectId, projectData)
+      .catch(err => {
+        context.app.log(err)
+        return context
+      })
 
     // future todo
     // if (context.project) {

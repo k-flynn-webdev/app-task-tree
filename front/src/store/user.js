@@ -62,7 +62,7 @@ export default {
       }
 
       localStorage.setItem(USER_LOCAL, JSON.stringify(state.user))
-    },
+    }
   },
   actions: {
     /**
@@ -103,6 +103,16 @@ export default {
       .then(({ data }) => {
         context.commit('set', data.user)
       })
+    },
+    /**
+     * Remove User via API
+     *
+     * @param context
+     * @param {object} input    object of changes
+     * @return {Promise}
+     */
+    remove: function (context, input) {
+      return HTTP.remove(`${USER.API.DELETE}/${context.state.user.id}`)
     }
   }
 }

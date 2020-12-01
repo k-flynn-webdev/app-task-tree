@@ -23,6 +23,10 @@ module.exports = (plan) => {
     const paths = context.app.get('constants').path
 
     const planObj = await context.app.service(paths.plan)._get(planId)
+      .catch(err => {
+        context.app.log(err)
+        return context
+      })
 
     context.plan = planObj
 

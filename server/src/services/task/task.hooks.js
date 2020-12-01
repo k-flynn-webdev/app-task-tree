@@ -41,7 +41,6 @@ module.exports = {
       // todo : allow ONLY [value & is_done] data property
       cleanData(allowedQueries),
       itemValueValidate.update,
-      itemIsDoneValidate,
       ifNotHasProperty('data.is_done', timeStamp('updated_at')),
       ifHasProperty('data.is_done', [ updateTaskIsDone ]),
     ],
