@@ -237,6 +237,7 @@ export default {
         loading: false,
         query: '',
         page: 1,
+        total: 0,
         data: [],
         columns: [
           { field: 'id', label: 'ID' },
@@ -254,6 +255,7 @@ export default {
         loading: false,
         query: '',
         page: 1,
+        total: 0,
         data: [],
         columns: [
           { field: 'id', label: 'ID' },
@@ -272,6 +274,7 @@ export default {
         loading: false,
         query: '',
         page: 1,
+        total: 0,
         data: [],
         columns: [
           { field: 'id', label: 'ID' },
@@ -291,6 +294,7 @@ export default {
         loading: false,
         query: '',
         page: 1,
+        total: 0,
         selected: null,
         data: [],
         columns: [
@@ -316,7 +320,7 @@ export default {
       return this[this.tab].selected
     },
     pageTotals () {
-      return this.totals[this.tab]
+      return this[this.tab].total
     },
     pageCurrent: {
       get: function () {
@@ -327,7 +331,7 @@ export default {
       }
     },
     pageMax () {
-      return Math.floor(this.totals[this.tab] / this.perPage)
+      return Math.floor(this[this.tab].total / this.perPage)
     },
     projectsLabel () {
       return `Projects (${this.totals.projects})`
@@ -409,6 +413,8 @@ export default {
 
       return HTTP.get(type.API.GET, query)
       .then(({ data }) => {
+        this[this.tab].total = data.total
+
         this[type.text].data = data.data.reduce((acc, current) => {
           if (current.login_at) {
             current.login_at = this.$options.filters.itemLogin(current, true,true,true)
