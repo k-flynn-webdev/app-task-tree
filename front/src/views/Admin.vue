@@ -20,6 +20,15 @@
               Admin
             </p>
 
+            <div>
+              Recent activity:
+            </div>
+            <div>
+              live data
+            </div>
+
+            <br>
+
             <b-tabs
                 v-model="tab"
                 type="is-toggle"
