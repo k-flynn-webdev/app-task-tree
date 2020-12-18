@@ -25,7 +25,7 @@ const sendEmail = (template) => {
 
     if (!TEMPLATES[template]) {
       const err = new BadRequest('Template does not exist', {})
-      context.app.log(err)
+      context.app.log_error(err)
       throw err
     }
 
@@ -33,8 +33,8 @@ const sendEmail = (template) => {
     const emailToSend = TEMPLATES[template](context, context.result)
 
     return context.app.service(constants.path.email).create(emailToSend)
-      .then(res => context.app.log(res))
-      .catch(err => context.app.log(err))
+      .then(res => context.app.log_error(res))
+      .catch(err => context.app.log_error(err))
   }
 }
 

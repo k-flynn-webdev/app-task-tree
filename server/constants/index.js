@@ -36,6 +36,7 @@ const AUTHENTICATION = 'authentication'
 const PROJECT = 'projects'
 const PLAN = 'plans'
 const TASK = 'tasks'
+const ADMINLATEST = 'adminLatest'
 
 const ALL_PATHS = {
   EMAIL,
@@ -45,7 +46,8 @@ const ALL_PATHS = {
   AUTHENTICATION,
   PROJECT,
   PLAN,
-  TASK
+  TASK,
+  ADMINLATEST
 }
 
 /**

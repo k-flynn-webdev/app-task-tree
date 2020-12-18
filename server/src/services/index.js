@@ -8,6 +8,9 @@ const project = require('./project/project.service.js')
 const admin = require('./admin/admin.service.js')
 
 
+const adminLatest = require('./admin-latest/admin-latest.service.js');
+
+
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
   app.configure(users)
@@ -18,4 +21,5 @@ module.exports = function (app) {
   app.configure(plan)
   app.configure(project)
   app.configure(admin)
+  app.configure(adminLatest);
 }

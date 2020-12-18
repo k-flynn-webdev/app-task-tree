@@ -23,7 +23,7 @@ module.exports = (project) => {
     const paths = context.app.get('constants').path
     const projectObj = await context.app.service(paths.project)._get(projectId)
       .catch(err => {
-        context.app.log(err)
+        context.app.log_error(err)
         return context
       })
 

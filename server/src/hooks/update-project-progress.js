@@ -45,7 +45,7 @@ module.exports = (project) => {
 
     context.app.service(paths.project)._patch(projectId, projectData)
       .catch(err => {
-        context.app.log(err)
+        context.app.log_error(err)
         return context
       })
 

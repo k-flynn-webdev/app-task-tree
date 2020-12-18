@@ -24,7 +24,7 @@ module.exports = (plan) => {
 
     const planObj = await context.app.service(paths.plan)._get(planId)
       .catch(err => {
-        context.app.log(err)
+        context.app.log_error(err)
         return context
       })
 

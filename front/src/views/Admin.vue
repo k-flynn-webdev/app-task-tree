@@ -1,12 +1,12 @@
 <template>
 
-  <div>
+  <div class="admin">
 
     <crud-modal :is-open="isOpen"
                 :api="itemAPI"
                 :fields="itemFields"
                 :item="itemSelected"
-              @close="isOpen = false" />
+                @close="isOpen = false" />
 
     <section class="container">
 
@@ -23,11 +23,13 @@
             <div>
               Recent activity:
             </div>
-            <div>
-              live data
+            <div class="admin__activity box">
+              <div v-for="(item, idx) in activity"
+                   :key="idx"
+                   class="activity__item">
+                {{ item }}
+              </div>
             </div>
-
-            <br>
 
             <b-tabs
                 v-model="tab"
@@ -201,8 +203,27 @@
 </template>
 
 <script>
+import { get } from 'lodash-es'
+// import { io } from 'socket.io-client'
+import HTTP from '../services/HttpService'
 import crudModal from '../components/admin/crudModal'
 import { ADMIN, PROJECT, PLAN, TASK } from '../constants'
+
+// const socket = io({
+//   // path: '/ws',
+//     // {
+//   extraHeaders: { Authorization: `Bearer ${HTTP.getToken()}` },
+//   transports: ["websocket"],
+//   autoConnect: false,
+//   upgrade: true,
+// // {
+//   transportOptions: {
+//     polling: {
+//       extraHeaders: { Authorization: `Bearer ${HTTP.getToken()}` }
+//     }
+//   }
+// })
+
 const USER = {
   API: {
     GET: '/api/users',
@@ -219,9 +240,6 @@ const ALL = {
   USER
 }
 
-import HTTP from '../services/HttpService'
-import { get } from 'lodash-es'
-
 export default {
   name: 'Admin',
 
@@ -231,6 +249,7 @@ export default {
 
   data () {
     return {
+      socketFunc: null,
       tab: 'users',
       tabs: ['users', 'projects', 'plans', 'tasks'],
       perPage: 20,
@@ -242,6 +261,7 @@ export default {
         tasks: 0,
         users: 0
       },
+      activity: [],
       projects: {
         loading: false,
         query: '',
@@ -372,6 +392,12 @@ export default {
 
   created () {
     return this.getTotals()
+    .then(() => {
+      return HTTP.get('/api/adminlatest')
+      .then(({ data }) => {
+        this.activity = data.data
+      })
+    })
   },
 
   methods: {
@@ -390,12 +416,16 @@ export default {
     },
     getTotals () {
       const query = { params: { $limit: 0, showAll: true } }
+      const promises = []
+
       ;[PROJECT, PLAN, TASK, USER].forEach(item => {
-        return HTTP.get(item.API.GET, query)
+        promises.push(HTTP.get(item.API.GET, query)
         .then(({ data }) => {
           this.totals[item.text] = data.total
-        })
+        }))
       })
+
+      return Promise.all(promises)
     },
     /**
      * A simple wrapper to do the API call and update local data for a [type]
