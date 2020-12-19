@@ -27,7 +27,7 @@
               <div v-for="(item, idx) in activity"
                    :key="idx"
                    class="activity__item">
-                {{ item }}
+                {{ item.time }} | {{ item.msg }}
               </div>
             </div>
 

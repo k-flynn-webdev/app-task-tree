@@ -13,6 +13,7 @@ module.exports = (message) => {
     const userIdResult = get(context, 'result.user.id', null)
     const userIdParam = get(context, 'params.user.id', null)
     const userIdAlt = get(context, 'user.id', null)
+    const itemId = get(context, 'result.id', 'x')
     if (userIdResult || userIdParam || userIdAlt) {
       if(userIdResult) user_id = userIdResult
       if(userIdParam) user_id = userIdParam
@@ -20,9 +21,9 @@ module.exports = (message) => {
     }
 
     if (user_id) {
-      context.app.log.activity(`user - ${user_id} - ${message}`)
+      context.app.log.activity(`user - ${user_id} - ${message} - ${itemId}`)
     } else {
-      context.app.log.activity(`user - x - ${message}`)
+      context.app.log.activity(`user - x - ${message} - ${itemId}`)
     }
 
     return context
