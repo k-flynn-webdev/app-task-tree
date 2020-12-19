@@ -18,6 +18,7 @@ const getProject = require('../../hooks/get-project')
 const updatePlanProgress = require('../../hooks/update-plan-progress')
 const updateProjectProgress = require('../../hooks/update-project-progress')
 const updateTaskIsDone = require('../../hooks/update-task-is_done')
+const onLogActivity = require('../../hooks/on-log-activity')
 
 module.exports = {
   before: {
@@ -65,6 +66,7 @@ module.exports = {
       getProject('plan.project'),
       updatePlanProgress('plan.id'),
       updateProjectProgress('project.id'),
+      onLogActivity('task create')
     ],
     update: [
       resultToData(),
@@ -75,7 +77,8 @@ module.exports = {
       ifHasProperty('data.is_done', [
         updatePlanProgress('plan.id'),
         updateProjectProgress('project.id'),
-      ])
+      ]),
+      onLogActivity('task update')
     ],
     patch: [
       resultToData(),
@@ -86,7 +89,8 @@ module.exports = {
       ifHasProperty('data.is_done', [
         updatePlanProgress('plan.id'),
         updateProjectProgress('project.id'),
-      ])
+      ]),
+      onLogActivity('task update')
     ],
     remove: [
       resultToData(),
@@ -94,6 +98,7 @@ module.exports = {
       getProject('result.project'),
       updatePlanProgress('plan.id'),
       updateProjectProgress('project.id'),
+      onLogActivity('task delete')
     ]
   },
 

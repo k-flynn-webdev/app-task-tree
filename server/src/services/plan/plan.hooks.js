@@ -8,6 +8,7 @@ const setOwnerFromUser = require('../../hooks/set-owner-from-user')
 const timeStamp = require('../../hooks/time-stamp')
 const cleanData = require('../../hooks/clean-data')
 const allowedQueries = require('../../../constants/allowed-queries')
+const onLogActivity = require('../../hooks/on-log-activity')
 
 const onPlanDelete = require('../../hooks/on-plan-delete')
 
@@ -50,6 +51,7 @@ module.exports = {
     get: [ resultToData() ],
     create: [
       resultToData(),
+      onLogActivity('plan create')
       // getPlan('result.plan'),
       // getProject('result.project'),
       // updatePlanProgress('plan.id'),
@@ -57,6 +59,7 @@ module.exports = {
     ],
     update: [
       resultToData(),
+      onLogActivity('plan update')
       // ifHasProperty('data.is_done',
       //   getPlan('result.plan')),
       // ifHasProperty('data.is_done',
@@ -68,6 +71,7 @@ module.exports = {
     ],
     patch: [
       resultToData(),
+      onLogActivity('plan update')
       // ifHasProperty('data.is_done',
       //   getPlan('result.plan')),
       // ifHasProperty('data.is_done',
@@ -79,7 +83,8 @@ module.exports = {
     ],
     remove: [
       resultToData(),
-      onPlanDelete
+      onPlanDelete,
+      onLogActivity('plan delete')
       // getPlan('result.plan'),
       // getProject('result.project'),
       // updatePlanProgress('plan.id'),

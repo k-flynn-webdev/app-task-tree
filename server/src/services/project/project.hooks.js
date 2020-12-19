@@ -8,6 +8,7 @@ const timeStamp = require('../../hooks/time-stamp')
 const cleanData = require('../../hooks/clean-data')
 const allowedQueries = require('../../../constants/allowed-queries')
 const onProjectDelete = require('../../hooks/on-project-delete')
+const onLogActivity = require('../../hooks/on-log-activity')
 
 module.exports = {
   before: {
@@ -45,12 +46,22 @@ module.exports = {
     all: [],
     find: [],
     get: [ resultToData() ],
-    create: [ resultToData() ],
-    update: [ resultToData() ],
-    patch: [ resultToData() ],
+    create: [
+      resultToData(),
+      onLogActivity('project create')
+    ],
+    update: [
+      resultToData(),
+      onLogActivity('project update')
+    ],
+    patch: [
+      resultToData(),
+      onLogActivity('project update')
+    ],
     remove: [
       resultToData(),
-      onProjectDelete
+      onProjectDelete,
+      onLogActivity('project delete')
     ]
   },
 

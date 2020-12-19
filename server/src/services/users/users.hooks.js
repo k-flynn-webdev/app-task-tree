@@ -19,6 +19,7 @@ const userIsVerified = require('../../hooks/user-is-verified')
 const userIsAnonRenewToken = require('../../hooks/user-is-anon-renew-token')
 const addMessage = require('../../hooks/add-message')
 const resultToData = require('../../hooks/result-to-data')
+const onLogActivity = require('../../hooks/on-log-activity')
 
 module.exports = {
   before: {
@@ -76,17 +77,20 @@ module.exports = {
     create: [
       userPostCreate,
       ifHasProperty('data.email', sendEmail('create')),
-      addMessage('create')
+      addMessage('create'),
+      onLogActivity('user create')
     ],
     update: [
       resultToData('user'),
       ifHasProperty('data.email', sendEmail('verify')),
-      addMessage('update')
+      addMessage('update'),
+      onLogActivity('user update')
     ],
     patch: [
       resultToData('user'),
       ifHasProperty('data.email', sendEmail('verify')),
       addMessage('update' ),
+      onLogActivity('user update')
     ],
     remove: []
   },
