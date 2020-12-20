@@ -135,13 +135,13 @@ export default {
         ['isLoggedIn', 'user']
     ),
     isAdmin () {
-      return this.user.role.indexOf(ADMIN.value) >= 0
+      return this.user?.role?.indexOf(ADMIN.value) >= 0
     },
     isUser () {
-      return this.user.role.indexOf(USER.value) >= 0
+      return this.user?.role?.indexOf(USER.value) >= 0
     },
     isAnon () {
-      return this.user.role.indexOf('anon') >= 0
+      return this.user?.role?.indexOf('anon') >= 0
     }
   },
 

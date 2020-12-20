@@ -180,6 +180,12 @@ $app-pad-bottom: 1.5rem;
         border-bottom: none;
       }
 
+      &.disabled {
+        opacity: 0.5;
+
+        .field { display: none; }
+      }
+
       &.user {
         .button {
           overflow: hidden;
