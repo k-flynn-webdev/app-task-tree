@@ -60,6 +60,7 @@ $radius-large: 8px !default;
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
 @import "style.scss";
+@import "admin.scss";
 
 @each $color, $value in $colors {
   .has-border-#{$color} {

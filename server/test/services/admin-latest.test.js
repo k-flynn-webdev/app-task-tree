@@ -1,9 +1,9 @@
 const assert = require('assert');
 const app = require('../../src/app');
 
-describe('\'test\' service', () => {
+describe('\'admin-latest\' service', () => {
   it('registered the service', () => {
-    const service = app.service('test');
+    const service = app.service('admin-latest');
 
     assert.ok(service, 'Registered the service');
   });

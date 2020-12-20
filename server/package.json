@@ -25,11 +25,11 @@
   },
   "scripts": {
     "build_email": "node src/templates/buildMail.js",
-    "test": "npm run lint && npm run mocha",
+    "test": "NODE_ENV=test npm run lint && npm run mocha",
     "lint": "eslint src/. test/. --config .eslintrc.json --fix",
     "dev": "nodemon src/",
     "start": "node src/",
-    "mocha": "mocha test/ --recursive --exit",
+    "mocha": "NODE_ENV=test mocha test/ --recursive --exit",
     "production": "NODE_ENV=production pm2 start ./config/pm2.config.js"
   },
   "standard": {
@@ -46,7 +46,7 @@
     "@feathersjs/errors": "^4.5.8",
     "@feathersjs/express": "^4.5.8",
     "@feathersjs/feathers": "^4.5.8",
-    "@feathersjs/socketio": "^4.5.8",
+    "@feathersjs/socketio": "^4.5.11",
     "@feathersjs/transport-commons": "^4.5.8",
     "@hapi/joi": "^17.1.1",
     "compression": "^1.7.4",
@@ -61,6 +61,7 @@
     "mysql2": "^2.1.0",
     "nanoid": "^3.1.12",
     "pug": "^3.0.0",
+    "read-last-lines": "^1.7.2",
     "serve-favicon": "^2.5.0",
     "winston": "^3.3.3"
   },

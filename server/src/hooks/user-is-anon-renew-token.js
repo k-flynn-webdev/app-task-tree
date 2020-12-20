@@ -9,6 +9,7 @@ const  jsonDecode = require('jsonwebtoken').decode;
  * @param context
  * @return {*}
  */
+// todo: redo this completely! very hacky
 const isAnon = async (context) => {
 
   const tokenIsExpired = (context.error &&

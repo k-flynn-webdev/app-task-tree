@@ -16,13 +16,17 @@ axios.defaults.paramsSerializer = function(params) {
 };
 
 ;(function init () {
-  const token = localStorage.getItem(USER_TOKEN)
+  const token = getToken()
   if (!token) {
     authRemove()
     return
   }
   authSet(token)
 })()
+
+function getToken () {
+  return localStorage.getItem(USER_TOKEN)
+}
 
 function authSet (auth) {
   axios.defaults.headers.common.authorization = `Bearer ${auth}`
@@ -105,6 +109,7 @@ const services = {
   patch,
   remove,
   authSet,
-  authRemove
+  authRemove,
+  getToken
 }
 export default services

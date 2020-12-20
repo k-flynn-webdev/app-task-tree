@@ -4,13 +4,16 @@ import userRoutes from './user'
 import itemRoutes from './items'
 import Home from '../views/Home.vue'
 
+import isAdminAPI from '@/services/isAdmin';
+import { ALL } from '../constants'
+
 
 Vue.use(VueRouter)
 
   const routes = [
   {
-    path: '/',
-    name: 'home',
+    path: ALL.HOME.route.path,
+    name: ALL.HOME.route.name,
     component: Home
   },
   {
@@ -18,8 +21,19 @@ Vue.use(VueRouter)
     name: 'about',
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
-    ...userRoutes,
-    ...itemRoutes
+  {
+    path: ALL.ADMIN.route.path,
+    name: ALL.ADMIN.route.name,
+    beforeEnter: (to, from, next) => {
+      const success = () => next()
+      const fail = () => next ({ name: ALL.HOME.route.name })
+
+      return isAdminAPI(success, fail)
+    },
+    component: () => import(/* webpackChunkName: "admin" */ '../views/Admin.vue')
+  },
+  ...userRoutes,
+  ...itemRoutes
 ]
 
 const router = new VueRouter({

@@ -8,14 +8,14 @@ const { BadRequest } = require('@feathersjs/errors')
  *
  * @return {function(*): *}
  */
-const limitToOwner = (context) => {
+const limitToUser = (context) => {
 
   if (context.params.user) {
 
     const userIsAdmin = context.params.user.role === 'admin'
-    const userIdMatches = Number(context.id) === context.params.user.id
+    if (userIsAdmin) return context
 
-    if (!userIsAdmin && !userIdMatches) {
+    if (Number(context.id) !== context.params.user.id) {
       const error = new BadRequest('User and Token do not match.')
       context.statusCode = 400
       context.dispatch = error
@@ -27,4 +27,4 @@ const limitToOwner = (context) => {
   return context
 }
 
-module.exports = limitToOwner
+module.exports = limitToUser

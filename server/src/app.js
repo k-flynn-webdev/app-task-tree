@@ -8,12 +8,12 @@ const compress = require('compression');
 const constants = require('../constants')
 
 const express = require('@feathersjs/express');
-const socketio = require('@feathersjs/socketio');
+// const socketio = require('@feathersjs/socketio');
 const feathers = require('@feathersjs/feathers');
 const configuration = require('@feathersjs/configuration');
 
 const services = require('./services');
-const channels = require('./channels');
+// const channels = require('./channels');
 const appHooks = require('./app.hooks');
 const middleware = require('./middleware');
 
@@ -35,21 +35,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
-const UI_PATHS = [
-  '',
-  'projects',
-  'plans',
-  'tasks',
+
+// Allow UI get/reload on pages
+[ '',
   'user',
   'login',
   'verify',
-  'recover']
-
-UI_PATHS.forEach(item => app.use(`/${item}`, express.static(app.get('public'))));
+  'recover',
+  'admin',
+  'projects',
+  'plans',
+  'tasks',
+].forEach(item => app.use(`/${item}`, express.static(app.get('public'))));
 
 // Set up Plugins and providers
 app.configure(express.rest());
-app.configure(socketio());
+// app.configure(socketio());
 
 app.configure(knex);
 
@@ -59,14 +60,17 @@ app.configure(authentication);
 // Set up our services (see `services/index.js`)
 app.configure(services);
 // Set up event channels (see channels.js)
-app.configure(channels);
+// app.configure(channels);
 
-app.log = (input) => { logger.log('info', input) }
+// Add global loggers to `app.log | app.log.info | app.log.error | app.log.activity`
+app.configure(logger);
 
 // Configure a middleware for 404s and the error handler
 app.use(express.notFound());
 app.use(express.errorHandler({ logger }));
 
 app.hooks(appHooks);
+
+app.log.activity('thing')
 
 module.exports = app;

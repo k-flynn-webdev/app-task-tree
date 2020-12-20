@@ -5,6 +5,7 @@ const disallow = require('../../hooks/disallow')
 const timeStamp = require('../../hooks/time-stamp')
 const sendEmail = require('../../hooks/send-email')
 const addMessage = require('../../hooks/add-message')
+const onLogActivity = require('../../hooks/on-log-activity')
 
 module.exports = {
   before: {
@@ -28,13 +29,15 @@ module.exports = {
     all: [ protect('password') ],
     find: [
       sendEmail('recover'),
-      addMessage('recoverSent', true)
+      addMessage('recoverSent', true),
+      onLogActivity('recover requested')
     ],
     get: [],
     create: [],
     update: [],
     patch: [
-      addMessage('recover', true)
+      addMessage('recover', true),
+      onLogActivity('recover success')
     ],
     remove: []
   },
