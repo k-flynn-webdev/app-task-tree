@@ -36,6 +36,7 @@ const AUTHENTICATION = 'authentication'
 const PROJECT = 'projects'
 const PLAN = 'plans'
 const TASK = 'tasks'
+const ADMINLATEST = 'adminLatest'
 
 const ALL_PATHS = {
   EMAIL,
@@ -45,11 +46,19 @@ const ALL_PATHS = {
   AUTHENTICATION,
   PROJECT,
   PLAN,
-  TASK
+  TASK,
+  ADMINLATEST
 }
 
-const paths = (prefix) => {
-  return Object.entries(ALL_PATHS).reduce((acc, [key, val]) => {
+/**
+ * Combines a prefix with the original key of an object item
+ *
+ * @param {string} prefix   prefix to pre-append to object[key]
+ * @param {object} paths    object[key] items
+ * @return {{}}
+ */
+const paths = (prefix, paths) => {
+  return Object.entries(paths).reduce((acc, [key, val]) => {
     acc[key.toLowerCase()] = prefix + val.toLowerCase()
     return acc
   }, {})
@@ -57,21 +66,21 @@ const paths = (prefix) => {
 
 /**
  * Adds global constants to the APP in a accessible getter `constants`
- *    eg: app.get('constants) ...
+ *    eg: app.get('constants item) ...
  *
- * @param app
+ * @param {object}  app
  * @return {*}
  */
 const init = (app) => {
-  const prefix = app.get('apiPath').length > 0 ? app.get('apiPath') + '/' : ''
+  const prefix = app.get('apiPrefix').length > 0 ? `${app.get('apiPrefix')}/` : ''
 
   const obj ={
+    /** Useful dict of items */
+    dict: ALL_DICT,
     /** Message to return to User */
     message: ALL_MESSAGES,
     /** Path to all services */
-    path: paths(prefix),
-    /** Useful dict of items */
-    dict: ALL_DICT
+    path: paths(prefix, ALL_PATHS),
   }
 
   app.set('constants', obj)

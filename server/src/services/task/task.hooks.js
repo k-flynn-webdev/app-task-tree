@@ -1,8 +1,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
 
-const limitToOwner = require('../../hooks/limit-to-project-owner')
+const queryOwnerFromUser = require('../../hooks/query-owner-from-user')
 const itemValueValidate = require('../../hooks/item-value-validate')
-const itemProjectValidate = require('../../hooks/item-project-validate')
 const itemPlanValidate = require('../../hooks/item-plan-validate')
 const itemIsDoneValidate = require('../../hooks/item-isDone-validate')
 const resultToData = require('../../hooks/result-to-data')
@@ -19,15 +18,16 @@ const getProject = require('../../hooks/get-project')
 const updatePlanProgress = require('../../hooks/update-plan-progress')
 const updateProjectProgress = require('../../hooks/update-project-progress')
 const updateTaskIsDone = require('../../hooks/update-task-is_done')
+const onLogActivity = require('../../hooks/on-log-activity')
 
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
     find: [
-      limitToOwner,
+      queryOwnerFromUser(true),
     ],
     get: [
-      limitToOwner,
+      queryOwnerFromUser(true),
     ],
     create: [
       cleanData(allowedQueries),
@@ -38,23 +38,22 @@ module.exports = {
       timeStamp('created_at')
     ],
     update: [
-      limitToOwner,
+      queryOwnerFromUser(true),
       // todo : allow ONLY [value & is_done] data property
       cleanData(allowedQueries),
       itemValueValidate.update,
-      itemIsDoneValidate,
       ifNotHasProperty('data.is_done', timeStamp('updated_at')),
       ifHasProperty('data.is_done', [ updateTaskIsDone ]),
     ],
     patch: [
-      limitToOwner,
+      queryOwnerFromUser(true),
       // todo : allow ONLY [value & is_done] data property
       cleanData(allowedQueries),
       itemValueValidate.patch,
       ifNotHasProperty('data.is_done', timeStamp('updated_at')),
       ifHasProperty('data.is_done', [ updateTaskIsDone ]),
     ],
-    remove: [ limitToOwner ]
+    remove: [ queryOwnerFromUser(true) ]
   },
 
   after: {
@@ -67,6 +66,7 @@ module.exports = {
       getProject('plan.project'),
       updatePlanProgress('plan.id'),
       updateProjectProgress('project.id'),
+      onLogActivity('task create')
     ],
     update: [
       resultToData(),
@@ -77,7 +77,8 @@ module.exports = {
       ifHasProperty('data.is_done', [
         updatePlanProgress('plan.id'),
         updateProjectProgress('project.id'),
-      ])
+      ]),
+      onLogActivity('task update')
     ],
     patch: [
       resultToData(),
@@ -88,7 +89,8 @@ module.exports = {
       ifHasProperty('data.is_done', [
         updatePlanProgress('plan.id'),
         updateProjectProgress('project.id'),
-      ])
+      ]),
+      onLogActivity('task update')
     ],
     remove: [
       resultToData(),
@@ -96,6 +98,7 @@ module.exports = {
       getProject('result.project'),
       updatePlanProgress('plan.id'),
       updateProjectProgress('project.id'),
+      onLogActivity('task delete')
     ]
   },
 

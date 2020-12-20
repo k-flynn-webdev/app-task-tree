@@ -29,6 +29,6 @@ exports.Verify = class Verify extends Service {
       updated_at: new Date()
     };
 
-    return super.patch(params.user.id, data, params);
+    return super.patch(params.user.id, data, params)
   }
 };

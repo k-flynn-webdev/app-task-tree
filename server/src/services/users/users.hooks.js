@@ -2,11 +2,12 @@ const { authenticate } = require('@feathersjs/authentication').hooks
 const { hashPassword, protect
 } = require('@feathersjs/authentication-local').hooks
 
+const queryOwnerFromUser = require('../../hooks/query-owner-from-user')
 const ifHasProperty = require('../../hooks/if-has-property')
 const sendEmail = require('../../hooks/send-email')
 const timeStamp = require('../../hooks/time-stamp')
 const limitToRole = require('../../hooks/limit-to-role')
-const limitToOwner = require('../../hooks/limit-to-owner')
+const limitToUser = require('../../hooks/limit-to-user')
 const createNanoId = require('../../hooks/create-nano-id')
 const emailIsUnique = require('../../hooks/email-is-unique')
 const userValidate = require('../../hooks/user-validate')
@@ -18,18 +19,20 @@ const userIsVerified = require('../../hooks/user-is-verified')
 const userIsAnonRenewToken = require('../../hooks/user-is-anon-renew-token')
 const addMessage = require('../../hooks/add-message')
 const resultToData = require('../../hooks/result-to-data')
+const onLogActivity = require('../../hooks/on-log-activity')
 
 module.exports = {
   before: {
     all: [],
     find: [
       authenticate('jwt'),
-      limitToRole('admin')
+      limitToRole('admin'),
+      queryOwnerFromUser(false),
     ],
     get: [
       authenticate('jwt'),
       userPreGetMe,
-      limitToOwner
+      limitToUser
     ],
     create: [
       userValidate.create,
@@ -42,7 +45,7 @@ module.exports = {
     update: [
       userValidate.create,
       authenticate('jwt'),
-      limitToOwner,
+      limitToUser,
       userIsVerified,
       hashPassword('password'),
       timeStamp('updated_at'),
@@ -51,7 +54,7 @@ module.exports = {
     patch: [
       userValidate.patch,
       authenticate('jwt'),
-      limitToOwner,
+      limitToUser,
       userIsVerified,
       hashPassword('password'),
       timeStamp('updated_at'),
@@ -59,7 +62,7 @@ module.exports = {
     ],
     remove: [
       authenticate('jwt'),
-      limitToOwner
+      limitToUser
     ]
   },
 
@@ -74,17 +77,20 @@ module.exports = {
     create: [
       userPostCreate,
       ifHasProperty('data.email', sendEmail('create')),
-      addMessage('create')
+      addMessage('create'),
+      onLogActivity('user create')
     ],
     update: [
       resultToData('user'),
       ifHasProperty('data.email', sendEmail('verify')),
-      addMessage('update')
+      addMessage('update'),
+      onLogActivity('user update')
     ],
     patch: [
       resultToData('user'),
       ifHasProperty('data.email', sendEmail('verify')),
       addMessage('update' ),
+      onLogActivity('user update')
     ],
     remove: []
   },

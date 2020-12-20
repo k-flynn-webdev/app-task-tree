@@ -45,8 +45,13 @@ module.exports = (plan) => {
     }
 
     await context.app.service(paths.plan)._patch(planId, planUpdate)
+      .catch(err => {
+        context.app.log(err)
+        return context
+      })
 
     // todo pull this out into it's own mini hook ..
+    // I think this is no longer needed?? -kf
     if (context.plan) {
       if (!!context.plan.is_done !== !!planUpdate.is_done) {
         context.updateProject = true

@@ -1,0 +1,9 @@
+.admin {
+  &__activity {
+    overflow: auto;
+    max-height: 10rem;
+    margin: 0.33rem 0;
+    padding: 0.1rem 0.3rem;
+    border: 1px solid rgba($color-bg, 0.2);
+  }
+}

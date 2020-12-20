@@ -4,6 +4,7 @@ const disallow = require('../../hooks/disallow')
 const addMessage = require('../../hooks/add-message')
 const ifHasProperty = require('../../hooks/if-has-property')
 const sendEmail = require('../../hooks/send-email')
+const onLogActivity = require('../../hooks/on-log-activity')
 
 module.exports = {
   before: {
@@ -21,10 +22,14 @@ module.exports = {
     find: [ ifHasProperty('params.user.verify',
       [
         ctx => ctx.result = ctx.result.data[0],
-        sendEmail('verify')
+        sendEmail('verify'),
+        onLogActivity('requested verify email')
       ])
     ],
-    get: [ addMessage('verify') ],
+    get: [
+      addMessage('verify'),
+      onLogActivity('verify success')
+    ],
     create: [],
     update: [],
     patch: [],

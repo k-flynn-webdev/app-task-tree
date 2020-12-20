@@ -1,31 +1,25 @@
 const { authenticate } = require('@feathersjs/authentication').hooks
 
-const limitToOwner = require('../../hooks/limit-to-project-owner')
+const queryOwnerFromUser = require('../../hooks/query-owner-from-user')
 const itemValueValidate = require('../../hooks/item-value-validate')
 const itemProjectValidate = require('../../hooks/item-project-validate')
-const itemPlanValidate = require('../../hooks/item-plan-validate')
-const itemIsDoneValidate = require('../../hooks/item-isDone-validate')
 const resultToData = require('../../hooks/result-to-data')
 const setOwnerFromUser = require('../../hooks/set-owner-from-user')
 const timeStamp = require('../../hooks/time-stamp')
 const cleanData = require('../../hooks/clean-data')
-const ifHasProperty = require('../../hooks/if-has-property')
 const allowedQueries = require('../../../constants/allowed-queries')
+const onLogActivity = require('../../hooks/on-log-activity')
 
-const getPlan = require('../../hooks/get-plan')
-const getProject = require('../../hooks/get-project')
-const updatePlanProgress = require('../../hooks/update-plan-progress')
-const updateProjectProgress = require('../../hooks/update-project-progress')
 const onPlanDelete = require('../../hooks/on-plan-delete')
 
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
     find: [
-      limitToOwner,
+      queryOwnerFromUser(true),
     ],
     get: [
-      limitToOwner,
+      queryOwnerFromUser(true),
     ],
     create: [
       cleanData(allowedQueries),
@@ -36,19 +30,19 @@ module.exports = {
     ],
     update: [
       // todo : allow ONLY value data property
-      limitToOwner,
+      queryOwnerFromUser(true),
       cleanData(allowedQueries),
       itemValueValidate.update,
       timeStamp('updated_at')
     ],
     patch: [
       // todo : allow ONLY value data property
-      limitToOwner,
+      queryOwnerFromUser(true),
       cleanData(allowedQueries),
       itemValueValidate.patch,
       timeStamp('updated_at')
     ],
-    remove: [ limitToOwner ]
+    remove: [ queryOwnerFromUser(true) ]
   },
 
   after: {
@@ -57,6 +51,7 @@ module.exports = {
     get: [ resultToData() ],
     create: [
       resultToData(),
+      onLogActivity('plan create')
       // getPlan('result.plan'),
       // getProject('result.project'),
       // updatePlanProgress('plan.id'),
@@ -64,6 +59,7 @@ module.exports = {
     ],
     update: [
       resultToData(),
+      onLogActivity('plan update')
       // ifHasProperty('data.is_done',
       //   getPlan('result.plan')),
       // ifHasProperty('data.is_done',
@@ -75,6 +71,7 @@ module.exports = {
     ],
     patch: [
       resultToData(),
+      onLogActivity('plan update')
       // ifHasProperty('data.is_done',
       //   getPlan('result.plan')),
       // ifHasProperty('data.is_done',
@@ -86,7 +83,8 @@ module.exports = {
     ],
     remove: [
       resultToData(),
-      onPlanDelete
+      onPlanDelete,
+      onLogActivity('plan delete')
       // getPlan('result.plan'),
       // getProject('result.project'),
       // updatePlanProgress('plan.id'),

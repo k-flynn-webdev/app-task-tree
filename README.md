@@ -13,8 +13,9 @@ Aiming for easy sharing of projects and tasks among users and anon accounts via 
 
 ## Features:
 
+- Simplified folder setup to help with `soc` choices
 - Env variables loaded via `.env` provided at the /server root. (see `.env.example`)
-- Simplified folder setup to help with `soc` choices.
+- API/Service routes are globally prefixed (see `.env.example` => 'APP_API_PREFIX')
 
 
 ### Images (still wip):

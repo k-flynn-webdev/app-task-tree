@@ -61,10 +61,29 @@ const ITEM_DATE = {
   }
 }
 
+const ITEM_DONE = {
+  name: 'itemDone',
+  filter: function (item, day=true, month=true, year=true) {
+    if (!item) return ''
+    if (!item.done_at) return ''
+
+    let result = []
+
+    const dateArr = createDate(item, 'done_at')
+
+    if (day) { result.push(dateArr[0]) }
+    if (month) { result.push(dateArr[1]) }
+    if (year) { result.push(dateArr[2]) }
+
+    return result.join('/')
+  }
+}
+
 const ALL_FILTERS = [
   ITEM_LOGIN,
   ITEM_DATE,
-  ITEM_UPDATE
+  ITEM_UPDATE,
+  ITEM_DONE
 ]
 
 export default (Vue) => {

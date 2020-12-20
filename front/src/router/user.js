@@ -1,4 +1,4 @@
-import { USER, LOGIN, RECOVER, VERIFY } from '../constants'
+import { USER, CREATE, LOGIN, RECOVER, VERIFY } from '../constants'
 
 export default [
   {
@@ -7,8 +7,8 @@ export default [
     component: () => import(/* webpackChunkName: "user" */ '../views/User.vue')
   },
   {
-    path: '/create',
-    name: 'create',
+    path: CREATE.route.path,
+    name: CREATE.route.name,
     component: () => import(/* webpackChunkName: "create" */ '../views/Create.vue')
   },
   {
