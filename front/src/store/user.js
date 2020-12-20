@@ -9,7 +9,7 @@ const NAME_MAX_LENGTH = 15
 /**
  * Creates a default User Obj
  *
- * @return {User}
+ * @return {User} UserObj
  */
 const defaultUserObj = () => {
   return {
@@ -119,7 +119,6 @@ const actions = {
     return HTTP.remove(`${USER.API.DELETE}/${context.state.user.id}`)
   }
 }
-
 
 export default {
   namespaced: true,
