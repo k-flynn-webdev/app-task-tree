@@ -15,10 +15,10 @@ module.exports = (message) => {
     })
 
     const userId = userParams.join('').trim()
-    let preMsg = userId ? `user - ${userId} -` : 'user - x -'
+    const preMsg = userId ? `user - ${userId} -` : 'user - x -'
 
     const itemId = get(context, 'result.id', null)
-    let postMsg = itemId ? `- ${itemId}` : ''
+    const postMsg = itemId ? `- ${itemId}` : ''
 
     context.app.log.activity(`${preMsg} ${message} ${postMsg}`)
 
