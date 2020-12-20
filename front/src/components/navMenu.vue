@@ -74,6 +74,21 @@
 
     </div>
 
+    <div v-if="isAdmin"
+         class="option admin">
+
+      <div class="control">
+          <b-button class="mb-2"
+                    expanded
+                    type="is-primary"
+                    tag="router-link"
+                    :to="{ name: 'admin' }">
+            Admin
+          </b-button>
+      </div>
+
+    </div>
+
   </div>
 
 </template>
@@ -101,9 +116,9 @@ export default {
   computed: {
     iconType () {
       if (!this.isLoggedIn) return icUserNone
-      if (this.user.role === ADMIN.value) return icUserAnon
-      if (this.user.role === USER.value) return icUser
-      if (this.user.role === 'anon') return icUserNone
+      if (this.isAdmin) return icUserAnon
+      if (this.isUser) return icUser
+      if (this.isAnon) return icUserNone
 
       return null
     },
@@ -118,7 +133,16 @@ export default {
     },
     ...mapState('user',
         ['isLoggedIn', 'user']
-    )
+    ),
+    isAdmin () {
+      return this.user.role.indexOf(ADMIN.value) >= 0
+    },
+    isUser () {
+      return this.user.role.indexOf(USER.value) >= 0
+    },
+    isAnon () {
+      return this.user.role.indexOf('anon') >= 0
+    }
   },
 
   methods: {
