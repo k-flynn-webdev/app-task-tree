@@ -9,22 +9,17 @@ const get = require('lodash').get;
 module.exports = (message) => {
   return async context => {
 
-    let user_id = null
     const userIdResult = get(context, 'result.user.id', null)
     const userIdParam = get(context, 'params.user.id', null)
     const userIdAlt = get(context, 'user.id', null)
-    const itemId = get(context, 'result.id', 'x')
-    if (userIdResult || userIdParam || userIdAlt) {
-      if(userIdResult) user_id = userIdResult
-      if(userIdParam) user_id = userIdParam
-      if(userIdAlt) user_id = userIdAlt
-    }
 
-    if (user_id) {
-      context.app.log.activity(`user - ${user_id} - ${message} - ${itemId}`)
-    } else {
-      context.app.log.activity(`user - x - ${message} - ${itemId}`)
-    }
+    const user_id = [ userIdResult, userIdParam, userIdAlt ].join('').trim()
+    let preMsg = user_id ? `user - ${user_id} -` : 'user - x -'
+
+    const itemId = get(context, 'result.id', null)
+    let postMsg = itemId ? `- ${itemId}` : ''
+
+    context.app.log.activity([ preMsg, message, postMsg ].join(' '))
 
     return context
   }
