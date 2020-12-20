@@ -42,10 +42,11 @@
         </div>
       </div>
 
-    <div class="option sort">
+    <div class="option sort" :class="{ 'disabled': !isLoggedIn }">
       <p class="title">Sort</p>
 
-      <b-field label="Direction">
+      <b-field v-if="isLoggedIn"
+               label="Direction">
         <div class="block p-0">
           <b-radio v-for="(item, idx) in appVars.sort.direction"
                    name="sortOrder"
@@ -57,7 +58,8 @@
         </div>
       </b-field>
 
-      <b-field label="Sort by">
+      <b-field v-if="isLoggedIn"
+               label="Sort by">
         <div class="is-flex start column p-0">
           <b-radio v-for="(item, idx) in appVars.sort.types"
                    name="sortType"
