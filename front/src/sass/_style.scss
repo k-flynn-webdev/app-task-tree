@@ -306,6 +306,20 @@ $app-pad-bottom: 1.5rem;
   align-self: flex-end;
 }
 
+button,
+.button {
+  &.hover {
+    &:focus,
+    &:hover {
+      transform: scale(1.2);
+    }
+
+    &[disabled] {
+      transform: scale(1);
+    }
+  }
+}
+
 .select-bar {
   padding: 0 0.5rem;
   margin-left: 0.3rem;
@@ -350,8 +364,11 @@ $app-pad-bottom: 1.5rem;
     pointer-events: none;
     background-color: transparent;
 
-    &:hover {
+    &:hover,
+    &:focus,
+    &:active {
       color: $light;
+      background-color: transparent;
     }
 
     span {
@@ -368,19 +385,7 @@ $app-pad-bottom: 1.5rem;
   }
 }
 
-button,
-.button {
-  &.hover {
-    &:focus,
-    &:hover {
-      transform: scale(1.2);
-    }
 
-    &[disabled] {
-      transform: scale(1);
-    }
-  }
-}
 
 .row {
   &__item {}
