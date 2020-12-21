@@ -331,6 +331,14 @@ button,
 
   $side: 2px;
 
+  &-info {
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+    opacity: 0.75;
+    color: $color-fore;
+  }
+
   &-highlight {
     position: absolute;
     top: $side;

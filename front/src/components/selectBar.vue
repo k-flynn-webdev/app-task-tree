@@ -1,34 +1,39 @@
 <template>
-  <div class="is-inline-block select-bar">
-    <b-button class="is-size-7-tablet"
-              ref="project"
-              :class="{ 'is-primary': isProject }"
-              :disabled="!projectBtnRoute"
-              :loading="projectLoading"
-              @click="loadPage(projectBtnRoute)">
-      {{ TYPES.project.text }}
-    </b-button>
-    <b-button class="is-size-7-tablet"
-              ref="plan"
-              :class="{ 'is-primary': isPlan }"
-              :disabled="!planBtnRoute"
-              :loading="planLoading"
-              @click="loadPage(planBtnRoute)">
-      {{ TYPES.plan.text }}
-    </b-button>
-    <b-button class="is-size-7-tablet"
-              ref="task"
-              :class="{ 'is-primary': isTask }"
-              :disabled="!taskBtnRoute"
-              :loading="taskLoading"
-              @click="loadPage(taskBtnRoute)">
-      {{ TYPES.task.text }}
-    </b-button>
+  <div class="is-relative">
+    <div class="is-inline-block select-bar">
+      <b-button class="is-size-7-tablet"
+                ref="project"
+                :class="{ 'is-primary': isProject }"
+                :disabled="!projectBtnRoute"
+                :loading="projectLoading"
+                @click="loadPage(projectBtnRoute)">
+        {{ TYPES.project.text }}
+      </b-button>
+      <b-button class="is-size-7-tablet"
+                ref="plan"
+                :class="{ 'is-primary': isPlan }"
+                :disabled="!planBtnRoute"
+                :loading="planLoading"
+                @click="loadPage(planBtnRoute)">
+        {{ TYPES.plan.text }}
+      </b-button>
+      <b-button class="is-size-7-tablet"
+                ref="task"
+                :class="{ 'is-primary': isTask }"
+                :disabled="!taskBtnRoute"
+                :loading="taskLoading"
+                @click="loadPage(taskBtnRoute)">
+        {{ TYPES.task.text }}
+      </b-button>
 
-    <div class="select-bar-highlight"
-         :style="highlightStyle"></div>
+      <div class="select-bar-highlight"
+           :style="highlightStyle"></div>
+    </div>
+    <div class="select-bar-info">
+      <span class="is-invisible-mobile">{{ mode.text }}:</span>
+      <span>{{ totalItems }}</span>
+    </div>
   </div>
-
 </template>
 
 <script>
@@ -78,6 +83,14 @@ export default {
         }
       }
     },
+    totalItems () {
+      if (this.mode &&
+          this.$store.state[this.mode.store]) {
+        return this.$store.state[this.mode.store].total
+      }
+
+      return 0
+    },
     mode () {
       return this.$store.state.mode
     },
@@ -93,7 +106,6 @@ export default {
     hasSelected () {
       return !!(this.current && this.current.id > 0)
     },
-
     isProject () {
       return (this.mode.value === TYPES.project.value)
     },
