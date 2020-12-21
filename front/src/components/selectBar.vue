@@ -30,7 +30,7 @@
            :style="highlightStyle"></div>
     </div>
     <div class="select-bar-info">
-      <span class="is-invisible-mobile">{{ mode.text }}:</span>
+      <span class="is-invisible-mobile">{{ mode.text }}: </span>
       <span>{{ totalItems }}</span>
     </div>
   </div>
