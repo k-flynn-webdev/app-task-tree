@@ -59,9 +59,9 @@
     </div>
 
     <div v-if="isEdit" class="row__item-buttons">
-      <b-button class="has-background-danger hover"
+      <b-button class="has-background-light hover"
                 size="is-small"
-                @click="removeItem">
+                @click="toggleEdit">
         <ic-delete class="fill-bg v-align-center is-large" />
       </b-button>
       <b-button class="has-background-success hover"
@@ -69,6 +69,11 @@
                 :disabled="!allowEditSubmit"
                 @click="updateItem">
         <ic-tick class="fill-bg v-align-center is-large" />
+      </b-button>
+      <b-button class="has-background-danger hover"
+                size="is-small"
+                @click="removeItem">
+        Delete
       </b-button>
     </div>
 
