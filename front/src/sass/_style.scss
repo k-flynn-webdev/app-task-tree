@@ -421,8 +421,7 @@ button,
       background-color: transparent;
 
       &.textarea {
-        min-height: 1rem;
-        height: inherit;
+        min-height: inherit;
         padding-right: 0.5rem;
       }
     }

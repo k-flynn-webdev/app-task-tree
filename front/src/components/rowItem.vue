@@ -110,7 +110,7 @@ export default {
       isLoading: false,
       value: null,
       row: {
-        height: '16'
+        height: 34
       }
     }
   },
@@ -132,7 +132,7 @@ export default {
 
   computed: {
     rowHeightStyle () {
-      return { height: this.row.height + EXTRA_ROW_PAD + 'px' }
+      return { 'min-height': this.row.height + 'px' }
     },
     isEdit () {
       return this.item.id === this.edit
