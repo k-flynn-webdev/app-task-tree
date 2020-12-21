@@ -1,9 +1,10 @@
 <template>
   <div id="app">
 
-    <navbar />
-
-    <select-bar v-if="showSelectBar" />
+    <div class="container">
+      <navbar />
+      <select-bar v-if="showSelectBar" />
+    </div>
 
     <router-view />
 
