@@ -414,13 +414,13 @@ button,
   }
 }
 
-$rowPadY: 0.25rem;
+$rowPadY: 0.33rem;
 $rowPadX: 1.5rem;
 $rowDivide: 2;
 
 .row {
   padding: 0;
-  margin-bottom: $rowPadY * 2;
+  margin-bottom: $rowPadY * 1.5;
   color: $light;
 
   &.is-active & {
@@ -437,7 +437,7 @@ $rowDivide: 2;
     border-radius: $radius;
 
     &-buttons {
-      margin-top: $rowPadY;
+      margin-top: $rowPadY * 3;
       margin-left: $rowPadX * 0.5;
       margin-right: $rowPadX * 3;
       display: flex;
@@ -470,13 +470,14 @@ $rowDivide: 2;
       &-progress {
         margin: 0;
         padding: 0;
-        padding-top: $rowPadY;
       }
 
       &-button {
         min-width: 1.5rem;
         border-color: transparent;
         background-color: transparent;
+        height: unset;
+        transform: translateY(0.2rem) translateX(0.1rem);
 
         svg {
           transition: $speed-slow;
