@@ -70,9 +70,9 @@
                 @click="updateItem">
         <ic-tick class="fill-bg v-align-center is-large" />
       </b-button>
-      <b-button class="has-background-danger hover"
+      <b-button class="remove has-background-danger hover"
                 size="is-small"
-                @click="removeItem">
+                @click="removeItemConfirm">
         Delete
       </b-button>
     </div>
@@ -256,10 +256,8 @@ export default {
 
       return this.$store.dispatch(`${TYPES[this.type].store}/patch`,
           { id: this.item.id, is_done: !doneValue })
-      .then(() => {
-        this.isLoadingDone = false
-      })
       .catch(err => this.handleError(err))
+      .finally(() => this.isLoadingDone = false)
     },
     /**
      * Remove item via API
@@ -275,11 +273,25 @@ export default {
           { id: this.item.id, value: this.value })
       .then(() => {
         this.closeEdit()
-        this.isLoading = false
       })
       .then(() => this.getRowHeight())
       .catch(err => this.handleError(err))
+      .finally(() => this.isLoading = false)
     },
+    /**
+     * Show confirm dialog to delete
+     */
+    removeItemConfirm () {
+      this.$buefy.dialog.confirm({
+        title: `Deleting ${this.value}`,
+        message: 'Are you sure you want to <b>delete</b>? This action cannot be undone.',
+        confirmText: `Delete ${this.type}`,
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => this.removeItem()
+      })
+    },
+
     /**
      * Remove item via API
      *
@@ -292,9 +304,13 @@ export default {
       return this.$store.dispatch(`${TYPES[this.type].store}/remove`, this.item.id)
       .then(() => {
         this.closeEdit()
-        this.isLoading = false
+        this.$buefy.toast.open({
+          type: 'is-success',
+          message: 'Item deleted!'
+        })
       })
       .catch(err => this.handleError(err))
+      .finally(() => this.isLoading = false)
     },
     /**
      * Show User error messages

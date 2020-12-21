@@ -68,7 +68,7 @@ export default {
       if (this.isPlan) {
         return {
           left: (this.styles.project.width +
-              borderSize) + 'px',
+              (borderSize * 2)) + 'px',
           width: (this.styles.plan.width +
               paddingRight) + 'px'
         }
@@ -77,7 +77,7 @@ export default {
         return {
           left: (this.styles.project.width +
               this.styles.plan.width  +
-              borderSize) + 'px',
+              (borderSize * 2)) + 'px',
           width: (this.styles.task.width +
               paddingRight) + 'px'
         }
