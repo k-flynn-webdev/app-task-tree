@@ -15,7 +15,7 @@ module.exports = (message) => {
     })
 
     const userId = userParams.join('').trim()
-    const preMsg = userId ? `user - ${userId} -` : 'user - x -'
+    const preMsg = userId ? `user - ${userId}|` : 'user - x|'
 
     const itemId = get(context, 'result.id', null)
     const postMsg = itemId ? `- ${itemId}` : ''
