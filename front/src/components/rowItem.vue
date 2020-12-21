@@ -1,50 +1,50 @@
 <template>
-  <div class="column is-8 is-12-mobile px-0 py-0 mb-2 ml-1 row">
+  <div class="column is-8 is-12-mobile row is-family-sans-serif">
 
     <div class="is-flex start">
 
-      <div class="is-flex start flex-grow has-text-light is-radius row__item"
+      <div class="row__item"
            :class="[ isEdit? 'has-background-transparent has-border-light':
            'has-border-transparent has-background-mid' ]"
            @click="onSelect"
            @dblclick="onDblClick">
 
         <b-button v-if="isTask"
-                  class="row__content-button"
+                  class="row__item__content-button"
                   :loading="isLoadingDone"
                   @click.stop="toggleDone">
           <ic-tick :class="tickButtonClass" />
         </b-button>
 
-        <div v-else class="row__content-pre">
+        <div v-else class="row__item__content-pre">
           <small v-if="showProgress"
-              class="row__content-progress">
+              class="row__item__content-progress">
             {{ progress }}
           </small>
           <span v-else
-                class="row__content-button">
+                class="row__item__content-button">
             <ic-tick :class="tickButtonClass" />
           </span>
         </div>
 
         <div v-if="!isEdit"
              ref="rowItemText"
-             class="pad has-border-transparent is-family-sans-serif word-break flex-grow">
+             class="row__item__content-msg">
           {{ item.value }}
         </div>
 
         <b-input v-else
-                 class="flex-grow is-inline-block is-family-sans-serif"
+                 class="row__item__content-input"
                  v-model="value"
                  :placeholder="value"
                  :readonly="!isEdit"
                  :style="rowHeightStyle"
                  type="textarea"
-                 customClass="row__content-input pad has-text-light">
+                 customClass="">
         </b-input>
 
         <div v-if="!isEdit"
-             class="pr-1 pt-2">
+             class="row__item__content-date">
           <small class="is-hidden-mobile">{{ item | itemDate }}</small>
           <small class="is-hidden-tablet">{{ item | itemDate(true,true,false) }}</small>
         </div>
@@ -58,13 +58,13 @@
 
     </div>
 
-    <div v-if="isEdit" class="mt-2">
-      <b-button class="mx-3 mb-1 has-background-danger has-border-transparent hover"
+    <div v-if="isEdit" class="row__item-buttons">
+      <b-button class="has-background-danger hover"
                 size="is-small"
                 @click="removeItem">
         <ic-delete class="fill-bg v-align-center is-large" />
       </b-button>
-      <b-button class="mx-3 mb-1 has-background-success has-border-transparent hover"
+      <b-button class="has-background-success hover"
                 size="is-small"
                 :disabled="!allowEditSubmit"
                 @click="updateItem">
@@ -110,7 +110,7 @@ export default {
       isLoading: false,
       value: null,
       row: {
-        height: 34
+        height: 5
       }
     }
   },
@@ -132,7 +132,9 @@ export default {
 
   computed: {
     rowHeightStyle () {
-      return { 'min-height': this.row.height + 'px' }
+      return {
+        'min-height': this.row.height + 'px'
+      }
     },
     isEdit () {
       return this.item.id === this.edit
@@ -168,7 +170,7 @@ export default {
 
   methods: {
     getRowHeight () {
-      this.row.height = this.$refs.rowItemText.clientHeight
+      this.row.height = this.$refs.rowItemText.clientHeight - 10
     },
     /** Toggle open or close the edit state */
     toggleEdit () {
