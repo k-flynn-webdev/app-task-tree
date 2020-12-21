@@ -307,47 +307,51 @@ $app-pad-bottom: 1.5rem;
 }
 
 .select-bar {
+  padding: 0 0.5rem;
   margin-left: 0.3rem;
   margin-bottom: 0.5rem;
+  border-radius: $radius;
+  background-color: $color-mid;
+  position: relative;
+  overflow: hidden;
+
+  $side: 2px;
+
+  &-highlight {
+    position: absolute;
+    top: $side;
+    bottom: $side;
+    left: $side;
+    width: 100%;
+    z-index: 0;
+    border-radius: $radius;
+    background-color: $primary;
+    transition: $speed;
+  }
 
   button {
     outline: none;
     border: none;
     position: relative;
-    margin: 0;
-    padding: 0;
-    padding-left: 0.5rem;
+    z-index: 10;
+    background-color: transparent;
     font-weight: bolder;
     text-transform: uppercase;
-    transition: $speed-slower;
-
-    &.extra-pad {
-      padding-left: 1.3rem;
-    }
-
-    .tri {
-      position: absolute;
-      z-index: -1;
-      right: -0.35rem;
-      transition: $speed-slower;
-    }
+    transition: inherit;
+    color: $light;
 
     span {
-      transition: $speed-slower;
+      transition: inherit;
       transform: scale(1.05);
     }
   }
 
-  button {
-    background-color: $light;
-    .tri { fill: $light; }
-  }
-
   button.is-primary {
     pointer-events: none;
-    .tri {
-      fill: $primary;
-      pointer-events: none;
+    background-color: transparent;
+
+    &:hover {
+      color: $light;
     }
 
     span {
@@ -356,9 +360,11 @@ $app-pad-bottom: 1.5rem;
   }
 
   button[disabled] {
-    opacity: 1;
-    background-color: $grey-light;
-    .tri { fill: $grey-light; }
+    background-color: transparent;
+
+    &:hover {
+      color: $light;
+    }
   }
 }
 
