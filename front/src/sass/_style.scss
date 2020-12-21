@@ -438,7 +438,10 @@ $rowDivide: 2;
 
     &-buttons {
       margin-top: $rowPadY;
-      margin-right: $rowPadX * 3.5;
+      margin-left: $rowPadX * 0.5;
+      margin-right: $rowPadX * 3;
+      display: flex;
+      justify-content: space-between;
 
       .button {
         @extend .mx-3;
@@ -446,12 +449,6 @@ $rowDivide: 2;
 
         font-weight: bolder;
         border-color: transparent;
-
-        &.remove {
-          float: right;
-
-          span { font-size: 1.25rem; }
-        }
       }
     }
 

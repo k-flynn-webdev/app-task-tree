@@ -58,10 +58,12 @@
 
     </div>
 
-    <div v-if="isEdit" class="row__item-buttons">
-      <b-button class="has-background-light hover"
+    <div v-if="isEdit"
+         class="row__item-buttons">
+      <div style="flex-grow: 1;"></div>
+      <b-button class="has-background-danger hover"
                 size="is-small"
-                @click="toggleEdit">
+                @click="removeItemConfirm">
         <ic-delete class="fill-bg v-align-center is-large" />
       </b-button>
       <b-button class="has-background-success hover"
@@ -70,11 +72,7 @@
                 @click="updateItem">
         <ic-tick class="fill-bg v-align-center is-large" />
       </b-button>
-      <b-button class="remove has-background-danger hover"
-                size="is-small"
-                @click="removeItemConfirm">
-        Delete
-      </b-button>
+
     </div>
 
   </div>
