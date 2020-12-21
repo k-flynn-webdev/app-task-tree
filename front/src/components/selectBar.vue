@@ -1,32 +1,32 @@
 <template>
-  <div class="is-flex select-bar">
-    <b-button class="is-size-7-tablet z-index-3"
+  <div class="is-inline-block select-bar">
+    <b-button class="is-size-7-tablet"
+              ref="project"
               :class="{ 'is-primary': isProject }"
               :disabled="!projectBtnRoute"
               :loading="projectLoading"
               @click="loadPage(projectBtnRoute)">
       {{ TYPES.project.text }}
-      <tri class="icon tri is-large"
-           :class="{ 'fill-primary': isProject }"/>
     </b-button>
-    <b-button class="is-size-7-tablet extra-pad z-index-2"
+    <b-button class="is-size-7-tablet"
+              ref="plan"
               :class="{ 'is-primary': isPlan }"
               :disabled="!planBtnRoute"
               :loading="planLoading"
               @click="loadPage(planBtnRoute)">
       {{ TYPES.plan.text }}
-      <tri class="icon tri is-large"
-           :class="{ 'fill-primary': isPlan }"/>
     </b-button>
-    <b-button class="is-size-7-tablet extra-pad z-index-1"
+    <b-button class="is-size-7-tablet"
+              ref="task"
               :class="{ 'is-primary': isTask }"
               :disabled="!taskBtnRoute"
               :loading="taskLoading"
               @click="loadPage(taskBtnRoute)">
       {{ TYPES.task.text }}
-      <tri class="icon tri is-large"
-           :class="{ 'fill-primary': isTask }"/>
     </b-button>
+
+    <div class="select-bar-highlight"
+         :style="highlightStyle"></div>
   </div>
 
 </template>
@@ -34,22 +34,50 @@
 <script>
 import { TYPES } from '../constants'
 import { get } from 'lodash-es'
-import tri from '../assets/icons/ic_right'
+const borderSize = 2;
+const paddingRight = 10;
 
 export default {
   name: 'selectBar',
 
-  components: {
-    tri
-  },
-
   data () {
     return {
-      TYPES
+      TYPES,
+      styles: {
+        project: { width: 100 },
+        plan: { width: 100 },
+        task: { width: 100 }
+      }
     }
   },
 
   computed: {
+    highlightStyle () {
+      if (this.isProject) {
+        return {
+          left: (0 + borderSize) + 'px',
+          width: (this.styles.project.width +
+              paddingRight ) + 'px'
+        }
+      }
+      if (this.isPlan) {
+        return {
+          left: (this.styles.project.width +
+              borderSize) + 'px',
+          width: (this.styles.plan.width +
+              paddingRight) + 'px'
+        }
+      }
+      if (this.isTask) {
+        return {
+          left: (this.styles.project.width +
+              this.styles.plan.width  +
+              borderSize) + 'px',
+          width: (this.styles.task.width +
+              paddingRight) + 'px'
+        }
+      }
+    },
     mode () {
       return this.$store.state.mode
     },
@@ -156,9 +184,24 @@ export default {
     },
   },
 
+  mounted () {
+    this.getSelectBarStyles()
+  },
+
   methods: {
     loadPage (page) {
       this.$router.push(page)
+    },
+    /**
+     * Setup initial computed styling
+     *    widths for the select bar effect
+     * 
+     * @returns {void}
+     */
+    getSelectBarStyles () {
+      ;['project', 'plan', 'task'].forEach(item => {
+        this.styles[item].width = this.$refs[item].$el.clientWidth
+      })
     }
   }
 }
