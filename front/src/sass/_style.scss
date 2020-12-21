@@ -437,7 +437,7 @@ $rowDivide: 2;
 
     &-buttons {
       margin-top: $rowPadY;
-      margin-left: $rowPadX;
+      margin-right: $rowPadX * 3.5;
 
       .button {
         @extend .mx-3;
@@ -445,6 +445,12 @@ $rowDivide: 2;
 
         font-weight: bolder;
         border-color: transparent;
+
+        &.remove {
+          float: right;
+
+          span { font-size: 1.25rem; }
+        }
       }
     }
 
@@ -481,12 +487,12 @@ $rowDivide: 2;
 
       &-pre {
         padding-left: $rowPadX/4;
-        padding-right: $rowPadX/4;
       }
 
       &-msg {
-        padding: $rowPadY 0;
         border: none;
+        padding: $rowPadY 0;
+        padding-left: $rowPadX/3.5;
       }
 
       &-input {
@@ -497,6 +503,7 @@ $rowDivide: 2;
 
         textarea {
           padding: $rowPadY 0;
+          padding-left: $rowPadX/3.5;
           color: $light;
           border: none;
           min-height: inherit;
