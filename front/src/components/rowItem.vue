@@ -52,7 +52,7 @@
 
       <b-button class="mx-0 is-transparent hover"
                 @click="toggleEdit">
-        <ic-option class="fill-light"
+        <ic-option class="has-fill-light"
                    :class="{ 'color-alpha': isEdit }" />
       </b-button>
 
@@ -64,13 +64,13 @@
       <b-button class="has-background-danger hover"
                 size="is-small"
                 @click="removeItemConfirm">
-        <ic-delete class="fill-bg v-align-center is-large" />
+        <ic-delete class="has-fill-bg v-align-center is-large" />
       </b-button>
       <b-button class="has-background-success hover"
                 size="is-small"
                 :disabled="!allowEditSubmit"
                 @click="updateItem">
-        <ic-tick class="fill-bg v-align-center is-large" />
+        <ic-tick class="has-fill-bg v-align-center is-large" />
       </b-button>
 
     </div>
@@ -158,9 +158,9 @@ export default {
           this.item.progress, this.item.total)
     },
     tickButtonClass () {
-      if (this.isLoadingDone) return 'fill-transparent'
-      if (this.item.is_done) return 'fill-success'
-      return 'fill-bg'
+      if (this.isLoadingDone) return 'has-fill-transparent'
+      if (this.item.is_done) return 'has-fill-success'
+      return 'has-fill-bg'
     },
     allowEditSubmit () {
       return (this.value !== this.item.value && this.value.length > 3)

@@ -1,0 +1,115 @@
+$rowPadY: 0.33rem;
+$rowPadX: 1.5rem;
+$rowDivide: 2;
+
+.row {
+  padding: 0;
+  margin-bottom: $rowPadY * 1.5;
+  color: $light;
+
+  &.is-active & {
+    &__item {
+      border: $border-size solid $light;
+    }
+  }
+
+  &__item {
+    margin-left: 0.25rem;
+    display: flex;
+    align-items: flex-start;
+    flex-grow: 1;
+    border-radius: $radius;
+
+    &-buttons {
+      margin-top: $rowPadY * 3;
+      margin-left: $rowPadX * 0.5;
+      margin-right: $rowPadX * 3;
+      display: flex;
+      justify-content: space-between;
+
+      .button {
+        @extend .mx-3;
+        @extend .mb-1;
+
+        font-weight: bolder;
+        border-color: transparent;
+      }
+    }
+
+    &__content {
+      &-pre,
+      &-date {
+        padding-top: $rowPadY;
+      }
+
+      &-pre {
+        min-width: 2rem;
+      }
+
+      &-date {
+        padding-right: $rowPadX/$rowDivide;
+      }
+
+      &-button,
+      &-progress {
+        margin: 0;
+        padding: 0;
+      }
+
+      &-button {
+        min-width: 1.5rem;
+        border-color: transparent;
+        background-color: transparent;
+        height: unset;
+        transform: translateY(0.2rem) translateX(0.1rem);
+
+        svg {
+          transition: $speed-slow;
+        }
+      }
+
+      &-pre {
+        padding-left: $rowPadX/4;
+      }
+
+      &-msg {
+        border: none;
+        padding: $rowPadY 0;
+        padding-left: $rowPadX/3.5;
+      }
+
+      &-input {
+        flex-grow: 1;
+        display: inline-block;
+        border: none;
+        background-color: transparent;
+
+        textarea {
+          padding: $rowPadY 0;
+          padding-left: $rowPadX/3.5;
+          color: $light;
+          border: none;
+          min-height: inherit;
+          display: inline-block;
+          background-color: transparent;
+
+          &.textarea { min-height: inherit; }
+
+          &:focus,
+          &:hover,
+          &:active {
+            box-shadow: none;
+            outline: none;
+            border-color: transparent;
+          }
+        }
+      }
+
+      &-msg,
+      &-input {
+        flex-grow: 1;
+        word-break: break-word;
+      }
+    }
+  }
+}

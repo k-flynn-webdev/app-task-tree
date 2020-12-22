@@ -1,0 +1,171 @@
+
+.navbar {
+  .navbar-burger {
+    height: $navbar-height + 0.5rem;
+    margin-right: 0.5rem;
+  }
+  .navbar-item {
+    padding: 0;
+  }
+}
+
+.navbar {
+  $navbar-icon-width: 3rem;
+  $navbar-btn-width: 3rem;
+
+  &.is-active {
+    @include touch () {
+      display: none;
+    }
+  }
+
+  &-brand {
+    width: 100%;
+    max-width: 100%;
+    align-items: center;
+  }
+
+  .app-icon {
+    display: inline-block;
+    width: $navbar-icon-width;
+  }
+
+  &__main {
+    flex-grow: 1;
+    overflow: hidden;
+    display: inline-block;
+    max-width: calc(100% - #{$navbar-btn-width} - #{$navbar-icon-width} + 0.5rem);
+
+    &-title {
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+
+  &__btn {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    margin-top: 0.3rem;
+    flex-grow: 0;
+    width: $navbar-btn-width;
+  }
+
+  &__title {
+    max-height: 2.25rem;
+  }
+
+  $topleft: 0.2rem;
+
+  &__options {
+    margin: 0 0.75rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    display: none;
+    position: fixed;
+    top: 0.5rem;
+    right: 0;
+    z-index: 100;
+    min-width: 20rem;
+    min-height: 15rem;
+    border: $border-size solid rgba($color-mid, $color-alpha);
+    border-radius: $radius;
+    color: $dark;
+    background-color: $light;
+
+    @include touch () {
+      position: relative;
+    }
+
+    &.is-active {
+      display: block;
+    }
+
+    &-close {
+      position: absolute;
+      top: $topleft;
+      right: $topleft;
+      z-index: 10;
+      fill: $color-bg;
+      transition: $speed-slow;
+    }
+
+    @include touch () {
+      top: 0.5rem;
+      left: 0;
+      right: 0;
+      min-width: 15rem;
+    }
+
+    .option {
+      position: relative;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: solid $border-size rgba($color-mid, $color-alpha);
+
+      &:last-of-type {
+        border-bottom: none;
+      }
+
+      &.disabled {
+        opacity: 0.5;
+
+        .field { display: none; }
+      }
+
+      &.user {
+        .button {
+          overflow: hidden;
+        }
+
+        .icon {
+          fill: $light;
+          margin-right: 0.5rem;
+          position: absolute;
+          right: 0;
+          transform: scale(1.25) translateY(15%);
+        }
+      }
+
+      .control,
+      .field {
+        margin-left: 0.5rem;
+
+        .label {
+          float: left;
+          min-width: 5rem;
+          margin-right: 0.5rem;
+        }
+      }
+
+      .control {
+        .button {
+          margin: 0 auto;
+          width: 80%;
+        }
+      }
+
+      .button,
+      .title,
+      .name {
+        font-weight: bolder;
+      }
+      .title {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+      }
+      .name {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .navbar-menu.is-active {
+    display: none;
+  }
+
+  .navbar-item {
+    padding: 0.5rem 0;
+  }
+}
