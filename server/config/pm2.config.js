@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'app-minitask',
-      script: 'src/',
+      script: './src/',
       env: {
         NODE_ENV: 'production',
       },
