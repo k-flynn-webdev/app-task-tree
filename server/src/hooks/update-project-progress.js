@@ -22,10 +22,19 @@ module.exports = (project) => {
     const paths = context.app.get('constants').path
 
     const allTasks = await context.app.service(paths.task)._find({
-      query: { $limit: 0, project: projectId }
+      query: {
+        $limit: 0,
+        project: projectId
+      }
     })
     const allDoneTasks = await context.app.service(paths.task)._find({
-      query: { $limit: 0, project: projectId, is_done: 1 }
+      query: {
+        $limit: 0,
+        project: projectId,
+        is_done: {
+          $gte: 1
+        }
+      }
     })
 
     let projectData = {
@@ -45,7 +54,7 @@ module.exports = (project) => {
 
     context.app.service(paths.project)._patch(projectId, projectData)
       .catch(err => {
-        context.app.log_error(err)
+        context.app.log.error(err)
         return context
       })
 

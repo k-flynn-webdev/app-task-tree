@@ -23,10 +23,19 @@ module.exports = (plan) => {
     const paths = context.app.get('constants').path
 
     const allTasks = await context.app.service(paths.task)._find({
-      query: { $limit: 0, plan: planId }
+      query: {
+        $limit: 0,
+        plan: planId
+      }
     })
     const allDoneTasks = await context.app.service(paths.task)._find({
-      query: { $limit: 0, plan: planId, is_done: 1 }
+      query: {
+        $limit: 0,
+        plan: planId,
+        is_done: {
+          $gte: 1
+        }
+      }
     })
 
     let planUpdate = {
