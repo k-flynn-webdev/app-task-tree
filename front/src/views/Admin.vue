@@ -310,8 +310,6 @@ export default {
           { field: 'owner', label: 'Owner' },
           { field: 'project', label: 'Project' },
           { field: 'plan', label: 'Plan' },
-          { field: 'progress', label: 'Progress' },
-          { field: 'total', label: 'Total' },
           { field: 'is_done', label: 'isDone' },
           { field: 'done_at', label: 'Done' },
           { field: 'created_at', label: 'Created' },

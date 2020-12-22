@@ -22,9 +22,9 @@ exports.AdminLatest = class AdminLatest {
           if (tmp[0] && tmp[0].length > 0 &&
             tmp[1] && tmp[1].length > 0) {
             acc.push({
-              time: tmp[0].trim(),
-              user: tmp[1].trim(),
-              msg: tmp[2].trim()
+              time: tmp[0] ? tmp[0].trim() : '',
+              user: tmp[1] ? tmp[1].trim() : '',
+              msg: tmp[2] ? tmp[2].trim() : ''
             })
           }
 
