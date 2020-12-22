@@ -1,102 +1,18 @@
 // Import Bulma's core
 @import "~bulma/sass/utilities/_all";
 
-$navbar-height: 1.5rem;
-
-// Set your colors
-$primary: rgb(32, 173, 186);
-$primary-invert: findColorInvert($primary);
-$twitter: #4099FF;
-$twitter-invert: findColorInvert($twitter);
-
-$color-transparent: rgba(0, 0, 0, 0);
-$color-alpha: 0.3;
-$color-grey: rgb(118, 130, 130);
-$color-bg: rgb(33, 62, 69);
-$color-shadow: rgb(54, 56, 46);
-//$color-mid: rgb(88, 110, 99);
-$color-mid: rgb(80, 107, 115);
-$color-mid-waiting: rgb(134, 143, 107);
-$color-waiting: rgb(189, 173, 99);
-//$color-success: rgb(154, 212, 125);
-//$success: rgb(122, 231, 66);
-$success: $primary;
-$color-error: rgb(212, 151, 125);
-$color-fore: rgb(252, 252, 240);
-$color-select: rgb(9, 161, 131);
-
-$light: $color-fore;
-$white: $color-fore;
-
-// Setup $colors to use as bulma classes (e.g. 'is-twitter')
-$colors: (
-  "bg": ($color-bg, $light),
-  "transparent": ($color-transparent, $light),
-  "mid": ($color-mid, $white-ter),
-  "white": ($white, $black),
-  "black": ($black, $white),
-  "light": ($light, $light-invert),
-  "dark": ($dark, $dark-invert),
-  "primary": ($primary, $primary-invert),
-  "info": ($info, $info-invert),
-  "success": ($success, $success-invert),
-  "warning": ($warning, $warning-invert),
-  "danger": ($danger, $danger-invert),
-  "twitter": ($twitter, $twitter-invert)
-);
-
-// Links
-$link: $primary;
-$link-invert: $primary-invert;
-$link-focus-border: $primary;
-
-$border-size: 1rem/9;
-
-$radius-small: 3px !default;
-$radius: 6px !default;
-$radius-large: 8px !default;
+// internal vars (that override bulma..)
+@import "vars.scss";
 
 // Import Bulma and Buefy styles
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
+
+// generic helper classes
+@import "helpers.scss";
+// own internal styles
 @import "style.scss";
 @import "admin.scss";
-
-@each $color, $value in $colors {
-  .has-border-#{$color} {
-    border: $border-size solid nth($value, 1);
-  }
-
-  .fill-#{$color} {
-    fill: nth($value, 1);
-  }
-}
-
-.input,
-.box {
-  background-color: $white;
-  border-radius: $radius;
-}
-
-.field {
-  .input[disabled],
-  input[disabled] {
-    background-color: white;
-    color: rgb(35, 35, 35) !important;
-  }
-}
-
-button,
-.button {
-  border-width: $border-size;
-}
-
-.navbar {
-  .navbar-burger {
-    height: $navbar-height + 0.5rem;
-    margin-right: 0.5rem;
-  }
-  .navbar-item {
-    padding: 0;
-  }
-}
+@import "row.scss";
+@import "select-bar.scss";
+@import "navbar-menu.scss";

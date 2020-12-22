@@ -71,6 +71,4 @@ app.use(express.errorHandler({ logger }));
 
 app.hooks(appHooks);
 
-app.log.activity('thing')
-
 module.exports = app;

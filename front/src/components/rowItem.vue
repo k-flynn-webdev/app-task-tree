@@ -1,50 +1,50 @@
 <template>
-  <div class="column is-8 is-12-mobile px-0 py-0 mb-2 ml-1 row">
+  <div class="column is-8 is-12-mobile row is-family-sans-serif">
 
     <div class="is-flex start">
 
-      <div class="is-flex start flex-grow has-text-light is-radius row__item"
+      <div class="row__item"
            :class="[ isEdit? 'has-background-transparent has-border-light':
            'has-border-transparent has-background-mid' ]"
            @click="onSelect"
            @dblclick="onDblClick">
 
         <b-button v-if="isTask"
-                  class="row__content-button"
+                  class="row__item__content-button"
                   :loading="isLoadingDone"
                   @click.stop="toggleDone">
           <ic-tick :class="tickButtonClass" />
         </b-button>
 
-        <div v-else class="row__content-pre">
+        <div v-else class="row__item__content-pre">
           <small v-if="showProgress"
-              class="row__content-progress">
+              class="row__item__content-progress">
             {{ progress }}
           </small>
           <span v-else
-                class="row__content-button">
+                class="row__item__content-button">
             <ic-tick :class="tickButtonClass" />
           </span>
         </div>
 
         <div v-if="!isEdit"
              ref="rowItemText"
-             class="pad has-border-transparent is-family-sans-serif word-break flex-grow">
+             class="row__item__content-msg">
           {{ item.value }}
         </div>
 
         <b-input v-else
-                 class="flex-grow is-inline-block is-family-sans-serif"
+                 class="row__item__content-input"
                  v-model="value"
                  :placeholder="value"
                  :readonly="!isEdit"
                  :style="rowHeightStyle"
                  type="textarea"
-                 customClass="row__content-input pad has-text-light">
+                 customClass="">
         </b-input>
 
         <div v-if="!isEdit"
-             class="pr-1 pt-2">
+             class="row__item__content-date">
           <small class="is-hidden-mobile">{{ item | itemDate }}</small>
           <small class="is-hidden-tablet">{{ item | itemDate(true,true,false) }}</small>
         </div>
@@ -52,24 +52,27 @@
 
       <b-button class="mx-0 is-transparent hover"
                 @click="toggleEdit">
-        <ic-option class="fill-light"
+        <ic-option class="has-fill-light"
                    :class="{ 'color-alpha': isEdit }" />
       </b-button>
 
     </div>
 
-    <div v-if="isEdit" class="mt-2">
-      <b-button class="mx-3 mb-1 has-background-danger has-border-transparent hover"
+    <div v-if="isEdit"
+         class="row__item-buttons">
+      <div style="flex-grow: 1;"></div>
+      <b-button class="has-background-danger hover"
                 size="is-small"
-                @click="removeItem">
-        <ic-delete class="fill-bg v-align-center is-large" />
+                @click="removeItemConfirm">
+        <ic-delete class="has-fill-bg v-align-center is-large" />
       </b-button>
-      <b-button class="mx-3 mb-1 has-background-success has-border-transparent hover"
+      <b-button class="has-background-success hover"
                 size="is-small"
                 :disabled="!allowEditSubmit"
                 @click="updateItem">
-        <ic-tick class="fill-bg v-align-center is-large" />
+        <ic-tick class="has-fill-bg v-align-center is-large" />
       </b-button>
+
     </div>
 
   </div>
@@ -110,7 +113,7 @@ export default {
       isLoading: false,
       value: null,
       row: {
-        height: '16'
+        height: 5
       }
     }
   },
@@ -132,7 +135,9 @@ export default {
 
   computed: {
     rowHeightStyle () {
-      return { height: this.row.height + EXTRA_ROW_PAD + 'px' }
+      return {
+        'min-height': this.row.height + 'px'
+      }
     },
     isEdit () {
       return this.item.id === this.edit
@@ -153,9 +158,9 @@ export default {
           this.item.progress, this.item.total)
     },
     tickButtonClass () {
-      if (this.isLoadingDone) return 'fill-transparent'
-      if (this.item.is_done) return 'fill-success'
-      return 'fill-bg'
+      if (this.isLoadingDone) return 'has-fill-transparent'
+      if (this.item.is_done) return 'has-fill-success'
+      return 'has-fill-bg'
     },
     allowEditSubmit () {
       return (this.value !== this.item.value && this.value.length > 3)
@@ -249,10 +254,8 @@ export default {
 
       return this.$store.dispatch(`${TYPES[this.type].store}/patch`,
           { id: this.item.id, is_done: !doneValue })
-      .then(() => {
-        this.isLoadingDone = false
-      })
       .catch(err => this.handleError(err))
+      .finally(() => this.isLoadingDone = false)
     },
     /**
      * Remove item via API
@@ -268,11 +271,25 @@ export default {
           { id: this.item.id, value: this.value })
       .then(() => {
         this.closeEdit()
-        this.isLoading = false
       })
       .then(() => this.getRowHeight())
       .catch(err => this.handleError(err))
+      .finally(() => this.isLoading = false)
     },
+    /**
+     * Show confirm dialog to delete
+     */
+    removeItemConfirm () {
+      this.$buefy.dialog.confirm({
+        title: `Deleting ${this.value}`,
+        message: 'Are you sure you want to <b>delete</b>? This action cannot be undone.',
+        confirmText: `Delete ${this.type}`,
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => this.removeItem()
+      })
+    },
+
     /**
      * Remove item via API
      *
@@ -285,9 +302,13 @@ export default {
       return this.$store.dispatch(`${TYPES[this.type].store}/remove`, this.item.id)
       .then(() => {
         this.closeEdit()
-        this.isLoading = false
+        this.$buefy.toast.open({
+          type: 'is-success',
+          message: 'Item deleted!'
+        })
       })
       .catch(err => this.handleError(err))
+      .finally(() => this.isLoading = false)
     },
     /**
      * Show User error messages

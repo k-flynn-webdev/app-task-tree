@@ -12,7 +12,7 @@
         <b-navbar-item
             tag="router-link"
             :to="home.route">
-          <svg class="app-icon icon fill-primary" viewBox="0 0 100 100" version="1.1" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+          <svg class="app-icon icon has-fill-primary" viewBox="0 0 100 100" version="1.1" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
             <path d="M76.37,36.698c0,-9.812 -7.966,-17.778 -17.778,-17.778l-35.555,0c-9.812,0 -17.778,7.966 -17.778,17.778l-0,35.556c-0,9.812 7.966,17.778 17.778,17.778l35.555,-0c9.812,-0 17.778,-7.966 17.778,-17.778l0,-35.556Z" style="fill: rgba(0, 0, 0, 0.2);"/>
             <path d="M43.492,84.926l-35.66,-35.661l18.228,-18.229l17.369,17.37l35.538,-35.538l18.292,18.291l-53.767,53.767Z" />
           </svg>
@@ -32,7 +32,7 @@
 
         <b-button class="navbar__btn is-transparent hover"
                   @click="isOpen = !isOpen">
-          <icOption class="fill-light" />
+          <icOption class="has-fill-light" />
         </b-button>
       </template>
     </b-navbar>

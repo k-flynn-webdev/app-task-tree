@@ -1,16 +1,22 @@
 <template>
   <section class="my-1 pb-3">
 
-    <router-link :to="{ name: 'project' }" class="has-text-link">
-      Projects
-    </router-link>
-    <router-link :to="{ name: 'plan' }" class="has-text-link">
-      Plans
-    </router-link>
-    <router-link :to="{ name: 'task' }" class="has-text-link">
-      Tasks
-    </router-link>
-
+    <div class="is-relative container">
+      <div class="is-inline-block select-bar home">
+        <b-button class="is-size-7-tablet has-background-primary"
+                  @click="gotoProjects">
+          Projects
+        </b-button>
+        <b-button class="is-size-7-tablet"
+                  disabled>
+          Plans
+        </b-button>
+        <b-button class="is-size-7-tablet"
+                  disabled>
+          Tasks
+        </b-button>
+      </div>
+    </div>
 
     <div class="container">
 
@@ -48,6 +54,12 @@ export default {
   created () {
     this.$store.commit('mode', TYPES['home'])
     this.$store.commit('setOpened', {})
+  },
+
+  methods: {
+    gotoProjects () {
+      this.$router.push({ name: 'project' })
+    }
   }
 }
 </script>

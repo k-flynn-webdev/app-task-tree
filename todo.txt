@@ -1,1 +1,0 @@
-validate all inpt to server including white listing certain queries

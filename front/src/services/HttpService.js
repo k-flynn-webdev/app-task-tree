@@ -37,7 +37,7 @@ function authSet (auth) {
 function authRemove () {
   axios.defaults.headers.common.authorization = null
   localStorage.removeItem(USER_TOKEN)
-  store.commit('user/isLoggedIn', false)
+  store.commit('user/logout')
 }
 
 // axios.interceptors.request.use((config) => {
