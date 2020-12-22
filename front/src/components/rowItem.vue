@@ -173,7 +173,7 @@ export default {
 
   methods: {
     getRowHeight () {
-      this.row.height = this.$refs.rowItemText.clientHeight - 10
+      this.row.height = this.$refs.rowItemText.clientHeight
     },
     /** Toggle open or close the edit state */
     toggleEdit () {
