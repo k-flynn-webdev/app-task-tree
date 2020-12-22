@@ -352,6 +352,8 @@ button,
 
   $side: 2px;
 
+  &.home { padding: 0.2rem; }
+
   &-info {
     position: absolute;
     right: 0.75rem;
