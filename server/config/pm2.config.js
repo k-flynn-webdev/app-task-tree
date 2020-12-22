@@ -13,7 +13,7 @@ module.exports = {
       autorestart: true,
       watch: true,
       max_memory_restart: '150M',
-      ignore_watch: ['Log/Log', 'node_modules'],
+      ignore_watch: ['log/log', 'node_modules'],
     },
   ],
 }
