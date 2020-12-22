@@ -1,0 +1,165 @@
+@import "~bulma/sass/utilities/mixins.sass";
+
+// setup all colours
+@each $color, $value in $colors {
+  .is-#{$color} {
+    color: nth($value, 1);
+  }
+
+  .has-border-#{$color} {
+    border: $border-size solid nth($value, 1);
+  }
+
+  .has-fill-#{$color} {
+    fill: nth($value, 1);
+  }
+
+  .has-outline-#{$color} {
+    fill: nth($value, 1);
+  }
+}
+
+.color-alpha {
+  opacity: 0.66;
+}
+
+@each $point in $array {
+  .z-index-#{$point} {
+    z-index: $point;
+  }
+
+  .p-#{$point} {
+    padding: $point * 0.25rem;
+  }
+
+  .pl-#{$point} {
+    padding-left: $point * 0.25rem;
+  }
+  .pr-#{$point} {
+    padding-right: $point * 0.25rem;
+  }
+  .pt-#{$point} {
+    padding-top: $point * 0.25rem;
+  }
+  .pb-#{$point} {
+    padding-bottom: $point * 0.25rem;
+  }
+  .px-#{$point} {
+    padding-left: $point * 0.25rem;
+    padding-right: $point * 0.25rem;
+  }
+  .py-#{$point} {
+    padding-top: $point * 0.25rem;
+    padding-bottom: $point * 0.25rem;
+  }
+
+  .m-#{$point} {
+    margin: $point * 0.25rem;
+  }
+  .ml-#{$point} {
+    margin-left: $point * 0.25rem;
+  }
+  .mr-#{$point} {
+    margin-right: $point * 0.25rem;
+  }
+  .mt-#{$point} {
+    margin-top: $point * 0.25rem;
+  }
+  .mb-#{$point} {
+    margin-bottom: $point * 0.25rem;
+  }
+  .mx-#{$point} {
+    margin-left: $point * 0.25rem;
+    margin-right: $point * 0.25rem;
+  }
+  .my-#{$point} {
+    margin-top: $point * 0.25rem;
+    margin-bottom: $point * 0.25rem;
+  }
+}
+
+.icon {
+  &.is-small {
+    transform: scale(0.75);
+  }
+
+  &.is-medium {
+    transform: scale(1.25);
+  }
+
+  &.is-large {
+    transform: scale(1.5);
+  }
+}
+
+.hide-overflow {
+  overflow: hidden;
+}
+
+.v-align-center {
+  vertical-align: middle;
+}
+
+.animate {
+  transition: $speed-slow;
+}
+
+.columns {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.columns.is-vtop {
+  align-items: flex-start;
+}
+
+.columns.is-vbottom {
+  align-items: flex-end;
+}
+
+.is-radius {
+  border-radius: $radius;
+}
+
+.is-flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &.start { align-items: flex-start; }
+  &.end { align-items: flex-end; }
+  &.center { justify-content: center; }
+  &.column { flex-direction: column; }
+}
+
+.flex-space-between {
+  justify-content: space-between;
+}
+
+.flex-space-around {
+  justify-content: space-around;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.flex-shrink {
+  flex-shrink: 1;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+
+.align-self-start {
+  align-self: flex-start;
+}
+
+.align-self-end {
+  align-self: flex-end;
+}

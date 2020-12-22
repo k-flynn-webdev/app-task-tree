@@ -63,9 +63,9 @@ export default {
       return `${this.type} to create ..`
     },
     createBtnClass () {
-      if (this.isLoading) return 'fill-transparent'
-      if (this.isValid) return 'fill-bg'
-      return 'fill-bg'
+      if (this.isLoading) return 'has-fill-transparent'
+      if (this.isValid) return 'has-fill-bg'
+      return 'has-fill-bg'
     },
     canCreate () {
       if (this.type === TYPES['project'].value) return true
